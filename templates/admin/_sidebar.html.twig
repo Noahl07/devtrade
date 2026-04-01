@@ -1,0 +1,52 @@
+<aside class="admin-sidebar">
+    <div class="admin-sidebar__logo">
+        <a href="{{ path('app_admin') }}">
+            dev<span style="color:var(--color-accent)">.</span>trade
+            <small>admin</small>
+        </a>
+    </div>
+
+    <nav class="admin-nav">
+        <div class="admin-nav__group">
+            <span class="admin-nav__label">Général</span>
+            <a href="{{ path('app_admin') }}"
+               class="admin-nav__item {% if app.request.attributes.get('_route') == 'app_admin' %}admin-nav__item--active{% endif %}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+        </div>
+
+        <div class="admin-nav__group">
+            <span class="admin-nav__label">Contenu</span>
+            <a href="{{ path('app_admin_documents') }}"
+               class="admin-nav__item {% if 'app_admin_document' in app.request.attributes.get('_route') %}admin-nav__item--active{% endif %}">
+                <i class="bi bi-file-text"></i> Articles
+            </a>
+            <a href="{{ path('app_admin_projects') }}"
+               class="admin-nav__item {% if 'app_admin_project' in app.request.attributes.get('_route') %}admin-nav__item--active{% endif %}">
+                <i class="bi bi-briefcase"></i> Projets
+            </a>
+        </div>
+
+        <div class="admin-nav__group">
+            <span class="admin-nav__label">Membres</span>
+            <a href="{{ path('app_admin_users') }}"
+               class="admin-nav__item {% if 'app_admin_user' in app.request.attributes.get('_route') %}admin-nav__item--active{% endif %}">
+                <i class="bi bi-people"></i> Utilisateurs
+            </a>
+            <a href="{{ path('app_admin_waitlist') }}"
+               class="admin-nav__item {% if app.request.attributes.get('_route') == 'app_admin_waitlist' %}admin-nav__item--active{% endif %}">
+                <i class="bi bi-envelope"></i> Waitlist
+            </a>
+        </div>
+
+        <div class="admin-nav__group">
+            <span class="admin-nav__label">Site</span>
+            <a href="{{ path('app_home') }}" target="_blank" class="admin-nav__item">
+                <i class="bi bi-box-arrow-up-right"></i> Voir le site
+            </a>
+            <a href="{{ path('app_logout') }}" class="admin-nav__item admin-nav__item--danger">
+                <i class="bi bi-box-arrow-right"></i> Déconnexion
+            </a>
+        </div>
+    </nav>
+</aside>

@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+<section class="section">
+    <span class="section-eyebrow">Espace membre</span>
+    <h1 style="margin-bottom:2.5rem">Bonjour, {{ user.firstName }} 👋</h1>
+
+    <div class="compte-grid">
+
+        {# Statut abonnement #}
+        <div class="compte-card">
+            <div class="compte-card__header">
+                <h3>Mon abonnement</h3>
+                {% if user.isPremium %}
+                    <span class="tag tag--gold">Premium actif</span>
+                {% else %}
+                    <span class="tag">Gratuit</span>
+                {% endif %}
+            </div>
+            {% if user.isPremium %}
+                <p>Vous avez accès à l'intégralité de la documentation — Orderflow, Quant, ICT Avancé, Algorithmes et plus.</p>
+            {% else %}
+                <p>Passez Premium pour accéder aux 40+ articles avancés : ICT Expert, Orderflow, Footprint, Quantitatif, Trading Algorithmique.</p>
+                <a href="{{ path('app_contact') }}?subject=Acc%C3%A8s+Premium" class="btn btn--primary" style="margin-top:1.2rem">
+                    Passer Premium
+                </a>
+            {% endif %}
+        </div>
+
+        {# Accès doc #}
+        <div class="compte-card">
+            <div class="compte-card__header">
+                <h3>Documentation</h3>
+            </div>
+            <p>Accédez à la documentation trading — ICT, Price Action, Wyckoff, Psychologie et plus.</p>
+            <a href="{{ path('app_documentation') }}" class="btn btn--ghost" style="margin-top:1.2rem">
+                Aller à la documentation →
+            </a>
+        </div>
+
+        {# Waitlist algo #}
+        <div class="compte-card">
+            <div class="compte-card__header">
+                <h3>Algo de trading</h3>
+                <span class="badge-soon">Bientôt</span>
+            </div>
+            <p>L'algo sera disponible prochainement. Inscrivez-vous à la waitlist pour être notifié en premier.</p>
+            <a href="{{ path('app_trading') }}#waitlist" class="btn btn--outline-accent" style="margin-top:1.2rem">
+                Rejoindre la waitlist
+            </a>
+        </div>
+
+        {# Infos compte #}
+        <div class="compte-card">
+            <div class="compte-card__header">
+                <h3>Mon profil</h3>
+            </div>
+            <div class="compte-info-list">
+                <div class="compte-info-item">
+                    <span class="compte-info-label">Prénom</span>
+                    <span>{{ user.firstName }}</span>
+                </div>
+                <div class="compte-info-item">
+                    <span class="compte-info-label">Nom</span>
+                    <span>{{ user.lastName }}</span>
+                </div>
+                <div class="compte-info-item">
+                    <span class="compte-info-label">Email</span>
+                    <span>{{ user.email }}</span>
+                </div>
+                <div class="compte-info-item">
+                    <span class="compte-info-label">Membre depuis</span>
+                    <span>{{ user.createdAt|date('d/m/Y') }}</span>
+                </div>
+            </div>
+            <a href="{{ path('app_compte_profil') }}" class="btn btn--ghost" style="margin-top:1.2rem">
+                Modifier le profil
+            </a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.compte-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+.compte-card {
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+}
+.compte-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.compte-card__header h3 { color: #F0F2F7; font-size: 1rem; }
+.compte-card p { font-size: 14px; line-height: 1.65; }
+.compte-info-list { display: flex; flex-direction: column; gap: 10px; }
+.compte-info-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--color-border);
+}
+.compte-info-label { color: var(--color-text-faint); }
+@media (max-width: 768px) {
+    .compte-grid { grid-template-columns: 1fr; }
+}
+</style>
+{% endblock %}

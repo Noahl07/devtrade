@@ -1,0 +1,441 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Documentation Trading{% endblock %}
+{% block meta_description %}Documentation complète sur ICT, Orderflow, Footprint, Price Action et modèles quantitatifs. Ressources gratuites et premium pour traders sérieux.{% endblock %}
+
+{% block body %}
+
+<section class="section">
+    <span class="section-eyebrow">Ressources & Documentation</span>
+    <h1>Maîtrisez les marchés.</h1>
+    <p class="section-desc">
+        De la théorie ICT aux modèles quantitatifs — une documentation structurée, progressive
+        et orientée pratique pour traders sérieux.
+    </p>
+
+    {# Accès utilisateur #}
+    {% if app.user %}
+        <div class="doc-access-banner doc-access-banner--connected">
+            <span>
+                Connecté en tant que <strong>{{ app.user.firstName }}</strong>
+                {% if app.user.isPremium %}
+                    — <span class="tag tag--gold">Accès Premium actif</span>
+                {% else %}
+                    — Accès gratuit
+                    <a href="{{ path('app_compte') }}" class="doc-access-banner__upgrade">Passer Premium →</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <div class="doc-access-banner doc-access-banner--guest">
+            <span>
+                Certains articles sont réservés aux membres Premium.
+                <a href="{{ path('app_register') }}" class="doc-access-banner__cta">S'inscrire gratuitement</a>
+                ou
+                <a href="{{ path('app_login') }}" class="doc-access-banner__cta">Se connecter</a>
+            </span>
+        </div>
+    {% endif %}
+</section>
+
+<hr class="divider">
+
+{# ══ CATÉGORIES ══ #}
+<section class="section">
+
+    {# ICT — Free #}
+    <div class="doc-category" id="ict">
+        <div class="doc-category__header">
+            <div class="doc-category__info">
+                <div class="doc-category__icon">📐</div>
+                <div>
+                    <h2 class="doc-category__title">ICT — Inner Circle Trader</h2>
+                    <p class="doc-category__desc">
+                        Les concepts fondamentaux du Smart Money — comment les institutions positionnent
+                        leurs ordres et comment les identifier sur les graphiques.
+                    </p>
+                </div>
+            </div>
+            <span class="tag tag--accent">Accès gratuit</span>
+        </div>
+
+        <div class="doc-articles">
+            <a href="{{ path('app_documentation_article', {accessLevel: 'free', slug: 'introduction-ict'}) }}" class="doc-article">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Introduction à l'ICT et la théorie Smart Money</h3>
+                    <p class="doc-article__excerpt">Comprendre comment les institutions opèrent sur les marchés financiers et pourquoi le retail perd systématiquement.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">8 min</span>
+                    <span class="tag tag--accent">Gratuit</span>
+                </div>
+            </a>
+
+            <a href="{{ path('app_documentation_article', {accessLevel: 'free', slug: 'order-blocks'}) }}" class="doc-article">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Order Blocks — Identifier les zones institutionnelles</h3>
+                    <p class="doc-article__excerpt">Définition, identification et utilisation des Order Blocks bullish et bearish dans une stratégie de trading.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">12 min</span>
+                    <span class="tag tag--accent">Gratuit</span>
+                </div>
+            </a>
+
+            <a href="{{ path('app_documentation_article', {accessLevel: 'free', slug: 'fair-value-gap'}) }}" class="doc-article">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Fair Value Gaps et inefficiences de marché</h3>
+                    <p class="doc-article__excerpt">Comment identifier et trader les FVG — les zones où le prix reviendra statistiquement pour combler le déséquilibre.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">10 min</span>
+                    <span class="tag tag--accent">Gratuit</span>
+                </div>
+            </a>
+
+            <a href="{{ path('app_documentation_article', {accessLevel: 'free', slug: 'kill-zones'}) }}" class="doc-article">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Kill Zones — Les fenêtres de liquidité institutionnelle</h3>
+                    <p class="doc-article__excerpt">Asian range, London open, NY open — pourquoi ces horaires concentrent le volume et comment les exploiter.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">9 min</span>
+                    <span class="tag tag--accent">Gratuit</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <hr class="divider" style="margin: 3rem 0;">
+
+    {# Orderflow — Premium #}
+    <div class="doc-category" id="orderflow">
+        <div class="doc-category__header">
+            <div class="doc-category__info">
+                <div class="doc-category__icon">📊</div>
+                <div>
+                    <h2 class="doc-category__title">Orderflow & Footprint</h2>
+                    <p class="doc-category__desc">
+                        Lecture avancée du carnet d'ordres, analyse du volume et confirmation
+                        des entrées par les données tick-by-tick.
+                    </p>
+                </div>
+            </div>
+            <span class="tag tag--gold">Premium</span>
+        </div>
+
+        <div class="doc-articles">
+            <a href="{{ path('app_documentation_article', {accessLevel: 'premium', slug: 'introduction-orderflow'}) }}" class="doc-article doc-article--premium {% if not app.user or not app.user.isPremium %}doc-article--locked{% endif %}">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Introduction à l'analyse Orderflow</h3>
+                    <p class="doc-article__excerpt">Comprendre la différence entre l'analyse graphique classique et la lecture des flux d'ordres en temps réel.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">11 min</span>
+                    {% if app.user and app.user.isPremium %}
+                        <span class="tag tag--gold">Premium</span>
+                    {% else %}
+                        <span class="doc-article__lock">🔒</span>
+                    {% endif %}
+                </div>
+            </a>
+
+            <a href="{{ path('app_documentation_article', {accessLevel: 'premium', slug: 'delta-cumule'}) }}" class="doc-article doc-article--premium {% if not app.user or not app.user.isPremium %}doc-article--locked{% endif %}">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Delta cumulé et pression directionnelle</h3>
+                    <p class="doc-article__excerpt">Comment lire le CVD pour anticiper les mouvements directionnels et identifier les divergences de volume.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">14 min</span>
+                    {% if app.user and app.user.isPremium %}
+                        <span class="tag tag--gold">Premium</span>
+                    {% else %}
+                        <span class="doc-article__lock">🔒</span>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+
+        {% if not app.user or not app.user.isPremium %}
+            <div class="doc-premium-cta">
+                <strong>Contenu Premium</strong>
+                <p>Accédez à l'intégralité de la documentation Orderflow, Footprint, Quant et STDV.</p>
+                {% if app.user %}
+                    <a href="{{ path('app_compte') }}" class="btn btn--primary">Passer Premium</a>
+                {% else %}
+                    <a href="{{ path('app_register') }}" class="btn btn--primary">S'inscrire pour accéder</a>
+                    <a href="{{ path('app_login') }}" class="btn btn--ghost">Déjà membre ? Se connecter</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <hr class="divider" style="margin: 3rem 0;">
+
+    {# Price Action — Free #}
+    <div class="doc-category" id="price-action">
+        <div class="doc-category__header">
+            <div class="doc-category__info">
+                <div class="doc-category__icon">🎯</div>
+                <div>
+                    <h2 class="doc-category__title">Price Action avancée</h2>
+                    <p class="doc-category__desc">
+                        Structure de marché, confluences multi-timeframe et modèles de retournement.
+                    </p>
+                </div>
+            </div>
+            <span class="tag tag--accent">Accès gratuit</span>
+        </div>
+
+        <div class="doc-articles">
+            <a href="{{ path('app_documentation_article', {accessLevel: 'free', slug: 'structure-de-marche'}) }}" class="doc-article">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Structure de marché — BOS et CHoCH</h3>
+                    <p class="doc-article__excerpt">Break of Structure et Change of Character — identifier les retournements et la continuation de tendance.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">13 min</span>
+                    <span class="tag tag--accent">Gratuit</span>
+                </div>
+            </a>
+
+            <a href="{{ path('app_documentation_article', {accessLevel: 'free', slug: 'wyckoff'}) }}" class="doc-article">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Méthode Wyckoff — Accumulation et distribution</h3>
+                    <p class="doc-article__excerpt">Les phases de Wyckoff appliquées aux marchés modernes — spring, upthrust et la logique des grandes mains.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">16 min</span>
+                    <span class="tag tag--accent">Gratuit</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <hr class="divider" style="margin: 3rem 0;">
+
+    {# Quant — Premium #}
+    <div class="doc-category" id="quant">
+        <div class="doc-category__header">
+            <div class="doc-category__info">
+                <div class="doc-category__icon">📉</div>
+                <div>
+                    <h2 class="doc-category__title">Quantitatif & Statistiques</h2>
+                    <p class="doc-category__desc">
+                        STDV, distributions, backtesting rigoureux et gestion du risque mathématique.
+                    </p>
+                </div>
+            </div>
+            <span class="tag tag--gold">Premium</span>
+        </div>
+
+        <div class="doc-articles">
+            <a href="{{ path('app_documentation_article', {accessLevel: 'premium', slug: 'stdv-marche'}) }}" class="doc-article doc-article--premium {% if not app.user or not app.user.isPremium %}doc-article--locked{% endif %}">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">STDV et déviations standards sur les marchés</h3>
+                    <p class="doc-article__excerpt">Utiliser la déviation standard pour définir des objectifs de prix probabilistes et gérer le risque statistiquement.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">15 min</span>
+                    {% if app.user and app.user.isPremium %}
+                        <span class="tag tag--gold">Premium</span>
+                    {% else %}
+                        <span class="doc-article__lock">🔒</span>
+                    {% endif %}
+                </div>
+            </a>
+
+            <a href="{{ path('app_documentation_article', {accessLevel: 'premium', slug: 'backtesting-rigoureux'}) }}" class="doc-article doc-article--premium {% if not app.user or not app.user.isPremium %}doc-article--locked{% endif %}">
+                <div class="doc-article__body">
+                    <h3 class="doc-article__title">Backtesting rigoureux — éviter l'overfitting</h3>
+                    <p class="doc-article__excerpt">Méthodologie pour backtester une stratégie de façon honnête — walk-forward, out-of-sample et Monte Carlo.</p>
+                </div>
+                <div class="doc-article__meta">
+                    <span class="doc-article__time">18 min</span>
+                    {% if app.user and app.user.isPremium %}
+                        <span class="tag tag--gold">Premium</span>
+                    {% else %}
+                        <span class="doc-article__lock">🔒</span>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+
+        {% if not app.user or not app.user.isPremium %}
+            <div class="doc-premium-cta">
+                <strong>Contenu Premium</strong>
+                <p>STDV, Monte Carlo, Kelly Criterion, optimisation de portefeuille et bien plus.</p>
+                {% if app.user %}
+                    <a href="{{ path('app_compte') }}" class="btn btn--primary">Passer Premium</a>
+                {% else %}
+                    <a href="{{ path('app_register') }}" class="btn btn--primary">S'inscrire pour accéder</a>
+                    <a href="{{ path('app_login') }}" class="btn btn--ghost">Déjà membre ? Se connecter</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+/* Bannière accès */
+.doc-access-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    padding: 0.7rem 1.2rem;
+    border-radius: var(--radius-md);
+    margin-top: 1rem;
+}
+.doc-access-banner--connected {
+    background: rgba(62, 180, 137, 0.08);
+    border: 0.5px solid var(--color-accent-border);
+    color: var(--color-text-muted);
+}
+.doc-access-banner--guest {
+    background: rgba(255,255,255,0.03);
+    border: 0.5px solid var(--color-border);
+    color: var(--color-text-muted);
+}
+.doc-access-banner__cta,
+.doc-access-banner__upgrade {
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+/* Catégorie */
+.doc-category { margin-bottom: 1rem; }
+
+.doc-category__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.doc-category__info {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+}
+
+.doc-category__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--color-accent-dim);
+    border: 0.5px solid var(--color-accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.doc-category__title {
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+    margin-bottom: 0.4rem;
+}
+
+.doc-category__desc {
+    font-size: 14px;
+    max-width: 520px;
+    font-weight: 300;
+}
+
+/* Articles */
+.doc-articles {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5px;
+    background: var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.doc-article {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.4rem 1.8rem;
+    background: var(--color-bg-2);
+    text-decoration: none;
+    transition: background var(--transition);
+}
+.doc-article:hover { background: var(--color-bg-3); }
+.doc-article--locked { cursor: default; }
+.doc-article--locked:hover { background: var(--color-bg-2); }
+
+.doc-article__title {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #F0F2F7;
+    margin-bottom: 0.3rem;
+    font-family: var(--font-body);
+}
+.doc-article--locked .doc-article__title { color: var(--color-text-faint); }
+
+.doc-article__excerpt {
+    font-size: 13px;
+    color: var(--color-text-faint);
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.doc-article__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-shrink: 0;
+}
+
+.doc-article__time {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    white-space: nowrap;
+}
+
+.doc-article__lock {
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+/* Premium CTA */
+.doc-premium-cta {
+    margin-top: 1.5rem;
+    background: rgba(212, 169, 75, 0.06);
+    border: 0.5px solid rgba(212, 169, 75, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.doc-premium-cta strong {
+    color: var(--color-gold);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.doc-premium-cta p {
+    font-size: 13.5px;
+    font-weight: 300;
+    flex: 1;
+    min-width: 200px;
+}
+
+@media (max-width: 768px) {
+    .doc-category__header { flex-direction: column; }
+    .doc-article { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+    .doc-premium-cta { flex-direction: column; align-items: flex-start; }
+}
+</style>
+{% endblock %}

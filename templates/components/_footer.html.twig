@@ -1,0 +1,50 @@
+<footer class="footer">
+    <div class="footer__inner">
+
+        <div class="footer__brand">
+            <a href="{{ path('app_home') }}" class="footer__logo">
+                dev<span class="footer__logo-dot">.</span>trade
+            </a>
+            <p class="footer__tagline">Développement fullstack & Trading algorithmique</p>
+        </div>
+
+        <nav class="footer__nav">
+            <div class="footer__col">
+                <span class="footer__col-title">Développement</span>
+                <ul>
+                    <li><a href="{{ path('app_portfolio') }}" class="footer__link">Portfolio</a></li>
+                    <li><a href="{{ path('app_contact') }}" class="footer__link">Devis gratuit</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <span class="footer__col-title">Trading</span>
+                <ul>
+                    <li><a href="{{ path('app_trading') }}" class="footer__link">Algo Trading</a></li>
+                    <li><a href="{{ path('app_documentation') }}" class="footer__link">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <span class="footer__col-title">Compte</span>
+                <ul>
+                    {% if app.user %}
+                        <li><a href="{{ path('app_compte') }}" class="footer__link">Mon espace</a></li>
+                        <li><a href="{{ path('app_logout') }}" class="footer__link">Déconnexion</a></li>
+                    {% else %}
+                        <li><a href="{{ path('app_login') }}" class="footer__link">Connexion</a></li>
+                        <li><a href="{{ path('app_register') }}" class="footer__link">Inscription</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+
+    <div class="footer__bottom">
+        <span>© {{ "now"|date("Y") }} dev.trade — Tous droits réservés</span>
+        <div class="footer__bottom-links">
+            <a href="#" class="footer__link">Mentions légales</a>
+            <a href="#" class="footer__link">Politique de confidentialité</a>
+            <a href="{{ path('app_contact') }}" class="footer__link">Contact</a>
+        </div>
+    </div>
+</footer>

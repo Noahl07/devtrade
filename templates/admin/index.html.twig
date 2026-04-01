@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — Dashboard{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+
+    {% include 'admin/_sidebar.html.twig' %}
+
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <h1 class="admin-page-title">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </h1>
+            <span class="admin-date">{{ "now"|date("d/m/Y") }}</span>
+        </div>
+
+        {# Stats #}
+        <div class="admin-stats">
+            <div class="admin-stat">
+                <div class="admin-stat__icon admin-stat__icon--blue">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <div class="admin-stat__val">{{ stats.users }}</div>
+                    <div class="admin-stat__label">Utilisateurs</div>
+                </div>
+            </div>
+            <div class="admin-stat">
+                <div class="admin-stat__icon admin-stat__icon--gold">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div>
+                    <div class="admin-stat__val">{{ stats.premium }}</div>
+                    <div class="admin-stat__label">Members Premium</div>
+                </div>
+            </div>
+            <div class="admin-stat">
+                <div class="admin-stat__icon admin-stat__icon--green">
+                    <i class="bi bi-file-text-fill"></i>
+                </div>
+                <div>
+                    <div class="admin-stat__val">{{ stats.documents }}</div>
+                    <div class="admin-stat__label">Articles publiés</div>
+                </div>
+            </div>
+            <div class="admin-stat">
+                <div class="admin-stat__icon admin-stat__icon--orange">
+                    <i class="bi bi-file-earmark-minus"></i>
+                </div>
+                <div>
+                    <div class="admin-stat__val">{{ stats.drafts }}</div>
+                    <div class="admin-stat__label">Brouillons</div>
+                </div>
+            </div>
+            <div class="admin-stat">
+                <div class="admin-stat__icon admin-stat__icon--accent">
+                    <i class="bi bi-envelope-fill"></i>
+                </div>
+                <div>
+                    <div class="admin-stat__val">{{ stats.waitlist }}</div>
+                    <div class="admin-stat__label">Waitlist algo</div>
+                </div>
+            </div>
+            <div class="admin-stat">
+                <div class="admin-stat__icon admin-stat__icon--blue">
+                    <i class="bi bi-briefcase-fill"></i>
+                </div>
+                <div>
+                    <div class="admin-stat__val">{{ stats.projects }}</div>
+                    <div class="admin-stat__label">Projets visibles</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-grid-2">
+
+            {# Derniers inscrits #}
+            <div class="admin-card">
+                <div class="admin-card__header">
+                    <h3><i class="bi bi-person-plus"></i> Derniers inscrits</h3>
+                    <a href="{{ path('app_admin_users') }}" class="admin-link">Voir tout →</a>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Statut</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in latest_users %}
+                            <tr>
+                                <td>{{ user.firstName }} {{ user.lastName }}</td>
+                                <td class="text-muted">{{ user.email }}</td>
+                                <td>
+                                    {% if user.isPremium %}
+                                        <span class="admin-badge admin-badge--gold">Premium</span>
+                                    {% else %}
+                                        <span class="admin-badge">Gratuit</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-muted">{{ user.createdAt|date('d/m/Y') }}</td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="4" class="text-muted text-center">Aucun utilisateur</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {# Dernières waitlist #}
+            <div class="admin-card">
+                <div class="admin-card__header">
+                    <h3><i class="bi bi-clock-history"></i> Dernières waitlist</h3>
+                    <a href="{{ path('app_admin_waitlist') }}" class="admin-link">Voir tout →</a>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Source</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in latest_waitlist %}
+                            <tr>
+                                <td>{{ entry.email }}</td>
+                                <td class="text-muted">{{ entry.source }}</td>
+                                <td class="text-muted">{{ entry.createdAt|date('d/m/Y') }}</td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="3" class="text-muted text-center">Aucune entrée</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        {# Actions rapides #}
+        <div class="admin-card" style="margin-top:1.5rem">
+            <div class="admin-card__header">
+                <h3><i class="bi bi-lightning-fill"></i> Actions rapides</h3>
+            </div>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap">
+                <a href="{{ path('app_admin_document_new') }}" class="btn btn--primary">
+                    <i class="bi bi-plus-lg"></i> Nouvel article
+                </a>
+                <a href="{{ path('app_admin_project_new') }}" class="btn btn--ghost">
+                    <i class="bi bi-plus-lg"></i> Nouveau projet
+                </a>
+                <a href="{{ path('app_documentation') }}" class="btn btn--ghost" target="_blank">
+                    <i class="bi bi-eye"></i> Voir la doc
+                </a>
+                <a href="{{ path('app_home') }}" class="btn btn--ghost" target="_blank">
+                    <i class="bi bi-house"></i> Voir le site
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}

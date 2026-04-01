@@ -1,0 +1,59 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}Admin — Waitlist{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+    {% include 'admin/_sidebar.html.twig' %}
+    <div class="admin-main">
+
+        <div class="admin-topbar">
+            <h1 class="admin-page-title"><i class="bi bi-envelope"></i> Waitlist Algo</h1>
+            <span class="admin-date">{{ entries|length }} inscrits</span>
+        </div>
+
+        <div class="admin-card">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Prénom</th>
+                        <th>Source</th>
+                        <th>Notifié</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in entries %}
+                        <tr>
+                            <td style="color:#F0F2F7">{{ entry.email }}</td>
+                            <td class="text-muted">{{ entry.firstName ?? '—' }}</td>
+                            <td>
+                                <span class="admin-badge admin-badge--blue">{{ entry.source }}</span>
+                            </td>
+                            <td>
+                                {% if entry.isNotified %}
+                                    <span class="admin-badge admin-badge--green">
+                                        <i class="bi bi-check"></i> Oui
+                                    </span>
+                                {% else %}
+                                    <span class="admin-badge">En attente</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted">{{ entry.createdAt|date('d/m/Y H:i') }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-muted text-center" style="padding:3rem">
+                                Aucune inscription waitlist
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}

@@ -1,0 +1,457 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Algo Trading{% endblock %}
+{% block meta_description %}Algorithme de trading quantitatif basé sur ICT, orderflow et modèles statistiques. Bientôt disponible — rejoignez la waitlist.{% endblock %}
+
+{% block body %}
+
+{# ══ HERO TRADING ══ #}
+<section class="trading-hero">
+    <div class="trading-hero__inner">
+        <div class="trading-hero__badge">Bientôt disponible</div>
+        <h1 class="trading-hero__title">
+            Un algo pensé pour<br>
+            <em class="trading-hero__accent">les marchés d'aujourd'hui.</em>
+        </h1>
+        <p class="trading-hero__sub">
+            Stratégie quantitative construite autour des concepts ICT, de l'analyse de l'orderflow
+            et de modèles statistiques robustes. Backtesté sur plus de 3 ans de données réelles,
+            optimisé pour la robustesse hors-échantillon.
+        </p>
+
+        <div class="trading-metrics">
+            <div class="trading-metric">
+                <span class="trading-metric__val">+68%</span>
+                <span class="trading-metric__label">Rendement annualisé</span>
+                <span class="trading-metric__note">Backtest 2021–2024</span>
+            </div>
+            <div class="trading-metric">
+                <span class="trading-metric__val">1.87</span>
+                <span class="trading-metric__label">Sharpe Ratio</span>
+                <span class="trading-metric__note">Risque ajusté</span>
+            </div>
+            <div class="trading-metric">
+                <span class="trading-metric__val">&lt;12%</span>
+                <span class="trading-metric__label">Drawdown max</span>
+                <span class="trading-metric__note">Sur 3 ans</span>
+            </div>
+            <div class="trading-metric">
+                <span class="trading-metric__val">62%</span>
+                <span class="trading-metric__label">Win rate</span>
+                <span class="trading-metric__note">+500 trades</span>
+            </div>
+        </div>
+
+        <div class="trading-hero__disclaimer">
+            * Les performances passées ne garantissent pas les performances futures. Les résultats de backtesting sont indicatifs.
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+{# ══ MÉTHODOLOGIE ══ #}
+<section class="section">
+    <span class="section-eyebrow">Méthodologie</span>
+    <h2>Les fondations de la stratégie</h2>
+    <p class="section-desc">
+        L'algo combine plusieurs approches complémentaires pour identifier des setups
+        à haute probabilité sur les marchés liquides.
+    </p>
+
+    <div class="method-grid">
+
+        <div class="method-card">
+            <div class="method-card__num">01</div>
+            <h3 class="method-card__title">ICT Concepts</h3>
+            <p class="method-card__desc">
+                Identification des Order Blocks institutionnels, Fair Value Gaps, liquidity sweeps
+                et kill zones. La logique Smart Money comme filtre de contexte principal.
+            </p>
+            <div class="method-card__tags">
+                <span class="tag">Order Blocks</span>
+                <span class="tag">FVG</span>
+                <span class="tag">Liquidity</span>
+                <span class="tag">Kill Zones</span>
+            </div>
+        </div>
+
+        <div class="method-card">
+            <div class="method-card__num">02</div>
+            <h3 class="method-card__title">Orderflow & Footprint</h3>
+            <p class="method-card__desc">
+                Lecture du delta cumulé, détection des absorptions et des imbalances.
+                Confirmation des entrées par l'analyse tick-by-tick du carnet d'ordres.
+            </p>
+            <div class="method-card__tags">
+                <span class="tag">Delta cumulé</span>
+                <span class="tag">Absorption</span>
+                <span class="tag">Imbalances</span>
+                <span class="tag">CVD</span>
+            </div>
+        </div>
+
+        <div class="method-card">
+            <div class="method-card__num">03</div>
+            <h3 class="method-card__title">Price Action & Structure</h3>
+            <p class="method-card__desc">
+                Analyse de la structure de marché multi-timeframe, détection des BOS/CHoCH,
+                zones de value et profils de session pour le timing d'entrée.
+            </p>
+            <div class="method-card__tags">
+                <span class="tag">BOS/CHoCH</span>
+                <span class="tag">MTF</span>
+                <span class="tag">VWAP</span>
+                <span class="tag">Session Profile</span>
+            </div>
+        </div>
+
+        <div class="method-card">
+            <div class="method-card__num">04</div>
+            <h3 class="method-card__title">Modèles Quantitatifs</h3>
+            <p class="method-card__desc">
+                Filtres statistiques basés sur la STDV, distributions de rendements, Monte Carlo
+                pour la robustesse et gestion du risque dynamique par volatilité.
+            </p>
+            <div class="method-card__tags">
+                <span class="tag">STDV</span>
+                <span class="tag">Monte Carlo</span>
+                <span class="tag">ATR dynamique</span>
+                <span class="tag">Kelly</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<hr class="divider">
+
+{# ══ WAITLIST ══ #}
+<section class="section">
+    <div class="waitlist-block" id="waitlist">
+        <div class="waitlist-block__content">
+            <span class="section-eyebrow">Accès anticipé</span>
+            <h2 class="waitlist-block__title">Soyez notifié en premier.</h2>
+            <p class="waitlist-block__desc">
+                L'algo sera disponible en nombre limité lors du lancement. Inscrivez-vous
+                pour être parmi les premiers informés et bénéficier du tarif early adopter.
+            </p>
+
+            <form class="waitlist-big-form" id="waitlistForm" onsubmit="submitWaitlist(event)">
+                <div class="waitlist-big-form__row">
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Prénom (optionnel)"
+                        id="wl-firstname"
+                        autocomplete="given-name"
+                    >
+                    <input
+                        type="email"
+                        class="form-control"
+                        placeholder="votre@email.com"
+                        id="wl-email"
+                        required
+                        autocomplete="email"
+                    >
+                    <button type="submit" class="btn btn--primary">
+                        Rejoindre la waitlist
+                    </button>
+                </div>
+                <p class="waitlist-note">Aucun spam — notification unique à la sortie de l'algo.</p>
+            </form>
+
+            <div id="waitlist-success" style="display:none;" class="waitlist-success">
+                <span class="waitlist-success__icon">✓</span>
+                <div>
+                    <strong>Vous êtes sur la liste !</strong>
+                    <p>On vous contacte dès que l'algo est disponible.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="waitlist-block__features">
+            <div class="waitlist-feature">
+                <span class="waitlist-feature__icon">📦</span>
+                <div>
+                    <strong>Livraison clé en main</strong>
+                    <p>Documentation complète + support à l'installation</p>
+                </div>
+            </div>
+            <div class="waitlist-feature">
+                <span class="waitlist-feature__icon">📊</span>
+                <div>
+                    <strong>Rapport de backtest complet</strong>
+                    <p>Toutes les métriques détaillées, trade par trade</p>
+                </div>
+            </div>
+            <div class="waitlist-feature">
+                <span class="waitlist-feature__icon">🔒</span>
+                <div>
+                    <strong>Licence personnelle</strong>
+                    <p>Usage exclusif, non redistribuable</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+/* Hero trading */
+.trading-hero {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 6rem var(--section-px) 5rem;
+}
+
+.trading-hero__badge {
+    display: inline-block;
+    background: var(--color-accent-dim);
+    color: var(--color-accent);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    border: 0.5px solid var(--color-accent-border);
+    margin-bottom: 2rem;
+}
+
+.trading-hero__title {
+    margin-bottom: 1.5rem;
+    max-width: 720px;
+}
+.trading-hero__accent { font-style: normal; color: var(--color-accent); }
+
+.trading-hero__sub {
+    max-width: 600px;
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.75;
+    margin-bottom: 3.5rem;
+}
+
+.trading-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5px;
+    background: var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    max-width: 860px;
+    margin-bottom: 1.5rem;
+}
+
+.trading-metric {
+    background: var(--color-bg-2);
+    padding: 1.8rem 2rem;
+}
+
+.trading-metric__val {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.trading-metric__label {
+    display: block;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.trading-metric__note {
+    display: block;
+    font-size: 11px;
+    color: var(--color-text-faint);
+    font-weight: 300;
+}
+
+.trading-hero__disclaimer {
+    font-size: 11.5px;
+    color: var(--color-text-faint);
+    font-style: italic;
+    font-weight: 300;
+}
+
+/* Méthode grid */
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.method-card {
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color var(--transition);
+}
+.method-card:hover { border-color: var(--color-border-md); }
+
+.method-card__num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    opacity: 0.3;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.method-card__title { color: #F0F2F7; }
+
+.method-card__desc {
+    font-size: 13.5px;
+    line-height: 1.7;
+    flex: 1;
+}
+
+.method-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* Waitlist block */
+.waitlist-block {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 5rem;
+    align-items: start;
+    background: linear-gradient(135deg, rgba(62,180,137,0.05) 0%, transparent 70%);
+    border: 0.5px solid rgba(62, 180, 137, 0.15);
+    border-radius: var(--radius-xl);
+    padding: 4rem;
+}
+
+.waitlist-block__title { margin-bottom: 1rem; }
+.waitlist-block__desc { font-weight: 300; line-height: 1.7; margin-bottom: 2rem; }
+
+.waitlist-big-form__row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+}
+
+.waitlist-big-form__row .form-control { flex: 1; min-width: 180px; }
+
+.waitlist-note {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    font-weight: 300;
+}
+
+.waitlist-success {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--color-accent-dim);
+    border: 0.5px solid var(--color-accent-border);
+    border-radius: var(--radius-md);
+}
+
+.waitlist-success__icon {
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    line-height: 1.4;
+}
+
+.waitlist-success strong { color: var(--color-accent); display: block; margin-bottom: 2px; }
+.waitlist-success p { font-size: 13px; color: var(--color-text-muted); }
+
+.waitlist-block__features {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 1rem;
+}
+
+.waitlist-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.waitlist-feature__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: var(--color-accent-dim);
+    border: 0.5px solid var(--color-accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.waitlist-feature strong {
+    display: block;
+    font-size: 13.5px;
+    color: #F0F2F7;
+    margin-bottom: 2px;
+}
+
+.waitlist-feature p {
+    font-size: 12.5px;
+    color: var(--color-text-faint);
+    font-weight: 300;
+}
+
+@media (max-width: 900px) {
+    .trading-metrics { grid-template-columns: repeat(2, 1fr); }
+    .method-grid { grid-template-columns: 1fr; }
+    .waitlist-block { grid-template-columns: 1fr; gap: 2.5rem; padding: 2.5rem; }
+}
+
+@media (max-width: 600px) {
+    .trading-metrics { grid-template-columns: repeat(2, 1fr); }
+    .waitlist-big-form__row { flex-direction: column; }
+}
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+function submitWaitlist(e) {
+    e.preventDefault();
+    const email = document.getElementById('wl-email').value.trim();
+    const firstname = document.getElementById('wl-firstname').value.trim();
+
+    if (!email) return;
+
+    fetch('{{ path("app_trading_waitlist") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ email, firstName: firstname, source: 'trading_page' })
+    })
+    .then(r => r.json())
+    .then(() => {
+        document.getElementById('waitlistForm').style.display = 'none';
+        document.getElementById('waitlist-success').style.display = 'flex';
+    })
+    .catch(() => alert('Une erreur est survenue. Réessayez.'));
+}
+</script>
+{% endblock %}

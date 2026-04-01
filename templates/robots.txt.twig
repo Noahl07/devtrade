@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Allow: /portfolio
+Allow: /trading
+Allow: /documentation
+Allow: /contact
+
+# Pas d'indexation des pages auth et admin
+Disallow: /login
+Disallow: /register
+Disallow: /admin
+Disallow: /compte
+Disallow: /mot-de-passe-oublie
+Disallow: /reinitialisation
+
+# Pas d'indexation des articles premium
+Disallow: /documentation/article/premium
+
+Sitemap: {{ absolute_url(path('app_sitemap')) }}

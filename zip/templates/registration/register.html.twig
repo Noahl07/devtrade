@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+{% block body_class %}page--auth{% endblock %}
+
+{% block body %}
+<div class="auth-page">
+    <div class="auth-card">
+
+        <div class="auth-card__header">
+            <a href="{{ path('app_home') }}" class="auth-card__logo">
+                dev<span style="color: var(--color-accent)">.</span>trade
+            </a>
+            <h1 class="auth-card__title">Créer un compte</h1>
+            <p class="auth-card__sub">Accès gratuit à la documentation ICT et Price Action.</p>
+        </div>
+
+        {{ form_errors(registrationForm) }}
+
+        {{ form_start(registrationForm, {'attr': {'class': 'auth-form'}}) }}
+
+            <div class="auth-form__row">
+                <div class="form-group">
+                    <label class="form-label">Prénom</label>
+                    {{ form_widget(registrationForm.firstName, {
+                        'attr': {'class': 'form-control', 'placeholder': 'Jean'}
+                    }) }}
+                    {{ form_errors(registrationForm.firstName) }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nom</label>
+                    {{ form_widget(registrationForm.lastName, {
+                        'attr': {'class': 'form-control', 'placeholder': 'Dupont'}
+                    }) }}
+                    {{ form_errors(registrationForm.lastName) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                {{ form_widget(registrationForm.email, {
+                    'attr': {'class': 'form-control', 'placeholder': 'votre@email.com'}
+                }) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mot de passe</label>
+                {{ form_widget(registrationForm.plainPassword, {
+                    'attr': {'class': 'form-control', 'placeholder': '8 caractères minimum'}
+                }) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+
+            <div class="auth-form__terms">
+                <label class="auth-checkbox">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    <span class="auth-checkbox__box"></span>
+                    J'accepte les <a href="#" class="auth-card__link">conditions d'utilisation</a>
+                </label>
+                {{ form_errors(registrationForm.agreeTerms) }}
+            </div>
+
+            <button type="submit" class="btn btn--primary auth-form__submit">
+                Créer mon compte gratuitement
+            </button>
+
+        {{ form_end(registrationForm) }}
+
+        <div class="auth-card__footer">
+            Déjà un compte ?
+            <a href="{{ path('app_login') }}" class="auth-card__link">Se connecter →</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.page--auth .main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - var(--nav-height));
+    padding: 3rem var(--section-px);
+}
+
+.auth-page { width: 100%; max-width: 480px; }
+
+.auth-card {
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 2.8rem;
+}
+
+.auth-card__header { margin-bottom: 2rem; text-align: center; }
+
+.auth-card__logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: #F0F2F7;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.auth-card__title { font-size: 1.6rem; margin-bottom: 0.5rem; }
+.auth-card__sub { font-size: 14px; font-weight: 300; }
+
+.auth-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.auth-form__terms { margin-bottom: 1.5rem; }
+
+.auth-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+}
+
+.auth-checkbox input[type="checkbox"] { display: none; }
+
+.auth-checkbox__box {
+    width: 16px;
+    height: 16px;
+    border: 0.5px solid var(--color-border-md);
+    border-radius: 4px;
+    background: transparent;
+    flex-shrink: 0;
+    transition: var(--transition);
+    position: relative;
+}
+
+.auth-form__submit {
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem;
+    font-size: 15px;
+}
+
+.auth-card__footer {
+    margin-top: 1.8rem;
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--color-text-faint);
+}
+
+.auth-card__link { color: var(--color-accent); font-weight: 500; }
+
+@media (max-width: 480px) {
+    .auth-form__row { grid-template-columns: 1fr; }
+    .auth-card { padding: 1.8rem; }
+}
+</style>
+{% endblock %}

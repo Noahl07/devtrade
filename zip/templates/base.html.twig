@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}{{ site_description }}{% endblock %}">
+
+    <title>{% block title %}{{ site_name }}{% endblock %} — dev.trade</title>
+
+    {# Fonts Google - Syne + DM Sans #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+    {# CSS global via Webpack Encore #}
+    {{ encore_entry_link_tags('app') }}
+
+    {% block stylesheets %}{% endblock %}
+
+    {# Favicon placeholder #}
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>📈</text></svg>">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+    {# ── NAVBAR ── #}
+    {% include 'components/_nav.html.twig' %}
+
+    {# ── FLASH MESSAGES ── #}
+    {% if app.flashes|length > 0 %}
+        <div class="flash-container">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash flash--{{ type }}">
+                        <span>{{ message }}</span>
+                        <button class="flash__close" onclick="this.parentElement.remove()">✕</button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {# ── CONTENU PRINCIPAL ── #}
+    <main class="main-content">
+        {% block body %}{% endblock %}
+    </main>
+
+    {# ── FOOTER ── #}
+    {% include 'components/_footer.html.twig' %}
+
+    {# ── JS via Webpack Encore ── #}
+    {#  {{ encore_entry_script_tags('app') }  #}
+
+    {% block javascripts %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+{% block body_class %}page--auth{% endblock %}
+
+{% block body %}
+<div class="auth-page">
+    <div class="auth-card">
+
+        <div class="auth-card__header">
+            <a href="{{ path('app_home') }}" class="auth-card__logo">
+                dev<span style="color: var(--color-accent)">.</span>trade
+            </a>
+            <h1 class="auth-card__title">Connexion</h1>
+            <p class="auth-card__sub">Accédez à votre espace et à la documentation premium.</p>
+        </div>
+
+        {% if error %}
+            <div class="flash flash--danger" style="margin-bottom: 1.5rem;">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        <form method="post" class="auth-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="form-group">
+                <label class="form-label" for="inputEmail">Email</label>
+                <input
+                    type="email"
+                    id="inputEmail"
+                    name="_username"
+                    class="form-control"
+                    value="{{ last_username }}"
+                    placeholder="votre@email.com"
+                    autocomplete="email"
+                    autofocus
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="inputPassword">
+                    Mot de passe
+                    <a href="{{ path('app_forgot_password') }}" class="auth-form__forgot">Mot de passe oublié ?</a>
+                </label>
+                <input
+                    type="password"
+                    id="inputPassword"
+                    name="_password"
+                    class="form-control"
+                    placeholder="••••••••"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <div class="auth-form__remember">
+                <label class="auth-checkbox">
+                    <input type="checkbox" name="_remember_me">
+                    <span class="auth-checkbox__box"></span>
+                    Se souvenir de moi
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn--primary auth-form__submit">
+                Se connecter
+            </button>
+        </form>
+
+        <div class="auth-card__footer">
+            Pas encore de compte ?
+            <a href="{{ path('app_register') }}" class="auth-card__link">S'inscrire gratuitement →</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.page--auth .main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - var(--nav-height));
+    padding: 3rem var(--section-px);
+}
+
+.auth-page {
+    width: 100%;
+    max-width: 440px;
+}
+
+.auth-card {
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 2.8rem;
+}
+
+.auth-card__header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.auth-card__logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: #F0F2F7;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.auth-card__title {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-card__sub {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.auth-form__forgot {
+    float: right;
+    font-size: 12px;
+    color: var(--color-accent);
+    font-weight: 400;
+}
+
+.auth-form__remember {
+    margin-bottom: 1.5rem;
+}
+
+.auth-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+}
+
+.auth-checkbox input { display: none; }
+
+.auth-checkbox__box {
+    width: 16px;
+    height: 16px;
+    border: 0.5px solid var(--color-border-md);
+    border-radius: 4px;
+    background: transparent;
+    flex-shrink: 0;
+    transition: var(--transition);
+    position: relative;
+}
+
+.auth-checkbox input:checked + .auth-checkbox__box {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.auth-checkbox input:checked + .auth-checkbox__box::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    color: #080B10;
+    font-weight: 700;
+}
+
+.auth-form__submit {
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem;
+    font-size: 15px;
+    margin-top: 0.5rem;
+}
+
+.auth-card__footer {
+    margin-top: 1.8rem;
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--color-text-faint);
+}
+
+.auth-card__link {
+    color: var(--color-accent);
+    font-weight: 500;
+}
+</style>
+{% endblock %}

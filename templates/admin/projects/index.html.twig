@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — Projets{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+    {% include 'admin/_sidebar.html.twig' %}
+    <div class="admin-main">
+
+        <div class="admin-topbar">
+            <h1 class="admin-page-title"><i class="bi bi-briefcase"></i> Projets</h1>
+            <a href="{{ path('app_admin_project_new') }}" class="btn btn--primary">
+                <i class="bi bi-plus-lg"></i> Nouveau projet
+            </a>
+        </div>
+
+        <div class="admin-card">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Type</th>
+                        <th>Stack</th>
+                        <th>Visible</th>
+                        <th>Featured</th>
+                        <th>Pos.</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                        <tr>
+                            <td style="color:#F0F2F7;font-weight:500">{{ project.title }}</td>
+                            <td><span class="admin-badge">{{ project.type }}</span></td>
+                            <td class="text-muted" style="font-size:12px">
+                                {{ project.techStack|join(', ')|slice(0, 40) }}{% if project.techStack|join(', ')|length > 40 %}…{% endif %}
+                            </td>
+                            <td>
+                                {% if project.isVisible %}
+                                    <i class="bi bi-check-circle-fill" style="color:var(--color-accent)"></i>
+                                {% else %}
+                                    <i class="bi bi-x-circle" style="color:var(--color-text-faint)"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if project.isFeatured %}
+                                    <i class="bi bi-star-fill" style="color:var(--color-gold)"></i>
+                                {% else %}
+                                    <i class="bi bi-star" style="color:var(--color-text-faint)"></i>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted">{{ project.position }}</td>
+                            <td>
+                                <a href="{{ path('app_admin_project_edit', {id: project.id}) }}"
+                                   class="btn btn--ghost" style="font-size:12px;padding:0.3rem 0.7rem">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-muted text-center" style="padding:3rem">
+                                Aucun projet
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}
