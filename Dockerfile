@@ -1,6 +1,5 @@
 FROM dunglas/frankenphp:latest-php8.2
 
-# Extensions PHP nécessaires pour Symfony + PostgreSQL
 RUN install-php-extensions \
     pdo \
     pdo_pgsql \
@@ -16,33 +15,26 @@ RUN install-php-extensions \
     session \
     apcu
 
-# Node.js pour les assets
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean
 
-# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# Copier les fichiers du projet
 COPY . .
 
-# Installer les dépendances PHP
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Skip scripts qui tentent de contacter la BDD au build
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# Installer les dépendances Node et builder les assets
 RUN npm ci && npm run build
 
-# Cache Symfony prod
-RUN APP_ENV=prod php bin/console cache:clear --no-warmup \
-    && APP_ENV=prod php bin/console cache:warmup
+# Cache sans BDD
+RUN APP_ENV=prod DATABASE_URL="postgresql://x:x@localhost/x" php bin/console cache:warmup --no-debug || true
 
-# Permissions
-RUN chown -R www-data:www-data var/ public/
+RUN chown -R www-data:www-data var/ public/ || true
 
-# Caddyfile
 COPY Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 8080
