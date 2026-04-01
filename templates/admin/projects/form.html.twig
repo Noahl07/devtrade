@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — {{ mode == 'edit' ? 'Modifier' : 'Nouveau' }} projet{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+    {% include 'admin/_sidebar.html.twig' %}
+    <div class="admin-main">
+
+        <div class="admin-topbar">
+            <h1 class="admin-page-title">
+                <i class="bi bi-briefcase"></i>
+                {{ mode == 'edit' ? 'Modifier' : 'Nouveau' }} projet
+            </h1>
+            <a href="{{ path('app_admin_projects') }}" class="btn btn--ghost">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+        </div>
+
+        {% if error %}
+            <div class="flash flash--danger" style="margin-bottom:1.5rem">{{ error }}</div>
+        {% endif %}
+
+        <div class="admin-card">
+            <div class="admin-card__header">
+                <h3><i class="bi bi-info-circle"></i> Informations du projet</h3>
+            </div>
+            <div style="padding:1.5rem">
+                <form method="post" class="admin-form">
+
+                    <div class="admin-form-grid">
+
+                        <div class="form-group admin-form-full">
+                            <label class="form-label">Titre *</label>
+                            <input type="text" name="title" class="form-control"
+                                   value="{{ project ? project.title : '' }}" required
+                                   placeholder="Ex: Plateforme de gestion immobilière">
+                        </div>
+
+                        {% if mode == 'edit' %}
+                            <div class="form-group">
+                                <label class="form-label">Slug</label>
+                                <input type="text" name="slug" class="form-control"
+                                       value="{{ project ? project.slug : '' }}"
+                                       style="font-family:var(--font-mono);font-size:13px">
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label class="form-label">Type</label>
+                            <select name="type" class="form-control">
+                                {% for type in ['fullstack', 'saas', 'vitrine', 'immobilier', 'autre'] %}
+                                    <option value="{{ type }}"
+                                        {% if project and project.type == type %}selected{% endif %}>
+                                        {{ type|capitalize }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Position (ordre d'affichage)</label>
+                            <input type="number" name="position" class="form-control"
+                                   value="{{ project ? project.position : 0 }}" min="0">
+                        </div>
+
+                        <div class="form-group admin-form-full">
+                            <label class="form-label">Description courte (card)</label>
+                            <input type="text" name="shortDesc" class="form-control"
+                                   value="{{ project ? project.shortDesc : '' }}"
+                                   placeholder="Résumé affiché sur la card portfolio">
+                        </div>
+
+                        <div class="form-group admin-form-full">
+                            <label class="form-label">Description complète (page détail)</label>
+                            <textarea name="description" class="admin-editor" rows="8"
+                                      placeholder="Description complète en HTML...">{{ project ? project.description : '' }}</textarea>
+                        </div>
+
+                        <div class="form-group admin-form-full">
+                            <label class="form-label">
+                                Stack technique <small style="color:var(--color-text-faint)">(séparée par des virgules)</small>
+                            </label>
+                            <input type="text" name="techStack" class="form-control"
+                                   value="{{ project ? project.techStack|join(', ') : '' }}"
+                                   placeholder="Symfony, PostgreSQL, Docker, Redis">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">URL du projet (live)</label>
+                            <input type="url" name="projectUrl" class="form-control"
+                                   value="{{ project ? project.projectUrl : '' }}"
+                                   placeholder="https://...">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">URL GitHub</label>
+                            <input type="url" name="githubUrl" class="form-control"
+                                   value="{{ project ? project.githubUrl : '' }}"
+                                   placeholder="https://github.com/...">
+                        </div>
+
+                        <div class="form-group admin-form-full">
+                            <label class="form-label">URL de l'image</label>
+                            <input type="text" name="imageUrl" class="form-control"
+                                   value="{{ project ? project.imageUrl : '' }}"
+                                   placeholder="/images/projets/nom-projet.jpg">
+                        </div>
+
+                    </div>
+
+                    <div style="display:flex;gap:2rem;margin:1.5rem 0;padding:1.2rem;background:rgba(255,255,255,0.02);border:0.5px solid var(--color-border);border-radius:var(--radius-md)">
+                        <label class="admin-toggle">
+                            <input type="checkbox" name="isVisible"
+                                   {% if not project or project.isVisible %}checked{% endif %}>
+                            <span><i class="bi bi-eye"></i> Visible sur le portfolio</span>
+                        </label>
+                        <label class="admin-toggle">
+                            <input type="checkbox" name="isFeatured"
+                                   {% if project and project.isFeatured %}checked{% endif %}>
+                            <span><i class="bi bi-star"></i> Mis en avant (homepage)</span>
+                        </label>
+                    </div>
+
+                    <div style="display:flex;justify-content:flex-end;gap:1rem">
+                        <a href="{{ path('app_admin_projects') }}" class="btn btn--ghost">Annuler</a>
+                        <button type="submit" class="btn btn--primary">
+                            <i class="bi bi-check-lg"></i>
+                            {{ mode == 'edit' ? 'Enregistrer' : 'Créer le projet' }}
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}

@@ -1,0 +1,13 @@
+twig:
+    file_name_pattern: '*.twig'
+    default_path: '%kernel.project_dir%/templates'
+
+    # Variables globales disponibles dans tous les templates
+    globals:
+        site_name: 'dev.trade'
+        site_description: 'Développement fullstack & Trading algorithmique'
+        contact_email: 'contact@devtrade.fr'
+
+when@test:
+    twig:
+        strict_variables: true

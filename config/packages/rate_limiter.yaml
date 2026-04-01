@@ -1,0 +1,19 @@
+framework:
+    rate_limiter:
+        # Inscription : 5 tentatives par heure par IP
+        register:
+            policy: fixed_window
+            limit: 5
+            interval: '1 hour'
+
+        # Waitlist : 3 inscriptions par heure par IP
+        waitlist:
+            policy: fixed_window
+            limit: 3
+            interval: '1 hour'
+
+        # Login : 10 tentatives par 15 minutes par IP
+        login:
+            policy: fixed_window
+            limit: 10
+            interval: '15 minutes'

@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — Utilisateurs{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+    {% include 'admin/_sidebar.html.twig' %}
+    <div class="admin-main">
+
+        <div class="admin-topbar">
+            <h1 class="admin-page-title"><i class="bi bi-people"></i> Utilisateurs</h1>
+            <span class="admin-date">{{ users|length }} membres</span>
+        </div>
+
+        <div class="admin-card">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Statut</th>
+                        <th>Inscription</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td style="color:#F0F2F7;font-weight:500">
+                                {{ user.firstName }} {{ user.lastName }}
+                            </td>
+                            <td class="text-muted">{{ user.email }}</td>
+                            <td>
+                                {% if 'ROLE_ADMIN' in user.roles %}
+                                    <span class="admin-badge admin-badge--blue">
+                                        <i class="bi bi-shield-fill"></i> Admin
+                                    </span>
+                                {% elseif user.isPremium %}
+                                    <span class="admin-badge admin-badge--gold">
+                                        <i class="bi bi-star-fill"></i> Premium
+                                    </span>
+                                {% else %}
+                                    <span class="admin-badge">Gratuit</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted">{{ user.createdAt|date('d/m/Y') }}</td>
+                            <td>
+                                {% if 'ROLE_ADMIN' not in user.roles %}
+                                    <form method="post"
+                                          action="{{ path('app_admin_user_toggle_premium', {id: user.id}) }}"
+                                          style="display:inline">
+                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('toggle-premium-' ~ user.id) }}">
+                                        <button type="submit"
+                                                class="btn {{ user.isPremium ? 'btn--danger' : 'btn--outline-accent' }}"
+                                                style="font-size:12px;padding:0.3rem 0.8rem">
+                                            {% if user.isPremium %}
+                                                <i class="bi bi-star-fill"></i> Retirer Premium
+                                            {% else %}
+                                                <i class="bi bi-star"></i> Passer Premium
+                                            {% endif %}
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-muted text-center" style="padding:3rem">
+                                Aucun utilisateur
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}

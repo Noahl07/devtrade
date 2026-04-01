@@ -1,0 +1,88 @@
+<nav class="navbar">
+    <div class="navbar__inner">
+
+        {# Logo #}
+        <a href="{{ path('app_home') }}" class="navbar__logo">
+            dev<span class="navbar__logo-dot">.</span>trade
+        </a>
+
+        {# Liens de navigation #}
+        <ul class="navbar__links">
+            <li>
+                <a href="{{ path('app_portfolio') }}"
+                   class="navbar__link {% if app.request.attributes.get('_route') starts with 'app_portfolio' %}navbar__link--active{% endif %}">
+                    Prestations
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_trading') }}"
+                   class="navbar__link {% if app.request.attributes.get('_route') starts with 'app_trading' %}navbar__link--active{% endif %}">
+                    Algo Trading
+                    <span class="navbar__badge">Bientôt</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_documentation') }}"
+                   class="navbar__link {% if app.request.attributes.get('_route') starts with 'app_documentation' %}navbar__link--active{% endif %}">
+                    Documentation
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_contact') }}"
+                   class="navbar__link {% if app.request.attributes.get('_route') == 'app_contact' %}navbar__link--active{% endif %}">
+                    Contact
+                </a>
+            </li>
+        </ul>
+
+        {# Actions droite : auth ou compte #}
+        <div class="navbar__actions">
+            {% if app.user %}
+                {# Utilisateur connecté #}
+                <div class="navbar__user">
+                    {% if app.user.isPremium %}
+                        <span class="navbar__premium-badge">Premium</span>
+                    {% endif %}
+                    <a href="{{ path('app_compte') }}" class="navbar__link">
+                        {{ app.user.firstName }}
+                    </a>
+                    <a href="{{ path('app_logout') }}" class="navbar__btn navbar__btn--ghost">
+                        Déconnexion
+                    </a>
+                </div>
+            {% else %}
+                {# Visiteur #}
+                <a href="{{ path('app_login') }}" class="navbar__link">Connexion</a>
+                <a href="{{ path('app_register') }}" class="navbar__btn navbar__btn--primary">
+                    S'inscrire
+                </a>
+            {% endif %}
+        </div>
+
+        {# Burger mobile #}
+        <button class="navbar__burger" id="navBurger" aria-label="Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </div>
+
+    {# Menu mobile #}
+    <div class="navbar__mobile" id="navMobile">
+        <ul class="navbar__mobile-links">
+            <li><a href="{{ path('app_portfolio') }}" class="navbar__mobile-link">Prestations</a></li>
+            <li><a href="{{ path('app_trading') }}" class="navbar__mobile-link">Algo Trading</a></li>
+            <li><a href="{{ path('app_documentation') }}" class="navbar__mobile-link">Documentation</a></li>
+            <li><a href="{{ path('app_contact') }}" class="navbar__mobile-link">Contact</a></li>
+            <li class="navbar__mobile-divider"></li>
+            {% if app.user %}
+                <li><a href="{{ path('app_compte') }}" class="navbar__mobile-link">Mon compte</a></li>
+                <li><a href="{{ path('app_logout') }}" class="navbar__mobile-link">Déconnexion</a></li>
+            {% else %}
+                <li><a href="{{ path('app_login') }}" class="navbar__mobile-link">Connexion</a></li>
+                <li><a href="{{ path('app_register') }}" class="navbar__mobile-link navbar__mobile-link--cta">S'inscrire</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

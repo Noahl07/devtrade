@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — Articles{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+    {% include 'admin/_sidebar.html.twig' %}
+    <div class="admin-main">
+
+        <div class="admin-topbar">
+            <h1 class="admin-page-title"><i class="bi bi-file-text"></i> Articles</h1>
+            <a href="{{ path('app_admin_document_new') }}" class="btn btn--primary">
+                <i class="bi bi-plus-lg"></i> Nouvel article
+            </a>
+        </div>
+
+        <div class="admin-card">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Catégorie</th>
+                        <th>Accès</th>
+                        <th>Statut</th>
+                        <th>Lecture</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documents %}
+                        <tr>
+                            <td style="color:#F0F2F7;font-weight:500;max-width:280px">
+                                <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                                    {{ doc.title }}
+                                </div>
+                                <div style="font-size:11px;color:var(--color-text-faint);font-family:var(--font-mono)">
+                                    /{{ doc.slug }}
+                                </div>
+                            </td>
+                            <td>{{ doc.category ? doc.category.name : '—' }}</td>
+                            <td>
+                                {% if doc.accessLevel == 'premium' %}
+                                    <span class="admin-badge admin-badge--gold">
+                                        <i class="bi bi-star-fill"></i> Premium
+                                    </span>
+                                {% else %}
+                                    <span class="admin-badge admin-badge--green">
+                                        <i class="bi bi-unlock"></i> Gratuit
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if doc.isPublished %}
+                                    <span class="admin-badge admin-badge--green">
+                                        <i class="bi bi-check-circle"></i> Publié
+                                    </span>
+                                {% else %}
+                                    <span class="admin-badge">
+                                        <i class="bi bi-pencil"></i> Brouillon
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted">
+                                {% if doc.readingTime %}{{ doc.readingTime }} min{% else %}—{% endif %}
+                            </td>
+                            <td class="text-muted">{{ doc.createdAt|date('d/m/Y') }}</td>
+                            <td>
+                                <div style="display:flex;gap:6px;justify-content:flex-end">
+                                    <a href="{{ path('app_admin_document_edit', {id: doc.id}) }}"
+                                       class="btn btn--ghost" style="padding:0.3rem 0.7rem;font-size:12px">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    {% if doc.isPublished %}
+                                        <a href="{{ path('app_documentation_article', {accessLevel: doc.accessLevel, slug: doc.slug}) }}"
+                                           target="_blank" class="btn btn--ghost" style="padding:0.3rem 0.7rem;font-size:12px">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    {% endif %}
+                                    <form method="post"
+                                          action="{{ path('app_admin_document_delete', {id: doc.id}) }}"
+                                          onsubmit="return confirm('Supprimer cet article ?')">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-doc-' ~ doc.id) }}">
+                                        <button type="submit" class="btn btn--danger" style="padding:0.3rem 0.7rem;font-size:12px">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-muted text-center" style="padding:3rem">
+                                <i class="bi bi-inbox" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.3"></i>
+                                Aucun article — <a href="{{ path('app_admin_document_new') }}" style="color:var(--color-accent)">Créer le premier</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}

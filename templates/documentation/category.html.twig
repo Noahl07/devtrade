@@ -1,0 +1,270 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block body %}
+<section class="section">
+
+    {# Breadcrumb #}
+    <nav class="breadcrumb">
+        <a href="{{ path('app_documentation') }}" class="breadcrumb__item">
+            <i class="bi bi-book"></i> Documentation
+        </a>
+        <i class="bi bi-chevron-right breadcrumb__sep"></i>
+        <span class="breadcrumb__item breadcrumb__item--active">{{ category.name }}</span>
+    </nav>
+
+    {# Header catégorie #}
+    <div class="cat-header">
+        <div class="cat-header__left">
+            <div class="cat-header__access">
+                {% if category.accessLevel == 'premium' %}
+                    <span class="tag tag--gold"><i class="bi bi-star-fill"></i> Premium</span>
+                {% else %}
+                    <span class="tag tag--accent"><i class="bi bi-unlock-fill"></i> Accès gratuit (inscription requise)</span>
+                {% endif %}
+            </div>
+            <h1 class="cat-header__title">{{ category.name }}</h1>
+            {% if category.description %}
+                <p class="cat-header__desc">{{ category.description }}</p>
+            {% endif %}
+        </div>
+        <div class="cat-header__meta">
+            <div class="cat-meta-item">
+                <i class="bi bi-file-text"></i>
+                <span>{{ category.documents|length }} articles</span>
+            </div>
+        </div>
+    </div>
+
+    {# Garde premium #}
+    {% if category.accessLevel == 'premium' and (not app.user or not app.user.isPremium) %}
+        <div class="premium-gate">
+            <div class="premium-gate__icon"><i class="bi bi-lock-fill"></i></div>
+            <div>
+                <strong>Contenu Premium</strong>
+                <p>Ce module est réservé aux membres Premium. Accédez à l'intégralité de la documentation avancée.</p>
+                <div style="display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap">
+                    {% if app.user %}
+                        <a href="{{ path('app_contact') }}" class="btn btn--primary">
+                            <i class="bi bi-star"></i> Passer Premium
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_register') }}" class="btn btn--primary">
+                            <i class="bi bi-person-plus"></i> S'inscrire
+                        </a>
+                        <a href="{{ path('app_login') }}" class="btn btn--ghost">Se connecter</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+
+        {# Liste des articles #}
+        <div class="articles-list">
+            {% set published = category.documents|filter(d => d.isPublished) %}
+            {% if published|length == 0 %}
+                <div class="articles-empty">
+                    <i class="bi bi-hourglass-split"></i>
+                    <p>Articles en cours de rédaction — disponibles prochainement.</p>
+                </div>
+            {% else %}
+                {% for document in published %}
+                    <a href="{{ path('app_documentation_article', {accessLevel: document.accessLevel, slug: document.slug}) }}"
+                       class="article-row {% if document.isPremium() and (not app.user or not app.user.isPremium) %}article-row--locked{% endif %}">
+
+                        <div class="article-row__num">{{ loop.index }}</div>
+
+                        <div class="article-row__body">
+                            <h3 class="article-row__title">{{ document.title }}</h3>
+                            {% if document.excerpt %}
+                                <p class="article-row__excerpt">{{ document.excerpt }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="article-row__meta">
+                            {% if document.readingTime %}
+                                <span class="article-row__time">
+                                    <i class="bi bi-clock"></i> {{ document.readingTime }} min
+                                </span>
+                            {% endif %}
+                            {% if document.isPremium() %}
+                                {% if app.user and app.user.isPremium %}
+                                    <span class="tag tag--gold" style="font-size:10px">
+                                        <i class="bi bi-star-fill"></i> Premium
+                                    </span>
+                                {% else %}
+                                    <span class="article-row__lock">
+                                        <i class="bi bi-lock-fill"></i>
+                                    </span>
+                                {% endif %}
+                            {% else %}
+                                <i class="bi bi-chevron-right article-row__arrow"></i>
+                            {% endif %}
+                        </div>
+
+                    </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    {% endif %}
+
+    {# Navigation entre catégories #}
+    <div class="cat-nav">
+        <a href="{{ path('app_documentation') }}" class="btn btn--ghost">
+            <i class="bi bi-arrow-left"></i> Tous les modules
+        </a>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2.5rem;
+    font-size: 13px;
+}
+.breadcrumb__item { color: var(--color-text-faint); transition: color var(--transition); }
+a.breadcrumb__item:hover { color: var(--color-accent); }
+.breadcrumb__item--active { color: var(--color-text-muted); }
+.breadcrumb__sep { color: var(--color-text-faint); font-size: 10px; }
+
+.cat-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+.cat-header__access { margin-bottom: 0.8rem; }
+.cat-header__title { margin-bottom: 0.8rem; }
+.cat-header__desc { max-width: 600px; font-weight: 300; font-size: 1rem; }
+.cat-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-text-faint);
+    white-space: nowrap;
+}
+
+.premium-gate {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: rgba(212,169,75,0.06);
+    border: 0.5px solid rgba(212,169,75,0.2);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+}
+.premium-gate__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: var(--color-gold-dim);
+    border: 0.5px solid rgba(212,169,75,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--color-gold);
+    flex-shrink: 0;
+}
+.premium-gate strong { display: block; color: var(--color-gold); margin-bottom: 6px; font-size: 15px; }
+.premium-gate p { font-size: 14px; font-weight: 300; }
+
+.articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5px;
+    background: var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+}
+
+.articles-empty {
+    background: var(--color-bg-2);
+    padding: 3rem;
+    text-align: center;
+    color: var(--color-text-faint);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.articles-empty i { font-size: 2rem; opacity: 0.4; }
+
+.article-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.3rem 1.8rem;
+    background: var(--color-bg-2);
+    text-decoration: none;
+    transition: background var(--transition);
+}
+.article-row:hover { background: var(--color-bg-3); }
+.article-row--locked { cursor: default; }
+.article-row--locked:hover { background: var(--color-bg-2); }
+
+.article-row__num {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    opacity: 0.35;
+    min-width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.article-row__body { flex: 1; }
+.article-row__title {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #F0F2F7;
+    margin-bottom: 3px;
+    font-family: var(--font-body);
+}
+.article-row--locked .article-row__title { color: var(--color-text-faint); }
+.article-row__excerpt {
+    font-size: 12.5px;
+    color: var(--color-text-faint);
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.article-row__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+.article-row__time {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+.article-row__arrow { color: var(--color-accent); font-size: 13px; }
+.article-row__lock { color: var(--color-text-faint); font-size: 14px; opacity: 0.5; }
+
+.cat-nav { display: flex; gap: 1rem; }
+
+@media (max-width: 768px) {
+    .cat-header { flex-direction: column; }
+    .article-row { padding: 1rem; gap: 1rem; }
+    .article-row__excerpt { display: none; }
+}
+</style>
+{% endblock %}

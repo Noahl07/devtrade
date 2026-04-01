@@ -1,0 +1,155 @@
+################################
+# Routes principales - devtrade #
+################################
+
+app_home:
+    path: /
+    controller: App\Controller\HomeController::index
+    methods: [GET]
+
+app_portfolio:
+    path: /portfolio
+    controller: App\Controller\PortfolioController::index
+    methods: [GET]
+
+app_portfolio_project:
+    path: /portfolio/{slug}
+    controller: App\Controller\PortfolioController::show
+    methods: [GET]
+
+app_trading:
+    path: /trading
+    controller: App\Controller\TradingController::index
+    methods: [GET]
+
+app_trading_waitlist:
+    path: /trading/waitlist
+    controller: App\Controller\TradingController::waitlist
+    methods: [POST]
+
+app_documentation:
+    path: /documentation
+    controller: App\Controller\DocumentationController::index
+    methods: [GET]
+
+app_documentation_category:
+    path: /documentation/categorie/{slug}
+    controller: App\Controller\DocumentationController::category
+    methods: [GET]
+
+app_documentation_article:
+    path: /documentation/article/{accessLevel}/{slug}
+    controller: App\Controller\DocumentationController::article
+    methods: [GET]
+    requirements:
+        accessLevel: 'free|premium'
+
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+    methods: [GET, POST]
+
+app_logout:
+    path: /logout
+    methods: [GET]
+
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+    methods: [GET, POST]
+
+app_compte:
+    path: /compte
+    controller: App\Controller\CompteController::index
+    methods: [GET]
+
+app_compte_profil:
+    path: /compte/profil
+    controller: App\Controller\CompteController::profil
+    methods: [GET, POST]
+
+app_contact:
+    path: /contact
+    controller: App\Controller\ContactController::index
+    methods: [GET, POST]
+
+# ════════════════════════════════
+# ADMIN
+# ════════════════════════════════
+
+app_admin:
+    path: /admin
+    controller: App\Controller\AdminController::index
+    methods: [GET]
+
+app_admin_documents:
+    path: /admin/documents
+    controller: App\Controller\AdminController::documents
+    methods: [GET]
+
+app_admin_document_new:
+    path: /admin/documents/nouveau
+    controller: App\Controller\AdminController::documentNew
+    methods: [GET, POST]
+
+app_admin_document_edit:
+    path: /admin/documents/{id}/modifier
+    controller: App\Controller\AdminController::documentEdit
+    methods: [GET, POST]
+
+app_admin_document_delete:
+    path: /admin/documents/{id}/supprimer
+    controller: App\Controller\AdminController::documentDelete
+    methods: [POST]
+
+app_admin_projects:
+    path: /admin/projets
+    controller: App\Controller\AdminController::projects
+    methods: [GET]
+
+app_admin_project_new:
+    path: /admin/projets/nouveau
+    controller: App\Controller\AdminController::projectNew
+    methods: [GET, POST]
+
+app_admin_project_edit:
+    path: /admin/projets/{id}/modifier
+    controller: App\Controller\AdminController::projectEdit
+    methods: [GET, POST]
+
+app_admin_waitlist:
+    path: /admin/waitlist
+    controller: App\Controller\AdminController::waitlist
+    methods: [GET]
+
+app_admin_users:
+    path: /admin/utilisateurs
+    controller: App\Controller\AdminController::users
+    methods: [GET]
+
+app_admin_user_toggle_premium:
+    path: /admin/utilisateurs/{id}/premium
+    controller: App\Controller\AdminController::togglePremium
+    methods: [POST]
+
+# ── Ajouter ces lignes à la fin de config/routes.yaml ──
+ 
+app_forgot_password:
+    path: /mot-de-passe-oublie
+    controller: App\Controller\ResetPasswordController::forgotPassword
+    methods: [GET, POST]
+ 
+app_reset_password:
+    path: /reinitialisation/{token}
+    controller: App\Controller\ResetPasswordController::resetPassword
+    methods: [GET, POST]
+ 
+app_sitemap:
+    path: /sitemap.xml
+    controller: App\Controller\SitemapController::sitemap
+    methods: [GET]
+
+app_robots:
+    path: /robots.txt
+    controller: App\Controller\SitemapController::robots
+    methods: [GET]

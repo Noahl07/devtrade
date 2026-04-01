@@ -1,0 +1,223 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — {{ mode == 'edit' ? 'Modifier' : 'Nouvel' }} article{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+    {% include 'admin/_sidebar.html.twig' %}
+    <div class="admin-main">
+
+        <div class="admin-topbar">
+            <h1 class="admin-page-title">
+                <i class="bi bi-{{ mode == 'edit' ? 'pencil' : 'plus-lg' }}"></i>
+                {{ mode == 'edit' ? 'Modifier' : 'Nouvel' }} article
+            </h1>
+            <a href="{{ path('app_admin_documents') }}" class="btn btn--ghost">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+        </div>
+
+        {% if error %}
+            <div class="flash flash--danger" style="margin-bottom:1.5rem;max-width:100%">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="admin-form">
+
+            <div class="admin-form-grid" style="margin-bottom:1.2rem">
+
+                <div class="form-group">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" name="title" class="form-control"
+                           value="{{ document ? document.title : '' }}"
+                           placeholder="Titre de l'article" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Catégorie *</label>
+                    <select name="category" class="form-control" required>
+                        <option value="">— Choisir une catégorie —</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}"
+                                {% if document and document.category and document.category.id == cat.id %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if mode == 'edit' %}
+                    <div class="form-group">
+                        <label class="form-label">Slug (URL)</label>
+                        <input type="text" name="slug" class="form-control"
+                               value="{{ document ? document.slug : '' }}"
+                               style="font-family:var(--font-mono);font-size:13px">
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label class="form-label">Accès</label>
+                    <select name="accessLevel" class="form-control">
+                        <option value="free" {% if not document or document.accessLevel == 'free' %}selected{% endif %}>
+                            Gratuit (inscription requise)
+                        </option>
+                        <option value="premium" {% if document and document.accessLevel == 'premium' %}selected{% endif %}>
+                            Premium uniquement
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Temps de lecture (min)</label>
+                    <input type="number" name="readingTime" class="form-control"
+                           value="{{ document ? document.readingTime : '' }}"
+                           placeholder="Ex: 12" min="1" max="120">
+                </div>
+
+                <div class="form-group admin-form-full">
+                    <label class="form-label">Extrait / Description courte</label>
+                    <textarea name="excerpt" class="form-control" rows="3"
+                              placeholder="Résumé affiché dans la liste des articles...">{{ document ? document.excerpt : '' }}</textarea>
+                </div>
+
+            </div>
+
+            {# Éditeur de contenu avec barre d'outils #}
+            <div class="form-group">
+                <div class="editor-toolbar">
+                    <span class="editor-toolbar__label">
+                        <i class="bi bi-code-slash"></i> Contenu HTML
+                    </span>
+                    <div class="editor-toolbar__btns">
+                        <button type="button" onclick="insertTag('h2')" title="Titre H2">H2</button>
+                        <button type="button" onclick="insertTag('h3')" title="Titre H3">H3</button>
+                        <button type="button" onclick="insertTag('p')" title="Paragraphe">¶</button>
+                        <button type="button" onclick="insertTag('strong')" title="Gras"><b>B</b></button>
+                        <button type="button" onclick="insertTag('em')" title="ICT/accent"><i>em</i></button>
+                        <button type="button" onclick="insertTag('code')" title="Code inline">&lt;/&gt;</button>
+                        <button type="button" onclick="insertBlock('ul')" title="Liste">≡</button>
+                        <button type="button" onclick="insertBlock('blockquote')" title="Citation">"</button>
+                        <button type="button" onclick="insertBlock('pre')" title="Bloc code">pre</button>
+                        <button type="button" onclick="togglePreview()" title="Prévisualisation">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <textarea name="content" id="contentEditor" class="admin-editor"
+                          placeholder="Rédigez le contenu en HTML...">{{ document ? document.content : '' }}</textarea>
+                <div id="contentPreview" class="prose admin-preview" style="display:none"></div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--color-border)">
+                <label class="admin-toggle">
+                    <input type="checkbox" name="isPublished"
+                           {% if document and document.isPublished %}checked{% endif %}>
+                    <span>Publier l'article</span>
+                </label>
+                <div style="display:flex;gap:1rem">
+                    <a href="{{ path('app_admin_documents') }}" class="btn btn--ghost">Annuler</a>
+                    <button type="submit" class="btn btn--primary">
+                        <i class="bi bi-check-lg"></i>
+                        {{ mode == 'edit' ? 'Enregistrer' : 'Créer l\'article' }}
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% include 'admin/_styles.html.twig' %}
+<style>
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border-md);
+    border-bottom: none;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    padding: 0.5rem 1rem;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.editor-toolbar + .admin-editor {
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+.editor-toolbar__label {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.editor-toolbar__btns {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+.editor-toolbar__btns button {
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid var(--color-border);
+    border-radius: 4px;
+    color: var(--color-text-muted);
+    font-size: 12px;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: var(--font-mono);
+}
+.editor-toolbar__btns button:hover {
+    background: var(--color-accent-dim);
+    color: var(--color-accent);
+    border-color: var(--color-accent-border);
+}
+.admin-preview {
+    background: var(--color-bg);
+    border: 0.5px solid var(--color-border-md);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    padding: 2rem;
+    min-height: 200px;
+}
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+function insertTag(tag) {
+    const editor = document.getElementById('contentEditor');
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const selected = editor.value.substring(start, end) || 'texte ici';
+    const inserted = `<${tag}>${selected}</${tag}>`;
+    editor.value = editor.value.substring(0, start) + inserted + editor.value.substring(end);
+    editor.focus();
+    editor.setSelectionRange(start + tag.length + 2, start + inserted.length - tag.length - 3);
+}
+
+function insertBlock(tag) {
+    const editor = document.getElementById('contentEditor');
+    const pos = editor.selectionEnd;
+    let block = '';
+    if (tag === 'ul') block = '\n<ul>\n    <li>Élément 1</li>\n    <li>Élément 2</li>\n</ul>\n';
+    if (tag === 'blockquote') block = '\n<blockquote>Votre citation ici.</blockquote>\n';
+    if (tag === 'pre') block = '\n<pre><code>// votre code ici\n</code></pre>\n';
+    editor.value = editor.value.substring(0, pos) + block + editor.value.substring(pos);
+    editor.focus();
+}
+
+function togglePreview() {
+    const editor = document.getElementById('contentEditor');
+    const preview = document.getElementById('contentPreview');
+    if (preview.style.display === 'none') {
+        preview.innerHTML = editor.value;
+        preview.style.display = 'block';
+        editor.style.display = 'none';
+    } else {
+        editor.style.display = 'block';
+        preview.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+security:
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    role_hierarchy:
+        ROLE_PREMIUM: ROLE_USER
+        ROLE_ADMIN:   [ROLE_PREMIUM, ROLE_USER]
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+                default_target_path: /
+                always_use_default_target_path: false
+
+            logout:
+                path: app_logout
+                target: /
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+
+    access_control:
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        - { path: ^/portfolio, roles: PUBLIC_ACCESS }
+        - { path: ^/trading, roles: PUBLIC_ACCESS }
+        - { path: ^/contact, roles: PUBLIC_ACCESS }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+
+        - { path: ^/documentation$, roles: PUBLIC_ACCESS }
+        - { path: ^/documentation/categorie, roles: PUBLIC_ACCESS }
+
+        # Articles gratuits : inscription obligatoire
+        - { path: ^/documentation/article/free, roles: ROLE_USER }
+
+        # Articles premium
+        - { path: ^/documentation/article/premium, roles: ROLE_PREMIUM }
+
+        # Admin
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+        # Espace membre
+        - { path: ^/compte, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            App\Entity\User:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10

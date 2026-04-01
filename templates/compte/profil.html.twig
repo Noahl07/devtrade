@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier mon profil{% endblock %}
+
+{% block body %}
+<section class="section">
+    <a href="{{ path('app_compte') }}" class="back-link">← Retour au compte</a>
+
+    <div class="profil-layout">
+
+        {# Sidebar gauche #}
+        <div class="profil-sidebar">
+            <div class="profil-avatar">
+                {{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+            </div>
+            <div class="profil-sidebar__name">{{ user.firstName }} {{ user.lastName }}</div>
+            <div class="profil-sidebar__email">{{ user.email }}</div>
+            <div class="profil-sidebar__since">Membre depuis {{ user.createdAt|date('M Y') }}</div>
+
+            {% if user.isPremium %}
+                <span class="tag tag--gold" style="margin-top:1rem">Premium</span>
+            {% else %}
+                <span class="tag" style="margin-top:1rem">Compte gratuit</span>
+            {% endif %}
+        </div>
+
+        {# Formulaire principal #}
+        <div class="profil-form-card">
+
+            {% if error %}
+                <div class="flash flash--danger" style="margin-bottom:1.5rem;max-width:100%">{{ error }}</div>
+            {% endif %}
+
+            <form method="post">
+
+                <div class="profil-section-title">Informations personnelles</div>
+
+                <div class="profil-row">
+                    <div class="form-group">
+                        <label class="form-label">Prénom</label>
+                        <input type="text" name="firstName" class="form-control" value="{{ user.firstName }}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nom</label>
+                        <input type="text" name="lastName" class="form-control" value="{{ user.lastName }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" value="{{ user.email }}" disabled
+                        style="opacity:0.4;cursor:not-allowed">
+                    <small style="color:var(--color-text-faint);font-size:12px;margin-top:4px;display:block">
+                        L'email ne peut pas être modifié.
+                    </small>
+                </div>
+
+                <hr class="profil-divider">
+
+                <div class="profil-section-title">Changer le mot de passe</div>
+                <p style="font-size:13px;color:var(--color-text-faint);margin-bottom:1.2rem;font-weight:300">
+                    Laissez vide si vous ne souhaitez pas le modifier.
+                </p>
+
+                <div class="profil-row">
+                    <div class="form-group">
+                        <label class="form-label">Nouveau mot de passe</label>
+                        <input type="password" name="newPassword" class="form-control" placeholder="8 caractères minimum">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" name="confirmPassword" class="form-control" placeholder="Répétez le mot de passe">
+                    </div>
+                </div>
+
+                <div class="profil-actions">
+                    <a href="{{ path('app_compte') }}" class="btn btn--ghost">Annuler</a>
+                    <button type="submit" class="btn btn--primary">Enregistrer les modifications</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.back-link {
+    font-size: 13.5px;
+    color: var(--color-text-faint);
+    transition: color var(--transition);
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+.back-link:hover { color: var(--color-accent); }
+
+.profil-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.profil-sidebar {
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.profil-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--color-accent-dim);
+    border: 0.5px solid var(--color-accent-border);
+    color: var(--color-accent);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+}
+
+.profil-sidebar__name {
+    font-weight: 500;
+    font-size: 15px;
+    color: #F0F2F7;
+}
+.profil-sidebar__email {
+    font-size: 12.5px;
+    color: var(--color-text-faint);
+    word-break: break-all;
+}
+.profil-sidebar__since {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    font-weight: 300;
+}
+
+.profil-form-card {
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+}
+
+.profil-section-title {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-faint);
+    margin-bottom: 1.2rem;
+}
+
+.profil-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+}
+
+.profil-divider {
+    border: none;
+    border-top: 0.5px solid var(--color-border);
+    margin: 2rem 0;
+}
+
+.profil-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--color-border);
+}
+
+@media (max-width: 900px) {
+    .profil-layout { grid-template-columns: 1fr; }
+    .profil-sidebar { flex-direction: row; text-align: left; }
+    .profil-avatar { flex-shrink: 0; }
+}
+
+@media (max-width: 600px) {
+    .profil-row { grid-template-columns: 1fr; }
+    .profil-form-card { padding: 1.5rem; }
+    .profil-actions { flex-direction: column-reverse; }
+    .profil-actions .btn { width: 100%; justify-content: center; }
+    .profil-sidebar { flex-direction: column; align-items: center; text-align: center; }
+}
+</style>
+{% endblock %}

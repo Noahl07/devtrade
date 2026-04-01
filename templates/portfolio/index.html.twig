@@ -1,0 +1,315 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prestations & Portfolio{% endblock %}
+{% block meta_description %}Développement fullstack sur mesure — applications Symfony, gestion immobilière, SaaS métier. Découvrez mes réalisations.{% endblock %}
+
+{% block body %}
+
+<section class="section">
+    <span class="section-eyebrow">Développement</span>
+    <h1>Prestations &amp; Portfolio</h1>
+    <p class="section-desc">
+        Du backend Symfony robuste au frontend soigné — des applications pensées pour la performance
+        et la maintenabilité sur le long terme.
+    </p>
+
+    {# Filtres #}
+    <div class="portfolio-filters">
+        <button class="filter-btn filter-btn--active" data-filter="all">Tous</button>
+        <button class="filter-btn" data-filter="fullstack">Fullstack</button>
+        <button class="filter-btn" data-filter="saas">SaaS</button>
+        <button class="filter-btn" data-filter="vitrine">Vitrine</button>
+        <button class="filter-btn" data-filter="immobilier">Immobilier</button>
+    </div>
+
+    {# Grille projets #}
+    <div class="projects-grid">
+
+        <div class="project-card" data-type="immobilier">
+            <div class="project-card__header">
+                <span class="project-card__type">Fullstack — Immobilier</span>
+                <div class="project-card__links">
+                    <a href="#" class="project-card__link" title="Voir le projet">↗</a>
+                </div>
+            </div>
+            <h3 class="project-card__title">Plateforme de gestion immobilière</h3>
+            <p class="project-card__desc">
+                Gestion complète de biens, locataires, contrats et quittances. Tableau de bord analytique,
+                relances automatisées par email, espace propriétaire sécurisé et génération de PDF.
+            </p>
+            <ul class="project-card__features">
+                <li>Gestion multi-biens et multi-locataires</li>
+                <li>Génération automatique de quittances PDF</li>
+                <li>Relances automatisées par Symfony Messenger</li>
+                <li>Tableau de bord avec statistiques de rentabilité</li>
+            </ul>
+            <div class="project-card__footer">
+                <div class="project-card__tags">
+                    <span class="tag tag--accent">Symfony 6</span>
+                    <span class="tag">Twig</span>
+                    <span class="tag">PostgreSQL</span>
+                    <span class="tag">Messenger</span>
+                    <span class="tag">PDF</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card" data-type="vitrine">
+            <div class="project-card__header">
+                <span class="project-card__type">Fullstack — Vitrine</span>
+                <div class="project-card__links">
+                    <a href="#" class="project-card__link" title="Voir le projet">↗</a>
+                </div>
+            </div>
+            <h3 class="project-card__title">Site corporate + espace client</h3>
+            <p class="project-card__desc">
+                Site institutionnel avec back-office sur mesure, gestion de contenus dynamiques,
+                formulaires métier et espace client sécurisé par JWT.
+            </p>
+            <ul class="project-card__features">
+                <li>Back-office custom avec gestion des rôles</li>
+                <li>API REST documentée avec JWT Auth</li>
+                <li>Formulaires métier avec validation avancée</li>
+                <li>Pipeline CI/CD automatisé</li>
+            </ul>
+            <div class="project-card__footer">
+                <div class="project-card__tags">
+                    <span class="tag tag--accent">Symfony</span>
+                    <span class="tag">API REST</span>
+                    <span class="tag">JWT</span>
+                    <span class="tag">CI/CD</span>
+                    <span class="tag">Docker</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card" data-type="saas">
+            <div class="project-card__header">
+                <span class="project-card__type">Fullstack — SaaS</span>
+                <div class="project-card__links">
+                    <a href="#" class="project-card__link" title="Voir le projet">↗</a>
+                </div>
+            </div>
+            <h3 class="project-card__title">Application de gestion sur mesure</h3>
+            <p class="project-card__desc">
+                Solution métier verticale avec architecture Domain-Driven Design, rôles et permissions
+                granulaires, reporting exportable et infrastructure scalable.
+            </p>
+            <ul class="project-card__features">
+                <li>Architecture DDD avec bounded contexts</li>
+                <li>Permissions granulaires par ressource</li>
+                <li>Reporting Excel/PDF exportable</li>
+                <li>Infrastructure Docker + Redis</li>
+            </ul>
+            <div class="project-card__footer">
+                <div class="project-card__tags">
+                    <span class="tag tag--accent">DDD</span>
+                    <span class="tag">Symfony</span>
+                    <span class="tag">Messenger</span>
+                    <span class="tag">Redis</span>
+                    <span class="tag">Docker</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card project-card--placeholder" data-type="fullstack">
+            <div class="project-card__header">
+                <span class="project-card__type">Fullstack — En cours</span>
+            </div>
+            <h3 class="project-card__title">Projet en cours de développement</h3>
+            <p class="project-card__desc">
+                Nouveau projet fullstack en cours — disponible prochainement dans le portfolio.
+            </p>
+            <div class="project-card__footer">
+                <span class="tag">Bientôt</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<hr class="divider">
+
+{# ══ CTA Contact ══ #}
+<section class="section">
+    <div class="cta-block">
+        <div class="cta-block__content">
+            <h2 class="cta-block__title">Un projet en tête ?</h2>
+            <p class="cta-block__desc">
+                Discutons de vos besoins — de l'analyse au déploiement, je prends en charge l'ensemble du cycle de développement.
+            </p>
+            <a href="{{ path('app_contact') }}" class="btn btn--primary">Demander un devis gratuit</a>
+        </div>
+        <div class="cta-block__stack">
+            <span class="section-eyebrow">Stack principale</span>
+            <div class="stack-list">
+                <span class="stack-item">Symfony 6/7</span>
+                <span class="stack-item">PHP 8.3</span>
+                <span class="stack-item">PostgreSQL</span>
+                <span class="stack-item">Twig</span>
+                <span class="stack-item">Docker</span>
+                <span class="stack-item">Redis</span>
+                <span class="stack-item">Messenger</span>
+                <span class="stack-item">CI/CD</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.portfolio-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+}
+
+.filter-btn {
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    border: 0.5px solid var(--color-border);
+    background: transparent;
+    transition: var(--transition);
+    cursor: pointer;
+}
+.filter-btn:hover,
+.filter-btn--active {
+    color: var(--color-accent);
+    border-color: var(--color-accent-border);
+    background: var(--color-accent-dim);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.project-card {
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color var(--transition), background var(--transition);
+}
+.project-card:hover { border-color: var(--color-border-md); background: var(--color-bg-3); }
+.project-card--placeholder { opacity: 0.5; }
+
+.project-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.project-card__type {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-faint);
+}
+
+.project-card__link {
+    font-size: 18px;
+    color: var(--color-text-faint);
+    transition: color var(--transition);
+    line-height: 1;
+}
+.project-card__link:hover { color: var(--color-accent); }
+
+.project-card__title { color: #F0F2F7; }
+
+.project-card__desc {
+    font-size: 13.5px;
+    line-height: 1.65;
+}
+
+.project-card__features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+.project-card__features li {
+    font-size: 13px;
+    color: var(--color-text-faint);
+    padding-left: 1rem;
+    position: relative;
+}
+.project-card__features li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 11px;
+}
+
+.project-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* CTA block */
+.cta-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    background: rgba(255,255,255,0.02);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 3.5rem;
+}
+
+.cta-block__title { margin-bottom: 1rem; }
+.cta-block__desc { margin-bottom: 2rem; font-weight: 300; }
+
+.stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1rem;
+}
+
+.stack-item {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-family: var(--font-mono);
+}
+
+@media (max-width: 900px) {
+    .projects-grid { grid-template-columns: 1fr; }
+    .cta-block { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+}
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn--active'));
+        btn.classList.add('filter-btn--active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.style.display = (filter === 'all' || card.dataset.type === filter) ? 'flex' : 'none';
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,461 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ document.title }}{% endblock %}
+{% block meta_description %}{{ document.excerpt }}{% endblock %}
+
+{% block body %}
+<div class="article-layout">
+
+    {# ── SIDEBAR ── #}
+    <aside class="article-sidebar">
+
+        <a href="{{ path('app_documentation') }}" class="sidebar-back">
+            <i class="bi bi-arrow-left"></i> Documentation
+        </a>
+
+        {% if document.category %}
+            <div class="sidebar-module">
+                <div class="sidebar-module__label">Module</div>
+                <a href="{{ path('app_documentation_category', {slug: document.category.slug}) }}"
+                   class="sidebar-module__name">
+                    {{ document.category.name }}
+                </a>
+            </div>
+
+            {# Articles du même module #}
+            <div class="sidebar-articles">
+                <div class="sidebar-articles__label">
+                    <i class="bi bi-list-ul"></i> Dans ce module
+                </div>
+                {% set siblings = document.category.documents|filter(d => d.isPublished) %}
+                {% for sibling in siblings %}
+                    <a href="{{ path('app_documentation_article', {accessLevel: sibling.accessLevel, slug: sibling.slug}) }}"
+                       class="sidebar-article {% if sibling.slug == document.slug %}sidebar-article--active{% endif %} {% if sibling.isPremium() and (not app.user or not app.user.isPremium) %}sidebar-article--locked{% endif %}">
+                        <span class="sidebar-article__title">{{ sibling.title }}</span>
+                        {% if sibling.isPremium() and (not app.user or not app.user.isPremium) %}
+                            <i class="bi bi-lock-fill sidebar-article__icon"></i>
+                        {% elseif sibling.slug == document.slug %}
+                            <i class="bi bi-circle-fill sidebar-article__icon sidebar-article__icon--active"></i>
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </aside>
+
+    {# ── CONTENU ARTICLE ── #}
+    <article class="article-main">
+
+        {# Breadcrumb #}
+        <nav class="breadcrumb" style="margin-bottom:2rem">
+            <a href="{{ path('app_documentation') }}" class="breadcrumb__item">
+                <i class="bi bi-book"></i> Documentation
+            </a>
+            <i class="bi bi-chevron-right breadcrumb__sep"></i>
+            {% if document.category %}
+                <a href="{{ path('app_documentation_category', {slug: document.category.slug}) }}"
+                   class="breadcrumb__item">{{ document.category.name }}</a>
+                <i class="bi bi-chevron-right breadcrumb__sep"></i>
+            {% endif %}
+            <span class="breadcrumb__item breadcrumb__item--active">{{ document.title }}</span>
+        </nav>
+
+        {# Header article #}
+        <header class="article-header">
+            <div class="article-header__meta">
+                {% if document.isPremium() %}
+                    <span class="tag tag--gold">
+                        <i class="bi bi-star-fill"></i> Premium
+                    </span>
+                {% else %}
+                    <span class="tag tag--accent">
+                        <i class="bi bi-unlock-fill"></i> Gratuit
+                    </span>
+                {% endif %}
+                {% if document.readingTime %}
+                    <span class="article-header__time">
+                        <i class="bi bi-clock"></i> {{ document.readingTime }} min de lecture
+                    </span>
+                {% endif %}
+                {% if document.publishedAt %}
+                    <span class="article-header__date">
+                        <i class="bi bi-calendar3"></i> {{ document.publishedAt|date('d/m/Y') }}
+                    </span>
+                {% endif %}
+            </div>
+
+            <h1 class="article-header__title">{{ document.title }}</h1>
+
+            {% if document.excerpt %}
+                <p class="article-header__excerpt">{{ document.excerpt }}</p>
+            {% endif %}
+
+            <hr class="article-header__divider">
+        </header>
+
+        {# Contenu #}
+        <div class="article-content prose">
+            {{ document.content|raw }}
+        </div>
+
+        {# Footer article — navigation #}
+        <footer class="article-footer">
+            <a href="{{ path('app_documentation_category', {slug: document.category.slug}) }}"
+               class="btn btn--ghost">
+                <i class="bi bi-arrow-left"></i> Retour au module
+            </a>
+
+            <div class="article-footer__actions">
+                {% if app.user and not app.user.isPremium %}
+                    <div class="article-footer__upgrade">
+                        <i class="bi bi-star"></i>
+                        <span>Accédez aux 40+ articles avancés avec Premium</span>
+                        <a href="{{ path('app_contact') }}" class="btn btn--outline-accent" style="font-size:13px;padding:0.4rem 1rem">
+                            Passer Premium
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </footer>
+
+    </article>
+
+    {# ── TABLE DES MATIÈRES (à droite) ── #}
+    <nav class="article-toc" id="toc">
+        <div class="article-toc__label">
+            <i class="bi bi-list-nested"></i> Sur cette page
+        </div>
+        <div id="toc-content" class="article-toc__list">
+            {# Généré dynamiquement par JS #}
+        </div>
+    </nav>
+
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.article-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr 200px;
+    gap: 0;
+    min-height: calc(100vh - var(--nav-height));
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+/* Sidebar gauche */
+.article-sidebar {
+    padding: 3rem 1.5rem 3rem 5vw;
+    border-right: 0.5px solid var(--color-border);
+    position: sticky;
+    top: var(--nav-height);
+    height: calc(100vh - var(--nav-height));
+    overflow-y: auto;
+}
+
+.sidebar-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-text-faint);
+    transition: color var(--transition);
+    margin-bottom: 2rem;
+}
+.sidebar-back:hover { color: var(--color-accent); }
+
+.sidebar-module {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--color-border);
+}
+.sidebar-module__label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-faint);
+    margin-bottom: 4px;
+}
+.sidebar-module__name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-accent);
+    line-height: 1.4;
+}
+
+.sidebar-articles__label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-faint);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sidebar-article {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 0.55rem 0;
+    border-bottom: 0.5px solid var(--color-border);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+.sidebar-article:hover .sidebar-article__title { color: var(--color-text); }
+.sidebar-article--active .sidebar-article__title { color: var(--color-accent) !important; font-weight: 500; }
+.sidebar-article--locked { opacity: 0.45; pointer-events: none; }
+
+.sidebar-article__title {
+    font-size: 12.5px;
+    color: var(--color-text-faint);
+    line-height: 1.45;
+}
+.sidebar-article__icon { font-size: 10px; color: var(--color-text-faint); flex-shrink: 0; margin-top: 3px; }
+.sidebar-article__icon--active { color: var(--color-accent); font-size: 8px; }
+
+/* Article principal */
+.article-main {
+    padding: 3rem 3rem 5rem;
+    max-width: 760px;
+}
+
+.article-header__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+.article-header__time,
+.article-header__date {
+    font-size: 12.5px;
+    color: var(--color-text-faint);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.article-header__title {
+    margin-bottom: 1rem;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.article-header__excerpt {
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    max-width: 680px;
+}
+
+.article-header__divider {
+    border: none;
+    border-top: 0.5px solid var(--color-border);
+    margin: 2rem 0;
+}
+
+/* Prose — contenu article */
+.prose {
+    font-size: 15.5px;
+    line-height: 1.8;
+    color: rgba(232,234,240,0.8);
+}
+.prose h2 {
+    font-size: 1.5rem;
+    margin: 2.5rem 0 1rem;
+    color: #F0F2F7;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5px solid var(--color-border);
+}
+.prose h3 {
+    font-size: 1.15rem;
+    margin: 2rem 0 0.8rem;
+    color: #F0F2F7;
+}
+.prose p { margin-bottom: 1.2rem; }
+.prose strong { color: #F0F2F7; font-weight: 500; }
+.prose em { color: var(--color-accent); font-style: normal; }
+.prose ul, .prose ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.prose li { font-size: 15px; }
+.prose ul li::marker { color: var(--color-accent); }
+.prose blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding: 0.8rem 1.2rem;
+    background: var(--color-accent-dim);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin: 1.5rem 0;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+.prose code {
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid var(--color-border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    color: var(--color-accent);
+}
+.prose pre {
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+.prose pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #E8EAF0;
+}
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 14px;
+}
+.prose th {
+    background: var(--color-bg-2);
+    color: var(--color-text-faint);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.7rem 1rem;
+    border-bottom: 0.5px solid var(--color-border);
+    text-align: left;
+}
+.prose td {
+    padding: 0.7rem 1rem;
+    border-bottom: 0.5px solid var(--color-border);
+    color: var(--color-text-muted);
+}
+.prose tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* Footer article */
+.article-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 0.5px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.article-footer__upgrade {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--color-text-faint);
+}
+.article-footer__upgrade i { color: var(--color-gold); }
+
+/* TOC droite */
+.article-toc {
+    padding: 3rem 5vw 3rem 1.5rem;
+    border-left: 0.5px solid var(--color-border);
+    position: sticky;
+    top: var(--nav-height);
+    height: calc(100vh - var(--nav-height));
+    overflow-y: auto;
+}
+.article-toc__label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-faint);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.article-toc__list { display: flex; flex-direction: column; gap: 2px; }
+.toc-item {
+    font-size: 12.5px;
+    color: var(--color-text-faint);
+    padding: 4px 0;
+    transition: color var(--transition);
+    cursor: pointer;
+    line-height: 1.4;
+}
+.toc-item:hover { color: var(--color-text); }
+.toc-item--active { color: var(--color-accent); }
+.toc-item--h3 { padding-left: 0.8rem; font-size: 12px; }
+
+/* Breadcrumb */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+.breadcrumb__item { color: var(--color-text-faint); transition: color var(--transition); }
+a.breadcrumb__item:hover { color: var(--color-accent); }
+.breadcrumb__item--active { color: var(--color-text-muted); }
+.breadcrumb__sep { color: var(--color-text-faint); font-size: 10px; }
+
+@media (max-width: 1200px) {
+    .article-layout { grid-template-columns: 220px 1fr; }
+    .article-toc { display: none; }
+}
+@media (max-width: 900px) {
+    .article-layout { grid-template-columns: 1fr; }
+    .article-sidebar { display: none; }
+    .article-main { padding: 2rem var(--section-px); }
+}
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+// Génération automatique de la table des matières
+document.addEventListener('DOMContentLoaded', () => {
+    const headings = document.querySelectorAll('.prose h2, .prose h3');
+    const tocList  = document.getElementById('toc-content');
+
+    if (!tocList || headings.length === 0) {
+        document.getElementById('toc')?.style.setProperty('display', 'none');
+        return;
+    }
+
+    headings.forEach((h, i) => {
+        h.id = 'heading-' + i;
+        const item = document.createElement('div');
+        item.className = 'toc-item ' + (h.tagName === 'H3' ? 'toc-item--h3' : '');
+        item.textContent = h.textContent;
+        item.addEventListener('click', () => {
+            h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        tocList.appendChild(item);
+    });
+
+    // Active tracking
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                document.querySelectorAll('.toc-item').forEach((el, i) => {
+                    el.classList.toggle('toc-item--active', i === parseInt(id.split('-')[1]));
+                });
+            }
+        });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    headings.forEach(h => observer.observe(h));
+});
+</script>
+{% endblock %}
