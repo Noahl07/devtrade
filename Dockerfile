@@ -21,4 +21,4 @@ COPY Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "php bin/console doctrine:migrations:migrate --no-interaction --env=prod --allow-no-migration || true && frankenphp run --config /etc/caddy/Caddyfile"]
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
