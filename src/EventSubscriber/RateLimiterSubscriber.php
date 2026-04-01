@@ -12,9 +12,9 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 class RateLimiterSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private RateLimiterFactory $registerLimiter,
-        private RateLimiterFactory $waitlistLimiter,
-        private RateLimiterFactory $loginLimiter,
+        private \Symfony\Component\RateLimiter\RateLimiterFactory $registerLimiter,
+        private \Symfony\Component\RateLimiter\RateLimiterFactory $waitlistLimiter,
+        private \Symfony\Component\RateLimiter\RateLimiterFactory $loginLimiter,
     ) {}
 
     public static function getSubscribedEvents(): array

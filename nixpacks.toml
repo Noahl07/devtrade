@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["php82", "php82Extensions.pdo", "php82Extensions.pdo_pgsql", "php82Extensions.mbstring", "php82Extensions.xml", "php82Extensions.curl", "php82Extensions.zip", "php82Extensions.intl", "php82Extensions.opcache", "composer", "nodejs_20", "nginx"]
+nixPkgs = ["php82", "php82Extensions.pdo", "php82Extensions.pdo_pgsql", "php82Extensions.mbstring", "php82Extensions.xml", "php82Extensions.curl", "php82Extensions.zip", "php82Extensions.intl", "php82Extensions.opcache", "php82Extensions.tokenizer", "php82Extensions.ctype", "php82Extensions.session", "composer", "nodejs_20"]
 
 [phases.install]
 cmds = [
@@ -10,11 +10,9 @@ cmds = [
 
 [phases.build]
 cmds = [
-    "php bin/console asset-map:compile --env=prod || true",
     "php bin/console cache:clear --env=prod",
-    "php bin/console cache:warmup --env=prod",
-    "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"
+    "php bin/console cache:warmup --env=prod"
 ]
 
 [start]
-cmd = "php-fpm -D && nginx -g 'daemon off;'"
+cmd = "php bin/console doctrine:migrations:migrate --no-interaction --env=prod && frankenphp run --config /app/Caddyfile"
