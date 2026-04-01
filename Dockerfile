@@ -15,7 +15,7 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-script
 
 RUN npm ci && npm run build
 
-RUN APP_ENV=prod DATABASE_URL="postgresql://x:x@localhost/x" php bin/console cache:warmup --no-debug || true
+RUN APP_ENV=prod DATABASE_URL="postgresql://x:x@localhost/x" APP_SECRET="tmp" php bin/console cache:warmup --no-debug || true
 
 COPY Caddyfile /etc/caddy/Caddyfile
 
