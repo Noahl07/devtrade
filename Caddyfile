@@ -5,5 +5,7 @@
 
 :8080 {
 	root * /app/public
-	php_server
+	route {
+		php_server
+	}
 }
