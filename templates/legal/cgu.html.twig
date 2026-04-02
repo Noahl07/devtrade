@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+{% block title %}Conditions d'utilisation{% endblock %}
+
+{% block body %}
+<section class="section" style="max-width:800px;margin:0 auto">
+
+    <div style="margin-bottom:3rem">
+        <h1 style="font-size:2rem;margin-bottom:0.5rem">Conditions d'utilisation</h1>
+        <p style="color:var(--color-text-faint);font-size:13px">Dernière mise à jour : avril 2026</p>
+    </div>
+
+    <div class="prose">
+
+        <h2>1. Présentation du service</h2>
+        <p><strong>dev.trade</strong> est une plateforme double activité proposant :</p>
+        <ul>
+            <li><strong>Des prestations de développement web et fullstack</strong> — conception et réalisation d'applications web, sites sur mesure, APIs, intégrations et automatisations pour particuliers et entreprises.</li>
+            <li><strong>Une documentation et formation au trading financier</strong> — ressources pédagogiques sur l'analyse technique, la méthodologie ICT, la Price Action, le trading algorithmique et les stratégies quantitatives.</li>
+        </ul>
+        <p>L'accès au contenu gratuit est ouvert à tout utilisateur inscrit. L'accès au contenu premium est réservé aux abonnés actifs.</p>
+
+        <h2>2. Acceptation des conditions</h2>
+        <p>En créant un compte sur dev.trade ou en faisant appel aux services de développement, vous acceptez pleinement et sans réserve les présentes conditions. Si vous n'acceptez pas ces conditions, vous ne devez pas utiliser le service.</p>
+
+        <h2>3. Prestations de développement</h2>
+
+        <h3>3.1 Nature des prestations</h3>
+        <p>Les prestations proposées incluent notamment : création de sites web et applications sur mesure, développement d'APIs et services backend, intégration de systèmes tiers, déploiement et maintenance d'infrastructures, conseil technique et audit de code.</p>
+
+        <h3>3.2 Devis et commande</h3>
+        <p>Toute prestation fait l'objet d'un devis détaillé préalable transmis par email. Le devis précise le périmètre, les délais estimés et le tarif. La commande est confirmée par l'acceptation écrite du devis et le versement d'un acompte le cas échéant.</p>
+
+        <h3>3.3 Délais de livraison</h3>
+        <p>Les délais indiqués dans les devis sont donnés à titre indicatif. dev.trade s'engage à respecter les délais convenus et à informer le client sans délai en cas d'imprévu. Aucune pénalité de retard ne peut être appliquée sauf accord contractuel explicite.</p>
+
+        <h3>3.4 Propriété du code livré</h3>
+        <p>À complet paiement, le client acquiert la pleine propriété du code source livré. dev.trade conserve le droit de mentionner la réalisation dans son portfolio, sauf demande contraire explicite du client.</p>
+
+        <h3>3.5 Garantie et maintenance</h3>
+        <p>Les développements livrés bénéficient d'une garantie de correction des bugs pendant 30 jours après livraison finale, sans frais. Au-delà, toute intervention fait l'objet d'un nouveau devis. dev.trade ne peut être tenu responsable des dysfonctionnements liés à des modifications apportées par le client ou des tiers après livraison.</p>
+
+        <h3>3.6 Responsabilité limitée</h3>
+        <p>La responsabilité de dev.trade est limitée au montant de la prestation concernée. dev.trade ne peut être tenu responsable des pertes indirectes, manques à gagner ou préjudices commerciaux subis par le client.</p>
+
+        <h2>4. Avertissement financier — mention légale obligatoire</h2>
+        <p>⚠️ <strong>Le contenu de formation et documentation trading de dev.trade est fourni à titre éducatif et informatif uniquement. Il ne constitue pas un conseil en investissement financier.</strong></p>
+        <p>Le trading sur les marchés financiers comporte des <strong>risques élevés de perte en capital</strong>. Les performances passées ne préjugent pas des performances futures. dev.trade ne peut être tenu responsable des pertes financières résultant de l'application des informations présentées.</p>
+        <p>Avant de trader avec de l'argent réel :</p>
+        <ul>
+            <li>Formez-vous sérieusement et pratiquez sur compte démo</li>
+            <li>Consultez un conseiller financier agréé si nécessaire</li>
+            <li>Ne jamais investir plus que ce que vous pouvez vous permettre de perdre</li>
+        </ul>
+
+        <h2>5. Compte utilisateur</h2>
+        <p>Vous êtes responsable de la confidentialité de vos identifiants. Tout accès via votre compte est réputé effectué par vous. dev.trade se réserve le droit de suspendre tout compte qui violerait les présentes conditions ou tenterait de contourner les accès premium.</p>
+
+        <h2>6. Propriété intellectuelle</h2>
+        <p>L'ensemble du contenu de dev.trade (articles, schémas, analyses, stratégies, code source des démonstrations) est protégé par le droit d'auteur. Toute reproduction ou diffusion sans autorisation est interdite. Le contenu premium ne peut en aucun cas être partagé ou redistribué.</p>
+
+        <h2>7. Données personnelles (RGPD)</h2>
+        <p>Les données collectées (nom, email) sont utilisées uniquement pour la gestion du compte et les communications liées au service. Elles ne sont jamais revendues. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression via la <a href="{{ path('app_contact') }}" style="color:var(--color-accent)">page de contact</a>.</p>
+
+        <h2>8. Cookies</h2>
+        <p>dev.trade utilise uniquement des cookies techniques nécessaires au fonctionnement du service (session, sécurité CSRF). Aucun cookie publicitaire ou de tracking tiers n'est utilisé.</p>
+
+        <h2>9. Disponibilité du service</h2>
+        <p>dev.trade s'efforce d'assurer une disponibilité maximale. Des interruptions ponctuelles peuvent survenir pour maintenance. dev.trade ne peut être tenu responsable des conséquences d'une indisponibilité temporaire.</p>
+
+        <h2>10. Modification des conditions</h2>
+        <p>dev.trade se réserve le droit de modifier ces conditions à tout moment. La poursuite de l'utilisation après modification vaut acceptation.</p>
+
+        <h2>11. Droit applicable</h2>
+        <p>Les présentes conditions sont régies par le droit français. En cas de litige, les tribunaux français seront seuls compétents.</p>
+
+        <h2>12. Contact</h2>
+        <p>Pour toute question, contactez-nous via la <a href="{{ path('app_contact') }}" style="color:var(--color-accent)">page de contact</a>.</p>
+
+    </div>
+
+    <div style="margin-top:3rem;padding-top:2rem;border-top:0.5px solid var(--color-border)">
+        <a href="{{ path('app_register') }}" class="btn btn--ghost">
+            <i class="bi bi-arrow-left"></i> Retour à l'inscription
+        </a>
+    </div>
+
+</section>
+{% endblock %}
