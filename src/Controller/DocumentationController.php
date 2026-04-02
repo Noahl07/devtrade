@@ -12,12 +12,33 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DocumentationController extends AbstractController
 {
     #[Route('/documentation', name: 'app_documentation', methods: ['GET'])]
-    public function index(DocumentCategoryRepository $categoryRepo): Response
-    {
+    public function index(
+        DocumentCategoryRepository $categoryRepo,
+        DocumentRepository $documentRepo
+    ): Response {
         $categories = $categoryRepo->findBy([], ['position' => 'ASC']);
 
+        // Vrais comptes depuis la BDD
+        $articleCounts = [];
+        $totalArticles = 0;
+        $totalMinutes  = 0;
+
+        foreach ($categories as $cat) {
+            $count = $documentRepo->countByCategory($cat);
+            $articleCounts[$cat->getSlug()] = $count;
+            $totalArticles += $count;
+        }
+
+        foreach ($documentRepo->findBy(['isPublished' => true]) as $doc) {
+            $totalMinutes += $doc->getReadingTime();
+        }
+
         return $this->render('documentation/index.html.twig', [
-            'categories' => $categories,
+            'categories'    => $categories,
+            'articleCounts' => $articleCounts,
+            'totalArticles' => $totalArticles,
+            'totalMinutes'  => $totalMinutes,
+            'moduleCount'   => count($categories),
         ]);
     }
 

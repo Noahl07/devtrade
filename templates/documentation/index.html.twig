@@ -11,21 +11,21 @@
         <span class="section-eyebrow">Ressources & Documentation</span>
         <h1>Maîtrisez les marchés.</h1>
         <p class="section-desc">
-            De zéro à trader professionnel — une documentation structurée en 11 modules,
-            71 articles, du débutant absolu aux modèles quantitatifs avancés.
+            De zéro à trader professionnel — une documentation structurée en {{ moduleCount }} modules,
+            {{ totalArticles }} articles, du débutant absolu aux modèles quantitatifs avancés.
         </p>
 
         <div class="doc-hero__stats">
             <div class="doc-hero__stat">
-                <span class="doc-hero__stat-val">71</span>
+                <span class="doc-hero__stat-val">{{ totalArticles }}</span>
                 <span class="doc-hero__stat-label">Articles</span>
             </div>
             <div class="doc-hero__stat">
-                <span class="doc-hero__stat-val">11</span>
+                <span class="doc-hero__stat-val">{{ moduleCount }}</span>
                 <span class="doc-hero__stat-label">Modules</span>
             </div>
             <div class="doc-hero__stat">
-                <span class="doc-hero__stat-val">~800</span>
+                <span class="doc-hero__stat-val">~{{ totalMinutes }}</span>
                 <span class="doc-hero__stat-label">Min de lecture</span>
             </div>
         </div>
@@ -191,51 +191,55 @@
     ] %}
 
     <div class="doc-modules-grid">
-        {% for module in modules %}
-            <a href="{{ path('app_documentation_category', {slug: module.slug}) }}"
-               class="doc-module {% if module.access == 'premium' and (not app.user or not app.user.isPremium) %}doc-module--locked{% endif %}">
+        {% for category in categories %}
+        {% set count = articleCounts[category.slug] ?? 0 %}
+        {% set isPremium = category.accessLevel == 'premium' %}
+        {% set isLocked = isPremium and (not app.user or not app.user.isPremium) %}
+            <a href="{{ path('app_documentation_category', {slug: category.slug}) }}"
+              class="doc-module {% if isLocked %}doc-module--locked{% endif %}">
 
                 <div class="doc-module__top">
-                    <div class="doc-module__icon doc-module__icon--{{ module.access }}">
-                        <i class="bi {{ module.icon }}"></i>
+                    <div class="doc-module__icon doc-module__icon--{{ category.accessLevel }}">
+                        <i class="bi {{ category.icon }}"></i>
                     </div>
                     <div class="doc-module__badges">
-                        <span class="doc-level-badge doc-level-badge--{{ module.level }}">
-                            Niveau {{ module.level }}
+                        <span class="doc-level-badge doc-level-badge--{{ category.position - 1 }}">
+                            Niveau {{ category.position - 1 }}
                         </span>
-                        {% if module.access == 'premium' %}
-                            <span class="tag tag--gold" style="font-size:10px">
-                                <i class="bi bi-star-fill"></i> Premium
-                            </span>
-                        {% elseif module.access == 'free' %}
-                            <span class="tag tag--accent" style="font-size:10px">
-                                <i class="bi bi-unlock-fill"></i> Gratuit
-                            </span>
-                        {% else %}
-                            <span class="tag" style="font-size:10px">
-                                <i class="bi bi-people-fill"></i> Public
-                            </span>
-                        {% endif %}
+                    {% if isPremium %}
+                        <span class="tag tag--gold" style="font-size:10px">
+                            <i class="bi bi-star-fill"></i> Premium
+                        </span>
+                    {% elseif category.accessLevel == 'free' %}
+                        <span class="tag tag--accent" style="font-size:10px">
+                            <i class="bi bi-unlock-fill"></i> Gratuit
+                        </span>
+                    {% else %}
+                        <span class="tag" style="font-size:10px">
+                            <i class="bi bi-people-fill"></i> Public
+                        </span>
+                    {% endif %}
                     </div>
                 </div>
 
                 <div class="doc-module__body">
-                    <h3 class="doc-module__title">{{ module.name }}</h3>
-                    <p class="doc-module__desc">{{ module.desc }}</p>
+            <h3 class="doc-module__title">{{ category.name }}</h3>
+            <p class="doc-module__desc">{{ category.description }}</p>
                 </div>
 
                 <div class="doc-module__footer">
                     <span class="doc-module__count">
-                        <i class="bi bi-file-text"></i> {{ module.count }} articles
+                        <i class="bi bi-file-text"></i> {% set count = articleCounts[category.slug] ?? 0 %}
+                            {% if count > 0 %}
+                                {{ count }} article{{ count > 1 ? 's' : '' }}
+                            {% else %}
+                                <em style="font-style:normal;color:var(--color-text-faint)">Bientôt disponible</em>
+                            {% endif %}
                     </span>
-                    {% if module.access == 'premium' and (not app.user or not app.user.isPremium) %}
-                        <span class="doc-module__lock">
-                            <i class="bi bi-lock-fill"></i>
-                        </span>
-                    {% else %}
-                        <span class="doc-module__arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </span>
+                    {% if isLocked %}
+                        <span class="doc-module__lock"><i class="bi bi-lock-fill"></i></span>
+                    {% elseif count > 0 %}
+                        <span class="doc-module__arrow"><i class="bi bi-arrow-right"></i></span>
                     {% endif %}
                 </div>
 
