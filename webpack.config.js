@@ -5,6 +5,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
+    .addEntry('custom-select', './assets/js/custom-select.js')
     .setOutputPath('public/build/')
     .setPublicPath('/build')
 
