@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     {# ── SEO ── #}
     <title>{% block title %}{{ site_name }}{% endblock %} — dev.trade</title>
     <meta name="description" content="{% block meta_description %}{{ site_description }}{% endblock %}">
@@ -67,6 +66,7 @@
     {% include 'components/_footer.html.twig' %}
 
     {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('custom-select') }}
 
     {% block javascripts %}{% endblock %}
 
