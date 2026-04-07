@@ -205,18 +205,19 @@
 {% endblock %}
 
 {% block javascripts %}
+{# SortableJS — fonctionne desktop ET mobile (touch) #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 <script>
 (function() {
 
-    // ── Data Twig injectée ──
-    const ALL_DOCS = {{ allDocs|json_encode|raw }};
+    const ALL_DOCS      = {{ allDocs|json_encode|raw }};
     const reorderCatUrl = '{{ path("app_admin_categories_reorder") }}';
     const reorderDocUrl = '{{ path("app_admin_documents_reorder") }}';
     const editDocBase   = '{{ path("app_admin_document_edit", {id: 0}) }}'.replace('/0/', '/');
-    const editCatBase   = '{{ path("app_admin_category_edit", {id: 0}) }}'.replace('/0/', '/');
 
     let currentCatId = null;
     let toastTimer   = null;
+    let artSortable  = null;
 
     // ── Toast ──
     function showToast() {
@@ -224,6 +225,25 @@
         t.style.display = 'flex';
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => { t.style.display = 'none'; }, 2000);
+    }
+
+    // ── Sauvegarde AJAX ──
+    function saveOrder(tbodyId, url) {
+        const rows = document.getElementById(tbodyId).querySelectorAll('.sortable-row');
+        const ids  = Array.from(rows).map(r => parseInt(r.dataset.id));
+        fetch(url, {
+            method : 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body   : JSON.stringify({ ids })
+        }).then(r => r.json()).then(d => { if (d.success) showToast(); })
+          .catch(e => console.error('Reorder error:', e));
+    }
+
+    // ── Mise à jour badges position ──
+    function updateBadges(tbodyId) {
+        document.getElementById(tbodyId).querySelectorAll('.pos-badge').forEach((b, i) => {
+            b.textContent = i + 1;
+        });
     }
 
     // ── Switch vues ──
@@ -235,146 +255,90 @@
         document.getElementById('btnNewDoc').style.display  = 'none';
         document.getElementById('pageTitleText').textContent = 'Catégories';
         currentCatId = null;
+        if (artSortable) { artSortable.destroy(); artSortable = null; }
     };
 
     window.showArticles = function(catRow) {
         currentCatId = parseInt(catRow.dataset.id);
         const catName = catRow.dataset.name;
-
         document.getElementById('viewCategories').style.display = 'none';
         document.getElementById('viewArticles').style.display   = '';
         document.getElementById('btnBack').style.display    = '';
         document.getElementById('btnNewCat').style.display  = 'none';
         document.getElementById('btnNewDoc').style.display  = '';
         document.getElementById('pageTitleText').textContent = catName;
-        document.getElementById('artCardTitle').innerHTML =
-            '<i class="bi bi-file-text"></i> ' + catName;
-
+        document.getElementById('artCardTitle').innerHTML = '<i class="bi bi-file-text"></i> ' + catName;
         renderArticles(currentCatId);
     };
 
+    // ── Rendu articles ──
     function renderArticles(catId) {
-        const docs = ALL_DOCS.filter(d => d.catId === catId)
-                              .sort((a, b) => a.position - b.position);
+        const docs = ALL_DOCS.filter(d => d.catId === catId).sort((a, b) => a.position - b.position);
         const tbody = document.getElementById('artBody');
 
         if (docs.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding:2rem">
-                Aucun article dans cette catégorie.</td></tr>`;
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted" style="padding:2rem">Aucun article.</td></tr>';
             return;
         }
 
         tbody.innerHTML = docs.map((doc, i) => `
-            <tr class="sortable-row art-row" data-id="${doc.id}" draggable="true">
-                <td class="drag-handle"><i class="bi bi-grip-vertical"></i></td>
+            <tr class="sortable-row" data-id="${doc.id}">
+                <td class="drag-handle" style="touch-action:none"><i class="bi bi-grip-vertical"></i></td>
                 <td><span class="pos-badge">${i + 1}</span></td>
                 <td>
                     <strong style="color:#F0F2F7">${doc.title}</strong>
                     ${doc.excerpt ? `<div style="font-size:12px;color:var(--color-text-faint);margin-top:2px;max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${doc.excerpt}</div>` : ''}
                 </td>
-                <td>
-                    ${doc.access === 'premium'
-                        ? '<span class="admin-badge admin-badge--gold"><i class="bi bi-star-fill"></i> Premium</span>'
-                        : '<span class="admin-badge admin-badge--green"><i class="bi bi-unlock-fill"></i> Gratuit</span>'}
-                </td>
+                <td>${doc.access === 'premium'
+                    ? '<span class="admin-badge admin-badge--gold"><i class="bi bi-star-fill"></i> Premium</span>'
+                    : '<span class="admin-badge admin-badge--green"><i class="bi bi-unlock-fill"></i> Gratuit</span>'}</td>
                 <td><span class="text-muted">${doc.readingTime ? doc.readingTime + ' min' : '—'}</span></td>
-                <td>
-                    ${doc.published
-                        ? '<span class="admin-badge admin-badge--green"><i class="bi bi-check-circle"></i> Publié</span>'
-                        : '<span class="admin-badge">Brouillon</span>'}
-                </td>
-                <td>
-                    <div style="display:flex;gap:5px">
-                        <a href="${editDocBase}${doc.id}/modifier"
-                           class="btn btn--ghost" style="padding:4px 9px;font-size:12px">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                    </div>
-                </td>
+                <td>${doc.published
+                    ? '<span class="admin-badge admin-badge--green"><i class="bi bi-check-circle"></i> Publié</span>'
+                    : '<span class="admin-badge">Brouillon</span>'}</td>
+                <td><a href="${editDocBase}${doc.id}/modifier" class="btn btn--ghost" style="padding:4px 9px;font-size:12px"><i class="bi bi-pencil"></i></a></td>
             </tr>
         `).join('');
 
-        initDragDrop('artBody', reorderDocUrl);
-    }
+        // Détruire l'ancien Sortable si existe
+        if (artSortable) artSortable.destroy();
 
-    // ── Drag & Drop générique ──
-    // tbodyId = string ID de l'élément, saveUrl = endpoint
-    function initDragDrop(tbodyId, saveUrl) {
-        const tbody = document.getElementById(tbodyId);
-        if (!tbody) return;
-
-        let dragSrc = null;
-
-        function getRows() { return Array.from(tbody.querySelectorAll('.sortable-row')); }
-
-        function updateBadges() {
-            getRows().forEach((r, i) => {
-                const b = r.querySelector('.pos-badge');
-                if (b) b.textContent = i + 1;
-            });
-        }
-
-        function save() {
-            const ids = getRows().map(r => parseInt(r.dataset.id));
-            fetch(saveUrl, {
-                method : 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-                body   : JSON.stringify({ ids })
-            }).then(r => r.json()).then(d => { if (d.success) showToast(); });
-        }
-
-        // Activer draggable uniquement via le handle
-        tbody.addEventListener('mousedown', e => {
-            const isHandle = !!e.target.closest('.drag-handle');
-            getRows().forEach(r => r.setAttribute('draggable', isHandle ? 'true' : 'false'));
+        artSortable = new Sortable(tbody, {
+            handle     : '.drag-handle',
+            animation  : 150,
+            ghostClass : 'drag-over',
+            dragClass  : 'dragging',
+            onEnd: function() {
+                updateBadges('artBody');
+                saveOrder('artBody', reorderDocUrl);
+            }
         });
 
-        tbody.addEventListener('dragstart', e => {
-            dragSrc = e.target.closest('.sortable-row');
-            if (!dragSrc) return;
-            dragSrc.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-        });
-
-        tbody.addEventListener('dragover', e => {
-            e.preventDefault();
-            const target = e.target.closest('.sortable-row');
-            if (!target || target === dragSrc) return;
-            getRows().forEach(r => r.classList.remove('drag-over'));
-            target.classList.add('drag-over');
-        });
-
-        tbody.addEventListener('dragleave', e => {
-            const t = e.target.closest('.sortable-row');
-            if (t) t.classList.remove('drag-over');
-        });
-
-        tbody.addEventListener('drop', e => {
-            e.preventDefault();
-            const target = e.target.closest('.sortable-row');
-            if (!target || !dragSrc || target === dragSrc) return;
-            const rect = target.getBoundingClientRect();
-            tbody.insertBefore(dragSrc, e.clientY < rect.top + rect.height / 2
-                ? target : target.nextSibling);
-            getRows().forEach(r => r.classList.remove('drag-over'));
-            updateBadges();
-            save();
-        });
-
-        tbody.addEventListener('dragend', () => {
-            if (dragSrc) dragSrc.classList.remove('dragging');
-            getRows().forEach(r => r.classList.remove('drag-over'));
-            dragSrc = null;
-        });
-
-        // Clic sur cellule catégorie pour drill-down
+        // Clic drill-down catégories (inutile ici mais conservé)
         tbody.querySelectorAll('.cat-clickable').forEach(cell => {
             cell.addEventListener('click', () => showArticles(cell.closest('tr')));
         });
     }
 
-    // Init drag catégories au chargement
-    initDragDrop('catBody', reorderCatUrl);
+    // ── Init SortableJS sur les catégories ──
+    const catBody = document.getElementById('catBody');
+    if (catBody) {
+        new Sortable(catBody, {
+            handle    : '.drag-handle',
+            animation : 150,
+            ghostClass: 'drag-over',
+            dragClass : 'dragging',
+            onEnd: function() {
+                updateBadges('catBody');
+                saveOrder('catBody', reorderCatUrl);
+            }
+        });
+
+        // Clic sur nom catégorie → drill-down articles
+        catBody.querySelectorAll('.cat-clickable').forEach(cell => {
+            cell.addEventListener('click', () => showArticles(cell.closest('tr')));
+        });
+    }
 
 })();
 </script>
