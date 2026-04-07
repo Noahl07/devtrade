@@ -21,6 +21,11 @@
                class="admin-nav__item {% if 'app_admin_document' in app.request.attributes.get('_route') %}admin-nav__item--active{% endif %}">
                 <i class="bi bi-file-text"></i> Articles
             </a>
+
+            <a href="{{ path('app_admin_categories') }}"
+            class="admin-nav__item {{ app.request.attributes.get('_route') starts with 'app_admin_categor' ? 'admin-nav__item--active' : '' }}">
+                <i class="bi bi-grid-fill"></i> Catégories
+            </a>
             <a href="{{ path('app_admin_projects') }}"
                class="admin-nav__item {% if 'app_admin_project' in app.request.attributes.get('_route') %}admin-nav__item--active{% endif %}">
                 <i class="bi bi-briefcase"></i> Projets
