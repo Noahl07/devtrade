@@ -153,3 +153,37 @@ app_robots:
     path: /robots.txt
     controller: App\Controller\SitemapController::robots
     methods: [GET]
+
+app_cgu:
+    path: /conditions-utilisation
+    controller: App\Controller\LegalController::cgu
+    methods: [GET]
+
+app_admin_categories:
+    path: /admin/categories
+    controller: App\Controller\AdminController::categories
+    methods: [GET]
+
+app_admin_category_new:
+    path: /admin/categories/nouvelle
+    controller: App\Controller\AdminController::categoryNew
+    methods: [GET, POST]
+
+app_admin_category_edit:
+    path: /admin/categories/{id}/modifier
+    controller: App\Controller\AdminController::categoryEdit
+    methods: [GET, POST]
+
+app_admin_category_delete:
+    path: /admin/categories/{id}/supprimer
+    controller: App\Controller\AdminController::categoryDelete
+    methods: [POST]
+
+app_admin_categories_reorder:
+    path: /admin/categories/reorder
+    controller: App\Controller\AdminController::categoriesReorder
+    methods: [POST]
+app_admin_documents_reorder:
+    path: /admin/documents/reorder
+    controller: App\Controller\AdminController::documentsReorder
+    methods: [POST]

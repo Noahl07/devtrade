@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — {{ mode == 'edit' ? 'Modifier' : 'Nouvelle' }} catégorie{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+    {% include 'admin/_sidebar.html.twig' %}
+    <div class="admin-main">
+
+        <div class="admin-topbar">
+            <h1 class="admin-page-title">
+                <i class="bi bi-{{ mode == 'edit' ? 'pencil' : 'plus-lg' }}"></i>
+                {{ mode == 'edit' ? 'Modifier la catégorie' : 'Nouvelle catégorie' }}
+            </h1>
+            <a href="{{ path('app_admin_categories') }}" class="btn btn--ghost">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+        </div>
+
+        {% if error %}
+            <div class="flash flash--danger" style="margin-bottom:1.5rem;max-width:100%">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="admin-form">
+
+            <div class="admin-form-grid" style="margin-bottom:1.2rem">
+
+                <div class="form-group">
+                    <label class="form-label">Nom *</label>
+                    <input type="text" name="name" class="form-control"
+                           value="{{ category ? category.name : '' }}"
+                           placeholder="Ex: Macroéconomie & Marchés" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Slug (URL)
+                        <span style="font-size:11px;color:var(--color-text-faint);font-weight:400"> — généré automatiquement si vide</span>
+                    </label>
+                    <input type="text" name="slug" class="form-control"
+                           value="{{ category ? category.slug : '' }}"
+                           placeholder="ex: macroeconomie-marches"
+                           style="font-family:var(--font-mono);font-size:13px">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Icône Bootstrap Icons
+                        <a href="https://icons.getbootstrap.com" target="_blank"
+                           style="font-size:11px;color:var(--color-accent);margin-left:6px">
+                            Voir les icônes <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    </label>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <input type="text" name="icon" id="iconInput" class="form-control"
+                               value="{{ category ? category.icon : '' }}"
+                               placeholder="Ex: bi-graph-up-arrow"
+                               oninput="updateIconPreview(this.value)">
+                        <div id="iconPreview" style="width:40px;height:40px;background:var(--color-accent-dim);border:0.5px solid var(--color-accent-border);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                            <i class="bi {{ category ? category.icon : 'bi-question' }}"
+                               id="iconPreviewIcon"
+                               style="font-size:18px;color:var(--color-accent)"></i>
+                        </div>
+                    </div>
+                    <small style="color:var(--color-text-faint);font-size:11px;margin-top:4px">
+                        Icônes populaires : bi-graph-up-arrow · bi-cpu-fill · bi-shield-check · bi-calculator-fill · bi-brain · bi-activity · bi-bar-chart-steps · bi-map-fill
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Accès</label>
+                    <select name="accessLevel" class="form-control">
+                        <option value="public"   {% if category and category.accessLevel == 'public' %}selected{% endif %}>Public (sans inscription)</option>
+                        <option value="free"     {% if not category or category.accessLevel == 'free' %}selected{% endif %}>Gratuit (inscription requise)</option>
+                        <option value="premium"  {% if category and category.accessLevel == 'premium' %}selected{% endif %}>Premium uniquement</option>
+                    </select>
+                </div>
+
+                <div class="form-group admin-form-full">
+                    <label class="form-label">Description courte</label>
+                    <textarea name="description" class="form-control" rows="3"
+                              placeholder="Description affichée sur la carte de la catégorie...">{{ category ? category.description : '' }}</textarea>
+                </div>
+
+            </div>
+
+            {# Prévisualisation de la carte #}
+            {% if category or true %}
+            <div style="margin-bottom:1.5rem">
+                <p style="font-size:12px;color:var(--color-text-faint);margin-bottom:0.8rem">
+                    <i class="bi bi-eye"></i> Prévisualisation de la carte
+                </p>
+                <div style="max-width:280px;background:var(--color-bg-2);border:0.5px solid var(--color-border);border-radius:var(--radius-lg);padding:1.4rem">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.8rem">
+                        <div style="width:36px;height:36px;background:var(--color-accent-dim);border:0.5px solid var(--color-accent-border);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center">
+                            <i class="bi {{ category ? category.icon : 'bi-question' }}" id="previewCardIcon" style="font-size:16px;color:var(--color-accent)"></i>
+                        </div>
+                        <strong id="previewName" style="color:#F0F2F7;font-size:13px">{{ category ? category.name : 'Nom de la catégorie' }}</strong>
+                    </div>
+                    <p id="previewDesc" style="font-size:12px;color:var(--color-text-faint)">{{ category ? category.description : 'Description...' }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:1rem;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--color-border)">
+                <a href="{{ path('app_admin_categories') }}" class="btn btn--ghost">Annuler</a>
+                <button type="submit" class="btn btn--primary">
+                    <i class="bi bi-check-lg"></i>
+                    {{ mode == 'edit' ? 'Enregistrer' : 'Créer la catégorie' }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% include 'admin/_styles.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+function updateIconPreview(value) {
+    const icon = document.getElementById('iconPreviewIcon');
+    const cardIcon = document.getElementById('previewCardIcon');
+    const name = document.querySelector('[name="name"]');
+    const desc = document.querySelector('[name="description"]');
+
+    // Nettoyer et appliquer la classe icon
+    const cls = value.startsWith('bi-') ? value : (value ? 'bi-' + value : 'bi-question');
+    icon.className = 'bi ' + cls;
+    if (cardIcon) cardIcon.className = 'bi ' + cls + ' ';
+}
+
+// Live preview du nom et description
+document.querySelector('[name="name"]')?.addEventListener('input', function() {
+    const el = document.getElementById('previewName');
+    if (el) el.textContent = this.value || 'Nom de la catégorie';
+});
+document.querySelector('[name="description"]')?.addEventListener('input', function() {
+    const el = document.getElementById('previewDesc');
+    if (el) el.textContent = this.value || 'Description...';
+});
+
+// Auto-générer le slug depuis le nom (si slug vide)
+document.querySelector('[name="name"]')?.addEventListener('blur', function() {
+    const slugField = document.querySelector('[name="slug"]');
+    if (slugField && !slugField.value) {
+        slugField.value = this.value
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // enlever accents
+            .replace(/[^a-z0-9\s-]/g, '')
+            .trim()
+            .replace(/\s+/g, '-');
+    }
+});
+</script>
+{% endblock %}

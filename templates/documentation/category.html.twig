@@ -32,7 +32,7 @@
         <div class="cat-header__meta">
             <div class="cat-meta-item">
                 <i class="bi bi-file-text"></i>
-                <span>{{ category.documents|length }} articles</span>
+                <span>{{ documents|length }} articles</span>
             </div>
         </div>
     </div>
@@ -62,14 +62,13 @@
 
         {# Liste des articles #}
         <div class="articles-list">
-            {% set published = category.documents|filter(d => d.isPublished) %}
-            {% if published|length == 0 %}
+            {% if documents|length == 0 %}
                 <div class="articles-empty">
                     <i class="bi bi-hourglass-split"></i>
                     <p>Articles en cours de rédaction — disponibles prochainement.</p>
                 </div>
             {% else %}
-                {% for document in published %}
+                {% for document in documents %}
                     <a href="{{ path('app_documentation_article', {accessLevel: document.accessLevel, slug: document.slug}) }}"
                        class="article-row {% if document.isPremium() and (not app.user or not app.user.isPremium) %}article-row--locked{% endif %}">
 
