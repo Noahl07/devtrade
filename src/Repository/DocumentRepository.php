@@ -14,14 +14,15 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
-    // Tous les articles publiés d'une catégorie
+    // Tous les articles publiés d'une catégorie — triés par position puis date
     public function findByCategory(DocumentCategory $category): array
     {
         return $this->createQueryBuilder('d')
             ->where('d.category = :cat')
             ->andWhere('d.isPublished = true')
             ->setParameter('cat', $category)
-            ->orderBy('d.createdAt', 'ASC')
+            ->orderBy('d.position', 'ASC')
+            ->addOrderBy('d.createdAt', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -34,6 +35,7 @@ class DocumentRepository extends ServiceEntityRepository
             ->andWhere('d.isPublished = true')
             ->setParameter('level', $accessLevel)
             ->orderBy('d.category', 'ASC')
+            ->addOrderBy('d.position', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -51,7 +53,7 @@ class DocumentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Récupère les articles liés (même catégorie, sauf l'article courant)
+    // Articles liés (même catégorie, sauf l'article courant)
     public function findRelated(Document $document, int $limit = 3): array
     {
         return $this->createQueryBuilder('d')
@@ -60,6 +62,7 @@ class DocumentRepository extends ServiceEntityRepository
             ->andWhere('d.isPublished = true')
             ->setParameter('cat', $document->getCategory())
             ->setParameter('id', $document->getId())
+            ->orderBy('d.position', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
@@ -85,5 +88,18 @@ class DocumentRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    // Position max dans une catégorie (pour auto-incrémenter)
+    public function getMaxPositionInCategory(DocumentCategory $category): int
+    {
+        $result = $this->createQueryBuilder('d')
+            ->select('MAX(d.position)')
+            ->where('d.category = :cat')
+            ->setParameter('cat', $category)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) ($result ?? 0);
     }
 }

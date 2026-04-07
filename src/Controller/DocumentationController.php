@@ -16,12 +16,10 @@ class DocumentationController extends AbstractController
         DocumentCategoryRepository $categoryRepo,
         DocumentRepository $documentRepo
     ): Response {
-        $categories = $categoryRepo->findBy([], ['position' => 'ASC']);
-
-        // Vrais comptes depuis la BDD
-        $articleCounts = [];
+        $categories    = $categoryRepo->findBy([], ['position' => 'ASC']);
         $totalArticles = 0;
         $totalMinutes  = 0;
+        $articleCounts = [];
 
         foreach ($categories as $cat) {
             $count = $documentRepo->countByCategory($cat);
@@ -30,7 +28,7 @@ class DocumentationController extends AbstractController
         }
 
         foreach ($documentRepo->findBy(['isPublished' => true]) as $doc) {
-            $totalMinutes += $doc->getReadingTime();
+            $totalMinutes += $doc->getReadingTime() ?? 0;
         }
 
         return $this->render('documentation/index.html.twig', [
@@ -45,7 +43,8 @@ class DocumentationController extends AbstractController
     #[Route('/documentation/categorie/{slug}', name: 'app_documentation_category', methods: ['GET'])]
     public function category(
         string $slug,
-        DocumentCategoryRepository $categoryRepo
+        DocumentCategoryRepository $categoryRepo,
+        DocumentRepository $documentRepo
     ): Response {
         $category = $categoryRepo->findOneBy(['slug' => $slug]);
 
@@ -61,7 +60,8 @@ class DocumentationController extends AbstractController
         }
 
         return $this->render('documentation/category.html.twig', [
-            'category' => $category,
+            'category'  => $category,
+            'documents' => $documentRepo->findByCategory($category),
         ]);
     }
 

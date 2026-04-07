@@ -1,0 +1,381 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — Catégories{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+    {% include 'admin/_sidebar.html.twig' %}
+    <div class="admin-main">
+
+        {# ── TOPBAR dynamique ── #}
+        <div class="admin-topbar" id="topbar">
+            <h1 class="admin-page-title" id="pageTitle">
+                <i class="bi bi-grid-fill"></i> <span id="pageTitleText">Catégories</span>
+            </h1>
+            <div style="display:flex;gap:8px;align-items:center">
+                <button id="btnBack" class="btn btn--ghost" style="display:none" onclick="showCategories()">
+                    <i class="bi bi-arrow-left"></i> Retour aux catégories
+                </button>
+                <a href="{{ path('app_admin_category_new') }}" class="btn btn--primary" id="btnNewCat">
+                    <i class="bi bi-plus-lg"></i> Nouvelle catégorie
+                </a>
+                <a href="{{ path('app_admin_document_new') }}" class="btn btn--primary" id="btnNewDoc" style="display:none">
+                    <i class="bi bi-plus-lg"></i> Nouvel article
+                </a>
+            </div>
+        </div>
+
+        {# Toast #}
+        <div id="saveToast" class="save-toast" style="display:none">
+            <i class="bi bi-check-circle-fill"></i> Ordre sauvegardé
+        </div>
+
+        {# ── VUE CATÉGORIES ── #}
+        <div id="viewCategories">
+            <div class="admin-card">
+                <div class="admin-card__header">
+                    <h3><i class="bi bi-grid"></i> {{ categories|length }} catégorie{{ categories|length > 1 ? 's' : '' }}</h3>
+                    <span style="font-size:12px;color:var(--color-text-faint)">
+                        <i class="bi bi-grip-vertical"></i> Glissez pour réordonner &nbsp;·&nbsp;
+                        <i class="bi bi-mouse2"></i> Cliquez pour voir les articles
+                    </span>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th style="width:36px"></th>
+                                <th style="width:44px">Pos.</th>
+                                <th style="width:44px">Icône</th>
+                                <th>Nom</th>
+                                <th>Accès</th>
+                                <th>Articles</th>
+                                <th style="width:100px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="catBody">
+                            {% for cat in categories %}
+                            <tr class="sortable-row cat-row" data-id="{{ cat.id }}"
+                                data-name="{{ cat.name }}"
+                                data-articles="{{ docsByCat[cat.id]|default([])|json_encode }}">
+                                <td class="drag-handle"><i class="bi bi-grip-vertical"></i></td>
+                                <td><span class="pos-badge">{{ cat.position }}</span></td>
+                                <td>
+                                    {% if cat.icon %}
+                                        <i class="bi {{ cat.icon }}" style="font-size:17px;color:var(--color-accent)"></i>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td class="cat-clickable" style="cursor:pointer">
+                                    <strong style="color:#F0F2F7">{{ cat.name }}</strong>
+                                    {% if cat.description %}
+                                        <div style="font-size:12px;color:var(--color-text-faint);margin-top:2px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                                            {{ cat.description }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if cat.accessLevel == 'premium' %}
+                                        <span class="admin-badge admin-badge--gold"><i class="bi bi-star-fill"></i> Premium</span>
+                                    {% elseif cat.accessLevel == 'free' %}
+                                        <span class="admin-badge admin-badge--green"><i class="bi bi-unlock-fill"></i> Gratuit</span>
+                                    {% else %}
+                                        <span class="admin-badge"><i class="bi bi-people-fill"></i> Public</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% set cnt = counts[cat.id] ?? 0 %}
+                                    <span class="admin-badge {{ cnt > 0 ? 'admin-badge--blue' : '' }}"
+                                          style="cursor:{% if cnt > 0 %}pointer{% else %}default{% endif %}"
+                                          onclick="{% if cnt > 0 %}showArticles(this.closest('tr')){% endif %}">
+                                        {{ cnt }} art.{% if cnt > 0 %} <i class="bi bi-chevron-right" style="font-size:10px"></i>{% endif %}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="display:flex;gap:5px">
+                                        <a href="{{ path('app_admin_category_edit', {id: cat.id}) }}"
+                                           class="btn btn--ghost" style="padding:4px 9px;font-size:12px" title="Modifier">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        {% if (counts[cat.id] ?? 0) == 0 %}
+                                        <form method="post" action="{{ path('app_admin_category_delete', {id: cat.id}) }}"
+                                              onsubmit="return confirm('Supprimer « {{ cat.name }} » ?')">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete-cat-' ~ cat.id) }}">
+                                            <button class="btn btn--danger" style="padding:4px 9px;font-size:12px" title="Supprimer">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                        {% else %}
+                                        <span style="color:var(--color-text-faint);padding:4px 8px;font-size:12px;cursor:help"
+                                              title="{{ counts[cat.id] }} articles dedans">
+                                            <i class="bi bi-lock"></i>
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted" style="padding:2rem">
+                                    Aucune catégorie —
+                                    <a href="{{ path('app_admin_category_new') }}" style="color:var(--color-accent)">créer la première</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        {# ── VUE ARTICLES (drill-down) ── #}
+        <div id="viewArticles" style="display:none">
+            <div class="admin-card">
+                <div class="admin-card__header">
+                    <h3 id="artCardTitle"><i class="bi bi-file-text"></i> Articles</h3>
+                    <span style="font-size:12px;color:var(--color-text-faint)">
+                        <i class="bi bi-grip-vertical"></i> Glissez pour réordonner
+                    </span>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th style="width:36px"></th>
+                                <th style="width:44px">Pos.</th>
+                                <th>Titre</th>
+                                <th>Accès</th>
+                                <th>Temps</th>
+                                <th>Statut</th>
+                                <th style="width:100px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="artBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% include 'admin/_styles.html.twig' %}
+<style>
+.drag-handle {
+    cursor: grab;
+    color: rgba(232,234,240,0.2);
+    font-size:15px;
+    text-align:center;
+    user-select:none;
+    transition: color var(--transition);
+}
+.drag-handle:hover { color: rgba(232,234,240,0.6); }
+.drag-handle:active { cursor: grabbing; }
+
+.sortable-row { transition: background 0.12s ease; }
+.sortable-row.dragging { opacity:.35; background: rgba(62,180,137,0.04) !important; }
+.sortable-row.drag-over { background: rgba(62,180,137,0.08) !important; box-shadow: inset 0 2px 0 var(--color-accent); }
+
+.pos-badge {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:22px; height:22px; border-radius:50%;
+    background:rgba(255,255,255,0.05); border:0.5px solid var(--color-border);
+    font-size:11px; font-family:var(--font-mono); color:var(--color-text-faint);
+}
+
+.cat-clickable:hover strong { color: var(--color-accent) !important; }
+.cat-row:hover { background: rgba(255,255,255,0.015); }
+
+/* Vue transition */
+#viewCategories, #viewArticles { animation: fadeIn 0.18s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+.save-toast {
+    position:fixed; bottom:1.5rem; right:1.5rem;
+    background:rgba(62,180,137,0.15); border:0.5px solid var(--color-accent-border);
+    color:var(--color-accent); padding:.7rem 1.2rem; border-radius:var(--radius-md);
+    font-size:13px; display:flex; align-items:center; gap:8px;
+    z-index:999; backdrop-filter:blur(8px); animation: toastIn 0.2s ease;
+}
+@keyframes toastIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+(function() {
+
+    // ── Data Twig injectée ──
+    const ALL_DOCS = {{ allDocs|json_encode|raw }};
+    const reorderCatUrl = '{{ path("app_admin_categories_reorder") }}';
+    const reorderDocUrl = '{{ path("app_admin_documents_reorder") }}';
+    const editDocBase   = '{{ path("app_admin_document_edit", {id: 0}) }}'.replace('/0/', '/');
+    const editCatBase   = '{{ path("app_admin_category_edit", {id: 0}) }}'.replace('/0/', '/');
+
+    let currentCatId = null;
+    let toastTimer   = null;
+
+    // ── Toast ──
+    function showToast() {
+        const t = document.getElementById('saveToast');
+        t.style.display = 'flex';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { t.style.display = 'none'; }, 2000);
+    }
+
+    // ── Switch vues ──
+    window.showCategories = function() {
+        document.getElementById('viewCategories').style.display = '';
+        document.getElementById('viewArticles').style.display   = 'none';
+        document.getElementById('btnBack').style.display    = 'none';
+        document.getElementById('btnNewCat').style.display  = '';
+        document.getElementById('btnNewDoc').style.display  = 'none';
+        document.getElementById('pageTitleText').textContent = 'Catégories';
+        currentCatId = null;
+    };
+
+    window.showArticles = function(catRow) {
+        currentCatId = parseInt(catRow.dataset.id);
+        const catName = catRow.dataset.name;
+
+        document.getElementById('viewCategories').style.display = 'none';
+        document.getElementById('viewArticles').style.display   = '';
+        document.getElementById('btnBack').style.display    = '';
+        document.getElementById('btnNewCat').style.display  = 'none';
+        document.getElementById('btnNewDoc').style.display  = '';
+        document.getElementById('pageTitleText').textContent = catName;
+        document.getElementById('artCardTitle').innerHTML =
+            '<i class="bi bi-file-text"></i> ' + catName;
+
+        renderArticles(currentCatId);
+    };
+
+    function renderArticles(catId) {
+        const docs = ALL_DOCS.filter(d => d.catId === catId)
+                              .sort((a, b) => a.position - b.position);
+        const tbody = document.getElementById('artBody');
+
+        if (docs.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding:2rem">
+                Aucun article dans cette catégorie.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = docs.map((doc, i) => `
+            <tr class="sortable-row art-row" data-id="${doc.id}" draggable="true">
+                <td class="drag-handle"><i class="bi bi-grip-vertical"></i></td>
+                <td><span class="pos-badge">${i + 1}</span></td>
+                <td>
+                    <strong style="color:#F0F2F7">${doc.title}</strong>
+                    ${doc.excerpt ? `<div style="font-size:12px;color:var(--color-text-faint);margin-top:2px;max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${doc.excerpt}</div>` : ''}
+                </td>
+                <td>
+                    ${doc.access === 'premium'
+                        ? '<span class="admin-badge admin-badge--gold"><i class="bi bi-star-fill"></i> Premium</span>'
+                        : '<span class="admin-badge admin-badge--green"><i class="bi bi-unlock-fill"></i> Gratuit</span>'}
+                </td>
+                <td><span class="text-muted">${doc.readingTime ? doc.readingTime + ' min' : '—'}</span></td>
+                <td>
+                    ${doc.published
+                        ? '<span class="admin-badge admin-badge--green"><i class="bi bi-check-circle"></i> Publié</span>'
+                        : '<span class="admin-badge">Brouillon</span>'}
+                </td>
+                <td>
+                    <div style="display:flex;gap:5px">
+                        <a href="${editDocBase}${doc.id}/modifier"
+                           class="btn btn--ghost" style="padding:4px 9px;font-size:12px">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        initDragDrop('artBody', reorderDocUrl);
+    }
+
+    // ── Drag & Drop générique ──
+    // tbodyId = string ID de l'élément, saveUrl = endpoint
+    function initDragDrop(tbodyId, saveUrl) {
+        const tbody = document.getElementById(tbodyId);
+        if (!tbody) return;
+
+        let dragSrc = null;
+
+        function getRows() { return Array.from(tbody.querySelectorAll('.sortable-row')); }
+
+        function updateBadges() {
+            getRows().forEach((r, i) => {
+                const b = r.querySelector('.pos-badge');
+                if (b) b.textContent = i + 1;
+            });
+        }
+
+        function save() {
+            const ids = getRows().map(r => parseInt(r.dataset.id));
+            fetch(saveUrl, {
+                method : 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                body   : JSON.stringify({ ids })
+            }).then(r => r.json()).then(d => { if (d.success) showToast(); });
+        }
+
+        // Activer draggable uniquement via le handle
+        tbody.addEventListener('mousedown', e => {
+            const isHandle = !!e.target.closest('.drag-handle');
+            getRows().forEach(r => r.setAttribute('draggable', isHandle ? 'true' : 'false'));
+        });
+
+        tbody.addEventListener('dragstart', e => {
+            dragSrc = e.target.closest('.sortable-row');
+            if (!dragSrc) return;
+            dragSrc.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+
+        tbody.addEventListener('dragover', e => {
+            e.preventDefault();
+            const target = e.target.closest('.sortable-row');
+            if (!target || target === dragSrc) return;
+            getRows().forEach(r => r.classList.remove('drag-over'));
+            target.classList.add('drag-over');
+        });
+
+        tbody.addEventListener('dragleave', e => {
+            const t = e.target.closest('.sortable-row');
+            if (t) t.classList.remove('drag-over');
+        });
+
+        tbody.addEventListener('drop', e => {
+            e.preventDefault();
+            const target = e.target.closest('.sortable-row');
+            if (!target || !dragSrc || target === dragSrc) return;
+            const rect = target.getBoundingClientRect();
+            tbody.insertBefore(dragSrc, e.clientY < rect.top + rect.height / 2
+                ? target : target.nextSibling);
+            getRows().forEach(r => r.classList.remove('drag-over'));
+            updateBadges();
+            save();
+        });
+
+        tbody.addEventListener('dragend', () => {
+            if (dragSrc) dragSrc.classList.remove('dragging');
+            getRows().forEach(r => r.classList.remove('drag-over'));
+            dragSrc = null;
+        });
+
+        // Clic sur cellule catégorie pour drill-down
+        tbody.querySelectorAll('.cat-clickable').forEach(cell => {
+            cell.addEventListener('click', () => showArticles(cell.closest('tr')));
+        });
+    }
+
+    // Init drag catégories au chargement
+    initDragDrop('catBody', reorderCatUrl);
+
+})();
+</script>
+{% endblock %}
