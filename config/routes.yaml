@@ -164,6 +164,11 @@ app_admin_categories:
     controller: App\Controller\AdminController::categories
     methods: [GET]
 
+app_admin_categories_reorder:
+    path: /admin/categories/reorder
+    controller: App\Controller\AdminController::categoriesReorder
+    methods: [POST]
+
 app_admin_category_new:
     path: /admin/categories/nouvelle
     controller: App\Controller\AdminController::categoryNew
@@ -179,10 +184,6 @@ app_admin_category_delete:
     controller: App\Controller\AdminController::categoryDelete
     methods: [POST]
 
-app_admin_categories_reorder:
-    path: /admin/categories/reorder
-    controller: App\Controller\AdminController::categoriesReorder
-    methods: [POST]
 app_admin_documents_reorder:
     path: /admin/documents/reorder
     controller: App\Controller\AdminController::documentsReorder
