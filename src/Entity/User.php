@@ -54,6 +54,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $resetTokenExpiresAt = null;
 
+    // ── Préférence de langue ──
+    #[ORM\Column(length: 5, options: ['default' => 'fr'])]
+    private string $locale = 'fr';
+
     #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'author')]
     private Collection $documents;
 
@@ -63,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createdAt  = new \DateTimeImmutable();
         $this->isPremium  = false;
         $this->roles      = ['ROLE_USER'];
+        $this->locale     = 'fr';
     }
 
     public function getId(): ?int { return $this->id; }
@@ -112,6 +117,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getResetTokenExpiresAt(): ?\DateTimeImmutable { return $this->resetTokenExpiresAt; }
     public function setResetTokenExpiresAt(?\DateTimeImmutable $v): static { $this->resetTokenExpiresAt = $v; return $this; }
+
+    public function getLocale(): string { return $this->locale; }
+    public function setLocale(string $locale): static { $this->locale = $locale; return $this; }
 
     public function getDocuments(): Collection { return $this->documents; }
 

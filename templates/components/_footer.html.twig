@@ -45,6 +45,14 @@
             <a href="#" class="footer__link">Mentions légales</a>
             <a href="#" class="footer__link">Politique de confidentialité</a>
             <a href="{{ path('app_contact') }}" class="footer__link">Contact</a>
+            <span class="footer__lang-switcher" data-no-translate>
+                {% set currentLocale = app.request.locale %}
+                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}"
+                   class="lang-switcher__btn {% if currentLocale == 'fr' %}lang-switcher__btn--active{% endif %}">FR</a>
+                <span class="lang-switcher__sep">|</span>
+                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}"
+                   class="lang-switcher__btn {% if currentLocale == 'en' %}lang-switcher__btn--active{% endif %}">EN</a>
+            </span>
         </div>
     </div>
 </footer>

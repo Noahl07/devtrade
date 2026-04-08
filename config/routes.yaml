@@ -188,3 +188,10 @@ app_admin_documents_reorder:
     path: /admin/documents/reorder
     controller: App\Controller\AdminController::documentsReorder
     methods: [POST]
+    
+app_locale_switch:
+    path: /langue/{locale}
+    controller: App\Controller\LocaleController::switchLocale
+    methods: [GET]
+    requirements:
+        locale: 'fr|en'
