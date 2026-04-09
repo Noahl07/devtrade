@@ -20,6 +20,11 @@ class ResponseTranslatorSubscriber implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event): void
     {
+        // Désactiver si variable d'env à 0 (utile pour debug prod)
+        if ($_ENV['APP_LOCALE_TRANSLATION_ENABLED'] ?? '1' === '0') {
+            return;
+        }
+        
         $request  = $event->getRequest();
         $response = $event->getResponse();
         $locale   = $request->getLocale();
