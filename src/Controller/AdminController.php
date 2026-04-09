@@ -417,6 +417,31 @@ class AdminController extends AbstractController
     }
 
     // ─────────────────────────────────────────
+    // CATÉGORIES — réordonnancement AJAX
+    // ─────────────────────────────────────────
+
+    #[Route('/categories/reorder', name: 'app_admin_categories_reorder', methods: ['POST'])]
+    public function categoriesReorder(
+        Request $request,
+        EntityManagerInterface $em,
+        DocumentCategoryRepository $catRepo
+    ): Response {
+        $data = json_decode($request->getContent(), true);
+        $ids  = $data['ids'] ?? [];
+
+        foreach ($ids as $position => $id) {
+            $cat = $catRepo->find((int)$id);
+            if ($cat) {
+                $cat->setPosition($position + 1);
+            }
+        }
+
+        $em->flush();
+
+        return $this->json(['success' => true]);
+    }
+
+    // ─────────────────────────────────────────
     // PROJETS — liste
     // ─────────────────────────────────────────
 
