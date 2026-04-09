@@ -195,3 +195,8 @@ app_locale_switch:
     methods: [GET]
     requirements:
         locale: 'fr|en'
+
+app_pricing:
+    path: /premium
+    controller: App\Controller\PricingController::index
+    methods: [GET]
