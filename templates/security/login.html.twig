@@ -44,15 +44,20 @@
                     Mot de passe
                     <a href="{{ path('app_forgot_password') }}" class="auth-form__forgot">Mot de passe oublié ?</a>
                 </label>
-                <input
-                    type="password"
-                    id="inputPassword"
-                    name="_password"
-                    class="form-control"
-                    placeholder="••••••••"
-                    autocomplete="current-password"
-                    required
-                >
+                <div class="input-password-wrap">
+                    <input
+                        type="password"
+                        id="inputPassword"
+                        name="_password"
+                        class="form-control"
+                        placeholder="••••••••"
+                        autocomplete="current-password"
+                        required
+                    >
+                    <button type="button" class="input-password-eye" onclick="togglePassword()" aria-label="Afficher le mot de passe">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="auth-form__remember">
@@ -86,24 +91,14 @@
     min-height: calc(100vh - var(--nav-height));
     padding: 3rem var(--section-px);
 }
-
-.auth-page {
-    width: 100%;
-    max-width: 440px;
-}
-
+.auth-page { width: 100%; max-width: 440px; }
 .auth-card {
     background: var(--color-bg-2);
     border: 0.5px solid var(--color-border);
     border-radius: var(--radius-xl);
     padding: 2.8rem;
 }
-
-.auth-card__header {
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
+.auth-card__header { margin-bottom: 2rem; text-align: center; }
 .auth-card__logo {
     font-family: var(--font-display);
     font-weight: 800;
@@ -113,28 +108,15 @@
     margin-bottom: 1.5rem;
     letter-spacing: -0.02em;
 }
-
-.auth-card__title {
-    font-size: 1.6rem;
-    margin-bottom: 0.5rem;
-}
-
-.auth-card__sub {
-    font-size: 14px;
-    font-weight: 300;
-}
-
+.auth-card__title { font-size: 1.6rem; margin-bottom: 0.5rem; }
+.auth-card__sub { font-size: 14px; font-weight: 300; }
 .auth-form__forgot {
     float: right;
     font-size: 12px;
     color: var(--color-accent);
     font-weight: 400;
 }
-
-.auth-form__remember {
-    margin-bottom: 1.5rem;
-}
-
+.auth-form__remember { margin-bottom: 1.5rem; }
 .auth-checkbox {
     display: flex;
     align-items: center;
@@ -143,9 +125,7 @@
     color: var(--color-text-muted);
     cursor: pointer;
 }
-
 .auth-checkbox input { display: none; }
-
 .auth-checkbox__box {
     width: 16px;
     height: 16px;
@@ -156,12 +136,10 @@
     transition: var(--transition);
     position: relative;
 }
-
 .auth-checkbox input:checked + .auth-checkbox__box {
     background: var(--color-accent);
     border-color: var(--color-accent);
 }
-
 .auth-checkbox input:checked + .auth-checkbox__box::after {
     content: '✓';
     position: absolute;
@@ -172,7 +150,6 @@
     color: #080B10;
     font-weight: 700;
 }
-
 .auth-form__submit {
     width: 100%;
     justify-content: center;
@@ -180,17 +157,50 @@
     font-size: 15px;
     margin-top: 0.5rem;
 }
-
 .auth-card__footer {
     margin-top: 1.8rem;
     text-align: center;
     font-size: 13.5px;
     color: var(--color-text-faint);
 }
+.auth-card__link { color: var(--color-accent); font-weight: 500; }
 
-.auth-card__link {
+/* ── Œil mot de passe ── */
+.input-password-wrap {
+    position: relative;
+}
+.input-password-wrap .form-control {
+    padding-right: 2.8rem;
+}
+.input-password-eye {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-faint);
+    font-size: 16px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: color var(--transition);
+}
+.input-password-eye:hover {
     color: var(--color-accent);
-    font-weight: 500;
 }
 </style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+function togglePassword() {
+    const input   = document.getElementById('inputPassword');
+    const icon    = document.getElementById('eyeIcon');
+    const visible = input.type === 'text';
+    input.type    = visible ? 'password' : 'text';
+    icon.className = visible ? 'bi bi-eye' : 'bi bi-eye-slash';
+}
+</script>
 {% endblock %}

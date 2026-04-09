@@ -56,6 +56,9 @@
                 <div class="form-group">
                     <label class="form-label">Accès</label>
                     <select name="accessLevel" class="form-control">
+                        <option value="public" {% if document and document.accessLevel == 'public' %}selected{% endif %}>
+                            Public (sans inscription)
+                        </option>
                         <option value="free" {% if not document or document.accessLevel == 'free' %}selected{% endif %}>
                             Gratuit (inscription requise)
                         </option>

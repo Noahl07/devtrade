@@ -53,12 +53,55 @@ class AdminController extends AbstractController
 
     #[Route('/documents', name: 'app_admin_documents', methods: ['GET'])]
     public function documents(
+        Request $request,
         DocumentRepository $docRepo,
         DocumentCategoryRepository $catRepo
     ): Response {
+        $perPage     = 30;
+        $currentPage = max(1, (int)$request->query->get('page', 1));
+
+        // Filtres
+        $filterCategory = $request->query->get('category');
+        $filterAccess   = $request->query->get('access');
+        $filterStatus   = $request->query->get('status');
+
+        // Construire la requête filtrée
+        $qb = $docRepo->createQueryBuilder('d')
+            ->orderBy('d.createdAt', 'DESC');
+
+        if ($filterCategory) {
+            $qb->andWhere('d.category = :cat')
+            ->setParameter('cat', (int)$filterCategory);
+        }
+        if ($filterAccess) {
+            $qb->andWhere('d.accessLevel = :access')
+            ->setParameter('access', $filterAccess);
+        }
+        if ($filterStatus === 'published') {
+            $qb->andWhere('d.isPublished = true');
+        } elseif ($filterStatus === 'draft') {
+            $qb->andWhere('d.isPublished = false');
+        }
+
+        // Compter le total
+        $countQb    = clone $qb;
+        $totalCount = (int)$countQb->select('COUNT(d.id)')->resetDQLPart('orderBy')->getQuery()->getSingleScalarResult();
+        $totalPages = max(1, (int)ceil($totalCount / $perPage));
+        $currentPage = min($currentPage, $totalPages);
+
+        // Paginer
+        $documents = $qb->select('d')
+            ->setFirstResult(($currentPage - 1) * $perPage)
+            ->setMaxResults($perPage)
+            ->getQuery()
+            ->getResult();
+
         return $this->render('admin/documents/index.html.twig', [
-            'documents'  => $docRepo->findBy([], ['createdAt' => 'DESC']),
-            'categories' => $catRepo->findBy([], ['position' => 'ASC']),
+            'documents'   => $documents,
+            'categories'  => $catRepo->findBy([], ['position' => 'ASC']),
+            'totalCount'  => $totalCount,
+            'totalPages'  => $totalPages,
+            'currentPage' => $currentPage,
         ]);
     }
 

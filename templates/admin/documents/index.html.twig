@@ -13,6 +13,45 @@
             </a>
         </div>
 
+        {# ── Filtres ── #}
+        <form method="get" class="admin-filters">
+            <div class="admin-filters__group">
+                <select name="category" class="form-control form-control--sm" onchange="this.form.submit()">
+                    <option value="">Toutes les catégories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if app.request.query.get('category') == cat.id ~ '' %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <select name="access" class="form-control form-control--sm" onchange="this.form.submit()">
+                    <option value="">Tous les accès</option>
+                    <option value="public"   {% if app.request.query.get('access') == 'public'  %}selected{% endif %}>Public</option>
+                    <option value="free"     {% if app.request.query.get('access') == 'free'    %}selected{% endif %}>Gratuit</option>
+                    <option value="premium"  {% if app.request.query.get('access') == 'premium' %}selected{% endif %}>Premium</option>
+                </select>
+
+                <select name="status" class="form-control form-control--sm" onchange="this.form.submit()">
+                    <option value="">Tous les statuts</option>
+                    <option value="published" {% if app.request.query.get('status') == 'published' %}selected{% endif %}>Publié</option>
+                    <option value="draft"     {% if app.request.query.get('status') == 'draft'     %}selected{% endif %}>Brouillon</option>
+                </select>
+
+                {% if app.request.query.get('category') or app.request.query.get('access') or app.request.query.get('status') %}
+                    <a href="{{ path('app_admin_documents') }}" class="btn btn--ghost btn--sm">
+                        <i class="bi bi-x-lg"></i> Effacer
+                    </a>
+                {% endif %}
+            </div>
+            <div class="admin-filters__count">
+                {{ totalCount }} article{{ totalCount > 1 ? 's' : '' }}
+                {% if totalCount != documents|length %}
+                    — page {{ currentPage }}/{{ totalPages }}
+                {% endif %}
+            </div>
+        </form>
+
         <div class="admin-card">
         <div class="admin-table-wrap">
             <table class="admin-table">
@@ -43,6 +82,10 @@
                                 {% if doc.accessLevel == 'premium' %}
                                     <span class="admin-badge admin-badge--gold">
                                         <i class="bi bi-star-fill"></i> Premium
+                                    </span>
+                                {% elseif doc.accessLevel == 'public' %}
+                                    <span class="admin-badge">
+                                        <i class="bi bi-globe"></i> Public
                                     </span>
                                 {% else %}
                                     <span class="admin-badge admin-badge--green">
@@ -92,16 +135,127 @@
                         <tr>
                             <td colspan="7" class="text-muted text-center" style="padding:3rem">
                                 <i class="bi bi-inbox" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.3"></i>
-                                Aucun article — <a href="{{ path('app_admin_document_new') }}" style="color:var(--color-accent)">Créer le premier</a>
+                                Aucun article trouvé
+                                {% if app.request.query.get('category') or app.request.query.get('access') or app.request.query.get('status') %}
+                                    — <a href="{{ path('app_admin_documents') }}" style="color:var(--color-accent)">effacer les filtres</a>
+                                {% else %}
+                                    — <a href="{{ path('app_admin_document_new') }}" style="color:var(--color-accent)">Créer le premier</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            </div>
         </div>
+        </div>
+
+        {# ── Pagination ── #}
+        {% if totalPages > 1 %}
+        <div class="admin-pagination">
+            {% if currentPage > 1 %}
+                <a href="{{ path('app_admin_documents', app.request.query.all|merge({page: currentPage - 1})) }}"
+                   class="admin-pagination__btn">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            {% endif %}
+
+            {% for p in 1..totalPages %}
+                {% if p == currentPage %}
+                    <span class="admin-pagination__btn admin-pagination__btn--active">{{ p }}</span>
+                {% elseif p == 1 or p == totalPages or (p >= currentPage - 2 and p <= currentPage + 2) %}
+                    <a href="{{ path('app_admin_documents', app.request.query.all|merge({page: p})) }}"
+                       class="admin-pagination__btn">{{ p }}</a>
+                {% elseif p == currentPage - 3 or p == currentPage + 3 %}
+                    <span class="admin-pagination__btn admin-pagination__btn--dots">…</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if currentPage < totalPages %}
+                <a href="{{ path('app_admin_documents', app.request.query.all|merge({page: currentPage + 1})) }}"
+                   class="admin-pagination__btn">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
 
     </div>
 </div>
 {% endblock %}
-{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% include 'admin/_styles.html.twig' %}
+<style>
+.admin-filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+}
+.admin-filters__group {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.admin-filters__count {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    white-space: nowrap;
+}
+.form-control--sm {
+    padding: 0.35rem 0.8rem;
+    font-size: 13px;
+    height: auto;
+    min-width: 160px;
+}
+.btn--sm {
+    padding: 0.35rem 0.8rem;
+    font-size: 12px;
+}
+.admin-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 1.5rem;
+}
+.admin-pagination__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    background: var(--color-bg-2);
+    border: 0.5px solid var(--color-border);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.admin-pagination__btn:hover {
+    border-color: var(--color-border-md);
+    color: var(--color-text);
+}
+.admin-pagination__btn--active {
+    background: var(--color-accent-dim);
+    border-color: var(--color-accent-border);
+    color: var(--color-accent);
+    font-weight: 600;
+}
+.admin-pagination__btn--dots {
+    border: none;
+    background: transparent;
+    cursor: default;
+}
+.admin-pagination__btn--dots:hover {
+    background: transparent;
+    color: var(--color-text-faint);
+}
+</style>
+{% endblock %}
