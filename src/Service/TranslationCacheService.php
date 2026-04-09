@@ -7,22 +7,18 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Service de traduction automatique via MyMemory API
- * avec cache Symfony par bloc de contenu.
+ * Traduction automatique via MyMemory API avec cache Symfony.
  *
- * - Locale 'fr' → retourne immédiatement, 0 appel API
- * - Cache par sha1(contenu) → traduit une seule fois pour toujours
- * - Fragmente automatiquement les textes > 450 chars (limite MyMemory)
- * - Fallback silencieux : si API hors quota → texte FR affiché, site reste lisible
- *
- * Pour passer sur LibreTranslate self-hosted (Hetzner) :
- *   TRANSLATION_PROVIDER=libretranslate
- *   LIBRETRANSLATE_URL=http://localhost:5000
+ * Stratégie pour éviter le timeout :
+ *  - Ne traduit QUE le contenu de <main> (pas nav/footer/scripts)
+ *  - Regroupe tous les textes en un seul appel API par batch de 5
+ *  - Cache par sha1(texte) → 0 appel API après la première traduction
+ *  - Timeout PHP augmenté à 120s le temps du premier chargement
  */
 class TranslationCacheService
 {
-    private const CACHE_TTL        = 60 * 60 * 24 * 30; // 30 jours
-    private const CHUNK_SIZE       = 450;                 // limite MyMemory par requête
+    private const CACHE_TTL  = 60 * 60 * 24 * 30; // 30 jours
+    private const CHUNK_SIZE = 400;                 // chars max par requête MyMemory
 
     public function __construct(
         private CacheInterface  $cache,
@@ -37,9 +33,6 @@ class TranslationCacheService
     // API publique
     // ──────────────────────────────────────────────
 
-    /**
-     * Traduit un bloc de texte simple (titre, extrait, description...).
-     */
     public function translate(string $text, string $targetLocale, string $sourceLocale = 'fr'): string
     {
         if ($targetLocale === $sourceLocale || empty(trim($text))) {
@@ -59,13 +52,6 @@ class TranslationCacheService
         }
     }
 
-    /**
-     * Traduit plusieurs blocs d'un coup.
-     * Ceux déjà en cache ne consomment aucun char API.
-     *
-     * @param string[] $texts
-     * @return string[]
-     */
     public function translateBatch(array $texts, string $targetLocale, string $sourceLocale = 'fr'): array
     {
         if ($targetLocale === $sourceLocale) {
@@ -99,9 +85,11 @@ class TranslationCacheService
     }
 
     /**
-     * Traduit une page HTML complète (approche "Chrome translate").
-     * Extrait uniquement le texte visible, traduit par blocs, reconstruit le HTML.
-     * Cache par cacheKey (= sha1 de route+params) → 1 appel API par page par langue.
+     * Traduit une page HTML complète.
+     * Extrait uniquement les nœuds texte du <main> pour :
+     *  1. Réduire drastiquement le nombre de textes à traduire
+     *  2. Ne pas toucher nav/footer/scripts/styles
+     *  3. Éviter le timeout PHP
      */
     public function translateHtmlPage(string $html, string $targetLocale, string $cacheKey): string
     {
@@ -113,18 +101,22 @@ class TranslationCacheService
 
         try {
             return $this->cache->get($fullCacheKey, function (ItemInterface $item) use ($html, $targetLocale) {
+                // Augmenter le timeout PHP pour le premier chargement
+                $previousLimit = ini_get('max_execution_time');
+                set_time_limit(180);
+
                 $item->expiresAfter(self::CACHE_TTL);
-                return $this->doTranslateHtml($html, $targetLocale);
+                $result = $this->doTranslateHtml($html, $targetLocale);
+
+                set_time_limit((int)$previousLimit);
+                return $result;
             });
         } catch (\Throwable $e) {
             $this->logger->error('[Translation HTML] ' . $e->getMessage());
-            return $html; // fallback : page en FR
+            return $html;
         }
     }
 
-    /**
-     * Invalide le cache d'un contenu (appeler lors de la modif d'un article).
-     */
     public function invalidate(string $text, string $targetLocale = 'en'): void
     {
         try {
@@ -132,10 +124,6 @@ class TranslationCacheService
         } catch (\Throwable) {}
     }
 
-    /**
-     * Invalide le cache d'une page entière (appeler lors de la modif d'un article).
-     * Passer le même cacheKey que dans translateHtmlPage.
-     */
     public function invalidatePage(string $cacheKey, string $targetLocale = 'en'): void
     {
         try {
@@ -144,36 +132,40 @@ class TranslationCacheService
     }
 
     // ──────────────────────────────────────────────
-    // Traduction HTML
+    // Traduction HTML — extrait uniquement <main>
     // ──────────────────────────────────────────────
 
     private function doTranslateHtml(string $html, string $targetLocale): string
     {
-        // On utilise DOMDocument pour extraire les nœuds texte
-        // et ne traduire que le contenu visible (pas les attributs, scripts, styles)
         $dom = new \DOMDocument('1.0', 'UTF-8');
-
-        // Supprimer les warnings HTML5
         libxml_use_internal_errors(true);
         $dom->loadHTML('<?xml encoding="UTF-8">' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         libxml_clear_errors();
 
-        // Collecter tous les nœuds texte à traduire
+        // Trouver le <main> uniquement → évite de traduire nav/footer/head
+        $mainNodes = $dom->getElementsByTagName('main');
+        if ($mainNodes->length === 0) {
+            // Fallback : traduire le <body> si pas de <main>
+            $mainNodes = $dom->getElementsByTagName('body');
+        }
+
+        if ($mainNodes->length === 0) {
+            return $html;
+        }
+
+        $mainNode  = $mainNodes->item(0);
         $textNodes = [];
-        $this->collectTextNodes($dom, $textNodes);
+        $this->collectTextNodes($mainNode, $textNodes);
 
         if (empty($textNodes)) {
             return $html;
         }
 
-        // Extraire les textes et traduire par batch
-        $texts = array_map(fn(\DOMText $node) => $node->nodeValue, $textNodes);
-
-        // Filtrer les textes vides / whitespace only
+        // Filtrer les textes vides ou trop courts
         $toTranslate = [];
-        foreach ($texts as $i => $text) {
-            $clean = trim($text);
-            if (strlen($clean) > 1) { // ignorer les chars isolés
+        foreach ($textNodes as $i => $node) {
+            $clean = trim($node->nodeValue);
+            if (mb_strlen($clean) > 2) {
                 $toTranslate[$i] = $clean;
             }
         }
@@ -182,52 +174,102 @@ class TranslationCacheService
             return $html;
         }
 
-        // Traduire par chunks de 20 textes à la fois (évite les timeouts)
-        $chunks = array_chunk($toTranslate, 20, true);
-        $translated = [];
-
-        foreach ($chunks as $chunk) {
-            $result = $this->translateBatch($chunk, $targetLocale);
-            $translated += $result;
-            if (count($chunks) > 1) {
-                usleep(100000); // 100ms entre chunks
+        // Vérifier le cache pour chaque texte
+        $needsApi = [];
+        $cached   = [];
+        foreach ($toTranslate as $i => $text) {
+            $hit = $this->getFromCache('trans_' . $targetLocale . '_' . sha1($text));
+            if ($hit !== null) {
+                $cached[$i] = $hit;
+            } else {
+                $needsApi[$i] = $text;
             }
         }
 
-        // Réinjecter les traductions dans les nœuds DOM
+        // Traduire par batch ceux qui ne sont pas en cache
+        $translated = $cached;
+        if (!empty($needsApi)) {
+            // Regrouper en macro-blocs pour minimiser les appels API
+            $apiResults = $this->translateInMacroBlocks($needsApi, $targetLocale);
+            foreach ($apiResults as $i => $text) {
+                $translated[$i] = $text;
+                // Sauvegarder chaque texte en cache individuel
+                $this->saveToCache('trans_' . $targetLocale . '_' . sha1($toTranslate[$i]), $text);
+            }
+        }
+
+        // Réinjecter dans le DOM
         foreach ($translated as $i => $translatedText) {
-            // Préserver les espaces originaux autour du texte
-            $original = $texts[$i];
+            $original = $textNodes[$i]->nodeValue;
             $leading  = strlen($original) - strlen(ltrim($original));
             $trailing = strlen($original) - strlen(rtrim($original));
             $textNodes[$i]->nodeValue =
                 substr($original, 0, $leading) .
                 $translatedText .
-                substr($original, strlen($original) - $trailing);
+                ($trailing > 0 ? substr($original, -$trailing) : '');
         }
 
         $result = $dom->saveHTML();
-
-        // Nettoyer le préfixe XML ajouté
         $result = str_replace('<?xml encoding="UTF-8">', '', $result);
 
         return $result ?: $html;
     }
 
     /**
-     * Collecte récursivement les nœuds texte visibles du DOM.
-     * Ignore : <script>, <style>, <code>, <pre>, attributs, data-no-translate
+     * Regroupe les textes courts en macro-blocs séparés par \n
+     * pour minimiser le nombre d'appels API.
+     * Ex: 50 textes courts → 5-10 appels au lieu de 50.
      */
+    private function translateInMacroBlocks(array $texts, string $targetLocale): array
+    {
+        $SEPARATOR = ' §§§ '; // séparateur reconnaissable
+        $blocks    = [];      // [startIndex => [indices]]
+        $current   = [];
+        $currentLen = 0;
+
+        foreach ($texts as $i => $text) {
+            $len = strlen($text) + strlen($SEPARATOR);
+            if ($currentLen + $len > self::CHUNK_SIZE && !empty($current)) {
+                $blocks[] = $current;
+                $current  = [];
+                $currentLen = 0;
+            }
+            $current[$i] = $text;
+            $currentLen += $len;
+        }
+        if (!empty($current)) {
+            $blocks[] = $current;
+        }
+
+        $results = [];
+
+        foreach ($blocks as $block) {
+            $indices   = array_keys($block);
+            $combined  = implode($SEPARATOR, array_values($block));
+
+            $translatedCombined = $this->callApi($combined, $targetLocale, 'fr') ?? $combined;
+
+            // Re-splitter sur le séparateur (MyMemory peut légèrement altérer l'espacement)
+            $parts = preg_split('/\s*§§§\s*/u', $translatedCombined);
+
+            foreach ($indices as $j => $i) {
+                $results[$i] = $parts[$j] ?? $texts[$i];
+            }
+
+            usleep(200000); // 200ms entre blocs pour éviter le rate limit
+        }
+
+        return $results;
+    }
+
     private function collectTextNodes(\DOMNode $node, array &$textNodes): void
     {
-        // Tags à ignorer complètement
-        $skipTags = ['script', 'style', 'code', 'pre', 'textarea', 'meta', 'link'];
+        $skipTags = ['script', 'style', 'code', 'pre', 'textarea', 'meta', 'link', 'noscript'];
 
         if ($node instanceof \DOMElement) {
             if (in_array(strtolower($node->nodeName), $skipTags)) {
                 return;
             }
-            // Attribut data-no-translate → skip ce bloc et ses enfants
             if ($node->hasAttribute('data-no-translate')) {
                 return;
             }
@@ -244,7 +286,7 @@ class TranslationCacheService
     }
 
     // ──────────────────────────────────────────────
-    // Routeur de provider
+    // Providers
     // ──────────────────────────────────────────────
 
     private function callApi(string $text, string $to, string $from): ?string
@@ -255,25 +297,21 @@ class TranslationCacheService
         };
     }
 
-    // ──────────────────────────────────────────────
-    // MyMemory
-    // ──────────────────────────────────────────────
-
     private function callMyMemory(string $text, string $to, string $from): ?string
     {
-        if (strlen($text) <= self::CHUNK_SIZE) {
-            return $this->myMemoryRequest($text, $to, $from);
+        // Fragmenter si trop long
+        if (strlen($text) > self::CHUNK_SIZE) {
+            $chunks     = $this->splitText($text, self::CHUNK_SIZE);
+            $translated = [];
+            foreach ($chunks as $chunk) {
+                $result       = $this->myMemoryRequest($chunk, $to, $from);
+                $translated[] = $result ?? $chunk;
+                usleep(150000);
+            }
+            return implode(' ', $translated);
         }
 
-        $chunks     = $this->splitText($text, self::CHUNK_SIZE);
-        $translated = [];
-        foreach ($chunks as $chunk) {
-            $result       = $this->myMemoryRequest($chunk, $to, $from);
-            $translated[] = $result ?? $chunk;
-            usleep(150000); // 150ms entre requêtes
-        }
-
-        return implode(' ', $translated);
+        return $this->myMemoryRequest($text, $to, $from);
     }
 
     private function myMemoryRequest(string $text, string $to, string $from): ?string
@@ -291,7 +329,7 @@ class TranslationCacheService
         $ch = curl_init($url);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT        => 10,
+            CURLOPT_TIMEOUT        => 15,
             CURLOPT_USERAGENT      => 'devtrade/1.0',
         ]);
 
@@ -314,10 +352,6 @@ class TranslationCacheService
         return $data['responseData']['translatedText'] ?? null;
     }
 
-    // ──────────────────────────────────────────────
-    // LibreTranslate (self-hosted Hetzner — futur)
-    // ──────────────────────────────────────────────
-
     private function callLibreTranslate(string $text, string $to, string $from): ?string
     {
         $body = json_encode([
@@ -334,7 +368,7 @@ class TranslationCacheService
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $body,
             CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
-            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_TIMEOUT        => 30,
         ]);
 
         $response = curl_exec($ch);
@@ -351,19 +385,18 @@ class TranslationCacheService
     }
 
     // ──────────────────────────────────────────────
-    // Helpers cache
+    // Helpers
     // ──────────────────────────────────────────────
 
     private function getFromCache(string $key): ?string
     {
         try {
-            $result = null;
-            $this->cache->get($key, function (ItemInterface $item) use (&$result) {
-                $result = null; // cache miss
+            $miss = '__MISS__' . uniqid();
+            $val  = $this->cache->get($key, function (ItemInterface $item) use ($miss) {
                 $item->expiresAfter(1);
-                return null;
+                return $miss;
             });
-            return $result;
+            return str_starts_with((string)$val, '__MISS__') ? null : $val;
         } catch (\Throwable) {
             return null;
         }
