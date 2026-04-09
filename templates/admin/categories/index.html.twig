@@ -213,7 +213,7 @@
     const ALL_DOCS      = {{ allDocs|json_encode|raw }};
     const reorderCatUrl = '{{ path("app_admin_categories_reorder") }}';
     const reorderDocUrl = '{{ path("app_admin_documents_reorder") }}';
-    const editDocBase   = '{{ path("app_admin_document_edit", {id: 0}) }}'.replace('/0/', '/');
+    const editDocBase = '{{ path("app_admin_document_edit", {id: 0}) }}'.replace('0/modifier', '');
 
     let currentCatId = null;
     let toastTimer   = null;
