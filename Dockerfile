@@ -13,6 +13,11 @@ COPY . .
 # Appliquer le php.ini custom (timeout 300s)
 COPY php.ini /usr/local/etc/php/conf.d/custom.ini
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV APP_ENV=prod
+ENV APP_SECRET=tmp_build_secret
+ENV DATABASE_URL="postgresql://user:pass@localhost:5432/app?serverVersion=16&charset=utf8"
+
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 RUN npm ci && npm run build
