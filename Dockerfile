@@ -13,7 +13,7 @@ COPY . .
 # Appliquer le php.ini custom (timeout 300s)
 COPY php.ini /usr/local/etc/php/conf.d/custom.ini
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 RUN npm ci && npm run build
 
