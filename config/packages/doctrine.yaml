@@ -34,6 +34,8 @@ when@test:
     doctrine:
         dbal:
             dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+            # PostgreSQL local (18) : évite une version vide quand l'URL de test n'en précise pas.
+            server_version: '18'
 
 when@prod:
     doctrine:
