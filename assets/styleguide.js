@@ -1,7 +1,5 @@
-// Styleguide (dev uniquement) : bascule de palette et de police, contrastes calculés en direct.
+// Styleguide (dev uniquement) : contrastes WCAG calculés en direct sur les tokens.
 import './styles/ds.css';
-
-const root = document.documentElement;
 
 // Paires texte/fond à contrôler : [libellé, variable texte, variable fond, seuil]
 const PAIRS = [
@@ -72,18 +70,5 @@ function renderContrast() {
     );
 }
 
-function bindToggle(attribute, datasetKey) {
-    document.querySelectorAll(`[data-set-${attribute}]`).forEach((button) => {
-        button.addEventListener('click', () => {
-            root.dataset[datasetKey] = button.getAttribute(`data-set-${attribute}`);
-            document.querySelectorAll(`[data-set-${attribute}]`).forEach((b) => {
-                b.setAttribute('aria-pressed', String(b === button));
-            });
-            renderContrast();
-        });
-    });
-}
 
-bindToggle('palette', 'palette');
-bindToggle('font', 'displayFont');
 renderContrast();

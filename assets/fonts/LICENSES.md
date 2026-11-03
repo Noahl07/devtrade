@@ -6,8 +6,5 @@ Fichiers : sous-ensemble latin en WOFF2, récupérés depuis Google Fonts le 3 n
 | Fichier | Police | Auteurs |
 |---|---|---|
 | fraunces-*.woff2 | Fraunces (variable : wght 300-700, opsz) | Undercase Type |
-| instrument-serif-*.woff2 | Instrument Serif | Instrument |
 | inter-normal.woff2 | Inter (variable : wght 300-700) | Rasmus Andersson |
 | jetbrains-mono-normal.woff2 | JetBrains Mono (variable : wght 400-600) | JetBrains |
-
-Après le choix de la serif de titre (Fraunces ou Instrument Serif), supprimer les fichiers de l'autre.
