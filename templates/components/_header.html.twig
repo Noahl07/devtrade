@@ -1,0 +1,74 @@
+{% import 'components/ui/_ui.html.twig' as ui %}
+{% set route = app.request.attributes.get('_route') ?? '' %}
+{% set nav = [
+    { label: 'Développement', route: 'app_portfolio', match: 'app_portfolio' },
+    { label: product_name, route: 'app_trading', match: 'app_trading', tag: 'Démo' },
+    { label: 'Documentation', route: 'app_documentation', match: 'app_documentation' },
+    { label: 'Contact', route: 'app_contact', match: 'app_contact' },
+] %}
+
+<header class="site-header" data-site-header>
+    <div class="container site-header__inner">
+        <a class="brand" href="{{ path('app_home') }}" aria-label="dev.trade, accueil">dev<span class="brand__dot">.</span>trade</a>
+
+        <nav class="site-nav" aria-label="Navigation principale">
+            <ul>
+                {% for item in nav %}
+                    <li>
+                        <a href="{{ path(item.route) }}" {% if route starts with item.match %}aria-current="page"{% endif %}>
+                            {{ item.label }}
+                            {% if item.tag is defined %}<span class="site-nav__tag">{{ item.tag }}</span>{% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div class="site-header__actions">
+            {% if app.user %}
+                <a class="site-header__link" href="{{ path('app_compte') }}">{{ app.user.firstName ?: 'Mon espace' }}</a>
+            {% else %}
+                <a class="site-header__link" href="{{ path('app_login') }}">Connexion</a>
+            {% endif %}
+            <a class="button button--secondary button--sm" href="{{ path('app_contact') }}">Démarrer un projet</a>
+            <button class="menu-toggle" type="button" data-menu-open aria-haspopup="dialog" aria-controls="site-menu" aria-expanded="false">
+                Menu {{ ui.icon('menu') }}
+            </button>
+        </div>
+    </div>
+</header>
+
+{# Menu plein écran (mobile et tablette) : <dialog> natif, ouvert par assets/site.js #}
+<dialog class="site-menu" id="site-menu" aria-label="Menu" data-site-menu>
+    <div class="container site-menu__inner">
+        <div class="site-menu__top">
+            <a class="brand" href="{{ path('app_home') }}">dev<span class="brand__dot">.</span>trade</a>
+            <button class="menu-toggle menu-toggle--close" type="button" data-menu-close>
+                Fermer {{ ui.icon('close') }}
+            </button>
+        </div>
+
+        <nav aria-label="Navigation principale (menu)">
+            <ul class="site-menu__links">
+                {% for item in nav %}
+                    <li>
+                        <a href="{{ path(item.route) }}" {% if route starts with item.match %}aria-current="page"{% endif %}>
+                            <span>{{ '%02d'|format(loop.index) }}</span>{{ item.label }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div class="site-menu__footer">
+            {% if app.user %}
+                <a href="{{ path('app_compte') }}">Mon espace</a>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Connexion</a>
+                <a href="{{ path('app_register') }}">Créer un compte</a>
+            {% endif %}
+            <span class="num muted">{{ contact_email }}</span>
+        </div>
+    </div>
+</dialog>

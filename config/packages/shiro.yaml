@@ -82,3 +82,20 @@ parameters:
             metrics:
                 - { label: 'Résultat cumulé', value: '+18,5 %' }
                 - { label: 'Baisse max', value: 'TODO (autour de 2,45 % selon l''auteur, non confirmé)' }
+
+    # Prochaines dates de trade : prévision fournie par l'auteur (3 novembre 2026).
+    # Les jours fériés japonais n'ont PAS été recalculés ici : à vérifier avant chaque mise à jour.
+    # type : exact (le 5, 10, 15, 20, 25 ou 30), decale (reporté au jour ouvré précédent), ignore (fin d'année).
+    shiro.calendar:
+        - { date: '2026-11-05', type: exact }
+        - { date: '2026-11-10', type: exact }
+        - { date: '2026-11-13', type: decale }   # le 15 tombe un dimanche
+        - { date: '2026-11-20', type: exact }
+        - { date: '2026-11-25', type: exact }
+        - { date: '2026-11-30', type: exact }
+        - { date: '2026-12-04', type: decale }   # le 5 tombe un samedi
+        - { date: '2026-12-10', type: exact }
+        - { date: '2026-12-15', type: exact }
+        - { date: '2026-12-18', type: decale }   # le 20 tombe un dimanche
+        - { date: '2026-12-25', type: ignore }
+        - { date: '2026-12-30', type: ignore }
