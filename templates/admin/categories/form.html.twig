@@ -21,6 +21,7 @@
         {% endif %}
 
         <form method="post" class="admin-form">
+        <input type="hidden" name="_token" value="{{ csrf_token('admin_form') }}">
 
             <div class="admin-form-grid" style="margin-bottom:1.2rem">
 

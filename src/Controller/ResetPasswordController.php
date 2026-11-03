@@ -32,6 +32,9 @@ class ResetPasswordController extends AbstractController
         $error   = null;
 
         if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('forgot', (string) $request->request->get('_token'))) {
+                throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+            }
             $email = trim($request->request->get('email', ''));
 
             if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -105,7 +108,7 @@ class ResetPasswordController extends AbstractController
             $password = trim($request->request->get('password', ''));
             $confirm  = trim($request->request->get('confirm', ''));
 
-            if (strlen($password) < 8) {
+            if (strlen($password) < 8 || strlen($password) > 128) {
                 $error = 'Le mot de passe doit faire au moins 8 caractères.';
             } elseif ($password !== $confirm) {
                 $error = 'Les mots de passe ne correspondent pas.';

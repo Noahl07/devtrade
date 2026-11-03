@@ -18,10 +18,17 @@ class ContactController extends AbstractController
         $success = false;
 
         if ($request->isMethod('POST')) {
-            $name    = trim($request->request->get('name', ''));
+            if (!$this->isCsrfTokenValid('contact', (string) $request->request->get('_token'))) {
+                throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+            }
+            $name    = preg_replace('/[
+
+]+/', ' ', mb_substr(trim($request->request->get('name', '')), 0, 100));
             $email   = trim($request->request->get('email', ''));
-            $subject = trim($request->request->get('subject', ''));
-            $message = trim($request->request->get('message', ''));
+            $subject = preg_replace('/[
+
+]+/', ' ', mb_substr(trim($request->request->get('subject', '')), 0, 150));
+            $message = mb_substr(trim($request->request->get('message', '')), 0, 5000);
 
             if (!$name || !$email || !$message) {
                 $error = 'Veuillez remplir tous les champs obligatoires.';
@@ -30,7 +37,8 @@ class ContactController extends AbstractController
             } else {
                 try {
                     $mail = (new Email())
-                        ->from($email)
+                        ->from('contact@devtrade.fr')
+                        ->replyTo($email)
                         ->to('contact@devtrade.fr')
                         ->subject('[dev.trade] ' . ($subject ?: 'Nouveau message de ' . $name))
                         ->text("Nom : $name\nEmail : $email\n\nMessage :\n$message");

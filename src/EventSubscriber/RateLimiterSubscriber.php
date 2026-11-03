@@ -15,6 +15,8 @@ class RateLimiterSubscriber implements EventSubscriberInterface
         private RateLimiterFactoryInterface $registerLimiter,
         private RateLimiterFactoryInterface $waitlistLimiter,
         private RateLimiterFactoryInterface $loginLimiter,
+        private RateLimiterFactoryInterface $forgotLimiter,
+        private RateLimiterFactoryInterface $contactLimiter,
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -41,6 +43,18 @@ class RateLimiterSubscriber implements EventSubscriberInterface
         if ($route === 'app_trading_waitlist' && $request->isMethod('POST')) {
             if (!$this->waitlistLimiter->create($ip)->consume(1)->isAccepted()) {
                 $event->setResponse(new JsonResponse(['error' => 'Trop de requêtes.'], 429));
+            }
+        }
+
+        if ($route === 'app_forgot_password' && $request->isMethod('POST')) {
+            if (!$this->forgotLimiter->create($ip)->consume(1)->isAccepted()) {
+                $event->setResponse(new Response('Trop de tentatives. Réessayez plus tard.', 429));
+            }
+        }
+
+        if ($route === 'app_contact' && $request->isMethod('POST')) {
+            if (!$this->contactLimiter->create($ip)->consume(1)->isAccepted()) {
+                $event->setResponse(new Response('Trop de tentatives. Réessayez plus tard.', 429));
             }
         }
 

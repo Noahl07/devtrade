@@ -31,6 +31,7 @@
             {% endif %}
 
             <form method="post">
+                <input type="hidden" name="_token" value="{{ csrf_token('profil') }}">
 
                 <div class="profil-section-title">Informations personnelles</div>
 
@@ -60,6 +61,11 @@
                 <p style="font-size:13px;color:var(--color-text-faint);margin-bottom:1.2rem;font-weight:300">
                     Laissez vide si vous ne souhaitez pas le modifier.
                 </p>
+
+                <div class="form-group">
+                    <label class="form-label">Mot de passe actuel</label>
+                    <input type="password" name="currentPassword" class="form-control" autocomplete="current-password" placeholder="Requis pour changer le mot de passe">
+                </div>
 
                 <div class="profil-row">
                     <div class="form-group">
