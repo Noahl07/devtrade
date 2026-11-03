@@ -3,6 +3,7 @@
 import './styles/ds.css';
 import './styles/ds/layout.css';
 import './styles/ds/home.css';
+import { allow3D, lazyScene } from './js/device.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -79,54 +80,11 @@ if (revealables.length && !reducedMotion.matches && 'IntersectionObserver' in wi
     });
 }
 
-// ── Scène 3D du héros (chargée à la demande) ────────────────────────────────
-function canUseWebGL() {
-    try {
-        const canvas = document.createElement('canvas');
-        return Boolean(canvas.getContext('webgl2') || canvas.getContext('webgl'));
-    } catch {
-        return false;
-    }
-}
-
-function isLowPowerDevice() {
-    const connection = navigator.connection;
-    if (connection?.saveData) {
-        return true;
-    }
-    if (navigator.deviceMemory && navigator.deviceMemory < 4) {
-        return true;
-    }
-    const smallScreen = window.matchMedia('(max-width: 760px)').matches;
-    return smallScreen && (navigator.hardwareConcurrency || 8) <= 4;
-}
-
+// ── Scène 3D du héros (chargée à la demande, voir assets/js/device.js) ─────
 const heroArt = document.querySelector('[data-hero-scene]');
-if (heroArt && !reducedMotion.matches && !isLowPowerDevice() && canUseWebGL()) {
-    let dispose = null;
-
-    const observer = new IntersectionObserver(async ([entry]) => {
-        if (!entry.isIntersecting || dispose) {
-            return;
-        }
-        observer.disconnect();
-        try {
-            const { mountHeroScene } = await import(/* webpackChunkName: "hero-scene" */ './js/hero-scene.js');
-            dispose = mountHeroScene(heroArt, {
-                onReady: () => heroArt.classList.add('is-3d'),
-            });
-        } catch (error) {
-            // L'illustration SVG reste affichée : aucune fonctionnalité perdue.
-            console.warn('Scène 3D indisponible :', error);
-        }
-    });
-    observer.observe(heroArt);
-
-    // Libère le contexte WebGL quand on quitte la page
-    // (retour arrière via le cache du navigateur : l'illustration SVG reprend le relais)
-    window.addEventListener('pagehide', () => {
-        dispose?.();
-        dispose = null;
-        heroArt.classList.remove('is-3d');
+if (heroArt && allow3D()) {
+    lazyScene(heroArt, async () => {
+        const { mountHeroScene } = await import(/* webpackChunkName: "hero-scene" */ './js/hero-scene.js');
+        return { mount: mountHeroScene };
     });
 }
