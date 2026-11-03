@@ -122,6 +122,7 @@ class AdminController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
+            $this->requireCsrf($data['_token'] ?? null);
 
             if (empty($data['title']) || empty($data['category'])) {
                 $error = 'Le titre et la catégorie sont obligatoires.';
@@ -191,6 +192,7 @@ class AdminController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
+            $this->requireCsrf($data['_token'] ?? null);
 
             if (empty($data['title']) || empty($data['category'])) {
                 $error = 'Le titre et la catégorie sont obligatoires.';
@@ -306,6 +308,7 @@ class AdminController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
+            $this->requireCsrf($data['_token'] ?? null);
 
             if (empty($data['name'])) {
                 $error = 'Le nom est obligatoire.';
@@ -370,6 +373,7 @@ class AdminController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
+            $this->requireCsrf($data['_token'] ?? null);
 
             if (empty($data['name'])) {
                 $error = 'Le nom est obligatoire.';
@@ -444,6 +448,7 @@ class AdminController extends AbstractController
         EntityManagerInterface $em,
         DocumentRepository $docRepo
     ): Response {
+        $this->requireCsrf($request->headers->get('X-CSRF-Token'));
         $data = json_decode($request->getContent(), true);
         $ids  = $data['ids'] ?? [];
 
@@ -469,6 +474,7 @@ class AdminController extends AbstractController
         EntityManagerInterface $em,
         DocumentCategoryRepository $catRepo
     ): Response {
+        $this->requireCsrf($request->headers->get('X-CSRF-Token'));
         $data = json_decode($request->getContent(), true);
         $ids  = $data['ids'] ?? [];
 
@@ -510,6 +516,7 @@ class AdminController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
+            $this->requireCsrf($data['_token'] ?? null);
 
             if (empty($data['title'])) {
                 $error = 'Le titre est obligatoire.';
@@ -567,6 +574,7 @@ class AdminController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
+            $this->requireCsrf($data['_token'] ?? null);
 
             if (empty($data['title'])) {
                 $error = 'Le titre est obligatoire.';
@@ -640,5 +648,12 @@ class AdminController extends AbstractController
             $this->addFlash('success', $user->getFirstName() . ' est maintenant ' . ($user->isPremium() ? 'Premium' : 'gratuit') . '.');
         }
         return $this->redirectToRoute('app_admin_users');
+    }
+
+    private function requireCsrf(?string $token): void
+    {
+        if (!$this->isCsrfTokenValid('admin_form', (string) $token)) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
     }
 }

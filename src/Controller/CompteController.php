@@ -33,6 +33,10 @@ class CompteController extends AbstractController
         $error = null;
 
         if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('profil', (string) $request->request->get('_token'))) {
+                throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+            }
+            $currentPassword = (string) $request->request->get('currentPassword', '');
             $firstName   = trim($request->request->get('firstName', ''));
             $lastName    = trim($request->request->get('lastName', ''));
             $newPassword = trim($request->request->get('newPassword', ''));
@@ -42,8 +46,10 @@ class CompteController extends AbstractController
             if ($lastName)  $user->setLastName($lastName);
 
             if ($newPassword) {
-                if (strlen($newPassword) < 8) {
-                    $error = 'Le mot de passe doit faire au moins 8 caractères.';
+                if (!$hasher->isPasswordValid($user, $currentPassword)) {
+                    $error = 'Le mot de passe actuel est incorrect.';
+                } elseif (strlen($newPassword) < 8 || strlen($newPassword) > 128) {
+                    $error = 'Le mot de passe doit faire entre 8 et 128 caractères.';
                 } elseif ($newPassword !== $confirm) {
                     $error = 'Les mots de passe ne correspondent pas.';
                 } else {

@@ -96,7 +96,7 @@
 
         {# Contenu #}
         <div class="article-content prose">
-            {{ document.content|raw }}
+            {{ document.content|sanitize_html }}
         </div>
 
         {# Footer article — navigation #}

@@ -12,6 +12,18 @@ framework:
             limit: 3
             interval: '1 hour'
 
+        # Mot de passe oublié : 5 demandes par heure par IP
+        forgot:
+            policy: fixed_window
+            limit: 5
+            interval: '1 hour'
+
+        # Contact : 5 messages par heure par IP
+        contact:
+            policy: fixed_window
+            limit: 5
+            interval: '1 hour'
+
         # Login : 10 tentatives par 15 minutes par IP
         login:
             policy: fixed_window

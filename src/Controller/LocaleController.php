@@ -28,7 +28,7 @@ class LocaleController extends AbstractController
 
         // 3. Retour sur la page précédente
         $referer = $request->headers->get('referer');
-        if ($referer) {
+        if ($referer && parse_url($referer, PHP_URL_HOST) === $request->getHost()) {
             return $this->redirect($referer);
         }
 
