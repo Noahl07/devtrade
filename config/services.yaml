@@ -15,13 +15,6 @@ services:
             - '../src/Kernel.php'
 
     # ── Traduction automatique ──
-    App\Service\TranslationCacheService:
-        arguments:
-            $provider:          '%env(TRANSLATION_PROVIDER)%'
-            $myMemoryEmail:     '%env(MYMEMORY_EMAIL)%'
-            $libreTranslateUrl: '%env(LIBRETRANSLATE_URL)%'
-            $libreTranslateKey: '%env(LIBRETRANSLATE_KEY)%'
-
     # ── Locale subscriber ──
     App\EventSubscriber\LocaleSubscriber:
         arguments:
