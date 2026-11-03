@@ -7,6 +7,7 @@ twig:
         site_name: 'dev.trade'
         site_description: 'Développement fullstack & Trading algorithmique'
         contact_email: 'contact@devtrade.fr'
+        product_name: '%shiro.product_name%'
 
 when@test:
     twig:
