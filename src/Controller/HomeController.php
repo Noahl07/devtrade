@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Repository\DocumentCategoryRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\ProjectRepository;
+use App\Service\ShiroCalendar;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ class HomeController extends AbstractController
         ProjectRepository $projectRepo,
         DocumentCategoryRepository $categoryRepo,
         DocumentRepository $documentRepo,
-        #[Autowire('%shiro.calendar%')] array $calendar,
+        ShiroCalendar $calendar,
         #[Autowire('%shiro.demo_since%')] string $demoSince,
     ): Response {
         // Réalisations réelles uniquement (base de données) : aucun projet inventé.
@@ -37,21 +38,10 @@ class HomeController extends AbstractController
             ];
         }
 
-        // Prochaines dates du calendrier, regroupées par mois.
-        $today = new \DateTimeImmutable('today');
-        $monthFormatter = new \IntlDateFormatter('fr_FR', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM y');
-        $upcoming = [];
-        foreach ($calendar as $entry) {
-            $date = new \DateTimeImmutable($entry['date']);
-            if ($date >= $today) {
-                $upcoming[(string) $monthFormatter->format($date)][] = ['date' => $date, 'type' => $entry['type']];
-            }
-        }
-
         return $this->render('home/index.html.twig', [
             'featuredProjects' => $featuredProjects,
             'categories'       => $categories,
-            'calendar'         => $upcoming,
+            'calendar'         => $calendar->upcomingByMonth(),
             'demo_since'       => $demoSince,
         ]);
     }

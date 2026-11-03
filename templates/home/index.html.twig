@@ -174,28 +174,7 @@
                 <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span>
             </div>
 
-            {% if calendar is not empty %}
-                <div class="calendar">
-                    <span class="small muted">Prochains jours « gotobi » prévus</span>
-                    {% for month, days in calendar %}
-                        <p class="calendar__month">{{ month }}</p>
-                        <ul class="calendar__days">
-                            {% for day in days %}
-                                {% set labels = { exact: 'date exacte', decale: 'date décalée au jour ouvré précédent', ignore: 'ignorée (fin d\'année)' } %}
-                                <li class="calendar__day calendar__day--{{ day.type }}" title="{{ labels[day.type] }}">
-                                    <span aria-hidden="true">{{ day.date|date('d') }}</span>
-                                    <span class="visually-hidden">{{ day.date|date('d/m/Y') }} : {{ labels[day.type] }}</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endfor %}
-                    <div class="calendar__legend" aria-hidden="true">
-                        <span>Date exacte</span>
-                        <span class="is-decale">Décalée</span>
-                        <span class="is-ignore">Ignorée</span>
-                    </div>
-                </div>
-            {% endif %}
+            {% include 'components/_gotobi_calendar.html.twig' with { calendar: calendar } only %}
         </div>
     </div>
 </section>
