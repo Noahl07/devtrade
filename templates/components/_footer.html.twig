@@ -39,20 +39,16 @@
 
     </div>
 
+    <p class="footer__risk">
+        Le trading de CFD et de Forex comporte un risque élevé de perte en capital. Les performances passées, y compris en simulation, ne préjugent pas des performances futures. Ce site ne fournit ni conseil en investissement ni recommandation personnalisée.
+    </p>
+
     <div class="footer__bottom">
         <span>© {{ "now"|date("Y") }} dev.trade — Tous droits réservés</span>
         <div class="footer__bottom-links">
             <a href="#" class="footer__link">Mentions légales</a>
             <a href="#" class="footer__link">Politique de confidentialité</a>
             <a href="{{ path('app_contact') }}" class="footer__link">Contact</a>
-            <span class="footer__lang-switcher" data-no-translate>
-                {% set currentLocale = app.request.locale %}
-                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}"
-                   class="lang-switcher__btn {% if currentLocale == 'fr' %}lang-switcher__btn--active{% endif %}">FR</a>
-                <span class="lang-switcher__sep">|</span>
-                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}"
-                   class="lang-switcher__btn {% if currentLocale == 'en' %}lang-switcher__btn--active{% endif %}">EN</a>
-            </span>
         </div>
     </div>
 </footer>

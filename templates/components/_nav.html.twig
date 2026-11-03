@@ -35,20 +35,9 @@
             </li>
         </ul>
 
-        {# Actions droite : switcher langue + auth #}
+        {# Actions droite : auth (sélecteur FR/EN retiré tant que les fichiers de traduction n'existent pas) #}
         <div class="navbar__actions">
 
-            {# ── Switcher FR | EN — data-no-translate empêche la traduction du bouton lui-même ── #}
-            {% set currentLocale = app.request.locale %}
-            <div class="lang-switcher" data-no-translate>
-                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}"
-                   class="lang-switcher__btn {% if currentLocale == 'fr' %}lang-switcher__btn--active{% endif %}"
-                   aria-label="Français">FR</a>
-                <span class="lang-switcher__sep">|</span>
-                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}"
-                   class="lang-switcher__btn {% if currentLocale == 'en' %}lang-switcher__btn--active{% endif %}"
-                   aria-label="English">EN</a>
-            </div>
 
             {% if app.user %}
                 <div class="navbar__user">
@@ -94,15 +83,6 @@
                 <li><a href="{{ path('app_login') }}" class="navbar__mobile-link">Connexion</a></li>
                 <li><a href="{{ path('app_register') }}" class="navbar__mobile-link navbar__mobile-link--cta">S'inscrire</a></li>
             {% endif %}
-            <li class="navbar__mobile-divider"></li>
-            <li class="navbar__mobile-lang" data-no-translate>
-                {% set currentLocale = app.request.locale %}
-                <a href="{{ path('app_locale_switch', {locale: 'fr'}) }}"
-                   class="lang-switcher__btn {% if currentLocale == 'fr' %}lang-switcher__btn--active{% endif %}">FR</a>
-                <span class="lang-switcher__sep">|</span>
-                <a href="{{ path('app_locale_switch', {locale: 'en'}) }}"
-                   class="lang-switcher__btn {% if currentLocale == 'en' %}lang-switcher__btn--active{% endif %}">EN</a>
-            </li>
         </ul>
     </div>
 </nav>
