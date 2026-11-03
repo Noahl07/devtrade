@@ -149,7 +149,7 @@ a:hover {
 }
 
 .section {
-    padding-block: var(--space-9);
+    padding-block: clamp(var(--space-8), 8vw, var(--space-9));
 }
 
 .stack > * + * {

@@ -1,0 +1,25 @@
+/* Pont temporaire (Phase 2 → Phase 4 de la refonte).
+   Les pages pas encore refondues gardent app.css, mais reprennent ici les couleurs
+   et les polices auto-hébergées du design system. À supprimer avec app.css en Phase 4. */
+:root {
+    --color-bg: var(--ink-950);
+    --color-bg-2: var(--ink-900);
+    --color-bg-3: var(--ink-800);
+    --color-text: var(--ivory);
+    --color-text-muted: var(--text-muted);
+    --color-text-faint: var(--text-muted);   /* l'ancienne valeur (35 % d'opacité) ne passait pas l'AA */
+    --color-accent: var(--positive);
+    --color-accent-dim: color-mix(in srgb, var(--positive) 12%, transparent);
+    --color-accent-border: color-mix(in srgb, var(--positive) 30%, transparent);
+    --color-gold: var(--gold-500);
+    --color-gold-dim: color-mix(in srgb, var(--gold-500) 12%, transparent);
+
+    /* app.css redéfinit ces noms avec Syne / DM Sans (Google Fonts, retiré) */
+    --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+
+body {
+    background: var(--ink-950);
+}
