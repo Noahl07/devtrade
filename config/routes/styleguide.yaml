@@ -1,0 +1,6 @@
+# Styleguide du design system : environnement de dev uniquement (404 en prod et en test).
+when@dev:
+    app_styleguide:
+        path: /styleguide
+        controller: App\Controller\StyleguideController::index
+        methods: [GET]

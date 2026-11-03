@@ -11,6 +11,8 @@ Encore
 
     // Entry point principal
     .addEntry('app', './assets/app.js')
+    // Design system (refonte) : styleguide de dev, servi uniquement par la route app_styleguide
+    .addEntry('styleguide', './assets/styleguide.js')
 
     .splitEntryChunks()
     .enableSingleRuntimeChunk()

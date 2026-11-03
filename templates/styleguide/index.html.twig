@@ -1,0 +1,310 @@
+{# Styleguide du design system : environnement de dev uniquement (route déclarée sous when@dev). #}
+{% import 'components/ui/_ui.html.twig' as ui %}
+<!DOCTYPE html>
+<html lang="fr" data-palette="obsidienne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Styleguide — dev.trade</title>
+    {{ encore_entry_link_tags('styleguide') }}
+    <style>
+        /* Mise en page propre au styleguide (pas de couleur en dur : tokens uniquement) */
+        .sg-header { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+        .sg-header__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); padding-block: var(--space-4); }
+        .sg-controls { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+        .sg-toggle { display: inline-flex; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); overflow: hidden; }
+        .sg-toggle button { min-height: 36px; padding: 0 var(--space-4); background: none; border: 0; color: var(--text-2); font: 500 0.8rem var(--font-sans); cursor: pointer; }
+        .sg-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+        .sg-toggle-label { font-size: 0.75rem; color: var(--text-2); margin-right: var(--space-2); align-self: center; }
+        .sg-section { padding-block: var(--space-8); border-bottom: 1px solid var(--border); }
+        .sg-row { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
+        .sg-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-4); }
+        .sg-swatch { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--surface); }
+        .sg-swatch__chip { height: 72px; }
+        .sg-swatch__meta { padding: var(--space-3); font-size: 0.78rem; }
+        .sg-type-row { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-5); align-items: baseline; padding-block: var(--space-4); border-bottom: 1px solid var(--border); }
+        .sg-compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-5); }
+        .sg-compare__panel { padding: var(--space-6); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+        .sg-fonts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-5); }
+        .sg-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: var(--space-3); }
+        .sg-icons figure { margin: 0; padding: var(--space-4); display: flex; flex-direction: column; align-items: center; gap: var(--space-2); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.72rem; color: var(--text-2); }
+        .sg-icons .icon { width: 24px; height: 24px; color: var(--text); }
+        .sg-figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 var(--space-6); }
+        .sg-form { display: grid; gap: var(--space-5); max-width: 520px; }
+    </style>
+</head>
+<body>
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<header class="sg-header">
+    <div class="container sg-header__inner">
+        <strong class="num">dev<span style="color: var(--accent)">.</span>trade · styleguide</strong>
+        <div class="sg-controls">
+            <div class="sg-row">
+                <span class="sg-toggle-label">Palette</span>
+                <div class="sg-toggle" role="group" aria-label="Palette">
+                    <button type="button" data-set-palette="obsidienne" aria-pressed="true">A · Obsidienne &amp; Or</button>
+                    <button type="button" data-set-palette="minuit" aria-pressed="false">B · Minuit &amp; Or</button>
+                </div>
+            </div>
+            <div class="sg-row">
+                <span class="sg-toggle-label">Titres</span>
+                <div class="sg-toggle" role="group" aria-label="Police de titre">
+                    <button type="button" data-set-font="fraunces" aria-pressed="true">Fraunces</button>
+                    <button type="button" data-set-font="instrument" aria-pressed="false">Instrument Serif</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="contenu">
+
+    {# ── Introduction ── #}
+    <section class="sg-section">
+        <div class="container">
+            <span class="eyebrow">Phase 1 · Design system</span>
+            <h1>Quiet luxury, données précises.</h1>
+            <p class="lead">Sobre, dense en information, précis. L'or reste rare : deux ou trois éléments par écran.
+                Utilisez les boutons en haut pour comparer les palettes et les polices de titre.</p>
+            <div class="sg-row" style="margin-top: var(--space-6)">
+                {{ ui.button('Voir la méthode', '#composants', 'primary', 'arrow-right') }}
+                {{ ui.button('Rejoindre la liste d\'attente', '#formulaire', 'secondary') }}
+                {{ ui.button('En savoir plus', '#typographie', 'ghost', 'arrow-right') }}
+            </div>
+        </div>
+    </section>
+
+    {# ── Comparaison côte à côte ── #}
+    <section class="sg-section" aria-labelledby="sg-compare">
+        <div class="container">
+            <span class="eyebrow">Comparaison</span>
+            <h2 id="sg-compare">Palette A ou B</h2>
+            <div class="sg-compare">
+                {% for palette, name in { obsidienne: 'A · Obsidienne & Or', minuit: 'B · Minuit & Or' } %}
+                    <div class="sg-compare__panel" data-palette="{{ palette }}">
+                        <span class="eyebrow">{{ name }}</span>
+                        <h3>Le fixing de Tokyo, rien d'autre.</h3>
+                        <p class="muted">Un robot MetaTrader 5 sur USDJPY, en test sur compte démo.</p>
+                        <div class="card card--compact" style="margin-block: var(--space-5)">
+                            {{ ui.figure('+57 %', 'Résultat cumulé (backtest)', '2016 → 20 oct. 2026 · 693 trades · risque 0,5 % · commissions non incluses') }}
+                        </div>
+                        <div class="sg-row">
+                            {{ ui.button('Voir la méthode', null, 'primary') }}
+                            {{ ui.badge('Démo en cours', 'demo') }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {# ── Couleurs ── #}
+    <section class="sg-section" aria-labelledby="sg-colors">
+        <div class="container">
+            <span class="eyebrow">Tokens</span>
+            <h2 id="sg-colors">Couleurs</h2>
+            <div class="sg-swatches">
+                {% for token, role in {
+                    '--ink-950': 'Fond principal', '--ink-900': 'Fond surélevé', '--ink-800': 'Cartes',
+                    '--ink-700': 'Bordure décorative', '--ink-600': 'Bordure de champ',
+                    '--emerald-900': 'Émeraude 900', '--emerald-700': 'Émeraude 700', '--emerald-500': 'Émeraude 500',
+                    '--gold-500': 'Or (accent)', '--gold-300': 'Or clair', '--gold-100': 'Or pâle',
+                    '--ivory': 'Texte', '--text-muted': 'Texte secondaire',
+                    '--positive': 'Positif', '--negative': 'Négatif'
+                } %}
+                    <div class="sg-swatch">
+                        <div class="sg-swatch__chip" style="background: var({{ token }})"></div>
+                        <div class="sg-swatch__meta"><code class="num">{{ token }}</code><br><span class="muted">{{ role }}</span></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {# ── Contrastes (calculés en direct par assets/styleguide.js) ── #}
+    <section class="sg-section" aria-labelledby="sg-contrast">
+        <div class="container">
+            <span class="eyebrow">Accessibilité</span>
+            <h2 id="sg-contrast">Contrastes WCAG 2.2 AA</h2>
+            <p class="muted">Calculés sur la palette active. Seuils : 4,5:1 pour le texte, 3:1 pour le grand texte, les graphiques et les bordures de champ.</p>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <caption>Ratios recalculés à chaque changement de palette.</caption>
+                    <thead><tr><th scope="col">Usage</th><th scope="col">Tokens</th><th scope="col" class="num">Ratio</th><th scope="col" class="num">Seuil</th><th scope="col">Résultat</th></tr></thead>
+                    <tbody data-contrast-rows></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    {# ── Typographie ── #}
+    <section class="sg-section" id="typographie" aria-labelledby="sg-type">
+        <div class="container">
+            <span class="eyebrow">Typographie</span>
+            <h2 id="sg-type">Trois familles, trois rôles</h2>
+
+            <div class="sg-fonts" style="margin-bottom: var(--space-7)">
+                <div class="card" data-display-font="fraunces">
+                    <span class="eyebrow">Option 1 · Fraunces</span>
+                    <p style="font-family: var(--font-display); font-size: var(--step-3); line-height: 1.1; margin: 0">Précision, patience, <em>transparence.</em></p>
+                </div>
+                <div class="card" data-display-font="instrument">
+                    <span class="eyebrow">Option 2 · Instrument Serif</span>
+                    <p style="font-family: var(--font-display); font-size: var(--step-3); line-height: 1.1; margin: 0">Précision, patience, <em>transparence.</em></p>
+                </div>
+            </div>
+
+            <div class="sg-type-row"><span class="muted small num">h1 · step-5</span><h1 style="margin:0">Le temps, le flux, la précision</h1></div>
+            <div class="sg-type-row"><span class="muted small num">h2 · step-4</span><h2 style="margin:0">Des simulations, pas des promesses</h2></div>
+            <div class="sg-type-row"><span class="muted small num">h3 · step-2</span><h3 style="margin:0">Un seul mécanisme, bien délimité</h3></div>
+            <div class="sg-type-row"><span class="muted small num">lead</span><p class="lead" style="margin:0">Un texte d'introduction, plus grand et plus doux, pour poser le contexte d'une section.</p></div>
+            <div class="sg-type-row"><span class="muted small num">corps · Inter</span><p style="margin:0">Le corps de texte est en Inter, neutre et très lisible. La longueur de ligne est limitée à 68 caractères pour un confort de lecture optimal.</p></div>
+            <div class="sg-type-row"><span class="muted small num">données · mono</span><p class="num" style="margin:0">USDJPY 152,437 · 00:55:00 UTC · 693 trades · PF 1,77 · −3,2 %</p></div>
+        </div>
+    </section>
+
+    {# ── Composants ── #}
+    <section class="sg-section" id="composants" aria-labelledby="sg-components">
+        <div class="container stack">
+            <span class="eyebrow">Composants</span>
+            <h2 id="sg-components">Boutons, badges, avertissements</h2>
+
+            <div class="sg-row">
+                {{ ui.button('Principal', null, 'primary') }}
+                {{ ui.button('Secondaire', null, 'secondary') }}
+                {{ ui.button('Lien discret', null, 'ghost', 'arrow-right') }}
+            </div>
+            <div class="sg-row">
+                {{ ui.badge('Démo en cours', 'demo') }}
+                {{ ui.badge('Backtest', 'backtest') }}
+                {{ ui.badge('À venir', 'soon') }}
+                {{ ui.badge('Compte réel vérifié', 'live') }}
+            </div>
+
+            {{ ui.risk_notice() }}
+            {{ ui.notice('Le robot est en test sur compte démo depuis le 30 octobre 2026. Aucun historique réel vérifié à ce jour.', 'info', 'Statut.') }}
+
+            <hr class="rule rule--gold">
+
+            <h3>Cartes : rythmes variés</h3>
+            <div class="grid-12">
+                <article class="card card--feature span-7">
+                    <span class="eyebrow">Grande carte</span>
+                    <h3 class="card__title">Développement fullstack</h3>
+                    <p class="muted">Sites et applications Symfony, du cadrage à la mise en production.</p>
+                    {{ ui.button('Voir les réalisations', '#', 'ghost', 'arrow-right') }}
+                </article>
+                <div class="span-5" style="display:grid; gap: var(--space-5)">
+                    <article class="card card--compact">
+                        <h4>Carte compacte</h4>
+                        <p class="muted small" style="margin:0">Pour un contenu secondaire.</p>
+                    </article>
+                    <article class="card card--compact">
+                        <h4>Deuxième carte</h4>
+                        <p class="muted small" style="margin:0">Taille différente de la grande carte.</p>
+                    </article>
+                </div>
+            </div>
+
+            <h3 style="margin-top: var(--space-7)">Liste éditoriale</h3>
+            <ol class="editorial-list">
+                <li class="editorial-list__item"><span class="editorial-list__index">01</span><h4 class="editorial-list__title">ICT et structure de marché</h4><span class="muted small num">12 min</span></li>
+                <li class="editorial-list__item"><span class="editorial-list__index">02</span><h4 class="editorial-list__title">Lire l'orderflow</h4><span class="muted small num">9 min</span></li>
+                <li class="editorial-list__item"><span class="editorial-list__index">03</span><h4 class="editorial-list__title">Monte Carlo, sans magie</h4><span class="muted small num">15 min</span></li>
+            </ol>
+        </div>
+    </section>
+
+    {# ── Chiffres avec contexte ── #}
+    <section class="sg-section" aria-labelledby="sg-figures">
+        <div class="container">
+            <span class="eyebrow">Données</span>
+            <h2 id="sg-figures">Un chiffre n'existe pas sans son contexte</h2>
+            <p class="muted">La macro <code class="num">ui.figure</code> n'affiche rien si le contexte est vide.</p>
+            <div class="sg-figures">
+                {{ ui.figure('+57 %', 'Résultat cumulé', 'Backtest 2016 → 20 oct. 2026 · 693 trades · risque 0,5 % · commissions non incluses') }}
+                {{ ui.figure('3,2 %', 'Baisse max du solde', 'Même backtest') }}
+                {{ ui.figure('1,77', 'Profit factor', 'Même backtest') }}
+                {{ ui.figure('+999 %', 'Exemple sans contexte', '') }}
+            </div>
+
+            <div class="table-wrap" style="margin-top: var(--space-6)">
+                <table class="data-table">
+                    <caption>Backtest MetaTrader 5, USDJPY, risque 0,5 % par trade. Simulation, pas un résultat réel. Commissions non incluses.</caption>
+                    <thead><tr><th scope="col">Période</th><th scope="col" class="num">Trades</th><th scope="col" class="num">Profit factor</th><th scope="col" class="num">Gain moyen</th></tr></thead>
+                    <tbody>
+                        <tr><td>2016 → 20 oct. 2026</td><td class="num">693</td><td class="num">1,77</td><td class="num is-positive">+0,13 R</td></tr>
+                        <tr><td>2021 → 20 oct. 2026</td><td class="num">385</td><td class="num">2,12</td><td class="num is-positive">≈ +0,20 R</td></tr>
+                        <tr><td>Jours témoins</td><td class="num">—</td><td class="num">—</td><td class="num">0,00 R</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    {# ── Formulaire ── #}
+    <section class="sg-section" id="formulaire" aria-labelledby="sg-form">
+        <div class="container">
+            <span class="eyebrow">Formulaires</span>
+            <h2 id="sg-form">Liste d'attente (maquette)</h2>
+            <form class="sg-form" action="#" method="post" novalidate>
+                <div class="field">
+                    <label class="field__label" for="sg-email">Adresse e-mail</label>
+                    <input class="input" id="sg-email" type="email" autocomplete="email" placeholder="vous@exemple.fr" aria-describedby="sg-email-help">
+                    <span class="field__help" id="sg-email-help">Une seule notification à la sortie, pas de newsletter.</span>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="sg-email-err">Exemple d'erreur</label>
+                    <input class="input" id="sg-email-err" type="email" value="adresse@invalide" aria-invalid="true" aria-describedby="sg-email-err-msg">
+                    <span class="field__error" id="sg-email-err-msg">Cette adresse e-mail n'est pas valide.</span>
+                </div>
+                <div class="hp-field" aria-hidden="true">
+                    <label for="sg-website">Ne pas remplir</label>
+                    <input id="sg-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                </div>
+                <label class="checkbox">
+                    <input type="checkbox" required>
+                    <span>J'accepte que mon adresse soit utilisée pour me prévenir de la sortie de {{ product_name }}. Désinscription possible à tout moment.</span>
+                </label>
+                <div>{{ ui.button('Rejoindre la liste d\'attente', null, 'primary', null, 'button') }}</div>
+            </form>
+        </div>
+    </section>
+
+    {# ── Accordéon ── #}
+    <section class="sg-section" aria-labelledby="sg-faq">
+        <div class="container">
+            <span class="eyebrow">Accordéon natif</span>
+            <h2 id="sg-faq">FAQ</h2>
+            <div class="accordion">
+                <details>
+                    <summary>Le robot fonctionne-t-il avec une prop firm ? {{ ui.icon('plus') }}</summary>
+                    <div class="accordion__body"><p>Certaines prop firms interdisent les robots prêts à l'emploi. Vérifiez leurs règles avant tout achat.</p></div>
+                </details>
+                <details>
+                    <summary>Quel capital minimum ? {{ ui.icon('plus') }}</summary>
+                    <div class="accordion__body"><p>La taille de position minimale est de 0,01 lot. Aucun capital ne garantit un résultat.</p></div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    {# ── Icônes ── #}
+    <section class="sg-section" aria-labelledby="sg-icons">
+        <div class="container">
+            <span class="eyebrow">Icônes</span>
+            <h2 id="sg-icons">Jeu SVG du projet</h2>
+            <div class="sg-icons">
+                {% for name in ['arrow-right', 'arrow-up-right', 'check', 'plus', 'close', 'menu', 'alert', 'info', 'clock', 'chart', 'shield', 'lock', 'mail', 'code', 'book', 'calendar', 'download'] %}
+                    <figure>{{ ui.icon(name) }}<figcaption>{{ name }}</figcaption></figure>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+</main>
+{{ encore_entry_script_tags('styleguide') }}
+</body>
+</html>

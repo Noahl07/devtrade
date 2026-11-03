@@ -1,0 +1,6 @@
+/* Point d'entrée du design system dev.trade (Phase 1 de la refonte).
+   Ordre : polices → tokens → base → composants. */
+@import './ds/fonts.css';
+@import './ds/tokens.css';
+@import './ds/base.css';
+@import './ds/components.css';

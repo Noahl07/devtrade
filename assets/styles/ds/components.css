@@ -1,0 +1,430 @@
+/* Design system : composants
+   Règle : couleurs uniquement via les rôles de tokens.css. */
+
+/* ── Surtitre ─────────────────────────────────────────────── */
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-2);
+}
+
+.eyebrow::before {
+    content: '';
+    width: 1.5rem;
+    height: var(--hairline);
+    background: var(--accent);
+}
+
+/* ── Filets ───────────────────────────────────────────────── */
+.rule {
+    height: var(--hairline);
+    border: 0;
+    margin: var(--space-7) 0;
+    background: var(--border);
+}
+
+.rule--gold {
+    background: linear-gradient(90deg, transparent, var(--accent) 20%, var(--accent) 80%, transparent);
+    opacity: 0.6;
+}
+
+/* ── Icônes ───────────────────────────────────────────────── */
+.icon {
+    width: 1.15em;
+    height: 1.15em;
+    flex: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+/* ── Boutons ──────────────────────────────────────────────── */
+.button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 44px;   /* cible tactile */
+    padding: 0.7rem 1.4rem;
+    border: var(--hairline) solid transparent;
+    border-radius: var(--radius-sm);
+    font: 500 0.95rem/1 var(--font-sans);
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: background-color var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out),
+                color var(--dur-fast) var(--ease-out);
+}
+
+.button--primary {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.button--primary:hover {
+    background: var(--accent-strong);
+    color: var(--on-accent);
+}
+
+.button--secondary {
+    background: transparent;
+    border-color: var(--border-strong);
+    color: var(--text);
+}
+
+/* Micro-interaction : filet doré qui glisse sous le bouton */
+.button--secondary::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-base) var(--ease-out);
+}
+
+.button--secondary:hover {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.button--secondary:hover::after,
+.button--secondary:focus-visible::after {
+    transform: scaleX(1);
+}
+
+.button--ghost {
+    padding-inline: 0;
+    min-height: auto;
+    background: none;
+    color: var(--accent-strong);
+}
+
+.button--ghost .icon {
+    transition: transform var(--dur-base) var(--ease-out);
+}
+
+.button--ghost:hover .icon {
+    transform: translateX(3px);
+}
+
+.button[disabled],
+.button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Badges d'état ────────────────────────────────────────── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.2rem 0.6rem;
+    border: var(--hairline) solid var(--border-strong);
+    border-radius: 999px;
+    font: 500 0.75rem/1.4 var(--font-mono);
+    letter-spacing: 0.04em;
+    color: var(--text-2);
+}
+
+.badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.badge--demo { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.badge--backtest { color: var(--text-2); }
+.badge--soon { color: var(--text-2); border-style: dashed; }
+.badge--live { color: var(--positive); border-color: color-mix(in srgb, var(--positive) 45%, transparent); }
+
+/* ── Cartes (rythmes variés : grande, compacte, éditoriale) ── */
+.card {
+    padding: var(--space-6);
+    background: var(--surface);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
+}
+
+.card--feature {
+    padding: var(--space-7);
+    background:
+        radial-gradient(120% 80% at 100% 0%, var(--brand-soft), transparent 60%),
+        var(--surface);
+}
+
+.card--compact {
+    padding: var(--space-5);
+}
+
+.card__title {
+    font-size: var(--step-2);
+    margin-bottom: var(--space-3);
+}
+
+/* Liste éditoriale : alternative aux grilles de cartes identiques */
+.editorial-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: var(--hairline) solid var(--border);
+}
+
+.editorial-list__item {
+    display: grid;
+    grid-template-columns: 4rem 1fr auto;
+    gap: var(--space-5);
+    align-items: baseline;
+    padding-block: var(--space-5);
+    border-bottom: var(--hairline) solid var(--border);
+}
+
+.editorial-list__index {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+}
+
+.editorial-list__title {
+    margin: 0;
+    font-size: var(--step-1);
+}
+
+@media (max-width: 600px) {
+    .editorial-list__item { grid-template-columns: 2.5rem 1fr; }
+    .editorial-list__item > :last-child { grid-column: 2; }
+}
+
+/* ── Chiffre avec contexte obligatoire (règle §2.2) ────────── */
+.figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5) 0;
+    border-top: var(--hairline) solid var(--border);
+}
+
+.figure__value {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: var(--step-3);
+    line-height: 1;
+    color: var(--text);
+}
+
+.figure__label {
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.figure__context {
+    font-size: var(--step--1);
+    color: var(--text-2);
+}
+
+/* ── Avertissements ───────────────────────────────────────── */
+.notice {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    border: var(--hairline) solid var(--border-strong);
+    border-left: 2px solid var(--accent);
+    border-radius: var(--radius-md);
+    background: var(--bg-raised);
+    font-size: var(--step--1);
+    color: var(--text-2);
+}
+
+.notice .icon {
+    margin-top: 0.15em;
+    color: var(--accent);
+}
+
+.notice strong {
+    color: var(--text);
+}
+
+.notice--risk {
+    border-left-color: var(--negative);
+}
+
+.notice--risk .icon {
+    color: var(--negative);
+}
+
+/* ── Tableau de données ───────────────────────────────────── */
+.table-wrap {
+    overflow-x: auto;
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-lg);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.data-table caption {
+    padding: var(--space-4) var(--space-5);
+    text-align: left;
+    font-size: var(--step--1);
+    color: var(--text-2);
+    caption-side: bottom;
+    border-top: var(--hairline) solid var(--border);
+}
+
+.data-table th,
+.data-table td {
+    padding: var(--space-3) var(--space-5);
+    border-bottom: var(--hairline) solid var(--border);
+    text-align: left;
+}
+
+.data-table thead th {
+    font: 500 0.75rem/1.4 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    background: var(--bg-raised);
+}
+
+.data-table td.num,
+.data-table th.num {
+    text-align: right;
+}
+
+.data-table tbody tr:hover {
+    background: color-mix(in srgb, var(--surface) 60%, transparent);
+}
+
+.is-positive { color: var(--positive); }
+.is-negative { color: var(--negative); }
+
+/* ── Formulaires ──────────────────────────────────────────── */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.field__label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.field__help {
+    font-size: var(--step--1);
+    color: var(--text-2);
+}
+
+.field__error {
+    font-size: var(--step--1);
+    color: var(--negative);
+}
+
+.input {
+    min-height: 44px;
+    padding: 0.65rem 0.9rem;
+    background: var(--bg-raised);
+    border: var(--hairline) solid var(--border-strong);   /* 3:1 minimum */
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font: inherit;
+    transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.input::placeholder {
+    color: var(--text-2);
+}
+
+.input:hover {
+    border-color: var(--text-2);
+}
+
+.input:focus-visible {
+    border-color: var(--accent);
+}
+
+.input[aria-invalid="true"] {
+    border-color: var(--negative);
+}
+
+.checkbox {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    font-size: var(--step--1);
+    color: var(--text-2);
+}
+
+.checkbox input {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.15rem;
+    accent-color: var(--accent);
+}
+
+/* Piège à robots (honeypot) : invisible pour les humains et les lecteurs d'écran */
+.hp-field {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* ── Accordéon natif (details/summary) ────────────────────── */
+.accordion {
+    border-top: var(--hairline) solid var(--border);
+}
+
+.accordion details {
+    border-bottom: var(--hairline) solid var(--border);
+}
+
+.accordion summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5) 0;
+    cursor: pointer;
+    list-style: none;
+    font-size: var(--step-1);
+    font-family: var(--font-display);
+}
+
+.accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion summary .icon {
+    color: var(--accent);
+    transition: transform var(--dur-base) var(--ease-out);
+}
+
+.accordion details[open] summary .icon {
+    transform: rotate(45deg);
+}
+
+.accordion__body {
+    padding-bottom: var(--space-5);
+    color: var(--text-2);
+}
