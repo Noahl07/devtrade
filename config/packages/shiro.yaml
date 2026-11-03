@@ -1,0 +1,84 @@
+# Données publiques du robot Shiro (page /trading).
+#
+# Règles (voir PROMPT-REFONTE-DEVTRADE.md §2 et §5.3) :
+# - chaque série affiche sa période, son nombre de trades, sa nature (backtest),
+#   le risque par trade et les coûts non inclus ;
+# - une série n'apparaît sur le site que si `published: true` ;
+# - ne jamais publier ici les paramètres internes du robot (décalage d'entrée,
+#   retard max, durée exacte, stop ATR, spread max).
+parameters:
+    shiro.product_name: 'Shiro'
+    shiro.symbol: 'USDJPY'
+    shiro.demo_since: '30 octobre 2026'
+    shiro.costs_note: >-
+        La commission du courtier (environ 1 pip aller-retour) n'est pas incluse dans le testeur.
+        Selon le dossier, l'avantage reste positif jusqu'à environ 2 pips de coûts supplémentaires,
+        et un retard de 5 secondes à l'entrée retire environ un tiers du résultat.
+
+    shiro.backtests:
+        # Source : « Tokyo Fix (Shiro), le dossier complet », v1.15.
+        -   id: reference_risque_fixe
+            published: true
+            title: 'Backtest de référence'
+            period: '2016 → 20 octobre 2026'
+            trades: 693
+            risk: '0,5 % du solde par trade (fixe)'
+            deposit: '10 000 USD'
+            source: 'Testeur de stratégie MetaTrader 5, données MetaQuotes'
+            metrics:
+                - { label: 'Résultat cumulé', value: '+57 %' }
+                - { label: 'Baisse max du solde', value: '3,2 %' }
+                - { label: 'Trades gagnants', value: '56,3 %' }
+                - { label: 'Profit factor', value: '1,77' }
+                - { label: 'Gain moyen', value: '+0,13 R / trade' }
+
+        -   id: depuis_2021_risque_fixe
+            published: true
+            title: 'Sous-période depuis 2021'
+            period: '2021 → 20 octobre 2026'
+            trades: 385
+            risk: '0,5 % du solde par trade (fixe)'
+            deposit: '10 000 USD'
+            source: 'Même test, sous-période'
+            metrics:
+                - { label: 'Profit factor', value: '2,12' }
+                - { label: 'Gain moyen', value: 'environ +0,20 R / trade' }
+
+        # Chiffres donnés par l'auteur le 3 novembre 2026, réglage de risque réel du robot.
+        # TODO avant publication : confirmer pour chaque série les dates exactes et le
+        # nombre de trades, le drawdown exact, et si la v1.15 a été réglée sur ces données.
+        -   id: risque_variable_10_ans
+            published: false
+            title: 'Réglage par défaut, 10 ans'
+            period: 'TODO dates exactes (2016 → 20 octobre 2026 ?)'
+            trades: null # TODO : 693, comme le backtest de référence ?
+            risk: '0,5 à 1,5 % par trade (1,5 % dates exactes, 0,5 % dates décalées)'
+            deposit: '10 000 USD'
+            source: 'Testeur de stratégie MetaTrader 5'
+            metrics:
+                - { label: 'Résultat cumulé', value: '+240 %' }
+                - { label: 'Baisse max', value: 'TODO (proche de 5,45 % selon l''auteur)' }
+
+        -   id: risque_variable_5_ans
+            published: false
+            title: 'Réglage par défaut, 5 ans'
+            period: 'TODO dates exactes'
+            trades: null # TODO
+            risk: '0,5 à 1,5 % par trade (1,5 % dates exactes, 0,5 % dates décalées)'
+            deposit: '10 000 USD'
+            source: 'Testeur de stratégie MetaTrader 5'
+            metrics:
+                - { label: 'Résultat cumulé', value: '+115 %' }
+                - { label: 'Baisse max', value: '5,45 %' }
+
+        -   id: risque_variable_2026
+            published: false
+            title: 'Réglage par défaut, 2026'
+            period: '1er janvier → TODO date de fin 2026'
+            trades: null # TODO
+            risk: '0,5 à 1,5 % par trade (1,5 % dates exactes, 0,5 % dates décalées)'
+            deposit: '10 000 USD'
+            source: 'Testeur de stratégie MetaTrader 5'
+            metrics:
+                - { label: 'Résultat cumulé', value: '+18,5 %' }
+                - { label: 'Baisse max', value: 'TODO (autour de 2,45 % selon l''auteur, non confirmé)' }
