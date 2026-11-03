@@ -28,6 +28,10 @@ class WaitlistEntry
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    /** Date du consentement explicite (RGPD). Null pour les inscriptions antérieures au formulaire avec case à cocher. */
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $consentAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +93,18 @@ class WaitlistEntry
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getConsentAt(): ?\DateTimeImmutable
+    {
+        return $this->consentAt;
+    }
+
+    public function setConsentAt(?\DateTimeImmutable $consentAt): static
+    {
+        $this->consentAt = $consentAt;
 
         return $this;
     }
