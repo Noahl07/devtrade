@@ -2,7 +2,10 @@
 // Amélioration progressive : sans JavaScript, tout le contenu reste lisible (panneaux empilés, tableau de données).
 import './styles/ds/shiro.css';
 import { allow3D, lazyScene, reducedMotion } from './js/device.js';
-import { createChart, fr, frDate } from './js/charts.js';
+import { createChart, fr } from './js/charts.js';
+
+// Les données publiques sont mensuelles (« 2021-04 ») : aucune date de trade n'est publiée.
+const frMonth = (ym) => new Date(`${ym}-01T00:00:00Z`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 // ── Compteurs animés ────────────────────────────────────────────────────────
 function animateCounters(scope) {
@@ -93,14 +96,14 @@ const signed = (v, d) => `${v > 0 ? '+' : ''}${fr(v, d)}`;
 const CHARTS = {
     'r-cumule': (data) => ({
         xType: 'date',
-        label: `Gain cumulé en R, ${data.meta.trades} trades`,
+        label: `Gain cumulé en R, ${data.meta.trades} trades, points mensuels`,
         zero: true,
         series: [{ type: 'line', className: 'ch-line--gold', points: data.points }],
-        markers: data.meta.breaks.map((d) => ({ x: d, label: 'Rupture · ' + new Date(d).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) })),
+        markers: data.meta.breaks.map((d) => ({ x: d, label: `Rupture · ${frMonth(d)}` })),
         yFormat: (v) => `${fr(v, 0)} R`,
         tooltip: (i) => ({
-            title: frDate(Date.parse(data.points[i][0])),
-            rows: [['Trade', `${i + 1} / ${data.points.length}`], ['Gain cumulé', `${signed(data.points[i][1], 1)} R`]],
+            title: `Fin ${frMonth(data.points[i][0])}`,
+            rows: [['Gain cumulé', `${signed(data.points[i][1], 1)} R`]],
         }),
     }),
     avantage: (data) => ({
@@ -115,7 +118,7 @@ const CHARTS = {
         tooltip: (i) => {
             const p = data.points[i];
             return {
-                title: frDate(Date.parse(p[0])),
+                title: `Fin ${frMonth(p[0])}`,
                 rows: [['Avantage', `${signed(p[1], 3)} R`], ['Intervalle 95 %', `${signed(p[2], 2)} à ${signed(p[3], 2)} R`]],
             };
         },

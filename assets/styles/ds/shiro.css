@@ -264,23 +264,8 @@
     color: var(--text-2);
 }
 
-.sh-calendar-panel {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-    gap: var(--space-6);
-    padding: var(--space-6);
-    border: var(--hairline) solid var(--border);
-    border-radius: var(--radius-lg);
-    background: var(--surface);
-}
-
-.sh-calendar-panel .calendar {
-    margin-top: 0;
-}
-
 @media (max-width: 900px) {
-    .sh-steps,
-    .sh-calendar-panel {
+    .sh-steps {
         grid-template-columns: 1fr;
     }
 

@@ -8,8 +8,6 @@ const HEIGHT = 300;
 export const fr = (value, decimals = 0) =>
     new Intl.NumberFormat('fr-FR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value);
 
-export const frDate = (ts) => new Date(ts).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
 function el(name, attrs = {}, parent = null) {
     const node = document.createElementNS(NS, name);
     Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, String(v)));

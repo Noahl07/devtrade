@@ -148,8 +148,8 @@
         <div data-reveal>
             <span class="eyebrow">Trading algorithmique · {{ product_name }}</span>
             <h2 id="shiro-title">Un seul mécanisme.<br><em>Aucune promesse.</em></h2>
-            <p class="lead">{{ product_name }} est un robot MetaTrader 5 qui intervient brièvement autour du fixing de Tokyo,
-                certains jours du mois seulement.</p>
+            <p class="lead">{{ product_name }} est un robot MetaTrader 5 qui exploite une inefficacité récurrente et documentée
+                du marché USDJPY, quelques jours par mois seulement.</p>
             <div class="shiro-band__badges">
                 {{ ui.badge('En test sur compte démo', 'demo') }}
                 {{ ui.badge('USDJPY', 'backtest') }}
@@ -157,25 +157,19 @@
             </div>
             <div class="shiro-band__actions">
                 {{ ui.button('La méthode et ses limites', path('app_trading'), 'secondary', 'arrow-right') }}
-                {{ ui.button('Être prévenu de la sortie', path('app_trading') ~ '#waitlist', 'ghost', 'arrow-right') }}
+                {{ ui.button('Être prévenu de la sortie', path('app_trading') ~ '#liste-attente', 'ghost', 'arrow-right') }}
             </div>
             {{ ui.notice('En test sur compte démo depuis le ' ~ demo_since ~ '. Aucun historique réel vérifié à ce jour.', 'info', 'Statut.') }}
         </div>
 
-        <div class="timeline" data-reveal>
-            <div class="timeline__label">
-                <span>Une journée de marché (UTC)</span>
-                <span class="num">Fixing de Tokyo · 09:55 JST = 00:55 UTC</span>
-            </div>
-            <div class="timeline__track" role="img" aria-label="Frise de 24 heures : le fixing de Tokyo a lieu à 00 h 55 UTC.">
-                <span class="timeline__marker"></span>
-            </div>
-            <div class="timeline__scale num" aria-hidden="true">
-                <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span>
-            </div>
-
-            {% include 'components/_gotobi_calendar.html.twig' with { calendar: calendar } only %}
-        </div>
+        <dl class="spec-card" data-reveal>
+            <div><dt>Marché</dt><dd>USDJPY</dd></div>
+            <div><dt>Plateforme</dt><dd>MetaTrader 5</dd></div>
+            <div><dt>Séance</dt><dd>Asie, quelques jours par mois</dd></div>
+            <div><dt>Exposition</dt><dd>Courte, jamais la nuit</dd></div>
+            <div><dt>Risque</dt><dd>0,5 à 1,5 % par trade</dd></div>
+            <div><dt>Statut</dt><dd>Démo depuis le {{ demo_since }}</dd></div>
+        </dl>
     </div>
 </section>
 

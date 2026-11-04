@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 {% import 'components/ui/_ui.html.twig' as ui %}
 
-{% block title %}{{ product_name }}, robot MetaTrader 5 sur le fixing de Tokyo{% endblock %}
-{% block meta_description %}{{ product_name }} : robot MetaTrader 5 sur USDJPY qui exploite le flux d'ordres du fixing de Tokyo. En test sur compte démo. Backtests publiés avec leur contexte complet et leurs limites.{% endblock %}
+{% block title %}{{ product_name }}, robot MetaTrader 5 sur USDJPY{% endblock %}
+{% block meta_description %}{{ product_name }} : robot MetaTrader 5 sur USDJPY qui exploite une inefficacité de marché récurrente et documentée. En test sur compte démo. Backtests publiés avec leur contexte complet et leurs limites.{% endblock %}
 
 {# Page refondue (Phase 3) : pas d'ancien CSS #}
 {% block legacy_assets %}{% endblock %}
@@ -31,7 +31,7 @@
 
 {# ══ HÉROS ══ #}
 <section class="sh-hero" aria-labelledby="sh-title">
-    {# Anneau du fixing : illustration SVG (fond CSS) par défaut, scène 3D si l'appareil le permet (assets/js/shiro-scene.js) #}
+    {# Cadran : illustration SVG (fond CSS) par défaut, scène 3D si l'appareil le permet (assets/js/shiro-scene.js) #}
     <div class="sh-hero__art" data-shiro-scene aria-hidden="true">
     </div>
 
@@ -41,7 +41,7 @@
         <span class="sh-hud__corner sh-hud__corner--bl"></span>
         <span class="sh-hud__corner sh-hud__corner--br"></span>
         <span class="sh-hud__label sh-hud__label--tr">{{ symbol }} · MT5</span>
-        <span class="sh-hud__label sh-hud__label--br">FIX 09:55 JST / 00:55 UTC</span>
+        <span class="sh-hud__label sh-hud__label--br">SESSION · ASIE</span>
     </div>
 
     <div class="container sh-hero__inner">
@@ -49,12 +49,11 @@
             <span class="eyebrow">Robot MetaTrader 5 · {{ symbol }}</span>
             <h1 class="sh-hero__title" id="sh-title">
                 <span class="sh-hero__name">{{ product_name }}</span>
-                <span class="sh-hero__tagline"><em>Le fixing de Tokyo,</em> rien d'autre.</span>
+                <span class="sh-hero__tagline"><em>Un seul mécanisme,</em> rien d'autre.</span>
             </h1>
             <p class="lead sh-hero__lead">
-                Un robot qui exploite un flux d'ordres connu et documenté : celui du fixing de Tokyo,
-                les jours où les entreprises japonaises règlent leurs échéances. Un mécanisme, une fenêtre courte,
-                des règles strictes.
+                Un robot qui exploite une inefficacité récurrente du marché {{ symbol }}, documentée par la recherche.
+                Un mécanisme, une fenêtre courte, des règles strictes.
             </p>
             <div class="sh-hero__actions">
                 {{ ui.button('Voir la méthode', '#principe', 'primary', 'arrow-right') }}
@@ -70,8 +69,8 @@
 
         <dl class="sh-specs">
             <div><dt>Marché</dt><dd>{{ symbol }}</dd></div>
-            <div><dt>Moment</dt><dd>Fixing de 09:55 JST</dd></div>
-            <div><dt>Jours</dt><dd>Gotobi : 5, 10, 15, 20, 25, 30</dd></div>
+            <div><dt>Séance</dt><dd>Asie</dd></div>
+            <div><dt>Fréquence</dt><dd>Quelques jours par mois</dd></div>
             <div><dt>Positions la nuit</dt><dd>Aucune</dd></div>
             <div><dt>Statut</dt><dd>Démo depuis le {{ demo_since }}</dd></div>
         </dl>
@@ -84,7 +83,7 @@
         <div class="section-head" data-reveal>
             <div>
                 <span class="eyebrow">Le principe</span>
-                <h2 id="principe-title">Un flux d'ordres <em>qui revient à date fixe.</em></h2>
+                <h2 id="principe-title">Un déséquilibre <em>qui revient.</em></h2>
             </div>
             <p>Le robot ne prédit pas le marché. Il se positionne sur un déséquilibre récurrent, étudié par la recherche,
                 et ne fait rien le reste du temps.</p>
@@ -93,33 +92,26 @@
         <ol class="sh-steps" data-steps>
             <li class="sh-step" data-reveal>
                 <span class="sh-step__node" aria-hidden="true"></span>
-                <span class="sh-step__index">01 · Le calendrier</span>
-                <h3 class="sh-step__title">Les jours « gotobi »</h3>
-                <p>Le 5, 10, 15, 20, 25 et 30 de chaque mois (reportés au jour ouvré précédent), de nombreuses entreprises
-                    japonaises règlent leurs échéances et achètent des dollars.</p>
+                <span class="sh-step__index">01 · L'origine</span>
+                <h3 class="sh-step__title">Des flux prévisibles</h3>
+                <p>Certains jours, des flux commerciaux récurrents déséquilibrent temporairement l'offre et la demande
+                    sur {{ symbol }}. Le phénomène est décrit par plusieurs travaux de recherche.</p>
             </li>
             <li class="sh-step" data-reveal>
                 <span class="sh-step__node" aria-hidden="true"></span>
-                <span class="sh-step__index">02 · Le fixing</span>
-                <h3 class="sh-step__title">09:55, heure de Tokyo</h3>
-                <p>Les banques fixent alors le cours de référence USD/JPY. Le flux d'achats se concentre autour de ce moment.</p>
+                <span class="sh-step__index">02 · La fenêtre</span>
+                <h3 class="sh-step__title">Quelques minutes, quelques jours</h3>
+                <p>Le robot n'intervient que pendant une fenêtre courte de la séance asiatique, quelques jours par mois.
+                    Le reste du temps, il ne fait rien.</p>
             </li>
             <li class="sh-step" data-reveal>
                 <span class="sh-step__node" aria-hidden="true"></span>
                 <span class="sh-step__index">03 · L'exposition</span>
                 <h3 class="sh-step__title">Courte et encadrée</h3>
-                <p>Le robot n'intervient que dans une fenêtre courte autour du fixing, ces jours-là, puis se retire.
-                    Aucune position n'est gardée la nuit.</p>
+                <p>Chaque position a un stop, un risque fixé à l'avance, et se ferme le jour même.
+                    Les réglages précis restent internes.</p>
             </li>
         </ol>
-
-        <div class="sh-calendar-panel" data-reveal>
-            <div>
-                <span class="eyebrow">Prochaines dates</span>
-                <p class="muted">Prévision des prochains jours de trade. Les jours fériés japonais peuvent encore la modifier.</p>
-            </div>
-            {% include 'components/_gotobi_calendar.html.twig' with { calendar: calendar } only %}
-        </div>
     </div>
 </section>
 
@@ -135,10 +127,10 @@
         </div>
         <ul class="sh-guards__grid">
             <li class="sh-guard" data-reveal>{{ ui.icon('shield') }}<h3>Un stop sur chaque position</h3><p>La perte maximale d'un trade est connue avant l'entrée.</p></li>
-            <li class="sh-guard" data-reveal>{{ ui.icon('clock') }}<h3>Jamais la nuit</h3><p>Chaque position est fermée bien avant la fin de la séance asiatique.</p></li>
-            <li class="sh-guard" data-reveal>{{ ui.icon('chart') }}<h3>Risque limité</h3><p>0,5 à 1,5 % du solde par trade selon le type de date.</p></li>
+            <li class="sh-guard" data-reveal>{{ ui.icon('clock') }}<h3>Jamais la nuit</h3><p>Aucune position n'est gardée d'un jour sur l'autre.</p></li>
+            <li class="sh-guard" data-reveal>{{ ui.icon('chart') }}<h3>Risque limité</h3><p>0,5 à 1,5 % du solde par trade, selon la configuration.</p></li>
             <li class="sh-guard" data-reveal>{{ ui.icon('alert') }}<h3>Coupe-circuit</h3><p>Après une série de pertes, le robot se met en pause.</p></li>
-            <li class="sh-guard" data-reveal>{{ ui.icon('lock') }}<h3>Filtre de coûts</h3><p>Pas d'entrée si le spread est anormalement large.</p></li>
+            <li class="sh-guard" data-reveal>{{ ui.icon('lock') }}<h3>Filtre de coûts</h3><p>Pas d'entrée si les conditions de marché sont anormales.</p></li>
             <li class="sh-guard" data-reveal>{{ ui.icon('check') }}<h3>Rien d'autre</h3><p>Pas de grille, pas de martingale, pas de moyenne à la baisse.</p></li>
         </ul>
     </div>
@@ -191,7 +183,7 @@
         </div>
 
         <p class="sh-costs"><strong>Non inclus :</strong> {{ costs_note }}
-            « Baisse max du capital » désigne le plus grand repli relatif mesuré par le testeur.</p>
+            « Drawdown max » : plus forte baisse du capital mesurée par le testeur, rapportée au capital du moment.</p>
 
         {# ── Graphiques (données : public/data/shiro/, générées par tools/shiro_charts.py) ── #}
         <div class="sh-charts">
@@ -199,8 +191,8 @@
                 <figcaption class="sh-chart__caption">
                     <span class="eyebrow">01 · Régularité</span>
                     <h3>Gain cumulé, trade après trade</h3>
-                    <p>En R : chaque trade compté en multiples du risque pris, ce qui rend la courbe indépendante du réglage de risque.
-                        La pente change nettement en avril 2021 (rupture détectée statistiquement).</p>
+                    <p>En R : chaque gain ou perte compté en multiples du risque pris, ce qui rend la courbe indépendante du réglage de risque.
+                        Points mensuels. La pente change nettement en avril 2021 (rupture détectée statistiquement).</p>
                 </figcaption>
                 <div class="sh-chart__plot" data-chart="r-cumule" data-src="{{ asset('data/shiro/r-cumule.json') }}"
                      role="img" aria-label="Courbe du gain cumulé en R de 2016 à octobre 2026 : quasi plate jusqu'en 2021, puis en hausse régulière jusqu'à environ 90 R."></div>
@@ -210,7 +202,7 @@
                 <figcaption class="sh-chart__caption">
                     <span class="eyebrow">02 · Avantage</span>
                     <h3>Avantage estimé dans le temps</h3>
-                    <p>Gain moyen par trade estimé par un filtre de Kalman, avec son intervalle à 95 %. Faible avant 2021 (environ +0,05 R),
+                    <p>Gain moyen par trade estimé par un filtre de Kalman (points mensuels), avec son intervalle à 95 %. Faible avant 2021 (environ +0,05 R),
                         autour de +0,2 R depuis : l'avantage existe, mais il varie.</p>
                 </figcaption>
                 <div class="sh-chart__plot" data-chart="avantage" data-src="{{ asset('data/shiro/avantage.json') }}"
@@ -221,8 +213,8 @@
                 <figcaption class="sh-chart__caption">
                     <span class="eyebrow">03 · Incertitude</span>
                     <h3>Éventail des trajectoires sur un an</h3>
-                    <p><strong>Simulation Monte Carlo</strong> (5 000 trajectoires, environ 65 trades), risque 1,5 % les dates exactes et 0,5 %
-                        les dates décalées. Médiane +20 % dans le scénario récent, +11 % dans le scénario prudent. Une simulation n'est pas une prévision.</p>
+                    <p><strong>Simulation Monte Carlo</strong> (5 000 trajectoires, une année de trades), réglage de risque par défaut
+                        (0,5 à 1,5 % par trade). Médiane +20 % dans le scénario récent, +11 % dans le scénario prudent. Une simulation n'est pas une prévision.</p>
                 </figcaption>
                 <div class="sh-chart__plot" data-chart="monte-carlo" data-src="{{ asset('data/shiro/monte-carlo.json') }}"
                      role="img" aria-label="Éventail de rendements simulés sur un an : médiane d'environ +20 %, 90 % des trajectoires entre environ +4 % et +39 %."></div>
@@ -233,7 +225,7 @@
                     <summary>Données annuelles des graphiques {{ ui.icon('plus') }}</summary>
                     <div class="table-wrap">
                         <table class="data-table">
-                            <caption>Journal du testeur, {{ summary.meta.trades }} trades du {{ summary.meta.period[0]|date('d/m/Y') }} au {{ summary.meta.period[1]|date('d/m/Y') }}, exprimés en R. Backtest, pas un résultat réel.</caption>
+                            <caption>Journal du testeur, {{ summary.meta.trades }} trades de {{ (summary.meta.period[0] ~ '-01')|date('m/Y') }} à {{ (summary.meta.period[1] ~ '-01')|date('m/Y') }}, exprimés en R. Backtest, pas un résultat réel.</caption>
                             <thead><tr><th scope="col">Année</th><th scope="col" class="num">Trades</th><th scope="col" class="num">Gain total (R)</th><th scope="col" class="num">Gain moyen (R / trade)</th></tr></thead>
                             <tbody>
                                 {% for y in summary.annual %}
@@ -273,10 +265,10 @@
         </div>
         <ol class="sh-limits__list">
             <li data-reveal><strong>Coûts réels.</strong> La commission du courtier n'est pas dans le testeur ; spread et glissement réels peuvent être plus élevés.</li>
-            <li data-reveal><strong>Exécution.</strong> Le résultat dépend d'une exécution à la seconde près : un serveur lent ou un courtier qui exécute mal le dégrade fortement.</li>
+            <li data-reveal><strong>Exécution.</strong> Le résultat dépend fortement de la qualité d'exécution : un serveur lent ou un courtier qui exécute mal le dégrade nettement.</li>
             <li data-reveal><strong>Avantage variable.</strong> Faible avant 2021 (environ +0,05 R par trade). Rien ne garantit qu'il se maintienne.</li>
-            <li data-reveal><strong>Petit échantillon.</strong> Environ 65 trades par an : une année peut s'écarter fortement de la moyenne.</li>
-            <li data-reveal><strong>Un seul mécanisme.</strong> Si le flux autour du fixing change, l'avantage peut disparaître.</li>
+            <li data-reveal><strong>Petit échantillon.</strong> Quelques dizaines de trades par an : une année peut s'écarter fortement de la moyenne.</li>
+            <li data-reveal><strong>Un seul mécanisme.</strong> Si les flux qui créent ce déséquilibre changent, l'avantage peut disparaître.</li>
             <li data-reveal><strong>Surajustement.</strong> Les réglages ont été choisis en connaissant ces données : un résultat réel sera vraisemblablement inférieur.</li>
             <li data-reveal><strong>Démo en cours.</strong> Le test sur compte démo a commencé le {{ demo_since }} ; son résultat n'est pas encore analysé.</li>
         </ol>
@@ -291,13 +283,13 @@
                 <span class="eyebrow">Fondements</span>
                 <h2 id="fondements-title">Un effet étudié, <em>pas une intuition.</em></h2>
             </div>
-            <p>Plusieurs travaux de recherche décrivent les mouvements de USD/JPY autour du fixing de Tokyo. Ils ne garantissent rien pour l'avenir.</p>
+            <p>Plusieurs publications académiques décrivent ce type de déséquilibre sur le marché des changes. Elles ne garantissent rien pour l'avenir.</p>
         </div>
-        {# TODO : références non vérifiées (auteurs, années, titres) : à vérifier avant publication. #}
+        {# Références volontairement non publiées (elles désignent l'effet exploité) : transmises aux clients. #}
         <ul class="editorial-list" data-reveal>
-            <li class="editorial-list__item"><span class="editorial-list__index">2017</span><h3 class="editorial-list__title">Ito &amp; Yamada</h3><span class="muted small">Fixing de Tokyo et déséquilibres d'ordres</span></li>
-            <li class="editorial-list__item"><span class="editorial-list__index">2023</span><h3 class="editorial-list__title">Bessho, Sugimoto &amp; Suzuki</h3><span class="muted small">Effet des jours de règlement</span></li>
-            <li class="editorial-list__item"><span class="editorial-list__index">2024</span><h3 class="editorial-list__title">Krohn, Mueller &amp; Whelan</h3><span class="muted small">Mouvements de change autour des fixings</span></li>
+            <li class="editorial-list__item"><span class="editorial-list__index">01</span><h3 class="editorial-list__title">Microstructure du marché des changes</h3><span class="muted small">Flux d'ordres et formation des prix</span></li>
+            <li class="editorial-list__item"><span class="editorial-list__index">02</span><h3 class="editorial-list__title">Flux commerciaux récurrents</h3><span class="muted small">Effets de calendrier sur les devises</span></li>
+            <li class="editorial-list__item"><span class="editorial-list__index">03</span><h3 class="editorial-list__title">Persistance des anomalies</h3><span class="muted small">Pourquoi un avantage peut s'éroder</span></li>
         </ul>
     </div>
 </section>
@@ -315,8 +307,8 @@
         <ul class="sh-offer__grid">
             <li data-reveal>{{ ui.icon('download') }}<h3>Le robot compilé</h3><p>Fichier .ex5 pour MetaTrader 5. Le code source n'est pas fourni.</p></li>
             <li data-reveal>{{ ui.icon('book') }}<h3>Un guide d'installation</h3><p>Pas à pas, du courtier au premier trade sur compte démo.</p></li>
-            <li data-reveal>{{ ui.icon('code') }}<h3>Un VPS recommandé</h3><p>L'exécution à la seconde près exige un serveur proche du courtier.</p></li>
-            <li data-reveal>{{ ui.icon('calendar') }}<h3>Les mises à jour</h3><p>Calendrier des dates et corrections, publiés avec leur justification.</p></li>
+            <li data-reveal>{{ ui.icon('code') }}<h3>Un VPS recommandé</h3><p>Une exécution fiable exige un serveur proche du courtier.</p></li>
+            <li data-reveal>{{ ui.icon('calendar') }}<h3>Les mises à jour</h3><p>Corrections et ajustements, publiés avec leur justification.</p></li>
         </ul>
     </div>
 </section>
@@ -382,11 +374,11 @@
         </div>
         <div class="accordion" data-reveal>
             <details><summary>Puis-je l'utiliser sur un compte de prop firm ? {{ ui.icon('plus') }}</summary>
-                <div class="accordion__body"><p>Certaines prop firms interdisent les robots prêts à l'emploi ou les stratégies de news et de fixing. Vérifiez leurs règles avant tout achat.</p></div></details>
+                <div class="accordion__body"><p>Certaines prop firms interdisent les robots prêts à l'emploi ou certaines stratégies automatisées. Vérifiez leurs règles avant tout achat.</p></div></details>
             <details><summary>Quel courtier choisir ? {{ ui.icon('plus') }}</summary>
                 <div class="accordion__body"><p>Un courtier ECN avec un spread USDJPY serré, une exécution rapide et des commissions connues. Le test démo actuel est mené chez IC Markets ; ce n'est pas une recommandation.</p></div></details>
             <details><summary>Ai-je besoin d'un VPS ? {{ ui.icon('plus') }}</summary>
-                <div class="accordion__body"><p>Oui. Le robot doit être actif au bon moment, avec une latence faible vers le serveur du courtier. Un ordinateur personnel ne suffit pas.</p></div></details>
+                <div class="accordion__body"><p>Oui. Le robot doit fonctionner sans interruption, avec une latence faible vers le serveur du courtier. Un ordinateur personnel ne suffit pas.</p></div></details>
             <details><summary>Quel capital minimum ? {{ ui.icon('plus') }}</summary>
                 <div class="accordion__body"><p>La taille de position minimale est de 0,01 lot : le capital doit permettre de respecter le risque prévu avec cette taille. Ne risquez que de l'argent que vous pouvez perdre.</p></div></details>
             <details><summary>Les gains sont-ils garantis ? {{ ui.icon('plus') }}</summary>

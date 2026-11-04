@@ -55,6 +55,9 @@ final class HomePageTest extends WebTestCase
         yield 'avis JSON-LD' => ['"review"'];
         yield 'promesse' => ['revenu passif'];
         yield 'garantie' => ['garanti'];
+        foreach (TradingPageTest::SECRETS as $secret) {
+            yield 'secret : ' . $secret => [$secret];
+        }
     }
 
     public function testHomeShowsHonestEmptyStateWithoutProjects(): void
