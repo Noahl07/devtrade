@@ -855,3 +855,79 @@
         transition: none;
     }
 }
+
+/* ── Interactivité des graphiques ── */
+.ch-loading {
+    display: grid;
+    place-items: center;
+    min-height: 300px;
+    margin: 0;
+    border: var(--hairline) dashed var(--border);
+    border-radius: var(--radius-md);
+    font: 12px var(--font-mono);
+    letter-spacing: 0.06em;
+    color: var(--text-2);
+    background:
+        linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--accent) 7%, transparent) 50%, transparent 70%) 0 0 / 200% 100%,
+        transparent;
+    animation: ch-shimmer 1.6s linear infinite;
+}
+
+.ch-loading--error {
+    padding: var(--space-5);
+    text-align: center;
+    animation: none;
+    border-color: color-mix(in srgb, var(--negative) 45%, transparent);
+}
+
+@keyframes ch-shimmer {
+    to { background-position: -200% 0; }
+}
+
+.ch-hint {
+    margin: var(--space-2) 0 0;
+    font: 11px var(--font-mono);
+    color: var(--text-2);
+}
+
+.ch rect {
+    cursor: crosshair;
+}
+
+.ch-ranges {
+    display: inline-flex;
+    gap: 2px;
+    margin-top: var(--space-4);
+    padding: 3px;
+    border: var(--hairline) solid var(--border-strong);
+    border-radius: 999px;
+}
+
+.ch-ranges[hidden] {
+    display: none;
+}
+
+.ch-range {
+    min-height: 36px;
+    padding: 0 0.9rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    font: 500 12px var(--font-mono);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.ch-range:hover {
+    color: var(--text);
+}
+
+.ch-range[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ch-loading { animation: none; }
+}
