@@ -34,7 +34,9 @@ final class TradingPageTest extends WebTestCase
             self::assertStringContainsString($period, $text);
             self::assertStringContainsString('Trades' . $trades, $text);
         }
-        self::assertSame(3, $client->getCrawler()->filter('[data-panel]')->count());
+        // Trois périodes + le comparateur.
+        self::assertSame(3, $client->getCrawler()->filter('[data-panel]:not(#panel-compare)')->count());
+        self::assertSelectorExists('#panel-compare[data-panel]');
         self::assertStringContainsString('0,5 à 1,5 % du solde par trade', $text);
         self::assertStringContainsString('Drawdown max', $text);
         self::assertStringContainsString('Backtest : simulation', $text);
