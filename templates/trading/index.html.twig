@@ -194,9 +194,11 @@
                     <p>En R : chaque gain ou perte compté en multiples du risque pris, ce qui rend la courbe indépendante du réglage de risque.
                         Points mensuels. La pente change nettement en avril 2021 (rupture détectée statistiquement).</p>
                     <div class="ch-ranges" data-chart-ranges="r-cumule" role="group" aria-label="Période affichée" hidden>
-                        <button type="button" class="ch-range" data-from="" aria-pressed="true">Depuis 2016</button>
-                        <button type="button" class="ch-range" data-from="2021-01" aria-pressed="false">Depuis 2021</button>
-                        <button type="button" class="ch-range" data-from="2026-01" aria-pressed="false">2026</button>
+                        <span class="ch-ranges__label" aria-hidden="true">Depuis</span>
+                        <button type="button" class="ch-range" data-from="" aria-pressed="true" aria-label="Depuis 2016">2016</button>
+                        <button type="button" class="ch-range" data-from="2021-01" aria-pressed="false" aria-label="Depuis 2021">2021</button>
+                        <button type="button" class="ch-range" data-from="2026-01" aria-pressed="false" aria-label="Depuis 2026">2026</button>
+                        <button type="button" class="ch-range ch-range--compare" data-from="compare" aria-pressed="false" aria-label="Comparer les trois périodes superposées">Comparer</button>
                     </div>
                 </figcaption>
                 <div class="sh-chart__plot" data-chart="r-cumule" data-src="{{ asset('data/shiro/r-cumule.json') }}"

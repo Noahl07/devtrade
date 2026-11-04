@@ -108,6 +108,34 @@ const CHARTS = {
             rows: [[data.meta.from ? 'Gain depuis le début de la période' : 'Gain cumulé', `${signed(data.points[i][1], 1)} R`]],
         }),
     }),
+    // Les trois périodes superposées, chacune repartant de 0 à son début : même axe, comparaison directe.
+    'r-cumule-compare': (data) => {
+        const periods = [
+            { from: '', label: 'Depuis 2016', className: 'ch-line--gold' },
+            { from: '2021-01', label: 'Depuis 2021', className: 'ch-line--positive' },
+            { from: '2026-01', label: 'Depuis 2026', className: 'ch-line--light' },
+        ].map((p) => ({ ...p, points: sliceCumulative(data, p.from).points }));
+        const valueAt = (period, month) => period.points.find((pt) => pt[0] === month)?.[1];
+        return {
+            xType: 'date',
+            label: 'Gain cumulé en R, trois périodes superposées, chacune repartant de 0, points mensuels',
+            zero: true,
+            series: periods.map((p) => ({ type: 'line', className: p.className, points: p.points })),
+            markers: data.meta.breaks.map((d) => ({ x: d, label: `Rupture · ${frMonth(d)}` })),
+            yFormat: (v) => `${fr(v, 0)} R`,
+            tooltip: (i) => {
+                const month = periods[0].points[i][0];
+                return {
+                    title: `Fin ${frMonth(month)}`,
+                    rows: periods
+                        .map((p) => [p.label, valueAt(p, month)])
+                        .filter(([, v]) => v !== undefined)
+                        .map(([label, v]) => [label, `${signed(v, 1)} R`]),
+                };
+            },
+            legend: periods.map((p) => ({ label: p.label, className: p.className })),
+        };
+    },
     avantage: (data) => ({
         xType: 'date',
         label: 'Avantage estimé par trade, filtre de Kalman, intervalle à 95 %',
@@ -230,7 +258,10 @@ async function mountChart(plot) {
                 button.addEventListener('click', () => {
                     ranges.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
                     chart.destroy();
-                    chart = createChart(plot, build(sliceCumulative(data, button.dataset.from)));
+                    const spec = button.dataset.from === 'compare'
+                        ? CHARTS[`${plot.dataset.chart}-compare`](data)
+                        : build(sliceCumulative(data, button.dataset.from));
+                    chart = createChart(plot, spec);
                     chart.reveal();
                 });
             });

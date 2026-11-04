@@ -197,7 +197,7 @@ export function createChart(container, spec) {
 
         cursorGroup = el('g', { class: 'ch-cursor', visibility: 'hidden' }, svg);
         el('line', { y1: MARGIN.top, y2: HEIGHT - MARGIN.bottom }, cursorGroup);
-        series.filter((s) => s.type === 'line').forEach(() => el('circle', { r: 3.5 }, cursorGroup));
+        series.filter((s) => s.type === 'line').forEach((s) => el('circle', { r: 3.5, class: s.className }, cursorGroup));
 
         const hit = el('rect', {
             x: MARGIN.left, y: MARGIN.top, width: iw, height: ih, fill: 'transparent',
@@ -236,10 +236,17 @@ export function createChart(container, spec) {
         const [line, ...dots] = cursorGroup.children;
         line.setAttribute('x1', x);
         line.setAttribute('x2', x);
+        // Chaque courbe a ses propres dates (ex. comparaison de périodes) : point le plus proche du curseur,
+        // masqué si le curseur est hors de la période de cette courbe.
         series.filter((s) => s.type === 'line').forEach((s, k) => {
-            const p = s.points[Math.min(i, s.points.length - 1)];
-            dots[k].setAttribute('cx', sx(p[0]));
-            dots[k].setAttribute('cy', sy(p[1]));
+            s.xs ||= s.points.map((p) => p[0]);
+            const outside = xs[i] < s.xs[0] || xs[i] > s.xs[s.xs.length - 1];
+            dots[k].setAttribute('visibility', outside ? 'hidden' : 'visible');
+            if (!outside) {
+                const p = s.points[nearestIndex(s.xs, xs[i])];
+                dots[k].setAttribute('cx', sx(p[0]));
+                dots[k].setAttribute('cy', sy(p[1]));
+            }
         });
 
         const content = spec.tooltip(i);
@@ -258,8 +265,11 @@ export function createChart(container, spec) {
         const ratio = rect.width / width;
         const leadPoint = lead.points[i];
         tooltip.style.left = `${Math.min(Math.max(x * ratio, 80), rect.width - 80)}px`;
-        tooltip.style.top = `${sy(leadPoint[1]) * ratio}px`;
+        const top = sy(leadPoint[1]) * ratio;
+        tooltip.style.top = `${top}px`;
         tooltip.hidden = false;
+        // Pas assez de place au-dessus du point : l'infobulle passe dessous.
+        tooltip.classList.toggle('is-below', top - tooltip.offsetHeight - 12 < 0);
     }
 
     function hideCursor() {
