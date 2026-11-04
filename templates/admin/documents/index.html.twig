@@ -1,261 +1,88 @@
-{% extends 'base.html.twig' %}
-{% block title %}Admin — Articles{% endblock %}
+{% extends 'admin/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+{% import 'admin/_form.html.twig' as f %}
 
-{% block body %}
-<div class="admin-layout">
-    {% include 'admin/_sidebar.html.twig' %}
-    <div class="admin-main">
+{% block admin_title %}Articles{% endblock %}
+{% block admin_lead %}<p class="admin__lead">{{ total }} article{{ total > 1 ? 's' }}{% if filters|filter(v => v)|length %} correspondant{{ total > 1 ? 's' }} aux filtres{% endif %}.</p>{% endblock %}
+{% block admin_actions %}{{ ui.button('Nouvel article', path('app_admin_document_new'), 'primary', 'plus') }}{% endblock %}
 
-        <div class="admin-topbar">
-            <h1 class="admin-page-title"><i class="bi bi-file-text"></i> Articles</h1>
-            <a href="{{ path('app_admin_document_new') }}" class="btn btn--primary">
-                <i class="bi bi-plus-lg"></i> Nouvel article
-            </a>
-        </div>
-
-        {# ── Filtres ── #}
-        <form method="get" class="admin-filters">
-            <div class="admin-filters__group">
-                <select name="category" class="form-control form-control--sm" onchange="this.form.submit()">
-                    <option value="">Toutes les catégories</option>
-                    {% for cat in categories %}
-                        <option value="{{ cat.id }}" {% if app.request.query.get('category') == cat.id ~ '' %}selected{% endif %}>
-                            {{ cat.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-
-                <select name="access" class="form-control form-control--sm" onchange="this.form.submit()">
-                    <option value="">Tous les accès</option>
-                    <option value="public"   {% if app.request.query.get('access') == 'public'  %}selected{% endif %}>Public</option>
-                    <option value="free"     {% if app.request.query.get('access') == 'free'    %}selected{% endif %}>Gratuit</option>
-                    <option value="premium"  {% if app.request.query.get('access') == 'premium' %}selected{% endif %}>Premium</option>
-                </select>
-
-                <select name="status" class="form-control form-control--sm" onchange="this.form.submit()">
-                    <option value="">Tous les statuts</option>
-                    <option value="published" {% if app.request.query.get('status') == 'published' %}selected{% endif %}>Publié</option>
-                    <option value="draft"     {% if app.request.query.get('status') == 'draft'     %}selected{% endif %}>Brouillon</option>
-                </select>
-
-                {% if app.request.query.get('category') or app.request.query.get('access') or app.request.query.get('status') %}
-                    <a href="{{ path('app_admin_documents') }}" class="btn btn--ghost btn--sm">
-                        <i class="bi bi-x-lg"></i> Effacer
-                    </a>
-                {% endif %}
-            </div>
-            <div class="admin-filters__count">
-                {{ totalCount }} article{{ totalCount > 1 ? 's' : '' }}
-                {% if totalCount != documents|length %}
-                    — page {{ currentPage }}/{{ totalPages }}
-                {% endif %}
-            </div>
-        </form>
-
-        <div class="admin-card">
-        <div class="admin-table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Titre</th>
-                        <th>Catégorie</th>
-                        <th>Accès</th>
-                        <th>Statut</th>
-                        <th>Lecture</th>
-                        <th>Date</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for doc in documents %}
-                        <tr>
-                            <td style="color:#F0F2F7;font-weight:500;max-width:280px">
-                                <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                                    {{ doc.title }}
-                                </div>
-                                <div style="font-size:11px;color:var(--color-text-faint);font-family:var(--font-mono)">
-                                    /{{ doc.slug }}
-                                </div>
-                            </td>
-                            <td>{{ doc.category ? doc.category.name : '—' }}</td>
-                            <td>
-                                {% if doc.accessLevel == 'premium' %}
-                                    <span class="admin-badge admin-badge--gold">
-                                        <i class="bi bi-star-fill"></i> Premium
-                                    </span>
-                                {% elseif doc.accessLevel == 'public' %}
-                                    <span class="admin-badge">
-                                        <i class="bi bi-globe"></i> Public
-                                    </span>
-                                {% else %}
-                                    <span class="admin-badge admin-badge--green">
-                                        <i class="bi bi-unlock"></i> Gratuit
-                                    </span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if doc.isPublished %}
-                                    <span class="admin-badge admin-badge--green">
-                                        <i class="bi bi-check-circle"></i> Publié
-                                    </span>
-                                {% else %}
-                                    <span class="admin-badge">
-                                        <i class="bi bi-pencil"></i> Brouillon
-                                    </span>
-                                {% endif %}
-                            </td>
-                            <td class="text-muted">
-                                {% if doc.readingTime %}{{ doc.readingTime }} min{% else %}—{% endif %}
-                            </td>
-                            <td class="text-muted">{{ doc.createdAt|date('d/m/Y') }}</td>
-                            <td>
-                                <div style="display:flex;gap:6px;justify-content:flex-end">
-                                    <a href="{{ path('app_admin_document_edit', {id: doc.id}) }}"
-                                       class="btn btn--ghost" style="padding:0.3rem 0.7rem;font-size:12px">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    {% if doc.isPublished %}
-                                        <a href="{{ path('app_documentation_article', {accessLevel: doc.accessLevel, slug: doc.slug}) }}"
-                                           target="_blank" class="btn btn--ghost" style="padding:0.3rem 0.7rem;font-size:12px">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                    {% endif %}
-                                    <form method="post"
-                                          action="{{ path('app_admin_document_delete', {id: doc.id}) }}"
-                                          onsubmit="return confirm('Supprimer cet article ?')">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-doc-' ~ doc.id) }}">
-                                        <button type="submit" class="btn btn--danger" style="padding:0.3rem 0.7rem;font-size:12px">
-                                            <i class="bi bi-trash3"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="7" class="text-muted text-center" style="padding:3rem">
-                                <i class="bi bi-inbox" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.3"></i>
-                                Aucun article trouvé
-                                {% if app.request.query.get('category') or app.request.query.get('access') or app.request.query.get('status') %}
-                                    — <a href="{{ path('app_admin_documents') }}" style="color:var(--color-accent)">effacer les filtres</a>
-                                {% else %}
-                                    — <a href="{{ path('app_admin_document_new') }}" style="color:var(--color-accent)">Créer le premier</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        </div>
-
-        {# ── Pagination ── #}
-        {% if totalPages > 1 %}
-        <div class="admin-pagination">
-            {% if currentPage > 1 %}
-                <a href="{{ path('app_admin_documents', app.request.query.all|merge({page: currentPage - 1})) }}"
-                   class="admin-pagination__btn">
-                    <i class="bi bi-chevron-left"></i>
-                </a>
-            {% endif %}
-
-            {% for p in 1..totalPages %}
-                {% if p == currentPage %}
-                    <span class="admin-pagination__btn admin-pagination__btn--active">{{ p }}</span>
-                {% elseif p == 1 or p == totalPages or (p >= currentPage - 2 and p <= currentPage + 2) %}
-                    <a href="{{ path('app_admin_documents', app.request.query.all|merge({page: p})) }}"
-                       class="admin-pagination__btn">{{ p }}</a>
-                {% elseif p == currentPage - 3 or p == currentPage + 3 %}
-                    <span class="admin-pagination__btn admin-pagination__btn--dots">…</span>
-                {% endif %}
-            {% endfor %}
-
-            {% if currentPage < totalPages %}
-                <a href="{{ path('app_admin_documents', app.request.query.all|merge({page: currentPage + 1})) }}"
-                   class="admin-pagination__btn">
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-            {% endif %}
-        </div>
-        {% endif %}
-
+{% block admin_content %}
+<form method="get" class="admin-filters" role="search" aria-label="Filtrer les articles">
+    <div class="field admin-filters__search">
+        <label class="field__label" for="q">Rechercher</label>
+        <input class="input" id="q" name="q" type="search" value="{{ filters.q }}" placeholder="Titre ou adresse" maxlength="100">
     </div>
-</div>
-{% endblock %}
+    <div class="field">
+        <label class="field__label" for="category">Module</label>
+        <select class="input" id="category" name="category" data-autosubmit>
+            <option value="">Tous</option>
+            {% for cat in categories %}<option value="{{ cat.id }}"{% if filters.category == cat.id %} selected{% endif %}>{{ cat.name }}</option>{% endfor %}
+        </select>
+    </div>
+    <div class="field">
+        <label class="field__label" for="access">Accès</label>
+        <select class="input" id="access" name="access" data-autosubmit>
+            <option value="">Tous</option>
+            <option value="free"{% if filters.access == 'free' %} selected{% endif %}>Gratuit</option>
+            <option value="premium"{% if filters.access == 'premium' %} selected{% endif %}>Premium</option>
+        </select>
+    </div>
+    <div class="field">
+        <label class="field__label" for="status">Statut</label>
+        <select class="input" id="status" name="status" data-autosubmit>
+            <option value="">Tous</option>
+            <option value="published"{% if filters.status == 'published' %} selected{% endif %}>Publiés</option>
+            <option value="draft"{% if filters.status == 'draft' %} selected{% endif %}>Brouillons</option>
+        </select>
+    </div>
+    <div class="admin-filters__actions">
+        <button class="button button--secondary" type="submit">{{ ui.icon('search') }} Filtrer</button>
+        {% if filters|filter(v => v)|length %}<a class="button button--ghost" href="{{ path('app_admin_documents') }}">Réinitialiser</a>{% endif %}
+    </div>
+</form>
 
-{% block stylesheets %}
-{{ parent() }}
-{% include 'admin/_styles.html.twig' %}
-<style>
-.admin-filters {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.2rem;
-    flex-wrap: wrap;
-}
-.admin-filters__group {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    align-items: center;
-}
-.admin-filters__count {
-    font-size: 12px;
-    color: var(--color-text-faint);
-    white-space: nowrap;
-}
-.form-control--sm {
-    padding: 0.35rem 0.8rem;
-    font-size: 13px;
-    height: auto;
-    min-width: 160px;
-}
-.btn--sm {
-    padding: 0.35rem 0.8rem;
-    font-size: 12px;
-}
-.admin-pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    margin-top: 1.5rem;
-}
-.admin-pagination__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 34px;
-    height: 34px;
-    padding: 0 8px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    color: var(--color-text-muted);
-    background: var(--color-bg-2);
-    border: 0.5px solid var(--color-border);
-    text-decoration: none;
-    transition: var(--transition);
-}
-.admin-pagination__btn:hover {
-    border-color: var(--color-border-md);
-    color: var(--color-text);
-}
-.admin-pagination__btn--active {
-    background: var(--color-accent-dim);
-    border-color: var(--color-accent-border);
-    color: var(--color-accent);
-    font-weight: 600;
-}
-.admin-pagination__btn--dots {
-    border: none;
-    background: transparent;
-    cursor: default;
-}
-.admin-pagination__btn--dots:hover {
-    background: transparent;
-    color: var(--color-text-faint);
-}
-</style>
+{% if documents is empty %}
+    <p class="admin-empty">Aucun article ne correspond.</p>
+{% else %}
+<div class="table-wrap">
+    <table class="data-table admin-table">
+        <caption class="visually-hidden">Articles, du plus récent au plus ancien</caption>
+        <thead>
+            <tr><th scope="col">Titre</th><th scope="col">Module</th><th scope="col">État</th><th scope="col" class="num">Lecture</th><th scope="col">Créé le</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
+        </thead>
+        <tbody>
+        {% for doc in documents %}
+            <tr>
+                <th scope="row"><a class="admin-table__title" href="{{ path('app_admin_document_edit', {id: doc.id}) }}">{{ doc.title }}</a><small class="mono">{{ doc.slug }}</small></th>
+                <td>{{ doc.category.name }}</td>
+                <td><span class="admin-table__badges">{{ f.access_badge(doc.accessLevel) }}{{ doc.isPublished ? ui.badge('Publié', 'live') : ui.badge('Brouillon', 'soon') }}</span></td>
+                <td class="num">{{ doc.readingTime ? doc.readingTime ~ ' min' : '—' }}</td>
+                <td class="num">{{ doc.createdAt|date('d/m/Y') }}</td>
+                <td>
+                    <div class="admin-table__actions">
+                        {% if doc.isPublished and doc.accessLevel in ['free', 'premium'] %}
+                            <a class="admin-icon-btn" href="{{ path('app_documentation_article', {accessLevel: doc.accessLevel, slug: doc.slug}) }}" target="_blank" rel="noopener" aria-label="Voir « {{ doc.title }} » sur le site">{{ ui.icon('arrow-up-right') }}</a>
+                        {% endif %}
+                        <a class="admin-icon-btn" href="{{ path('app_admin_document_edit', {id: doc.id}) }}" aria-label="Modifier « {{ doc.title }} »">{{ ui.icon('edit') }}</a>
+                        <form method="post" action="{{ path('app_admin_document_delete', {id: doc.id}) }}" data-confirm="Supprimer définitivement « {{ doc.title }} » ?">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-doc-' ~ doc.id) }}">
+                            <button class="admin-icon-btn admin-icon-btn--danger" aria-label="Supprimer « {{ doc.title }} »">{{ ui.icon('trash') }}</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if pages > 1 %}
+    <nav class="admin-pager" aria-label="Pages">
+        {% set query = filters|filter(v => v) %}
+        {% if page > 1 %}<a class="button button--secondary" href="{{ path('app_admin_documents', query|merge({page: page - 1})) }}" rel="prev">{{ ui.icon('arrow-left') }} Précédente</a>{% endif %}
+        <span class="num muted">Page {{ page }} / {{ pages }}</span>
+        {% if page < pages %}<a class="button button--secondary" href="{{ path('app_admin_documents', query|merge({page: page + 1})) }}" rel="next">Suivante {{ ui.icon('arrow-right') }}</a>{% endif %}
+    </nav>
+{% endif %}
+{% endif %}
 {% endblock %}

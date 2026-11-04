@@ -1,61 +1,42 @@
+{% extends 'admin/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
 
-{% extends 'base.html.twig' %}
-{% block title %}Admin — Waitlist{% endblock %}
-
-{% block body %}
-<div class="admin-layout">
-    {% include 'admin/_sidebar.html.twig' %}
-    <div class="admin-main">
-
-        <div class="admin-topbar">
-            <h1 class="admin-page-title"><i class="bi bi-envelope"></i> Waitlist Algo</h1>
-            <span class="admin-date">{{ entries|length }} inscrits</span>
-        </div>
-
-        <div class="admin-card">
-        <div class="admin-table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Prénom</th>
-                        <th>Source</th>
-                        <th>Notifié</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in entries %}
-                        <tr>
-                            <td style="color:#F0F2F7">{{ entry.email }}</td>
-                            <td class="text-muted">{{ entry.firstName ?? '—' }}</td>
-                            <td>
-                                <span class="admin-badge admin-badge--blue">{{ entry.source }}</span>
-                            </td>
-                            <td>
-                                {% if entry.isNotified %}
-                                    <span class="admin-badge admin-badge--green">
-                                        <i class="bi bi-check"></i> Oui
-                                    </span>
-                                {% else %}
-                                    <span class="admin-badge">En attente</span>
-                                {% endif %}
-                            </td>
-                            <td class="text-muted">{{ entry.createdAt|date('d/m/Y H:i') }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="text-muted text-center" style="padding:3rem">
-                                Aucune inscription waitlist
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            </div>
-        </div>
-
-    </div>
-</div>
+{% block admin_title %}Liste d'attente {{ product_name }}{% endblock %}
+{% block admin_lead %}<p class="admin__lead">{{ entries|length }} inscription{{ entries|length > 1 ? 's' }}. Données personnelles : à n'utiliser que pour annoncer la sortie, et à supprimer sur simple demande.</p>{% endblock %}
+{% block admin_actions %}
+    {% if entries is not empty %}<a class="button button--secondary" href="{{ path('app_admin_waitlist_export') }}">{{ ui.icon('download') }} Exporter (CSV)</a>{% endif %}
 {% endblock %}
-{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}
+
+{% block admin_content %}
+{% if entries is empty %}
+    <p class="admin-empty">Personne n'est encore inscrit.</p>
+{% else %}
+<div class="table-wrap">
+    <table class="data-table admin-table">
+        <caption class="visually-hidden">Inscriptions à la liste d'attente, de la plus récente à la plus ancienne</caption>
+        <thead><tr><th scope="col">E-mail</th><th scope="col">Prénom</th><th scope="col">Source</th><th scope="col">Inscription</th><th scope="col">Consentement</th><th scope="col">Prévenu</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
+        <tbody>
+        {% for entry in entries %}
+            <tr>
+                <th scope="row" class="admin-table__email">{{ entry.email }}</th>
+                <td>{{ entry.firstName ?: '—' }}</td>
+                <td><span class="mono small">{{ entry.source }}</span></td>
+                <td class="num">{{ entry.createdAt|date('d/m/Y') }}</td>
+                <td>{% if entry.consentAt %}<span class="num">{{ entry.consentAt|date('d/m/Y') }}</span>{% else %}{{ ui.badge('Non recueilli', 'soon') }}{% endif %}</td>
+                <td>{{ entry.isNotified ? ui.badge('Oui', 'live') : ui.badge('Non', 'backtest') }}</td>
+                <td>
+                    <div class="admin-table__actions">
+                        <form method="post" action="{{ path('app_admin_waitlist_delete', {id: entry.id}) }}" data-confirm="Supprimer l'inscription de {{ entry.email }} ? (droit à l'effacement)">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-waitlist-' ~ entry.id) }}">
+                            <button class="admin-icon-btn admin-icon-btn--danger" aria-label="Supprimer l'inscription de {{ entry.email }}">{{ ui.icon('trash') }}</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="field__help">Les inscriptions sans consentement datent d'avant la case à cocher : ne leur écrivez pas sans leur redemander leur accord.</p>
+{% endif %}
+{% endblock %}

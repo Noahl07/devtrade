@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{# Back-office au design system (refonte). JS et CSS : entrée Encore « admin » ; aucun script en ligne. #}
+{% block title %}{% block admin_title %}Administration{% endblock %} · Admin{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+{% block stylesheets %}{{ encore_entry_link_tags('admin') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin') }}{% endblock %}
+{% block body_class %}is-admin{% endblock %}
+
+{% block body %}
+{% set route = app.request.attributes.get('_route') %}
+{% set sections = [
+    {route: 'app_admin', match: 'app_admin', label: 'Tableau de bord', icon: 'home'},
+    {route: 'app_admin_categories', match: 'app_admin_categor', label: 'Modules', icon: 'layers'},
+    {route: 'app_admin_documents', match: 'app_admin_document', label: 'Articles', icon: 'book'},
+    {route: 'app_admin_projects', match: 'app_admin_project', label: 'Réalisations', icon: 'grid'},
+    {route: 'app_admin_users', match: 'app_admin_user', label: 'Utilisateurs', icon: 'users'},
+    {route: 'app_admin_waitlist', match: 'app_admin_waitlist', label: 'Liste d\'attente', icon: 'mail'},
+] %}
+<div class="admin" data-admin data-csrf="{{ csrf_token('admin_form') }}" data-preview-url="{{ path('app_admin_document_preview') }}">
+    <nav class="admin__nav" aria-label="Administration">
+        <span class="admin__brand">Admin<span class="brand__dot">.</span></span>
+        <ul>
+            {% for s in sections %}
+                {% set active = s.route == 'app_admin' ? route == 'app_admin' : route starts with s.match %}
+                <li><a href="{{ path(s.route) }}"{% if active %} aria-current="page"{% endif %}>{{ ui.icon(s.icon) }}<span>{{ s.label }}</span></a></li>
+            {% endfor %}
+        </ul>
+        <a class="admin__site" href="{{ path('app_home') }}">{{ ui.icon('arrow-up-right') }}<span>Voir le site</span></a>
+    </nav>
+
+    <div class="admin__main">
+        <header class="admin__head">
+            <div>
+                {% block admin_breadcrumb %}{% endblock %}
+                <h1>{{ block('admin_title') }}</h1>
+                {% block admin_lead %}{% endblock %}
+            </div>
+            <div class="admin__actions">{% block admin_actions %}{% endblock %}</div>
+        </header>
+        {% block admin_content %}{% endblock %}
+    </div>
+</div>
+<p class="admin-status" data-admin-status role="status" aria-live="polite"></p>
+{% endblock %}

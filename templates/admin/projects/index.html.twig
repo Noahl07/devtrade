@@ -1,75 +1,42 @@
-{% extends 'base.html.twig' %}
-{% block title %}Admin — Projets{% endblock %}
+{% extends 'admin/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
 
-{% block body %}
-<div class="admin-layout">
-    {% include 'admin/_sidebar.html.twig' %}
-    <div class="admin-main">
+{% block admin_title %}Réalisations{% endblock %}
+{% block admin_lead %}<p class="admin__lead">Projets affichés sur la page Développement, dans l'ordre indiqué.</p>{% endblock %}
+{% block admin_actions %}{{ ui.button('Nouvelle réalisation', path('app_admin_project_new'), 'primary', 'plus') }}{% endblock %}
 
-        <div class="admin-topbar">
-            <h1 class="admin-page-title"><i class="bi bi-briefcase"></i> Projets</h1>
-            <a href="{{ path('app_admin_project_new') }}" class="btn btn--primary">
-                <i class="bi bi-plus-lg"></i> Nouveau projet
-            </a>
-        </div>
-
-        <div class="admin-card">
-        <div class="admin-table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Titre</th>
-                        <th>Type</th>
-                        <th>Stack</th>
-                        <th>Visible</th>
-                        <th>Featured</th>
-                        <th>Pos.</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for project in projects %}
-                        <tr>
-                            <td style="color:#F0F2F7;font-weight:500">{{ project.title }}</td>
-                            <td><span class="admin-badge">{{ project.type }}</span></td>
-                            <td class="text-muted" style="font-size:12px">
-                                {{ project.techStack|join(', ')|slice(0, 40) }}{% if project.techStack|join(', ')|length > 40 %}…{% endif %}
-                            </td>
-                            <td>
-                                {% if project.isVisible %}
-                                    <i class="bi bi-check-circle-fill" style="color:var(--color-accent)"></i>
-                                {% else %}
-                                    <i class="bi bi-x-circle" style="color:var(--color-text-faint)"></i>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if project.isFeatured %}
-                                    <i class="bi bi-star-fill" style="color:var(--color-gold)"></i>
-                                {% else %}
-                                    <i class="bi bi-star" style="color:var(--color-text-faint)"></i>
-                                {% endif %}
-                            </td>
-                            <td class="text-muted">{{ project.position }}</td>
-                            <td>
-                                <a href="{{ path('app_admin_project_edit', {id: project.id}) }}"
-                                   class="btn btn--ghost" style="font-size:12px;padding:0.3rem 0.7rem">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="7" class="text-muted text-center" style="padding:3rem">
-                                Aucun projet
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            </div>
-        </div>
-
+{% block admin_content %}
+{% if projects is empty %}
+    <div class="admin-panel admin-empty-state">
+        <p><strong>Aucune réalisation.</strong> La page Développement présente vos services en attendant.</p>
+        {{ ui.button('Ajouter la première', path('app_admin_project_new'), 'secondary', 'plus') }}
     </div>
+{% else %}
+<div class="table-wrap">
+    <table class="data-table admin-table">
+        <caption class="visually-hidden">Réalisations, par ordre d'affichage</caption>
+        <thead><tr><th scope="col" class="num">Ordre</th><th scope="col">Titre</th><th scope="col">Type</th><th scope="col">Affichage</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
+        <tbody>
+        {% for project in projects %}
+            <tr>
+                <td class="num">{{ project.position }}</td>
+                <th scope="row"><a class="admin-table__title" href="{{ path('app_admin_project_edit', {id: project.id}) }}">{{ project.title }}</a><small>{{ project.shortDesc }}</small></th>
+                <td>{{ project.type }}</td>
+                <td><span class="admin-table__badges">{{ project.isVisible ? ui.badge('Visible', 'live') : ui.badge('Masqué', 'soon') }}{% if project.isFeatured %}{{ ui.badge('En avant', 'demo') }}{% endif %}</span></td>
+                <td>
+                    <div class="admin-table__actions">
+                        {% if project.isVisible %}<a class="admin-icon-btn" href="{{ path('app_portfolio_project', {slug: project.slug}) }}" target="_blank" rel="noopener" aria-label="Voir « {{ project.title }} » sur le site">{{ ui.icon('arrow-up-right') }}</a>{% endif %}
+                        <a class="admin-icon-btn" href="{{ path('app_admin_project_edit', {id: project.id}) }}" aria-label="Modifier « {{ project.title }} »">{{ ui.icon('edit') }}</a>
+                        <form method="post" action="{{ path('app_admin_project_delete', {id: project.id}) }}" data-confirm="Supprimer définitivement « {{ project.title }} » ?">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-project-' ~ project.id) }}">
+                            <button class="admin-icon-btn admin-icon-btn--danger" aria-label="Supprimer « {{ project.title }} »">{{ ui.icon('trash') }}</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% endif %}
 {% endblock %}
-{% block stylesheets %}{{ parent() }}{% include 'admin/_styles.html.twig' %}{% endblock %}

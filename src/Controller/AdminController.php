@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Document;
@@ -10,650 +12,342 @@ use App\Repository\DocumentRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use App\Repository\WaitlistEntryRepository;
+use App\Service\Admin\ContentEditor;
+use App\Service\Admin\WaitlistCsv;
+use App\Twig\SanitizeHtmlExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
+/**
+ * Back-office. Routes déclarées dans config/routes.yaml (préfixe /admin, ROLE_ADMIN aussi exigé par access_control).
+ * La validation et l'enregistrement sont dans App\Service\Admin\ContentEditor.
+ */
 #[IsGranted('ROLE_ADMIN')]
-#[Route('/admin')]
-class AdminController extends AbstractController
+final class AdminController extends AbstractController
 {
-    // ─────────────────────────────────────────
-    // DASHBOARD
-    // ─────────────────────────────────────────
+    private const PER_PAGE = 30;
 
-    #[Route('', name: 'app_admin', methods: ['GET'])]
-    public function index(
-        UserRepository $userRepo,
-        DocumentRepository $docRepo,
-        WaitlistEntryRepository $waitlistRepo,
-        ProjectRepository $projectRepo
-    ): Response {
+    public function __construct(private readonly ContentEditor $editor)
+    {
+    }
+
+    // ── Tableau de bord ─────────────────────────────────────────────────────
+
+    public function index(UserRepository $users, DocumentRepository $documents, WaitlistEntryRepository $waitlist, ProjectRepository $projects): Response
+    {
         return $this->render('admin/index.html.twig', [
             'stats' => [
-                'users'     => $userRepo->count([]),
-                'premium'   => $userRepo->count(['isPremium' => true]),
-                'documents' => $docRepo->count(['isPublished' => true]),
-                'drafts'    => $docRepo->count(['isPublished' => false]),
-                'waitlist'  => $waitlistRepo->count([]),
-                'projects'  => $projectRepo->count(['isVisible' => true]),
+                'users' => $users->count([]),
+                'premium' => $users->count(['isPremium' => true]),
+                'documents' => $documents->count(['isPublished' => true]),
+                'drafts' => $documents->count(['isPublished' => false]),
+                'waitlist' => $waitlist->count([]),
+                'projects' => $projects->count(['isVisible' => true]),
             ],
-            'latest_users'    => $userRepo->findBy([], ['createdAt' => 'DESC'], 5),
-            'latest_waitlist' => $waitlistRepo->findBy([], ['createdAt' => 'DESC'], 5),
+            'latest_users' => $users->findBy([], ['createdAt' => 'DESC'], 5),
+            'latest_waitlist' => $waitlist->findBy([], ['createdAt' => 'DESC'], 5),
         ]);
     }
 
-    // ─────────────────────────────────────────
-    // DOCUMENTS — liste
-    // ─────────────────────────────────────────
+    // ── Articles ────────────────────────────────────────────────────────────
 
-    #[Route('/documents', name: 'app_admin_documents', methods: ['GET'])]
-    public function documents(
-        Request $request,
-        DocumentRepository $docRepo,
-        DocumentCategoryRepository $catRepo
-    ): Response {
-        $perPage     = 30;
-        $currentPage = max(1, (int)$request->query->get('page', 1));
+    public function documents(Request $request, DocumentRepository $documents, DocumentCategoryRepository $categories): Response
+    {
+        $filters = [
+            'category' => ctype_digit((string) $request->query->get('category')) ? (int) $request->query->get('category') : null,
+            'access' => in_array($request->query->get('access'), array_keys(ContentEditor::ACCESS_LEVELS), true) ? $request->query->get('access') : null,
+            'status' => in_array($request->query->get('status'), ['published', 'draft'], true) ? $request->query->get('status') : null,
+            'q' => mb_substr(trim((string) $request->query->get('q')), 0, 100),
+        ];
 
-        // Filtres
-        $filterCategory = $request->query->get('category');
-        $filterAccess   = $request->query->get('access');
-        $filterStatus   = $request->query->get('status');
-
-        // Construire la requête filtrée
-        $qb = $docRepo->createQueryBuilder('d')
-            ->orderBy('d.createdAt', 'DESC');
-
-        if ($filterCategory) {
-            $qb->andWhere('d.category = :cat')
-            ->setParameter('cat', (int)$filterCategory);
+        $qb = $documents->createQueryBuilder('d')->leftJoin('d.category', 'c')->addSelect('c')->orderBy('d.createdAt', 'DESC');
+        if ($filters['category']) {
+            $qb->andWhere('d.category = :cat')->setParameter('cat', $filters['category']);
         }
-        if ($filterAccess) {
-            $qb->andWhere('d.accessLevel = :access')
-            ->setParameter('access', $filterAccess);
+        if ($filters['access']) {
+            $qb->andWhere('d.accessLevel = :access')->setParameter('access', $filters['access']);
         }
-        if ($filterStatus === 'published') {
-            $qb->andWhere('d.isPublished = true');
-        } elseif ($filterStatus === 'draft') {
-            $qb->andWhere('d.isPublished = false');
+        if ($filters['status']) {
+            $qb->andWhere('d.isPublished = :published')->setParameter('published', $filters['status'] === 'published');
+        }
+        if ($filters['q'] !== '') {
+            $qb->andWhere('LOWER(d.title) LIKE :q OR LOWER(d.slug) LIKE :q')
+                ->setParameter('q', '%' . addcslashes(mb_strtolower($filters['q']), '%_\\') . '%');
         }
 
-        // Compter le total
-        $countQb    = clone $qb;
-        $totalCount = (int)$countQb->select('COUNT(d.id)')->resetDQLPart('orderBy')->getQuery()->getSingleScalarResult();
-        $totalPages = max(1, (int)ceil($totalCount / $perPage));
-        $currentPage = min($currentPage, $totalPages);
-
-        // Paginer
-        $documents = $qb->select('d')
-            ->setFirstResult(($currentPage - 1) * $perPage)
-            ->setMaxResults($perPage)
-            ->getQuery()
-            ->getResult();
+        $total = (int) (clone $qb)->select('COUNT(d.id)')->resetDQLPart('orderBy')->getQuery()->getSingleScalarResult();
+        $pages = max(1, (int) ceil($total / self::PER_PAGE));
+        $page = min(max(1, $request->query->getInt('page', 1)), $pages);
 
         return $this->render('admin/documents/index.html.twig', [
-            'documents'   => $documents,
-            'categories'  => $catRepo->findBy([], ['position' => 'ASC']),
-            'totalCount'  => $totalCount,
-            'totalPages'  => $totalPages,
-            'currentPage' => $currentPage,
+            'documents' => $qb->setFirstResult(($page - 1) * self::PER_PAGE)->setMaxResults(self::PER_PAGE)->getQuery()->getResult(),
+            'categories' => $categories->findBy([], ['position' => 'ASC']),
+            'filters' => $filters,
+            'total' => $total,
+            'pages' => $pages,
+            'page' => $page,
         ]);
     }
 
-    // ─────────────────────────────────────────
-    // DOCUMENTS — nouveau
-    // ─────────────────────────────────────────
-
-    #[Route('/documents/nouveau', name: 'app_admin_document_new', methods: ['GET', 'POST'])]
-    public function documentNew(
-        Request $request,
-        EntityManagerInterface $em,
-        DocumentCategoryRepository $catRepo,
-        DocumentRepository $docRepo,
-        SluggerInterface $slugger
-    ): Response {
-        $categories = $catRepo->findBy([], ['position' => 'ASC']);
-        $error = null;
-
-        if ($request->isMethod('POST')) {
-            $data = $request->request->all();
-            $this->requireCsrf($data['_token'] ?? null);
-
-            if (empty($data['title']) || empty($data['category'])) {
-                $error = 'Le titre et la catégorie sont obligatoires.';
-            } else {
-                $category = $catRepo->find((int)$data['category']);
-                if (!$category) {
-                    $error = 'Catégorie introuvable.';
-                } else {
-                    // Auto-position si non renseigné
-                    $position = !empty($data['position'])
-                        ? (int)$data['position']
-                        : $docRepo->getMaxPositionInCategory($category) + 1;
-
-                    $doc = new Document();
-                    $doc->setTitle($data['title']);
-                    $doc->setSlug(strtolower($slugger->slug($data['title'])));
-                    $doc->setContent($data['content'] ?? '');
-                    $doc->setExcerpt($data['excerpt'] ?? null);
-                    $doc->setAccessLevel($data['accessLevel'] ?? 'free');
-                    $doc->setReadingTime(!empty($data['readingTime']) ? (int)$data['readingTime'] : null);
-                    $doc->setPosition($position);
-                    $doc->setIsPublished(isset($data['isPublished']));
-                    $doc->setCategory($category);
-                    $doc->setCreatedAt(new \DateTimeImmutable());
-
-                    if (isset($data['isPublished'])) {
-                        $doc->setPublishedAt(new \DateTime());
-                    }
-
-                    $em->persist($doc);
-                    $em->flush();
-
-                    $this->addFlash('success', 'Article créé avec succès.');
-                    return $this->redirectToRoute('app_admin_documents');
-                }
-            }
-        }
-
-        return $this->render('admin/documents/form.html.twig', [
-            'document'   => null,
-            'categories' => $categories,
-            'error'      => $error,
-            'mode'       => 'new',
-        ]);
+    public function documentNew(Request $request, DocumentCategoryRepository $categories): Response
+    {
+        return $this->documentForm($request, new Document(), $categories);
     }
 
-    // ─────────────────────────────────────────
-    // DOCUMENTS — édition
-    // ─────────────────────────────────────────
-
-    #[Route('/documents/{id}/modifier', name: 'app_admin_document_edit', methods: ['GET', 'POST'])]
-    public function documentEdit(
-        int $id,
-        Request $request,
-        EntityManagerInterface $em,
-        DocumentRepository $docRepo,
-        DocumentCategoryRepository $catRepo,
-        SluggerInterface $slugger
-    ): Response {
-        $doc = $docRepo->find($id);
-        if (!$doc) {
-            throw $this->createNotFoundException('Article introuvable.');
-        }
-
-        $categories = $catRepo->findBy([], ['position' => 'ASC']);
-        $error = null;
-
-        if ($request->isMethod('POST')) {
-            $data = $request->request->all();
-            $this->requireCsrf($data['_token'] ?? null);
-
-            if (empty($data['title']) || empty($data['category'])) {
-                $error = 'Le titre et la catégorie sont obligatoires.';
-            } else {
-                $category = $catRepo->find((int)$data['category']);
-                if (!$category) {
-                    $error = 'Catégorie introuvable.';
-                } else {
-                    $doc->setTitle($data['title']);
-                    if (!empty($data['slug'])) {
-                        $doc->setSlug($data['slug']);
-                    }
-                    $doc->setContent($data['content'] ?? '');
-                    $doc->setExcerpt($data['excerpt'] ?? null);
-                    $doc->setAccessLevel($data['accessLevel'] ?? 'free');
-                    $doc->setReadingTime(!empty($data['readingTime']) ? (int)$data['readingTime'] : null);
-                    $doc->setPosition(!empty($data['position']) ? (int)$data['position'] : $doc->getPosition());
-                    $doc->setCategory($category);
-                    $doc->setUpdatedAt(new \DateTime());
-
-                    $wasPublished = $doc->isPublished();
-                    $doc->setIsPublished(isset($data['isPublished']));
-
-                    if (!$wasPublished && isset($data['isPublished'])) {
-                        $doc->setPublishedAt(new \DateTime());
-                    }
-
-                    $em->flush();
-
-                    $this->addFlash('success', 'Article mis à jour.');
-                    return $this->redirectToRoute('app_admin_documents');
-                }
-            }
-        }
-
-        return $this->render('admin/documents/form.html.twig', [
-            'document'   => $doc,
-            'categories' => $categories,
-            'error'      => $error,
-            'mode'       => 'edit',
-        ]);
+    public function documentEdit(Document $document, Request $request, DocumentCategoryRepository $categories): Response
+    {
+        return $this->documentForm($request, $document, $categories);
     }
 
-    // ─────────────────────────────────────────
-    // DOCUMENTS — suppression
-    // ─────────────────────────────────────────
+    public function documentDelete(Document $document, Request $request, EntityManagerInterface $em): Response
+    {
+        $this->requireCsrf('delete-doc-' . $document->getId(), $request->request->get('_token'));
+        $em->remove($document);
+        $em->flush();
+        $this->addFlash('success', sprintf('Article « %s » supprimé.', $document->getTitle()));
 
-    #[Route('/documents/{id}/supprimer', name: 'app_admin_document_delete', methods: ['POST'])]
-    public function documentDelete(
-        int $id,
-        Request $request,
-        EntityManagerInterface $em,
-        DocumentRepository $docRepo
-    ): Response {
-        $doc = $docRepo->find($id);
-        if ($doc && $this->isCsrfTokenValid('delete-doc-' . $id, $request->request->get('_token'))) {
-            $em->remove($doc);
-            $em->flush();
-            $this->addFlash('success', 'Article supprimé.');
-        }
         return $this->redirectToRoute('app_admin_documents');
     }
 
-    // ─────────────────────────────────────────
-    // CATÉGORIES — liste
-    // ─────────────────────────────────────────
+    /** Aperçu fidèle au site public : le contenu passe par le même filtre de nettoyage que l'article publié. */
+    public function documentPreview(Request $request, SanitizeHtmlExtension $sanitizer): Response
+    {
+        $this->requireCsrf('admin_form', $request->headers->get('X-CSRF-Token'));
 
-    #[Route('/categories', name: 'app_admin_categories', methods: ['GET'])]
-    public function categories(
-        DocumentCategoryRepository $catRepo,
-        DocumentRepository $docRepo
-    ): Response {
-        $categories = $catRepo->findBy([], ['position' => 'ASC']);
-        $counts = [];
-        foreach ($categories as $cat) {
-            $counts[$cat->getId()] = $docRepo->countByCategory($cat);
-        }
+        return new Response($sanitizer->sanitize((string) $request->request->get('content', '')), 200, ['Content-Type' => 'text/html; charset=UTF-8']);
+    }
 
-        // Préparer tous les articles pour le drill-down JS
-        $allDocs = [];
-        foreach ($docRepo->findBy([], ['position' => 'ASC']) as $doc) {
-            $allDocs[] = [
-                'id'          => $doc->getId(),
-                'catId'       => $doc->getCategory()->getId(),
-                'title'       => $doc->getTitle(),
-                'excerpt'     => $doc->getExcerpt(),
-                'access'      => $doc->getAccessLevel(),
-                'readingTime' => $doc->getReadingTime(),
-                'published'   => $doc->isPublished(),
-                'position'    => $doc->getPosition(),
-            ];
+    public function documentsReorder(Request $request): JsonResponse
+    {
+        return $this->reorder($request, Document::class);
+    }
+
+    // ── Modules ─────────────────────────────────────────────────────────────
+
+    public function categories(DocumentCategoryRepository $categories, DocumentRepository $documents): Response
+    {
+        $byCategory = [];
+        foreach ($documents->findBy([], ['position' => 'ASC', 'id' => 'ASC']) as $document) {
+            $byCategory[$document->getCategory()->getId()][] = $document;
         }
 
         return $this->render('admin/categories/index.html.twig', [
-            'categories' => $categories,
-            'counts'     => $counts,
-            'allDocs'    => $allDocs,
+            'categories' => $categories->findBy([], ['position' => 'ASC']),
+            'documentsByCategory' => $byCategory,
         ]);
     }
 
-    // ─────────────────────────────────────────
-    // CATÉGORIES — nouvelle
-    // ─────────────────────────────────────────
-
-    #[Route('/categories/nouvelle', name: 'app_admin_category_new', methods: ['GET', 'POST'])]
-    public function categoryNew(
-        Request $request,
-        EntityManagerInterface $em,
-        DocumentCategoryRepository $catRepo,
-        SluggerInterface $slugger
-    ): Response {
-        $error = null;
-
-        if ($request->isMethod('POST')) {
-            $data = $request->request->all();
-            $this->requireCsrf($data['_token'] ?? null);
-
-            if (empty($data['name'])) {
-                $error = 'Le nom est obligatoire.';
-            } else {
-                // Auto-slug si vide
-                $slug = !empty($data['slug'])
-                    ? $data['slug']
-                    : strtolower($slugger->slug($data['name']));
-
-                // Vérifier unicité du slug
-                $existing = $catRepo->findOneBy(['slug' => $slug]);
-                if ($existing) {
-                    $error = 'Ce slug existe déjà. Choisissez-en un autre.';
-                } else {
-                    // Auto-position si vide
-                    $maxPos = $catRepo->createQueryBuilder('c')
-                        ->select('MAX(c.position)')
-                        ->getQuery()
-                        ->getSingleScalarResult();
-
-                    $cat = new DocumentCategory();
-                    $cat->setName($data['name']);
-                    $cat->setSlug($slug);
-                    $cat->setDescription($data['description'] ?? null);
-                    $cat->setIcon($data['icon'] ?? null);
-                    $cat->setAccessLevel($data['accessLevel'] ?? 'free');
-                    $cat->setPosition(!empty($data['position']) ? (int)$data['position'] : (int)$maxPos + 1);
-
-                    $em->persist($cat);
-                    $em->flush();
-
-                    $this->addFlash('success', 'Catégorie "' . $cat->getName() . '" créée.');
-                    return $this->redirectToRoute('app_admin_categories');
-                }
-            }
-        }
-
-        return $this->render('admin/categories/form.html.twig', [
-            'category' => null,
-            'error'    => $error,
-            'mode'     => 'new',
-        ]);
+    public function categoryNew(Request $request): Response
+    {
+        return $this->categoryForm($request, new DocumentCategory());
     }
 
-    // ─────────────────────────────────────────
-    // CATÉGORIES — édition
-    // ─────────────────────────────────────────
-
-    #[Route('/categories/{id}/modifier', name: 'app_admin_category_edit', methods: ['GET', 'POST'])]
-    public function categoryEdit(
-        int $id,
-        Request $request,
-        EntityManagerInterface $em,
-        DocumentCategoryRepository $catRepo
-    ): Response {
-        $cat = $catRepo->find($id);
-        if (!$cat) {
-            throw $this->createNotFoundException('Catégorie introuvable.');
-        }
-
-        $error = null;
-
-        if ($request->isMethod('POST')) {
-            $data = $request->request->all();
-            $this->requireCsrf($data['_token'] ?? null);
-
-            if (empty($data['name'])) {
-                $error = 'Le nom est obligatoire.';
-            } else {
-                // Vérifier unicité du slug si modifié
-                if (!empty($data['slug']) && $data['slug'] !== $cat->getSlug()) {
-                    $existing = $catRepo->findOneBy(['slug' => $data['slug']]);
-                    if ($existing) {
-                        $error = 'Ce slug est déjà utilisé par une autre catégorie.';
-                    }
-                }
-
-                if (!$error) {
-                    $cat->setName($data['name']);
-                    if (!empty($data['slug'])) {
-                        $cat->setSlug($data['slug']);
-                    }
-                    $cat->setDescription($data['description'] ?? null);
-                    $cat->setIcon($data['icon'] ?? null);
-                    $cat->setAccessLevel($data['accessLevel'] ?? 'free');
-                    $cat->setPosition(!empty($data['position']) ? (int)$data['position'] : $cat->getPosition());
-
-                    $em->flush();
-
-                    $this->addFlash('success', 'Catégorie mise à jour.');
-                    return $this->redirectToRoute('app_admin_categories');
-                }
-            }
-        }
-
-        return $this->render('admin/categories/form.html.twig', [
-            'category' => $cat,
-            'error'    => $error,
-            'mode'     => 'edit',
-        ]);
+    public function categoryEdit(DocumentCategory $category, Request $request): Response
+    {
+        return $this->categoryForm($request, $category);
     }
 
-    // ─────────────────────────────────────────
-    // CATÉGORIES — suppression
-    // ─────────────────────────────────────────
-
-    #[Route('/categories/{id}/supprimer', name: 'app_admin_category_delete', methods: ['POST'])]
-    public function categoryDelete(
-        int $id,
-        Request $request,
-        EntityManagerInterface $em,
-        DocumentCategoryRepository $catRepo,
-        DocumentRepository $docRepo
-    ): Response {
-        $cat = $catRepo->find($id);
-        if ($cat && $this->isCsrfTokenValid('delete-cat-' . $id, $request->request->get('_token'))) {
-            // Bloquer si la catégorie contient des articles
-            $count = $docRepo->count(['category' => $cat]);
-            if ($count > 0) {
-                $this->addFlash('danger', 'Impossible de supprimer : ' . $count . ' article(s) dans cette catégorie. Déplacez-les d\'abord.');
-            } else {
-                $em->remove($cat);
-                $em->flush();
-                $this->addFlash('success', 'Catégorie supprimée.');
-            }
+    public function categoryDelete(DocumentCategory $category, Request $request, EntityManagerInterface $em, DocumentRepository $documents): Response
+    {
+        $this->requireCsrf('delete-cat-' . $category->getId(), $request->request->get('_token'));
+        $count = $documents->count(['category' => $category]);
+        if ($count > 0) {
+            $this->addFlash('danger', sprintf('Impossible de supprimer « %s » : %d article(s) dedans. Déplacez-les d\'abord.', $category->getName(), $count));
+        } else {
+            $em->remove($category);
+            $em->flush();
+            $this->addFlash('success', sprintf('Module « %s » supprimé.', $category->getName()));
         }
+
         return $this->redirectToRoute('app_admin_categories');
     }
 
-    // ─────────────────────────────────────────
-    // DOCUMENTS — réordonnancement AJAX
-    // ─────────────────────────────────────────
-
-    #[Route('/documents/reorder', name: 'app_admin_documents_reorder', methods: ['POST'])]
-    public function documentsReorder(
-        Request $request,
-        EntityManagerInterface $em,
-        DocumentRepository $docRepo
-    ): Response {
-        $this->requireCsrf($request->headers->get('X-CSRF-Token'));
-        $data = json_decode($request->getContent(), true);
-        $ids  = $data['ids'] ?? [];
-
-        foreach ($ids as $position => $id) {
-            $doc = $docRepo->find((int)$id);
-            if ($doc) {
-                $doc->setPosition($position + 1);
-            }
-        }
-
-        $em->flush();
-
-        return $this->json(['success' => true]);
+    public function categoriesReorder(Request $request): JsonResponse
+    {
+        return $this->reorder($request, DocumentCategory::class);
     }
 
-    // ─────────────────────────────────────────
-    // CATÉGORIES — réordonnancement AJAX
-    // ─────────────────────────────────────────
+    // ── Réalisations ────────────────────────────────────────────────────────
 
-    #[Route('/categories/reorder', name: 'app_admin_categories_reorder', methods: ['POST'])]
-    public function categoriesReorder(
-        Request $request,
-        EntityManagerInterface $em,
-        DocumentCategoryRepository $catRepo
-    ): Response {
-        $this->requireCsrf($request->headers->get('X-CSRF-Token'));
-        $data = json_decode($request->getContent(), true);
-        $ids  = $data['ids'] ?? [];
-
-        foreach ($ids as $position => $id) {
-            $cat = $catRepo->find((int)$id);
-            if ($cat) {
-                $cat->setPosition($position + 1);
-            }
-        }
-
-        $em->flush();
-
-        return $this->json(['success' => true]);
-    }
-
-    // ─────────────────────────────────────────
-    // PROJETS — liste
-    // ─────────────────────────────────────────
-
-    #[Route('/projets', name: 'app_admin_projects', methods: ['GET'])]
-    public function projects(ProjectRepository $projectRepo): Response
+    public function projects(ProjectRepository $projects): Response
     {
         return $this->render('admin/projects/index.html.twig', [
-            'projects' => $projectRepo->findBy([], ['position' => 'ASC']),
+            'projects' => $projects->findBy([], ['position' => 'ASC', 'id' => 'ASC']),
         ]);
     }
 
-    // ─────────────────────────────────────────
-    // PROJETS — nouveau
-    // ─────────────────────────────────────────
+    public function projectNew(Request $request): Response
+    {
+        return $this->projectForm($request, (new Project())->setIsVisible(true)->setIsFeatured(false));
+    }
 
-    #[Route('/projets/nouveau', name: 'app_admin_project_new', methods: ['GET', 'POST'])]
-    public function projectNew(
-        Request $request,
-        EntityManagerInterface $em,
-        SluggerInterface $slugger
-    ): Response {
-        $error = null;
+    public function projectEdit(Project $project, Request $request): Response
+    {
+        return $this->projectForm($request, $project);
+    }
 
+    public function projectDelete(Project $project, Request $request, EntityManagerInterface $em): Response
+    {
+        $this->requireCsrf('delete-project-' . $project->getId(), $request->request->get('_token'));
+        $em->remove($project);
+        $em->flush();
+        $this->addFlash('success', sprintf('Réalisation « %s » supprimée.', $project->getTitle()));
+
+        return $this->redirectToRoute('app_admin_projects');
+    }
+
+    // ── Liste d'attente ─────────────────────────────────────────────────────
+
+    public function waitlist(WaitlistEntryRepository $waitlist): Response
+    {
+        return $this->render('admin/waitlist/index.html.twig', [
+            'entries' => $waitlist->findBy([], ['createdAt' => 'DESC']),
+        ]);
+    }
+
+    public function waitlistExport(WaitlistEntryRepository $waitlist, WaitlistCsv $csv): Response
+    {
+        $response = new Response($csv->build($waitlist->findBy([], ['createdAt' => 'ASC'])));
+        $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            sprintf('liste-attente-%s.csv', date('Y-m-d')),
+        ));
+        $response->headers->set('Cache-Control', 'no-store');
+
+        return $response;
+    }
+
+    /** Droit à l'effacement (RGPD) : suppression d'une inscription à la demande de la personne. */
+    public function waitlistDelete(int $id, Request $request, WaitlistEntryRepository $waitlist, EntityManagerInterface $em): Response
+    {
+        $entry = $waitlist->find($id) ?? throw $this->createNotFoundException();
+        $this->requireCsrf('delete-waitlist-' . $id, $request->request->get('_token'));
+        $em->remove($entry);
+        $em->flush();
+        $this->addFlash('success', 'Inscription supprimée.');
+
+        return $this->redirectToRoute('app_admin_waitlist');
+    }
+
+    // ── Utilisateurs ────────────────────────────────────────────────────────
+
+    public function users(UserRepository $users): Response
+    {
+        return $this->render('admin/users/index.html.twig', [
+            'users' => $users->findBy([], ['createdAt' => 'DESC']),
+        ]);
+    }
+
+    public function togglePremium(int $id, Request $request, UserRepository $users, EntityManagerInterface $em): Response
+    {
+        $user = $users->find($id) ?? throw $this->createNotFoundException();
+        $this->requireCsrf('toggle-premium-' . $id, $request->request->get('_token'));
+        $user->setIsPremium(!$user->isPremium());
+        $em->flush();
+        $this->addFlash('success', sprintf('%s : accès %s.', $user->getFullName(), $user->isPremium() ? 'Premium' : 'gratuit'));
+
+        return $this->redirectToRoute('app_admin_users');
+    }
+
+    // ── Formulaires communs ─────────────────────────────────────────────────
+
+    private function documentForm(Request $request, Document $document, DocumentCategoryRepository $categories): Response
+    {
+        $errors = [];
+        $values = null;
         if ($request->isMethod('POST')) {
-            $data = $request->request->all();
-            $this->requireCsrf($data['_token'] ?? null);
+            $this->requireCsrf('admin_form', $request->request->get('_token'));
+            $values = $request->request->all();
+            $errors = $this->editor->saveDocument($document, $values);
+            if ($errors === []) {
+                $this->addFlash('success', sprintf('Article « %s » enregistré.', $document->getTitle()));
 
-            if (empty($data['title'])) {
-                $error = 'Le titre est obligatoire.';
-            } else {
-                $project = new Project();
-                $project->setTitle($data['title']);
-                $project->setSlug(strtolower($slugger->slug($data['title'])));
-                $project->setType($data['type'] ?? 'fullstack');
-                $project->setShortDesc($data['shortDesc'] ?? '');
-                $project->setDescription($data['description'] ?? '');
-                $project->setTechStack(
-                    array_filter(array_map('trim', explode(',', $data['techStack'] ?? '')))
-                );
-                $project->setImageUrl($data['imageUrl'] ?? null);
-                $project->setProjectUrl($data['projectUrl'] ?? null);
-                $project->setGithubUrl($data['githubUrl'] ?? null);
-                $project->setIsFeatured(isset($data['isFeatured']));
-                $project->setIsVisible(isset($data['isVisible']));
-                $project->setPosition((int)($data['position'] ?? 0));
-                $project->setCreatedAt(new \DateTimeImmutable());
-
-                $em->persist($project);
-                $em->flush();
-
-                $this->addFlash('success', 'Projet créé avec succès.');
-                return $this->redirectToRoute('app_admin_projects');
+                return $this->redirectToRoute($request->request->has('stay') ? 'app_admin_document_edit' : 'app_admin_documents', $request->request->has('stay') ? ['id' => $document->getId()] : []);
             }
         }
 
-        return $this->render('admin/projects/form.html.twig', [
-            'project' => null,
-            'error'   => $error,
-            'mode'    => 'new',
-        ]);
+        return $this->render('admin/documents/form.html.twig', [
+            'document' => $document,
+            'values' => $values,
+            'errors' => $errors,
+            'categories' => $categories->findBy([], ['position' => 'ASC']),
+            'access_levels' => ContentEditor::ACCESS_LEVELS,
+        ], new Response(status: $errors === [] ? 200 : 422));
     }
 
-    // ─────────────────────────────────────────
-    // PROJETS — édition
-    // ─────────────────────────────────────────
+    private function categoryForm(Request $request, DocumentCategory $category): Response
+    {
+        $errors = [];
+        $values = null;
+        if ($request->isMethod('POST')) {
+            $this->requireCsrf('admin_form', $request->request->get('_token'));
+            $values = $request->request->all();
+            $errors = $this->editor->saveCategory($category, $values);
+            if ($errors === []) {
+                $this->addFlash('success', sprintf('Module « %s » enregistré.', $category->getName()));
 
-    #[Route('/projets/{id}/modifier', name: 'app_admin_project_edit', methods: ['GET', 'POST'])]
-    public function projectEdit(
-        int $id,
-        Request $request,
-        EntityManagerInterface $em,
-        ProjectRepository $projectRepo,
-        SluggerInterface $slugger
-    ): Response {
-        $project = $projectRepo->find($id);
-        if (!$project) {
-            throw $this->createNotFoundException('Projet introuvable.');
+                return $this->redirectToRoute('app_admin_categories');
+            }
         }
 
-        $error = null;
+        return $this->render('admin/categories/form.html.twig', [
+            'category' => $category,
+            'values' => $values,
+            'errors' => $errors,
+            'access_levels' => ContentEditor::ACCESS_LEVELS,
+        ], new Response(status: $errors === [] ? 200 : 422));
+    }
 
+    private function projectForm(Request $request, Project $project): Response
+    {
+        $errors = [];
+        $values = null;
         if ($request->isMethod('POST')) {
-            $data = $request->request->all();
-            $this->requireCsrf($data['_token'] ?? null);
+            $this->requireCsrf('admin_form', $request->request->get('_token'));
+            $values = $request->request->all();
+            $errors = $this->editor->saveProject($project, $values);
+            if ($errors === []) {
+                $this->addFlash('success', sprintf('Réalisation « %s » enregistrée.', $project->getTitle()));
 
-            if (empty($data['title'])) {
-                $error = 'Le titre est obligatoire.';
-            } else {
-                $project->setTitle($data['title']);
-                if (!empty($data['slug'])) {
-                    $project->setSlug($data['slug']);
-                }
-                $project->setType($data['type'] ?? 'fullstack');
-                $project->setShortDesc($data['shortDesc'] ?? '');
-                $project->setDescription($data['description'] ?? '');
-                $project->setTechStack(
-                    array_filter(array_map('trim', explode(',', $data['techStack'] ?? '')))
-                );
-                $project->setImageUrl($data['imageUrl'] ?? null);
-                $project->setProjectUrl($data['projectUrl'] ?? null);
-                $project->setGithubUrl($data['githubUrl'] ?? null);
-                $project->setIsFeatured(isset($data['isFeatured']));
-                $project->setIsVisible(isset($data['isVisible']));
-                $project->setPosition((int)($data['position'] ?? 0));
-
-                $em->flush();
-
-                $this->addFlash('success', 'Projet mis à jour.');
                 return $this->redirectToRoute('app_admin_projects');
             }
         }
 
         return $this->render('admin/projects/form.html.twig', [
             'project' => $project,
-            'error'   => $error,
-            'mode'    => 'edit',
-        ]);
+            'values' => $values,
+            'errors' => $errors,
+            'types' => ContentEditor::PROJECT_TYPES,
+        ], new Response(status: $errors === [] ? 200 : 422));
     }
 
-    // ─────────────────────────────────────────
-    // WAITLIST
-    // ─────────────────────────────────────────
-
-    #[Route('/waitlist', name: 'app_admin_waitlist', methods: ['GET'])]
-    public function waitlist(WaitlistEntryRepository $waitlistRepo): Response
+    /** @param class-string<Document|DocumentCategory> $class */
+    private function reorder(Request $request, string $class): JsonResponse
     {
-        return $this->render('admin/waitlist/index.html.twig', [
-            'entries' => $waitlistRepo->findBy([], ['createdAt' => 'DESC']),
-        ]);
-    }
-
-    // ─────────────────────────────────────────
-    // UTILISATEURS
-    // ─────────────────────────────────────────
-
-    #[Route('/utilisateurs', name: 'app_admin_users', methods: ['GET'])]
-    public function users(UserRepository $userRepo): Response
-    {
-        return $this->render('admin/users/index.html.twig', [
-            'users' => $userRepo->findBy([], ['createdAt' => 'DESC']),
-        ]);
-    }
-
-    #[Route('/utilisateurs/{id}/premium', name: 'app_admin_user_toggle_premium', methods: ['POST'])]
-    public function togglePremium(
-        int $id,
-        Request $request,
-        EntityManagerInterface $em,
-        UserRepository $userRepo
-    ): Response {
-        $user = $userRepo->find($id);
-        if ($user && $this->isCsrfTokenValid('toggle-premium-' . $id, $request->request->get('_token'))) {
-            $user->setIsPremium(!$user->isPremium());
-            $em->flush();
-            $this->addFlash('success', $user->getFirstName() . ' est maintenant ' . ($user->isPremium() ? 'Premium' : 'gratuit') . '.');
+        $this->requireCsrf('admin_form', $request->headers->get('X-CSRF-Token'));
+        $ids = json_decode($request->getContent(), true)['ids'] ?? null;
+        if (!is_array($ids) || $ids === [] || count($ids) > 500) {
+            return $this->json(['success' => false, 'error' => 'Liste invalide.'], 400);
         }
-        return $this->redirectToRoute('app_admin_users');
+        try {
+            $count = $this->editor->reorder($class, $ids);
+        } catch (\InvalidArgumentException $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()], 400);
+        }
+
+        return $this->json(['success' => true, 'count' => $count]);
     }
 
-    private function requireCsrf(?string $token): void
+    private function requireCsrf(string $id, mixed $token): void
     {
-        if (!$this->isCsrfTokenValid('admin_form', (string) $token)) {
-            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        if (!$this->isCsrfTokenValid($id, is_string($token) ? $token : '')) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide. Rechargez la page.');
         }
     }
 }
