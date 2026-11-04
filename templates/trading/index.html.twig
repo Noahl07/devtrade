@@ -154,6 +154,9 @@
                     <button type="button" role="tab" id="tab-{{ b.id }}" aria-controls="panel-{{ b.id }}"
                             aria-selected="{{ loop.first ? 'true' : 'false' }}" tabindex="{{ loop.first ? '0' : '-1' }}">{{ b.tab }}</button>
                 {% endfor %}
+                {% if backtests|length > 1 %}
+                    <button type="button" role="tab" id="tab-compare" aria-controls="panel-compare" aria-selected="false" tabindex="-1" class="sh-periods__compare">Comparer</button>
+                {% endif %}
             </div>
 
             {% for b in backtests %}
@@ -180,6 +183,8 @@
                     </dl>
                 </article>
             {% endfor %}
+
+            {% if backtests|length > 1 %}{% include 'trading/_compare.html.twig' %}{% endif %}
         </div>
 
         <p class="sh-costs"><strong>Non inclus :</strong> {{ costs_note }}

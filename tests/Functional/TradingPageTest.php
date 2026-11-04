@@ -144,4 +144,18 @@ final class TradingPageTest extends WebTestCase
 
         return $em->getRepository(WaitlistEntry::class)->findOneBy(['email' => $email]);
     }
+
+    /** Comparateur : présent, honnête sur le recouvrement des périodes, pas d'annualisation sous 12 mois. */
+    public function testCompareTabShowsBacktestsSideBySide(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/trading');
+
+        self::assertSelectorExists('#tab-compare[aria-controls="panel-compare"]');
+        $table = $client->getCrawler()->filter('#panel-compare table')->text();
+        self::assertStringContainsString('ne sont pas trois tests indépendants', $table);
+        self::assertStringContainsString('+12,0 %', $table, 'Résultat par an 2016 : (1 + 2,424)^(12/130) - 1');
+        self::assertStringContainsString('n.c.', $table, '2026 (10 mois) ne doit pas être annualisé');
+        self::assertCount(6, $client->getCrawler()->filter('#panel-compare [data-compare-indicator]'));
+    }
 }
