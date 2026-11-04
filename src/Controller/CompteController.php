@@ -1,20 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\ProfileUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/** Espace membre. Routes déclarées dans config/routes.yaml (app_compte, app_compte_profil). */
 #[IsGranted('ROLE_USER')]
-class CompteController extends AbstractController
+final class CompteController extends AbstractController
 {
-    #[Route('/compte', name: 'app_compte', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('compte/index.html.twig', [
@@ -22,51 +22,41 @@ class CompteController extends AbstractController
         ]);
     }
 
-    #[Route('/compte/profil', name: 'app_compte_profil', methods: ['GET', 'POST'])]
-    public function profil(
-        Request $request,
-        EntityManagerInterface $em,
-        UserPasswordHasherInterface $hasher
-    ): Response {
+    public function profil(Request $request, ProfileUpdater $updater): Response
+    {
         /** @var User $user */
-        $user  = $this->getUser();
-        $error = null;
+        $user = $this->getUser();
+        $errors = [];
+        $values = ['firstName' => (string) $user->getFirstName(), 'lastName' => (string) $user->getLastName()];
 
         if ($request->isMethod('POST')) {
             if (!$this->isCsrfTokenValid('profil', (string) $request->request->get('_token'))) {
                 throw $this->createAccessDeniedException('Jeton CSRF invalide.');
             }
-            $currentPassword = (string) $request->request->get('currentPassword', '');
-            $firstName   = trim($request->request->get('firstName', ''));
-            $lastName    = trim($request->request->get('lastName', ''));
-            $newPassword = trim($request->request->get('newPassword', ''));
-            $confirm     = trim($request->request->get('confirmPassword', ''));
+            $values = [
+                'firstName' => (string) $request->request->get('firstName', ''),
+                'lastName' => (string) $request->request->get('lastName', ''),
+            ];
+            $errors = $updater->update(
+                $user,
+                $values['firstName'],
+                $values['lastName'],
+                (string) $request->request->get('currentPassword', ''),
+                (string) $request->request->get('newPassword', ''),
+                (string) $request->request->get('confirmPassword', ''),
+            );
 
-            if ($firstName) $user->setFirstName($firstName);
-            if ($lastName)  $user->setLastName($lastName);
-
-            if ($newPassword) {
-                if (!$hasher->isPasswordValid($user, $currentPassword)) {
-                    $error = 'Le mot de passe actuel est incorrect.';
-                } elseif (strlen($newPassword) < 8 || strlen($newPassword) > 128) {
-                    $error = 'Le mot de passe doit faire entre 8 et 128 caractères.';
-                } elseif ($newPassword !== $confirm) {
-                    $error = 'Les mots de passe ne correspondent pas.';
-                } else {
-                    $user->setPassword($hasher->hashPassword($user, $newPassword));
-                }
-            }
-
-            if (!$error) {
-                $em->flush();
+            if ($errors === []) {
                 $this->addFlash('success', 'Profil mis à jour.');
+
                 return $this->redirectToRoute('app_compte');
             }
         }
 
         return $this->render('compte/profil.html.twig', [
-            'user'  => $user,
-            'error' => $error,
-        ]);
+            'user' => $user,
+            'values' => $values,
+            'errors' => $errors,
+        ], new Response(status: $errors === [] ? 200 : 422));
     }
 }
