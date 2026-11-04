@@ -87,6 +87,59 @@ document.querySelectorAll('[data-tabs]').forEach((root) => {
     onceVisible(root, () => animateCounters(panels[0]));
 });
 
+// ── Comparateur des backtests (onglet « Comparer ») ─────────────────────────
+// Sans JavaScript, le tableau complet reste affiché. Ici : choix des périodes (au moins deux) et de l'indicateur.
+document.querySelectorAll('[data-compare]').forEach((panel) => {
+    const controls = panel.querySelector('[data-compare-controls]');
+    const bars = panel.querySelector('[data-compare-bars]');
+    const periods = [...panel.querySelectorAll('[data-compare-period]')];
+    const indicators = [...panel.querySelectorAll('[data-compare-indicator]')];
+    controls.hidden = false;
+    bars.hidden = false;
+
+    const update = () => {
+        const active = new Set(periods.filter((p) => p.checked).map((p) => p.value));
+        // Au moins deux périodes : une comparaison à une seule n'a pas de sens.
+        periods.forEach((p) => {
+            p.disabled = p.checked && active.size <= 2;
+            p.closest('label').title = p.disabled ? 'Au moins deux périodes à comparer' : '';
+        });
+        panel.querySelectorAll('[data-period]').forEach((el) => {
+            el.hidden = !active.has(el.dataset.period);
+        });
+        // Longueur des barres et « meilleur » recalculés sur les seules périodes affichées.
+        bars.querySelectorAll('[data-indicator]').forEach((figure) => {
+            const visible = [...figure.querySelectorAll('.sh-bar')].filter((bar) => active.has(bar.dataset.period));
+            const values = visible.map((bar) => bar.dataset.value).filter((v) => v !== '').map(Number);
+            const max = Math.max(...values, 0);
+            const best = figure.dataset.better === 'high' ? max : figure.dataset.better === 'low' ? Math.min(...values) : null;
+            visible.forEach((bar) => {
+                const v = bar.dataset.value === '' ? null : Number(bar.dataset.value);
+                bar.querySelector('.sh-bar__fill').style.setProperty('--w', `${v === null || max === 0 ? 0 : (v / max) * 100}%`);
+                const isBest = v !== null && best !== null && values.length > 1 && Math.abs(v - best) < 1e-9;
+                bar.classList.toggle('is-best', isBest);
+                bar.querySelector('.sh-bar__best').hidden = !isBest;
+            });
+        });
+
+        const indicator = indicators.find((i) => i.checked)?.value;
+        bars.querySelectorAll('[data-indicator]').forEach((figure) => {
+            const shown = figure.dataset.indicator === indicator;
+            figure.hidden = !shown;
+            if (shown && !reducedMotion()) {
+                // Les barres repartent de zéro à chaque changement d'indicateur.
+                figure.classList.remove('is-drawn');
+                requestAnimationFrame(() => requestAnimationFrame(() => figure.classList.add('is-drawn')));
+            } else if (shown) {
+                figure.classList.add('is-drawn');
+            }
+        });
+    };
+
+    [...periods, ...indicators].forEach((input) => input.addEventListener('change', update));
+    update();
+});
+
 // ── Frise du principe : la ligne dorée se dessine à l'apparition ───────────
 document.querySelectorAll('[data-steps]').forEach((steps) => onceVisible(steps, () => steps.classList.add('is-active')));
 

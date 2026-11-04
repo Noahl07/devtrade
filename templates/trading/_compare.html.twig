@@ -1,0 +1,100 @@
+{# Comparateur des backtests (onglet « Comparer »). Sans JavaScript : tableau complet.
+   Avec JavaScript : choix des périodes et de l'indicateur, barres proportionnelles.
+   Toutes les valeurs viennent de config/packages/shiro.yaml ; seuls « par an » et « trades par mois » sont calculés ici. #}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% set rows = [] %}
+{% for b in backtests %}
+    {% set total = b.metrics[0].num %}
+    {% set rows = rows|merge([{
+        id: b.id, short: b.short, period: b.period, months: b.months,
+        values: {
+            total: total,
+            annual: b.months >= 12 ? ((1 + total / 100) ** (12 / b.months) - 1) * 100 : null,
+            pf: b.metrics[1].num,
+            win: b.metrics[2].num,
+            dd: b.metrics[3].num,
+            freq: b.trades / b.months,
+        },
+    }]) %}
+{% endfor %}
+
+{% set indicators = [
+    {key: 'total', label: 'Résultat cumulé', fmt: 'pct', decimals: 1, sign: true, better: 'high', help: 'Gain total sur la période, sur un dépôt de 10 000 USD. Les périodes n\'ont pas la même durée : comparez plutôt le résultat par an.'},
+    {key: 'annual', label: 'Résultat par an', fmt: 'pct', decimals: 1, sign: true, better: 'high', help: 'Moyenne géométrique calculée à partir du résultat cumulé. Non calculée pour une période de moins de 12 mois (2026), qui donnerait un chiffre trompeur.'},
+    {key: 'pf', label: 'Profit factor', fmt: 'num', decimals: 2, sign: false, better: 'high', help: 'Gains bruts divisés par pertes brutes. Au-dessus de 1, la stratégie gagne plus qu\'elle ne perd.'},
+    {key: 'win', label: 'Trades gagnants', fmt: 'pct', decimals: 1, sign: false, better: 'high', help: 'Part des trades clôturés en gain.'},
+    {key: 'dd', label: 'Drawdown max', fmt: 'pct', decimals: 2, sign: false, better: 'low', help: 'Plus forte baisse du capital mesurée par le testeur. Plus c\'est bas, mieux c\'est.'},
+    {key: 'freq', label: 'Trades par mois', fmt: 'num', decimals: 1, sign: false, better: null, help: 'Nombre de trades rapporté à la durée de la période. Ni bon ni mauvais en soi : il montre la régularité de l\'activité.'},
+] %}
+
+{% macro value(v, ind) -%}
+    {%- if v is null -%}n.c.
+    {%- else -%}{{ ind.sign and v > 0 ? '+' }}{{ v|number_format(ind.decimals, ',', ' ') }}{{ ind.fmt == 'pct' ? ' %' }}
+    {%- endif -%}
+{%- endmacro %}
+{% import _self as c %}
+
+<article class="sh-panel sh-compare" id="panel-compare" role="tabpanel" aria-labelledby="tab-compare" data-panel data-compare>
+    <header class="sh-panel__head">
+        <h3 class="sh-panel__title">Les trois backtests <span class="muted">· côte à côte</span></h3>
+        {{ ui.badge('Backtest : simulation', 'backtest') }}
+    </header>
+
+    <div class="sh-compare__controls" data-compare-controls hidden>
+        <fieldset class="sh-chips">
+            <legend>Périodes</legend>
+            {% for r in rows %}
+                <label class="sh-chip"><input type="checkbox" value="{{ r.id }}" checked data-compare-period><span>{{ r.short }}<small>{{ r.months }} mois</small></span></label>
+            {% endfor %}
+        </fieldset>
+        <fieldset class="sh-chips">
+            <legend>Indicateur</legend>
+            {% for ind in indicators %}
+                <label class="sh-chip"><input type="radio" name="compare-indicator" value="{{ ind.key }}"{% if loop.first %} checked{% endif %} data-compare-indicator><span>{{ ind.label }}</span></label>
+            {% endfor %}
+        </fieldset>
+    </div>
+
+    {# Barres : une série par indicateur, largeur proportionnelle à la meilleure valeur #}
+    <div class="sh-compare__bars" data-compare-bars hidden>
+        {% for ind in indicators %}
+            {% set present = rows|map(r => r.values[ind.key])|filter(v => v is not null) %}
+            {% set max = present|length ? max(present) : 1 %}
+            {% set best = ind.better == 'high' ? max : (ind.better == 'low' and present|length ? min(present) : null) %}
+            <figure class="sh-bars" data-indicator="{{ ind.key }}" data-better="{{ ind.better ?? '' }}"{% if not loop.first %} hidden{% endif %}>
+                <figcaption>{{ ind.help }}</figcaption>
+                {% for r in rows %}
+                    {% set v = r.values[ind.key] %}
+                    <div class="sh-bar{{ v is not null and v == best ? ' is-best' }}{{ v is null ? ' is-empty' }}" data-period="{{ r.id }}" data-value="{{ v ?? '' }}">
+                        <span class="sh-bar__label">{{ r.short }}</span>
+                        <span class="sh-bar__track"><span class="sh-bar__fill" style="--w: {{ v is null or max == 0 ? 0 : (v / max * 100)|round(1) }}%"></span></span>
+                        <span class="sh-bar__value num">{{ c.value(v, ind) }}<span class="sh-bar__best"{% if not (v is not null and v == best) %} hidden{% endif %}>{{ ind.better == 'low' ? 'le plus bas' : 'le plus haut' }}</span></span>
+                    </div>
+                {% endfor %}
+            </figure>
+        {% endfor %}
+    </div>
+
+    <div class="table-wrap sh-compare__table">
+        <table class="data-table">
+            <caption>Backtests MetaTrader 5 au réglage par défaut (risque 0,5 à 1,5 % par trade, dépôt 10 000 USD). Les périodes se recouvrent :
+                2021 et 2026 sont inclus dans 2016, ce ne sont pas trois tests indépendants. Coûts du courtier non inclus. Simulation, pas un résultat réel.</caption>
+            <thead>
+                <tr><th scope="col">Indicateur</th>{% for r in rows %}<th scope="col" class="num" data-period="{{ r.id }}">{{ r.short }}<small>{{ r.period }}</small></th>{% endfor %}</tr>
+            </thead>
+            <tbody>
+                {% for ind in indicators %}
+                    <tr>
+                        <th scope="row">{{ ind.label }}</th>
+                        {% for r in rows %}<td class="num" data-period="{{ r.id }}">{{ c.value(r.values[ind.key], ind) }}</td>{% endfor %}
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th scope="row">Trades</th>
+                    {% for b in backtests %}<td class="num" data-period="{{ b.id }}">{{ b.trades }}</td>{% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</article>

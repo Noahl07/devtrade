@@ -26,6 +26,8 @@ parameters:
         -   id: defaut_2016
             published: true
             tab: '2016 → oct. 2026'
+            short: '2016'
+            months: 130   # durée de la période, pour le comparateur
             title: "Dix ans d'historique"
             period: 'Janvier 2016 → octobre 2026'
             trades: 709
@@ -43,6 +45,8 @@ parameters:
         -   id: defaut_2021
             published: true
             tab: '2021 → oct. 2026'
+            short: '2021'
+            months: 70   # durée de la période, pour le comparateur
             title: 'Depuis la rupture de 2021'
             period: 'Janvier 2021 → octobre 2026'
             trades: 376
@@ -60,6 +64,8 @@ parameters:
         -   id: defaut_2026
             published: true
             tab: '2026'
+            short: '2026'
+            months: 10   # durée de la période, pour le comparateur
             title: 'Année en cours'
             period: 'Janvier → octobre 2026'
             trades: 55
