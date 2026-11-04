@@ -931,3 +931,29 @@
 @media (prefers-reduced-motion: reduce) {
     .ch-loading { animation: none; }
 }
+
+/* Point du curseur : couleur de sa courbe (mode comparaison) */
+.ch-cursor circle[class*="ch-line--"] { stroke-width: 2; filter: none; }
+
+/* « Comparer » : séparé des périodes simples */
+.ch-range--compare {
+    margin-left: 4px;
+    border-left: var(--hairline) solid var(--border-strong);
+    border-radius: 0 999px 999px 0;
+}
+
+.ch-range--compare[aria-pressed="true"] {
+    border-radius: 999px;
+    border-left-color: transparent;
+}
+
+.ch-tooltip.is-below { transform: translate(-50%, 14px); }
+.ch-range { white-space: nowrap; padding: 0 0.75rem; }
+.ch-ranges { align-items: center; max-width: 100%; }
+.ch-ranges__label {
+    padding: 0 0.4rem 0 0.75rem;
+    font: 11px var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+}
