@@ -1,433 +1,90 @@
 {% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
 
-{% block title %}Documentation Trading{% endblock %}
-{% block meta_description %}Documentation complète ICT, Orderflow, Wyckoff, Quantitatif — de débutant à expert.{% endblock %}
+{% block title %}Documentation trading{% endblock %}
+{% block meta_description %}Documentation de trading structurée en modules progressifs : bases des marchés, analyse technique, méthodes quantitatives et gestion du risque.{% endblock %}
+
+{# Page refondue (Phase 4) #}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
 
 {% block body %}
 
-{# ── HERO ── #}
-<section class="section doc-hero">
-    <div class="doc-hero__left">
-        <span class="section-eyebrow">Ressources & Documentation</span>
-        <h1>Maîtrisez les marchés.</h1>
-        <p class="section-desc">
-            De zéro à trader professionnel — une documentation structurée en {{ moduleCount }} modules,
-            {{ totalArticles }} articles, du débutant absolu aux modèles quantitatifs avancés.
-        </p>
+<header class="page-hero">
+    <div class="container page-hero__grid">
+        <div>
+            <span class="eyebrow">Documentation</span>
+            <h1>Comprendre <em>avant de trader.</em></h1>
+            <p class="lead">Des modules progressifs, rédigés pour apprendre à raisonner : les bases, l'analyse, le risque, puis les méthodes quantitatives.</p>
+            <ul class="page-hero__meta" aria-label="La documentation en chiffres">
+                <li><strong>{{ totalArticles }}</strong><span>Articles</span></li>
+                <li><strong>{{ moduleCount }}</strong><span>Modules</span></li>
+                <li><strong>{{ totalMinutes }}</strong><span>Minutes de lecture</span></li>
+            </ul>
+        </div>
 
-        <div class="doc-hero__stats">
-            <div class="doc-hero__stat">
-                <span class="doc-hero__stat-val">{{ totalArticles }}</span>
-                <span class="doc-hero__stat-label">Articles</span>
-            </div>
-            <div class="doc-hero__stat">
-                <span class="doc-hero__stat-val">{{ moduleCount }}</span>
-                <span class="doc-hero__stat-label">Modules</span>
-            </div>
-            <div class="doc-hero__stat">
-                <span class="doc-hero__stat-val">~{{ totalMinutes }}</span>
-                <span class="doc-hero__stat-label">Min de lecture</span>
-            </div>
+        <div class="member-card">
+            {% if app.user %}
+                <span class="eyebrow">Votre accès</span>
+                <strong>{{ app.user.firstName }} {{ app.user.lastName }}</strong>
+                {% if app.user.isPremium %}
+                    <p>Accès Premium : tous les modules vous sont ouverts.</p>
+                    {{ ui.badge('Premium', 'demo') }}
+                {% else %}
+                    <p>Accès gratuit : les modules gratuits vous sont ouverts. Les modules Premium sont signalés.</p>
+                    {{ ui.button('Voir l\'accès Premium', path('app_pricing'), 'ghost', 'arrow-right') }}
+                {% endif %}
+            {% else %}
+                <span class="eyebrow">Accès</span>
+                <strong>Un compte gratuit suffit pour commencer</strong>
+                <p>Les articles gratuits sont réservés aux membres inscrits. L'inscription ne demande qu'une adresse e-mail.</p>
+                <div class="member-card__actions">
+                    {{ ui.button('Créer un compte', path('app_register'), 'primary') }}
+                    {{ ui.button('Se connecter', path('app_login'), 'secondary') }}
+                </div>
+            {% endif %}
         </div>
     </div>
+</header>
 
-    <div class="doc-hero__right">
-        {% if app.user %}
-            <div class="doc-access-card doc-access-card--connected">
-                <div class="doc-access-card__icon">
-                    <i class="bi bi-person-check-fill"></i>
-                </div>
-                <div>
-                    <strong>{{ app.user.firstName }} {{ app.user.lastName }}</strong>
-                    <p>
-                        {% if app.user.isPremium %}
-                            <span class="tag tag--gold"><i class="bi bi-star-fill"></i> Accès Premium actif</span>
-                        {% else %}
-                            Accès membres — <a href="{{ path('app_contact') }}" class="doc-link">Passer Premium →</a>
-                        {% endif %}
-                    </p>
-                </div>
+<section class="section" aria-labelledby="modules-title">
+    <div class="container">
+        <div class="section-head" data-reveal>
+            <div>
+                <span class="eyebrow">Modules</span>
+                <h2 id="modules-title">Un parcours, <em>dans l'ordre.</em></h2>
             </div>
+            <p>Chaque module s'appuie sur le précédent. Les modules Premium sont indiqués clairement.</p>
+        </div>
+
+        {% if categories is not empty %}
+            <ol class="editorial-list module-list" data-reveal>
+                {% for category in categories %}
+                    {% set count = articleCounts[category.slug] ?? 0 %}
+                    {% set isPremium = category.accessLevel == 'premium' %}
+                    {% set isLocked = isPremium and (not app.user or not app.user.isPremium) %}
+                    <li class="editorial-list__item{{ isLocked ? ' is-locked' }}">
+                        <span class="editorial-list__index">{{ '%02d'|format(loop.index) }}</span>
+                        <div>
+                            <h3 class="editorial-list__title">
+                                <a href="{{ path('app_documentation_category', { slug: category.slug }) }}">{{ category.name }}</a>
+                            </h3>
+                            {% if category.description %}<p class="module-list__desc">{{ category.description }}</p>{% endif %}
+                        </div>
+                        <span class="module-list__meta">{{ count > 0 ? count ~ ' article' ~ (count > 1 ? 's') : 'Bientôt' }}</span>
+                        <span class="module-list__meta">
+                            {% if isLocked %}{{ ui.icon('lock', 'Module Premium, accès verrouillé') }}{% endif %}
+                            {{ ui.badge(isPremium ? 'Premium' : 'Gratuit', isPremium ? 'demo' : 'backtest') }}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ol>
         {% else %}
-            <div class="doc-access-card">
-                <div class="doc-access-card__icon">
-                    <i class="bi bi-lock-fill"></i>
-                </div>
-                <div>
-                    <strong>Inscription requise</strong>
-                    <p>Les articles (même gratuits) nécessitent un compte pour garantir la qualité de la communauté.</p>
-                    <div style="display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap">
-                        <a href="{{ path('app_register') }}" class="btn btn--primary" style="font-size:13px;padding:0.5rem 1rem">
-                            <i class="bi bi-person-plus"></i> S'inscrire gratuitement
-                        </a>
-                        <a href="{{ path('app_login') }}" class="btn btn--ghost" style="font-size:13px;padding:0.5rem 1rem">
-                            Se connecter
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <div class="works-empty"><p>Les premiers modules arrivent bientôt.</p></div>
         {% endif %}
+
+        {{ ui.notice('Contenu éducatif : il ne constitue ni un conseil en investissement ni une recommandation personnalisée.', 'info', 'À savoir.') }}
     </div>
 </section>
 
-<hr class="divider">
-
-{# ── MODULES ── #}
-<section class="section">
-
-    {# Niveaux définis statiquement pour l'affichage — les articles viennent de la BDD #}
-
-    {% set modules = [
-        {
-            icon: 'bi-mortarboard-fill',
-            name: 'Débuter en trading',
-            slug: 'debuter-en-trading',
-            level: '0',
-            level_label: 'Débutant',
-            access: 'public',
-            desc: 'Les bases absolues — marchés, bougies, ordres, gestion du risque.',
-            count: 7
-        },
-        {
-            icon: 'bi-graph-up-arrow',
-            name: 'Analyse technique classique',
-            slug: 'analyse-technique-classique',
-            level: '1',
-            level_label: 'Débutant',
-            access: 'free',
-            desc: 'Tendances, supports/résistances, moyennes mobiles, figures chartistes.',
-            count: 7
-        },
-        {
-            icon: 'bi-rulers',
-            name: 'ICT — Inner Circle Trader',
-            slug: 'ict-inner-circle-trader',
-            level: '2',
-            level_label: 'Intermédiaire',
-            access: 'free',
-            desc: 'BOS/CHoCH, Order Blocks, FVG, liquidité, kill zones, premium/discount.',
-            count: 8
-        },
-        {
-            icon: 'bi-crosshair2',
-            name: 'ICT Avancé — Concepts Experts',
-            slug: 'ict-avance-concepts-experts',
-            level: '3',
-            level_label: 'Avancé',
-            access: 'premium',
-            desc: 'PO3, Silver Bullet, CISD, IFVG, Unicorn Model, OTE, MWDD profiles.',
-            count: 10
-        },
-        {
-            icon: 'bi-activity',
-            name: 'Price Action & Wyckoff',
-            slug: 'price-action-wyckoff',
-            level: '4',
-            level_label: 'Intermédiaire',
-            access: 'free',
-            desc: 'Méthode Wyckoff, accumulation/distribution, Spring, VSA.',
-            count: 6
-        },
-        {
-            icon: 'bi-bar-chart-steps',
-            name: 'Orderflow & Footprint',
-            slug: 'orderflow-footprint',
-            level: '5',
-            level_label: 'Avancé',
-            access: 'premium',
-            desc: 'Delta, CVD, footprint charts, DOM, volume profile, market profile.',
-            count: 8
-        },
-        {
-            icon: 'bi-calculator-fill',
-            name: 'Quantitatif & Statistiques',
-            slug: 'quantitatif-statistiques',
-            level: '6',
-            level_label: 'Expert',
-            access: 'premium',
-            desc: 'STDV, Monte Carlo, Kelly, backtesting rigoureux, distributions.',
-            count: 8
-        },
-        {
-            icon: 'bi-shield-check',
-            name: 'Gestion du risque avancée',
-            slug: 'gestion-risque-avancee',
-            level: '7',
-            level_label: 'Intermédiaire',
-            access: 'premium',
-            desc: 'Position sizing, SL professionnel, drawdown, journal de trading.',
-            count: 6
-        },
-        {
-            icon: 'bi-brain',
-            name: 'Psychologie & Mindset',
-            slug: 'psychologie-mindset',
-            level: '8',
-            level_label: 'Tous niveaux',
-            access: 'free',
-            desc: 'Biais cognitifs, revenge trading, discipline, gestion des pertes.',
-            count: 4
-        },
-        {
-            icon: 'bi-cpu-fill',
-            name: 'Trading Algorithmique',
-            slug: 'trading-algorithmique',
-            level: '9',
-            level_label: 'Expert',
-            access: 'premium',
-            desc: 'PineScript, Python, backtesting, connexion broker, ICT en code.',
-            count: 6
-        },
-        {
-            icon: 'bi-map-fill',
-            name: 'Stratégies & Setups complets',
-            slug: 'strategies-setups-complets',
-            level: '10',
-            level_label: 'Expert',
-            access: 'premium',
-            desc: 'Unicorn, Silver Bullet, trading indices/Forex/crypto, setups backtestés.',
-            count: 6
-        }
-    ] %}
-
-    <div class="doc-modules-grid">
-        {% for category in categories %}
-        {% set count = articleCounts[category.slug] ?? 0 %}
-        {% set isPremium = category.accessLevel == 'premium' %}
-        {% set isLocked = isPremium and (not app.user or not app.user.isPremium) %}
-            <a href="{{ path('app_documentation_category', {slug: category.slug}) }}"
-              class="doc-module {% if isLocked %}doc-module--locked{% endif %}">
-
-                <div class="doc-module__top">
-                    <div class="doc-module__icon doc-module__icon--{{ category.accessLevel }}">
-                        <i class="bi {{ category.icon }}"></i>
-                    </div>
-                    <div class="doc-module__badges">
-                        <span class="doc-level-badge doc-level-badge--{{ category.position - 1 }}">
-                            Niveau {{ category.position - 1 }}
-                        </span>
-                    {% if isPremium %}
-                        <span class="tag tag--gold" style="font-size:10px">
-                            <i class="bi bi-star-fill"></i> Premium
-                        </span>
-                    {% elseif category.accessLevel == 'free' %}
-                        <span class="tag tag--accent" style="font-size:10px">
-                            <i class="bi bi-unlock-fill"></i> Gratuit
-                        </span>
-                    {% else %}
-                        <span class="tag" style="font-size:10px">
-                            <i class="bi bi-people-fill"></i> Public
-                        </span>
-                    {% endif %}
-                    </div>
-                </div>
-
-                <div class="doc-module__body">
-            <h3 class="doc-module__title">{{ category.name }}</h3>
-            <p class="doc-module__desc">{{ category.description }}</p>
-                </div>
-
-                <div class="doc-module__footer">
-                    <span class="doc-module__count">
-                        <i class="bi bi-file-text"></i> {% set count = articleCounts[category.slug] ?? 0 %}
-                            {% if count > 0 %}
-                                {{ count }} article{{ count > 1 ? 's' : '' }}
-                            {% else %}
-                                <em style="font-style:normal;color:var(--color-text-faint)">Bientôt disponible</em>
-                            {% endif %}
-                    </span>
-                    {% if isLocked %}
-                        <span class="doc-module__lock"><i class="bi bi-lock-fill"></i></span>
-                    {% elseif count > 0 %}
-                        <span class="doc-module__arrow"><i class="bi bi-arrow-right"></i></span>
-                    {% endif %}
-                </div>
-
-            </a>
-        {% endfor %}
-    </div>
-
-</section>
-
-{% endblock %}
-
-{% block stylesheets %}
-<style>
-/* Hero doc */
-.doc-hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: center;
-    padding-bottom: 4rem;
-}
-.doc-hero__stats {
-    display: flex;
-    gap: 2.5rem;
-    margin-top: 2rem;
-}
-.doc-hero__stat-val {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-accent);
-    letter-spacing: -0.03em;
-}
-.doc-hero__stat-label {
-    font-size: 12px;
-    color: var(--color-text-faint);
-}
-
-/* Access card */
-.doc-access-card {
-    background: var(--color-bg-2);
-    border: 0.5px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    padding: 2rem;
-    display: flex;
-    gap: 1.2rem;
-    align-items: flex-start;
-}
-.doc-access-card--connected {
-    border-color: var(--color-accent-border);
-    background: rgba(62,180,137,0.05);
-}
-.doc-access-card__icon {
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-md);
-    background: var(--color-accent-dim);
-    border: 0.5px solid var(--color-accent-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: var(--color-accent);
-    flex-shrink: 0;
-}
-.doc-access-card strong { display: block; color: #F0F2F7; margin-bottom: 6px; font-size: 15px; }
-.doc-access-card p { font-size: 13.5px; font-weight: 300; line-height: 1.6; }
-.doc-link { color: var(--color-accent); font-weight: 500; }
-
-/* Modules grid */
-.doc-modules-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-}
-
-.doc-module {
-    background: var(--color-bg-2);
-    border: 0.5px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 1.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    text-decoration: none;
-    transition: border-color var(--transition), background var(--transition), transform 0.15s;
-}
-.doc-module:hover {
-    border-color: var(--color-border-md);
-    background: var(--color-bg-3);
-    transform: translateY(-2px);
-}
-.doc-module--locked { opacity: 0.65; }
-.doc-module--locked:hover { transform: none; }
-
-.doc-module__top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-}
-
-.doc-module__icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-.doc-module__icon--premium {
-    background: var(--color-gold-dim);
-    border: 0.5px solid rgba(212,169,75,0.25);
-    color: var(--color-gold);
-}
-.doc-module__icon--free,
-.doc-module__icon--public {
-    background: var(--color-accent-dim);
-    border: 0.5px solid var(--color-accent-border);
-    color: var(--color-accent);
-}
-
-.doc-module__badges {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-}
-
-.doc-level-badge {
-    font-size: 10px;
-    font-weight: 500;
-    padding: 2px 7px;
-    border-radius: 4px;
-    white-space: nowrap;
-}
-.doc-level-badge--0 { background: rgba(62,180,137,0.1); color: var(--color-accent); }
-.doc-level-badge--1 { background: rgba(62,180,137,0.1); color: var(--color-accent); }
-.doc-level-badge--2 { background: rgba(62,130,200,0.1); color: #5b9bd5; }
-.doc-level-badge--3 { background: rgba(212,169,75,0.1); color: var(--color-gold); }
-.doc-level-badge--4 { background: rgba(62,130,200,0.1); color: #5b9bd5; }
-.doc-level-badge--5 { background: rgba(212,169,75,0.1); color: var(--color-gold); }
-.doc-level-badge--6 { background: rgba(220,80,80,0.1); color: #e05555; }
-.doc-level-badge--7 { background: rgba(62,130,200,0.1); color: #5b9bd5; }
-.doc-level-badge--8 { background: rgba(62,180,137,0.1); color: var(--color-accent); }
-.doc-level-badge--9 { background: rgba(220,80,80,0.1); color: #e05555; }
-.doc-level-badge--10 { background: rgba(220,80,80,0.1); color: #e05555; }
-
-.doc-module__body { flex: 1; }
-.doc-module__title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #F0F2F7;
-    margin-bottom: 0.5rem;
-    font-family: var(--font-body);
-}
-.doc-module__desc {
-    font-size: 12.5px;
-    color: var(--color-text-faint);
-    line-height: 1.6;
-    font-weight: 300;
-}
-
-.doc-module__footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0.8rem;
-    border-top: 0.5px solid var(--color-border);
-}
-.doc-module__count {
-    font-size: 12px;
-    color: var(--color-text-faint);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-.doc-module__arrow { color: var(--color-accent); font-size: 14px; }
-.doc-module__lock { color: var(--color-text-faint); font-size: 14px; }
-
-@media (max-width: 1100px) { .doc-modules-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 900px) {
-    .doc-hero { grid-template-columns: 1fr; gap: 2rem; }
-    .doc-modules-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) { .doc-modules-grid { grid-template-columns: 1fr; } }
-</style>
 {% endblock %}

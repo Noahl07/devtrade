@@ -28,6 +28,10 @@ class SitemapController extends AbstractController
             ['route' => 'app_documentation',  'priority' => '0.9', 'freq' => 'weekly'],
             ['route' => 'app_contact',        'priority' => '0.7', 'freq' => 'monthly'],
             ['route' => 'app_register',       'priority' => '0.6', 'freq' => 'monthly'],
+            ['route' => 'app_legal_notice',   'priority' => '0.3', 'freq' => 'yearly'],
+            ['route' => 'app_cgu',            'priority' => '0.3', 'freq' => 'yearly'],
+            ['route' => 'app_privacy',        'priority' => '0.3', 'freq' => 'yearly'],
+            ['route' => 'app_risks',          'priority' => '0.5', 'freq' => 'yearly'],
         ];
 
         foreach ($staticRoutes as $r) {

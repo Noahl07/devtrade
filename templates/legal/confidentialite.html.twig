@@ -1,0 +1,67 @@
+{% extends 'legal/_layout.html.twig' %}
+{% import 'legal/_macros.html.twig' as l %}
+
+{% block title %}Politique de confidentialité{% endblock %}
+{% block legal_title %}Politique de confidentialité{% endblock %}
+
+{% block legal_body %}
+<p>Cette page explique quelles données personnelles dev.trade collecte, pourquoi, combien de temps elles sont conservées
+    et comment exercer vos droits, conformément au Règlement général sur la protection des données (RGPD).</p>
+
+<h2>Responsable du traitement</h2>
+<p>{{ l.field(legal.editor_name, "nom ou raison sociale de l'éditeur") }}, joignable à l'adresse {{ contact_email }}.</p>
+
+<h2>Données collectées et finalités</h2>
+
+<h3>Compte membre</h3>
+<p>Prénom, nom, adresse e-mail, mot de passe (stocké sous forme chiffrée irréversible), date d'inscription et type d'accès.
+    Ces données servent à gérer votre compte et votre accès à la documentation.
+    Base légale : exécution des <a href="{{ path('app_cgu') }}">conditions d'utilisation</a>.</p>
+
+<h3>Liste d'attente {{ product_name }}</h3>
+<p>Adresse e-mail, prénom (facultatif), date d'inscription et date de votre consentement.
+    Ces données servent uniquement à vous prévenir, une fois, de la sortie du robot.
+    Base légale : votre consentement, que vous pouvez retirer à tout moment.</p>
+
+<h3>Formulaire de contact</h3>
+<p>Nom, adresse e-mail, sujet et message. Le message est transmis par e-mail et n'est pas enregistré dans la base de données du site.
+    Base légale : répondre à votre demande (mesures précontractuelles ou intérêt légitime).</p>
+
+<h3>Sécurité</h3>
+<p>L'adresse IP est utilisée temporairement pour limiter les tentatives abusives (connexion, inscription, formulaires).
+    Base légale : intérêt légitime à protéger le service.</p>
+
+<h2>Durées de conservation</h2>
+<ul>
+    <li><strong>Compte :</strong> tant que le compte est actif, puis {{ l.field(legal.retention_account, "durée après la dernière connexion") }}.</li>
+    <li><strong>Liste d'attente :</strong> jusqu'à la notification de sortie, ou jusqu'au retrait de votre consentement.</li>
+    <li><strong>Messages de contact :</strong> {{ l.field(legal.retention_contact, "durée de conservation des e-mails reçus") }}.</li>
+    <li><strong>Limitation des tentatives :</strong> au plus quelques heures.</li>
+</ul>
+
+<h2>Destinataires</h2>
+<p>Vos données ne sont jamais vendues ni louées. Elles ne sont accessibles qu'à l'éditeur et à ses prestataires techniques :</p>
+<ul>
+    <li><strong>Hébergement :</strong> {{ l.field(legal.host_name, "hébergeur") }}.</li>
+    <li><strong>Envoi des e-mails :</strong> {{ l.field(legal.email_provider, "prestataire d'envoi des e-mails") }}.</li>
+</ul>
+<p>Si l'un de ces prestataires traite des données hors de l'Union européenne, ce transfert est encadré par les garanties prévues
+    par le RGPD ({{ l.field(null, "préciser les garanties applicables") }}).</p>
+
+<h2>Cookies</h2>
+<p>Le site n'utilise que des cookies strictement nécessaires à son fonctionnement, qui ne demandent pas de consentement :</p>
+<ul>
+    <li><strong>Cookie de session :</strong> garde votre connexion pendant votre visite et protège les formulaires.</li>
+    <li><strong>Cookie « Rester connecté » :</strong> seulement si vous cochez la case à la connexion, valable 7 jours.</li>
+</ul>
+<p>Aucun cookie publicitaire, de mesure d'audience ou de réseau social n'est utilisé, et aucune ressource n'est chargée depuis un site tiers.</p>
+
+<h2>Vos droits</h2>
+<p>Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données,
+    ainsi que du droit de retirer votre consentement à tout moment. Pour les exercer, écrivez à {{ contact_email }}.</p>
+<p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL (cnil.fr).</p>
+
+<h2>Sécurité des données</h2>
+<p>Le site est servi en HTTPS. Les mots de passe sont chiffrés de façon irréversible, les formulaires sont protégés contre la falsification
+    de requêtes et les tentatives répétées sont limitées.</p>
+{% endblock %}

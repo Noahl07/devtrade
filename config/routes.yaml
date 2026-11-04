@@ -159,6 +159,21 @@ app_cgu:
     controller: App\Controller\LegalController::cgu
     methods: [GET]
 
+app_legal_notice:
+    path: /mentions-legales
+    controller: App\Controller\LegalController::notice
+    methods: [GET]
+
+app_privacy:
+    path: /confidentialite
+    controller: App\Controller\LegalController::privacy
+    methods: [GET]
+
+app_risks:
+    path: /risques
+    controller: App\Controller\LegalController::risks
+    methods: [GET]
+
 app_admin_categories:
     path: /admin/categories
     controller: App\Controller\AdminController::categories

@@ -1,0 +1,44 @@
+{% extends 'legal/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block title %}Risques et limites{% endblock %}
+{% block legal_title %}Risques et limites{% endblock %}
+
+{% block legal_body %}
+{{ ui.risk_notice() }}
+
+<h2>Le risque de perte en capital</h2>
+<p>Le trading de CFD et de Forex se fait avec effet de levier : une faible variation de prix peut entraîner une perte importante,
+    parfois supérieure à la somme engagée selon les conditions de votre courtier. Une grande partie des comptes de particuliers
+    perdent de l'argent en tradant des CFD. N'engagez que des sommes que vous pouvez vous permettre de perdre.</p>
+
+<h2>Aucun conseil en investissement</h2>
+<p>Les contenus de dev.trade (documentation, articles, page {{ product_name }}) sont éducatifs et informatifs.
+    Ils ne tiennent pas compte de votre situation, de vos objectifs ni de votre tolérance au risque, et ne constituent ni un conseil
+    en investissement ni une recommandation personnalisée. dev.trade n'est pas un prestataire de services d'investissement.</p>
+
+<h2>Ce que valent les backtests</h2>
+<p>Les résultats publiés pour {{ product_name }} sont des simulations sur données historiques (backtests), pas des résultats réels :</p>
+<ul>
+    <li><strong>Coûts réels :</strong> la commission du courtier n'est pas incluse ; le spread et le glissement réels peuvent être plus élevés.</li>
+    <li><strong>Exécution :</strong> le résultat dépend fortement de la qualité d'exécution du courtier et du serveur.</li>
+    <li><strong>Surajustement :</strong> les réglages ont été choisis en connaissant ces données ; un résultat réel sera vraisemblablement inférieur.</li>
+    <li><strong>Petit échantillon :</strong> quelques dizaines de trades par an ; une année peut s'écarter fortement de la moyenne.</li>
+    <li><strong>Changement de marché :</strong> un avantage passé peut disparaître si le comportement du marché change.</li>
+</ul>
+<p>Les performances passées, y compris en simulation, ne préjugent pas des performances futures.</p>
+
+<h2>Les risques propres à un robot</h2>
+<ul>
+    <li>Panne de connexion, du serveur (VPS) ou de la plateforme MetaTrader 5.</li>
+    <li>Conditions de courtier différentes de celles du test (horaires, spreads, règles d'exécution).</li>
+    <li>Erreur de configuration à l'installation (taille de position, symbole, fuseau horaire).</li>
+    <li>Règles de certaines prop firms qui interdisent les robots prêts à l'emploi.</li>
+</ul>
+<p>Commencez toujours sur un compte de démonstration et surveillez le robot régulièrement.</p>
+
+<h2>Se protéger des offres frauduleuses</h2>
+<p>L'Autorité des marchés financiers (AMF) met régulièrement en garde contre les offres de trading automatisé promettant des gains élevés
+    ou garantis. Méfiez-vous de toute promesse de rendement, de tout témoignage invérifiable et de toute pression pour décider vite.
+    Les listes noires et mises en garde de l'AMF sont consultables sur amf-france.org.</p>
+{% endblock %}

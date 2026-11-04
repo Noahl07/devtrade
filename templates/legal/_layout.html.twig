@@ -1,0 +1,43 @@
+{# Mise en page des pages légales : sommaire généré depuis les titres, texte long. #}
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{# Page refondue (Phase 4) #}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<header class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Informations légales</span>
+        <h1>{{ block('legal_title') }}</h1>
+        <p class="muted small">Dernière mise à jour : {% block legal_updated %}{{ legal.updated_at }}{% endblock %}</p>
+    </div>
+</header>
+
+<div class="container reading">
+    <aside class="reading__aside">
+        <nav data-toc-wrap hidden aria-label="Sur cette page">
+            <span class="reading__aside-title">Sur cette page</span>
+            <ol class="toc" data-toc></ol>
+        </nav>
+        <nav aria-label="Pages légales">
+            <span class="reading__aside-title">Pages légales</span>
+            <ol class="toc">
+                {% for route, label in { app_legal_notice: 'Mentions légales', app_cgu: "Conditions d'utilisation", app_privacy: 'Confidentialité', app_risks: 'Risques et limites' } %}
+                    <li><a href="{{ path(route) }}" {% if app.request.attributes.get('_route') == route %}aria-current="true"{% endif %}>{{ label }}</a></li>
+                {% endfor %}
+            </ol>
+        </nav>
+    </aside>
+
+    <div>
+        {% if not legal.validated %}
+            {{ ui.notice('Ce document est une version provisoire, en cours de validation par un professionnel du droit.', 'info', 'Version provisoire.') }}
+        {% endif %}
+        <div class="prose" data-reading-body>
+            {% block legal_body %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

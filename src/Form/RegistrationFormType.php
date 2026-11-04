@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\User;
@@ -22,16 +24,16 @@ class RegistrationFormType extends AbstractType
             ->add('firstName', TextType::class, [
                 'label'       => 'Prénom',
                 'constraints' => [
-                    new NotBlank(['message' => 'Veuillez entrer votre prénom.']),
-                    new Length(['min' => 2, 'max' => 80]),
+                    new NotBlank(message: 'Veuillez entrer votre prénom.'),
+                    new Length(min: 2, max: 80),
                 ],
                 'attr' => ['placeholder' => 'Jean'],
             ])
             ->add('lastName', TextType::class, [
                 'label'       => 'Nom',
                 'constraints' => [
-                    new NotBlank(['message' => 'Veuillez entrer votre nom.']),
-                    new Length(['min' => 2, 'max' => 80]),
+                    new NotBlank(message: 'Veuillez entrer votre nom.'),
+                    new Length(min: 2, max: 80),
                 ],
                 'attr' => ['placeholder' => 'Dupont'],
             ])
@@ -43,7 +45,7 @@ class RegistrationFormType extends AbstractType
                 'mapped'      => false,
                 'label'       => "J'accepte les conditions d'utilisation",
                 'constraints' => [
-                    new IsTrue(['message' => 'Vous devez accepter les conditions.']),
+                    new IsTrue(message: 'Vous devez accepter les conditions.'),
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
@@ -54,12 +56,13 @@ class RegistrationFormType extends AbstractType
                     'placeholder'  => '8 caractères minimum',
                 ],
                 'constraints' => [
-                    new NotBlank(['message' => 'Veuillez choisir un mot de passe.']),
-                    new Length([
-                        'min'        => 8,
-                        'minMessage' => 'Le mot de passe doit faire au moins {{ limit }} caractères.',
-                        'max'        => 4096,
-                    ]),
+                    new NotBlank(message: 'Veuillez choisir un mot de passe.'),
+                    new Length(
+                        min: 8,
+                        max: 128,
+                        minMessage: 'Le mot de passe doit faire au moins {{ limit }} caractères.',
+                        maxMessage: 'Le mot de passe doit faire au plus {{ limit }} caractères.',
+                    ),
                 ],
             ])
         ;
