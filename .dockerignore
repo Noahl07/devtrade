@@ -1,0 +1,19 @@
+# Fichiers exclus de l'image Docker : dépendances et builds refaits dans l'image,
+# données et archives locales, secrets locaux.
+.git
+.gitignore
+node_modules
+vendor
+var
+public/build
+public/bundles
+tests
+.phpunit.cache
+phpunit.xml
+DOC
+zip
+zip.zip
+*.sql
+.env.local
+.env.local.php
+.env.*.local
