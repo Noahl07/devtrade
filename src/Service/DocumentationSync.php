@@ -44,10 +44,11 @@ final class DocumentationSync
      *   newDocuments: list<array<string, mixed>>,
      *   categoryConflicts: list<array{slug: string, fields: list<string>}>,
      *   documentConflicts: list<array{slug: string, fields: list<string>}>,
+     *   titleDuplicates: list<array{type: string, sourceSlug: string, targetSlug: string, title: string}>,
      *   identical: array{categories: int, documents: int},
      * }
      */
-    public function diff(Connection $source): array
+    public function diff(Connection $source, bool $includeTitleDuplicates = false): array
     {
         $sourceCategories = $this->categories($source);
         $targetCategories = $this->categories($this->target);
@@ -59,10 +60,25 @@ final class DocumentationSync
             'newDocuments' => [],
             'categoryConflicts' => [],
             'documentConflicts' => [],
+            'titleDuplicates' => [],
             'identical' => ['categories' => 0, 'documents' => 0],
         ];
 
+        // Même titre (ou nom de module), slug différent : très probablement le même contenu.
+        $targetCategoryByName = $this->indexByTitle($targetCategories, 'name');
+        $targetDocumentByTitle = $this->indexByTitle($targetDocuments, 'title');
+        // Module de rattachement dans la base de travail, pour chaque module source.
+        $categoryMap = [];
+
         foreach ($sourceCategories as $slug => $row) {
+            $slug = (string) $slug;
+            $twin = $targetCategoryByName[$this->normalizeTitle((string) $row['name'])] ?? null;
+            if (!isset($targetCategories[$slug]) && $twin !== null && !$includeTitleDuplicates) {
+                $plan['titleDuplicates'][] = ['type' => 'module', 'sourceSlug' => $slug, 'targetSlug' => $twin, 'title' => (string) $row['name']];
+                $categoryMap[$slug] = $twin;
+                continue;
+            }
+            $categoryMap[$slug] = $slug;
             if (!isset($targetCategories[$slug])) {
                 $plan['newCategories'][] = $row;
             } elseif ($fields = $this->differences($row, $targetCategories[$slug], self::CATEGORY_FIELDS)) {
@@ -73,7 +89,14 @@ final class DocumentationSync
         }
 
         foreach ($sourceDocuments as $slug => $row) {
+            $slug = (string) $slug;
+            $twin = $targetDocumentByTitle[$this->normalizeTitle((string) $row['title'])] ?? null;
+            if (!isset($targetDocuments[$slug]) && $twin !== null && !$includeTitleDuplicates) {
+                $plan['titleDuplicates'][] = ['type' => 'article', 'sourceSlug' => $slug, 'targetSlug' => $twin, 'title' => (string) $row['title']];
+                continue;
+            }
             if (!isset($targetDocuments[$slug])) {
+                $row['target_category_slug'] = $categoryMap[$row['category_slug']] ?? $row['category_slug'];
                 $plan['newDocuments'][] = $row;
             } elseif ($fields = $this->differences($row, $targetDocuments[$slug], self::DOCUMENT_FIELDS)) {
                 $plan['documentConflicts'][] = ['slug' => (string) $slug, 'fields' => $fields];
@@ -136,7 +159,7 @@ final class DocumentationSync
                     'created_at' => $row['created_at'],
                     'updated_at' => $row['updated_at'],
                     'position' => (int) $row['position'],
-                    'category_id' => $categoryIds[$row['category_slug']] ?? throw new \RuntimeException(sprintf('Module « %s » introuvable pour l\'article « %s ».', $row['category_slug'], $row['slug'])),
+                    'category_id' => $categoryIds[$row['target_category_slug']] ?? throw new \RuntimeException(sprintf('Module « %s » introuvable pour l\'article « %s ».', $row['target_category_slug'], $row['slug'])),
                     'author_id' => $authorId,
                 ], ['is_published' => 'boolean']);
                 ++$result['documents'];
@@ -167,6 +190,29 @@ final class DocumentationSync
             SQL);
 
         return array_column($rows, null, 'slug');
+    }
+
+    /**
+     * @param array<string, array<string, mixed>> $rows indexés par slug
+     *
+     * @return array<string, string> titre normalisé => slug
+     */
+    private function indexByTitle(array $rows, string $field): array
+    {
+        $index = [];
+        foreach ($rows as $slug => $row) {
+            $index[$this->normalizeTitle((string) $row[$field])] ??= (string) $slug;
+        }
+
+        return $index;
+    }
+
+    /** Minuscules, sans accents ni ponctuation : « Gestion du risque — les fondamentaux » = « gestion du risque les fondamentaux ». */
+    private function normalizeTitle(string $title): string
+    {
+        $ascii = (string) iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', mb_strtolower($title));
+
+        return trim((string) preg_replace('/[^a-z0-9]+/', ' ', strtolower($ascii)));
     }
 
     /**

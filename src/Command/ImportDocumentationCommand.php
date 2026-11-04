@@ -31,7 +31,8 @@ final class ImportDocumentationCommand extends Command
     {
         $this
             ->addOption('source', null, InputOption::VALUE_REQUIRED, 'Base source (même serveur, mêmes identifiants)', 'devtrade_live')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Affiche ce qui serait ajouté et les conflits, sans rien écrire');
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Affiche ce qui serait ajouté et les conflits, sans rien écrire')
+            ->addOption('avec-doublons-de-titre', null, InputOption::VALUE_NONE, 'Importe aussi les éléments dont le titre existe déjà sous un autre slug (ignorés par défaut)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -52,7 +53,7 @@ final class ImportDocumentationCommand extends Command
         }
 
         $io->title(sprintf('Documentation : %s → %s%s', $source, $this->sync->targetDatabase(), $dryRun ? ' (simulation)' : ''));
-        $plan = $this->sync->diff($this->sync->openSource($source));
+        $plan = $this->sync->diff($this->sync->openSource($source), (bool) $input->getOption('avec-doublons-de-titre'));
 
         $io->section(sprintf('Modules à ajouter (%d)', count($plan['newCategories'])));
         $io->listing(array_map(static fn (array $c): string => sprintf('%s  [%s] %s', $c['slug'], $c['access_level'], $c['name']), $plan['newCategories']) ?: ['aucun']);
@@ -72,6 +73,19 @@ final class ImportDocumentationCommand extends Command
             array_map(static fn (array $c): array => ['article', $c['slug'], implode(', ', $c['fields'])], $plan['documentConflicts']),
         );
         $conflicts !== [] ? $io->table(['Type', 'Slug', 'Champs différents'], $conflicts) : $io->listing(['aucun']);
+
+        $io->section(sprintf('Doublons probables : même titre, slug différent (%d) : ignorés', count($plan['titleDuplicates'])));
+        $plan['titleDuplicates'] !== []
+            ? $io->table(['Type', 'Slug dans la source', 'Slug existant', 'Titre'], array_map(static fn (array $d): array => [$d['type'], $d['sourceSlug'], $d['targetSlug'], mb_strimwidth($d['title'], 0, 45, '…')], $plan['titleDuplicates']))
+            : $io->listing(['aucun']);
+        if ($plan['titleDuplicates'] !== []) {
+            $io->text('Les articles des modules doublons sont rattachés au module existant. Option --avec-doublons-de-titre pour tout importer quand même.');
+        }
+
+        $invalid = array_filter(array_merge($plan['newCategories'], $plan['newDocuments']), static fn (array $r): bool => !in_array($r['access_level'], ['free', 'premium'], true));
+        if ($invalid !== []) {
+            $io->warning(sprintf('%d élément(s) ont un niveau d\'accès non géré par le site (%s) : %s', count($invalid), implode(', ', array_unique(array_column($invalid, 'access_level'))), implode(', ', array_column($invalid, 'slug'))));
+        }
 
         $io->text(sprintf('Identiques dans les deux bases : %d modules, %d articles.', $plan['identical']['categories'], $plan['identical']['documents']));
 
