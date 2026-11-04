@@ -18,6 +18,8 @@ Encore
     .addEntry('app', './assets/app.js')
     // Design system (refonte) : styleguide de dev, servi uniquement par la route app_styleguide
     .addEntry('styleguide', './assets/styleguide.js')
+    // Back-office (refonte) : éditeur, réordonnancement, confirmations ; aucun script en ligne
+    .addEntry('admin', './assets/admin.js')
 
     .splitEntryChunks()
     .enableSingleRuntimeChunk()

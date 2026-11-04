@@ -96,11 +96,15 @@ app_admin_document_edit:
     path: /admin/documents/{id}/modifier
     controller: App\Controller\AdminController::documentEdit
     methods: [GET, POST]
+    requirements:
+        id: '\d+'
 
 app_admin_document_delete:
     path: /admin/documents/{id}/supprimer
     controller: App\Controller\AdminController::documentDelete
     methods: [POST]
+    requirements:
+        id: '\d+'
 
 app_admin_projects:
     path: /admin/projets
@@ -116,6 +120,8 @@ app_admin_project_edit:
     path: /admin/projets/{id}/modifier
     controller: App\Controller\AdminController::projectEdit
     methods: [GET, POST]
+    requirements:
+        id: '\d+'
 
 app_admin_waitlist:
     path: /admin/waitlist
@@ -131,6 +137,8 @@ app_admin_user_toggle_premium:
     path: /admin/utilisateurs/{id}/premium
     controller: App\Controller\AdminController::togglePremium
     methods: [POST]
+    requirements:
+        id: '\d+'
 
 # ── Ajouter ces lignes à la fin de config/routes.yaml ──
  
@@ -193,16 +201,44 @@ app_admin_category_edit:
     path: /admin/categories/{id}/modifier
     controller: App\Controller\AdminController::categoryEdit
     methods: [GET, POST]
+    requirements:
+        id: '\d+'
 
 app_admin_category_delete:
     path: /admin/categories/{id}/supprimer
     controller: App\Controller\AdminController::categoryDelete
     methods: [POST]
+    requirements:
+        id: '\d+'
 
 app_admin_documents_reorder:
     path: /admin/documents/reorder
     controller: App\Controller\AdminController::documentsReorder
     methods: [POST]
+
+app_admin_document_preview:
+    path: /admin/documents/apercu
+    controller: App\Controller\AdminController::documentPreview
+    methods: [POST]
+
+app_admin_project_delete:
+    path: /admin/projets/{id}/supprimer
+    controller: App\Controller\AdminController::projectDelete
+    methods: [POST]
+    requirements:
+        id: '\d+'
+
+app_admin_waitlist_export:
+    path: /admin/waitlist/export.csv
+    controller: App\Controller\AdminController::waitlistExport
+    methods: [GET]
+
+app_admin_waitlist_delete:
+    path: /admin/waitlist/{id}/supprimer
+    controller: App\Controller\AdminController::waitlistDelete
+    methods: [POST]
+    requirements:
+        id: '\d+'
     
 app_locale_switch:
     path: /langue/{locale}

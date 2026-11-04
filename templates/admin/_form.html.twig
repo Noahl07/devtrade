@@ -1,0 +1,76 @@
+{# Champs de formulaire de l'admin : libellé, aide, erreur liée (aria-describedby), valeur conservée en cas d'erreur. #}
+
+{% macro describedby(name, errors, help) -%}
+    {%- set ids = [] -%}
+    {%- if help %}{% set ids = ids|merge([name ~ '-help']) %}{% endif -%}
+    {%- if errors[name] is defined %}{% set ids = ids|merge([name ~ '-error']) %}{% endif -%}
+    {%- if ids %} aria-describedby="{{ ids|join(' ') }}"{% endif %}{% if errors[name] is defined %} aria-invalid="true"{% endif -%}
+{%- endmacro %}
+
+{% macro foot(name, errors, help) %}
+    {%- if help %}<p class="field__help" id="{{ name }}-help">{{ help }}</p>{% endif -%}
+    {%- if errors[name] is defined %}<p class="field__error" id="{{ name }}-error">{{ errors[name] }}</p>{% endif -%}
+{% endmacro %}
+
+{% macro input(name, label, value, errors, opts = {}) %}
+    {%- import _self as f -%}
+    <div class="field{{ opts.wide ?? false ? ' field--wide' : '' }}">
+        <label class="field__label" for="{{ name }}">{{ label }}{% if opts.required ?? false %} <span class="field__req" aria-hidden="true">*</span>{% endif %}</label>
+        <input class="input{{ opts.mono ?? false ? ' input--mono' : '' }}" id="{{ name }}" name="{{ name }}" type="{{ opts.type ?? 'text' }}" value="{{ value }}"
+            {%- if opts.required ?? false %} required{% endif %}
+            {%- if opts.maxlength ?? false %} maxlength="{{ opts.maxlength }}"{% endif %}
+            {%- if opts.min is defined %} min="{{ opts.min }}"{% endif %}
+            {%- if opts.max is defined %} max="{{ opts.max }}"{% endif %}
+            {%- if opts.placeholder ?? false %} placeholder="{{ opts.placeholder }}"{% endif %}
+            {%- for k, v in opts.attr ?? {} %} {{ k }}="{{ v }}"{% endfor %}
+            {{- f.describedby(name, errors, opts.help ?? null) }}>
+        {{ f.foot(name, errors, opts.help ?? null) }}
+    </div>
+{% endmacro %}
+
+{% macro textarea(name, label, value, errors, opts = {}) %}
+    {%- import _self as f -%}
+    <div class="field{{ opts.wide ?? true ? ' field--wide' : '' }}">
+        <label class="field__label" for="{{ name }}">{{ label }}{% if opts.required ?? false %} <span class="field__req" aria-hidden="true">*</span>{% endif %}</label>
+        <textarea class="input" id="{{ name }}" name="{{ name }}" rows="{{ opts.rows ?? 3 }}"
+            {%- if opts.required ?? false %} required{% endif %}
+            {%- if opts.maxlength ?? false %} maxlength="{{ opts.maxlength }}"{% endif %}
+            {%- if opts.placeholder ?? false %} placeholder="{{ opts.placeholder }}"{% endif %}
+            {{- f.describedby(name, errors, opts.help ?? null) }}>{{ value }}</textarea>
+        {{ f.foot(name, errors, opts.help ?? null) }}
+    </div>
+{% endmacro %}
+
+{% macro select(name, label, choices, selected, errors, opts = {}) %}
+    {%- import _self as f -%}
+    <div class="field">
+        <label class="field__label" for="{{ name }}">{{ label }}{% if opts.required ?? false %} <span class="field__req" aria-hidden="true">*</span>{% endif %}</label>
+        <select class="input" id="{{ name }}" name="{{ name }}"{% if opts.required ?? false %} required{% endif %}{{ f.describedby(name, errors, opts.help ?? null) }}>
+            {% if opts.placeholder ?? false %}<option value="">{{ opts.placeholder }}</option>{% endif %}
+            {% for value, text in choices %}
+                <option value="{{ value }}"{% if value ~ '' == selected ~ '' %} selected{% endif %}>{{ text }}</option>
+            {% endfor %}
+        </select>
+        {{ f.foot(name, errors, opts.help ?? null) }}
+    </div>
+{% endmacro %}
+
+{% macro toggle(name, label, checked, help = null) %}
+    <label class="admin-toggle">
+        <input type="checkbox" name="{{ name }}" value="1"{% if checked %} checked{% endif %}>
+        <span class="admin-toggle__track" aria-hidden="true"></span>
+        <span><strong>{{ label }}</strong>{% if help %}<small>{{ help }}</small>{% endif %}</span>
+    </label>
+{% endmacro %}
+
+{% macro summary(errors) %}
+    {%- import 'components/ui/_ui.html.twig' as ui -%}
+    {% if errors|length > 0 %}
+        <div class="admin-form__alert">{{ ui.notice('Corrigez les ' ~ errors|length ~ ' champ(s) signalé(s).', 'risk', 'Rien n\'a été enregistré.') }}</div>
+    {% endif %}
+{% endmacro %}
+
+{% macro access_badge(level) %}
+    {%- import 'components/ui/_ui.html.twig' as ui -%}
+    {%- if level == 'premium' %}{{ ui.badge('Premium', 'demo') }}{% elseif level == 'free' %}{{ ui.badge('Gratuit', 'live') }}{% else %}{{ ui.badge('« ' ~ level ~ ' » invalide', 'soon') }}{% endif -%}
+{% endmacro %}
