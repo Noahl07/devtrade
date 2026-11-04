@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Repository\DocumentCategoryRepository;
-use App\Repository\DocumentRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +13,6 @@ class SitemapController extends AbstractController
 {
     #[Route('/sitemap.xml', name: 'app_sitemap', methods: ['GET'])]
     public function sitemap(
-        DocumentRepository $docRepo,
         DocumentCategoryRepository $catRepo,
         ProjectRepository $projectRepo
     ): Response {
@@ -27,7 +25,7 @@ class SitemapController extends AbstractController
             ['route' => 'app_trading',        'priority' => '0.9', 'freq' => 'monthly'],
             ['route' => 'app_documentation',  'priority' => '0.9', 'freq' => 'weekly'],
             ['route' => 'app_contact',        'priority' => '0.7', 'freq' => 'monthly'],
-            ['route' => 'app_register',       'priority' => '0.6', 'freq' => 'monthly'],
+            ['route' => 'app_pricing',        'priority' => '0.6', 'freq' => 'monthly'],
             ['route' => 'app_legal_notice',   'priority' => '0.3', 'freq' => 'yearly'],
             ['route' => 'app_cgu',            'priority' => '0.3', 'freq' => 'yearly'],
             ['route' => 'app_privacy',        'priority' => '0.3', 'freq' => 'yearly'],
@@ -63,18 +61,7 @@ class SitemapController extends AbstractController
             ];
         }
 
-        // Articles gratuits uniquement (les premium ne sont pas indexés)
-        foreach ($docRepo->findPublishedByAccess('free') as $doc) {
-            $urls[] = [
-                'loc'        => $this->generateUrl('app_documentation_article', [
-                    'accessLevel' => 'free',
-                    'slug'        => $doc->getSlug(),
-                ], UrlGeneratorInterface::ABSOLUTE_URL),
-                'priority'   => '0.7',
-                'changefreq' => 'monthly',
-                'lastmod'    => ($doc->getUpdatedAt() ?? $doc->getCreatedAt())->format('Y-m-d'),
-            ];
-        }
+        // Les articles ne sont pas listés : même gratuits, ils demandent une connexion (redirection vers /login).
 
         $response = new Response(
             $this->renderView('sitemap.xml.twig', ['urls' => $urls]),
