@@ -1,120 +1,64 @@
 {% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
 {% block title %}Mon compte{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{# Page refondue (Phase 5). #}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
 
 {% block body %}
+<header class="page-hero">
+    <div class="container page-hero__grid">
+        <div>
+            <span class="eyebrow">Espace membre</span>
+            <h1>Bonjour, <em>{{ user.firstName }}.</em></h1>
+            <p class="lead">Votre accès, vos lectures et vos informations, au même endroit.</p>
+        </div>
+        <div class="page-hero__meta">
+            {% if user.isPremium %}{{ ui.badge('Accès Premium', 'live') }}{% else %}{{ ui.badge('Compte gratuit', 'backtest') }}{% endif %}
+        </div>
+    </div>
+</header>
+
 <section class="section">
-    <span class="section-eyebrow">Espace membre</span>
-    <h1 style="margin-bottom:2.5rem">Bonjour, {{ user.firstName }} 👋</h1>
-
-    <div class="compte-grid">
-
-        {# Statut abonnement #}
-        <div class="compte-card">
-            <div class="compte-card__header">
-                <h3>Mon abonnement</h3>
-                {% if user.isPremium %}
-                    <span class="tag tag--gold">Premium actif</span>
-                {% else %}
-                    <span class="tag">Gratuit</span>
-                {% endif %}
-            </div>
+    <div class="container account">
+        <article class="account__card account__card--wide">
+            <span class="account__index">{{ ui.icon('book') }} Documentation</span>
             {% if user.isPremium %}
-                <p>Vous avez accès à l'intégralité de la documentation — Orderflow, Quant, ICT Avancé, Algorithmes et plus.</p>
+                <h2>Tous les modules vous sont ouverts.</h2>
+                <p>Votre accès Premium couvre les modules gratuits et avancés, au fil de leur publication.</p>
             {% else %}
-                <p>Passez Premium pour accéder aux 40+ articles avancés : ICT Expert, Orderflow, Footprint, Quantitatif, Trading Algorithmique.</p>
-                <a href="{{ path('app_contact') }}?subject=Acc%C3%A8s+Premium" class="btn btn--primary" style="margin-top:1.2rem">
-                    Passer Premium
-                </a>
+                <h2>Les modules gratuits vous sont ouverts.</h2>
+                <p>Les modules avancés sont réservés à l'accès Premium. Rien ne presse : les bases sont déjà là.</p>
             {% endif %}
-        </div>
-
-        {# Accès doc #}
-        <div class="compte-card">
-            <div class="compte-card__header">
-                <h3>Documentation</h3>
+            <div class="account__actions">
+                {{ ui.button('Ouvrir la documentation', path('app_documentation'), 'primary', 'arrow-right') }}
+                {% if not user.isPremium %}{{ ui.button('Voir l\'accès Premium', path('app_pricing'), 'ghost', 'arrow-right') }}{% endif %}
             </div>
-            <p>Accédez à la documentation trading — ICT, Price Action, Wyckoff, Psychologie et plus.</p>
-            <a href="{{ path('app_documentation') }}" class="btn btn--ghost" style="margin-top:1.2rem">
-                Aller à la documentation →
-            </a>
-        </div>
+        </article>
 
-        {# Waitlist algo #}
-        <div class="compte-card">
-            <div class="compte-card__header">
-                <h3>Algo de trading</h3>
-                <span class="badge-soon">Bientôt</span>
+        <article class="account__card">
+            <span class="account__index">{{ ui.icon('chart') }} {{ product_name }}</span>
+            <h2>Le robot n'est pas encore disponible.</h2>
+            <p>Il tourne en démonstration. La liste d'attente vous préviendra de sa sortie, sans engagement.</p>
+            <div class="account__actions">
+                {{ ui.button('Découvrir ' ~ product_name, path('app_trading') ~ '#liste-attente', 'ghost', 'arrow-right') }}
             </div>
-            <p>L'algo sera disponible prochainement. Inscrivez-vous à la waitlist pour être notifié en premier.</p>
-            <a href="{{ path('app_trading') }}#waitlist" class="btn btn--outline-accent" style="margin-top:1.2rem">
-                Rejoindre la waitlist
-            </a>
-        </div>
+        </article>
 
-        {# Infos compte #}
-        <div class="compte-card">
-            <div class="compte-card__header">
-                <h3>Mon profil</h3>
+        <article class="account__card">
+            <span class="account__index">{{ ui.icon('shield') }} Profil</span>
+            <dl class="account__facts">
+                <div><dt>Nom</dt><dd>{{ user.firstName }} {{ user.lastName }}</dd></div>
+                <div><dt>E-mail</dt><dd>{{ user.email }}</dd></div>
+                <div><dt>Membre depuis</dt><dd class="num">{{ user.createdAt|date('d/m/Y') }}</dd></div>
+            </dl>
+            <div class="account__actions">
+                {{ ui.button('Modifier le profil', path('app_compte_profil'), 'secondary') }}
             </div>
-            <div class="compte-info-list">
-                <div class="compte-info-item">
-                    <span class="compte-info-label">Prénom</span>
-                    <span>{{ user.firstName }}</span>
-                </div>
-                <div class="compte-info-item">
-                    <span class="compte-info-label">Nom</span>
-                    <span>{{ user.lastName }}</span>
-                </div>
-                <div class="compte-info-item">
-                    <span class="compte-info-label">Email</span>
-                    <span>{{ user.email }}</span>
-                </div>
-                <div class="compte-info-item">
-                    <span class="compte-info-label">Membre depuis</span>
-                    <span>{{ user.createdAt|date('d/m/Y') }}</span>
-                </div>
-            </div>
-            <a href="{{ path('app_compte_profil') }}" class="btn btn--ghost" style="margin-top:1.2rem">
-                Modifier le profil
-            </a>
-        </div>
-
+        </article>
     </div>
 </section>
-{% endblock %}
-
-{% block stylesheets %}
-<style>
-.compte-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-}
-.compte-card {
-    background: var(--color-bg-2);
-    border: 0.5px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-}
-.compte-card__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-.compte-card__header h3 { color: #F0F2F7; font-size: 1rem; }
-.compte-card p { font-size: 14px; line-height: 1.65; }
-.compte-info-list { display: flex; flex-direction: column; gap: 10px; }
-.compte-info-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13.5px;
-    padding-bottom: 8px;
-    border-bottom: 0.5px solid var(--color-border);
-}
-.compte-info-label { color: var(--color-text-faint); }
-@media (max-width: 768px) {
-    .compte-grid { grid-template-columns: 1fr; }
-}
-</style>
 {% endblock %}
