@@ -1,173 +1,58 @@
-{% extends 'base.html.twig' %}
+{% extends 'security/_auth_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
 
-{% block title %}Inscription{% endblock %}
-{% block body_class %}page--auth{% endblock %}
+{% block title %}Créer un compte{% endblock %}
 
-{% block body %}
-<div class="auth-page">
-    <div class="auth-card">
+{% block auth_card %}
+    <span class="eyebrow">Inscription</span>
+    <h1>Créer un compte.</h1>
+    <p>Gratuit. Il donne accès aux articles gratuits de la documentation.</p>
 
-        <div class="auth-card__header">
-            <a href="{{ path('app_home') }}" class="auth-card__logo">
-                dev<span style="color: var(--color-accent)">.</span>trade
-            </a>
-            <h1 class="auth-card__title">Créer un compte</h1>
-            <p class="auth-card__sub">Accès gratuit à la documentation ICT et Price Action.</p>
+    {% if registrationForm.vars.errors|length %}
+        <div class="form-alert">{{ ui.notice((registrationForm.vars.errors|first).message, 'risk') }}</div>
+    {% endif %}
+
+    {{ form_start(registrationForm, { attr: { class: 'auth-form', novalidate: 'novalidate' } }) }}
+        <div class="auth-form__row">
+            <div class="field">
+                {{ form_label(registrationForm.firstName, null, { label_attr: { class: 'field__label' } }) }}
+                {{ form_widget(registrationForm.firstName, { attr: { class: 'input', autocomplete: 'given-name' } }) }}
+                {{ form_errors(registrationForm.firstName) }}
+            </div>
+            <div class="field">
+                {{ form_label(registrationForm.lastName, null, { label_attr: { class: 'field__label' } }) }}
+                {{ form_widget(registrationForm.lastName, { attr: { class: 'input', autocomplete: 'family-name' } }) }}
+                {{ form_errors(registrationForm.lastName) }}
+            </div>
         </div>
 
-        {{ form_errors(registrationForm) }}
-
-        {{ form_start(registrationForm, {'attr': {'class': 'auth-form'}}) }}
-
-            <div class="auth-form__row">
-                <div class="form-group">
-                    <label class="form-label">Prénom</label>
-                    {{ form_widget(registrationForm.firstName, {
-                        'attr': {'class': 'form-control', 'placeholder': 'Jean'}
-                    }) }}
-                    {{ form_errors(registrationForm.firstName) }}
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Nom</label>
-                    {{ form_widget(registrationForm.lastName, {
-                        'attr': {'class': 'form-control', 'placeholder': 'Dupont'}
-                    }) }}
-                    {{ form_errors(registrationForm.lastName) }}
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                {{ form_widget(registrationForm.email, {
-                    'attr': {'class': 'form-control', 'placeholder': 'votre@email.com'}
-                }) }}
-                {{ form_errors(registrationForm.email) }}
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Mot de passe</label>
-                {{ form_widget(registrationForm.plainPassword, {
-                    'attr': {'class': 'form-control', 'placeholder': '8 caractères minimum'}
-                }) }}
-                {{ form_errors(registrationForm.plainPassword) }}
-            </div>
-
-            <div class="auth-form__terms">
-                <label class="admin-toggle" style="margin-bottom:1rem">
-                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': ''}}) }}
-                    <span style="font-size:13px;color:var(--color-text-muted)">
-                        J'accepte les <a href="#" class="auth-card__link">conditions d'utilisation</a>
-                    </span>
-                </label>
-                {{ form_errors(registrationForm.agreeTerms) }}
-            </div>
-
-            <button type="submit" class="btn btn--primary auth-form__submit">
-                Créer mon compte gratuitement
-            </button>
-
-        {{ form_end(registrationForm) }}
-
-        <div class="auth-card__footer">
-            Déjà un compte ?
-            <a href="{{ path('app_login') }}" class="auth-card__link">Se connecter →</a>
+        <div class="field">
+            {{ form_label(registrationForm.email, 'Adresse e-mail', { label_attr: { class: 'field__label' } }) }}
+            {{ form_widget(registrationForm.email, { attr: { class: 'input', autocomplete: 'email' } }) }}
+            {{ form_errors(registrationForm.email) }}
         </div>
 
-    </div>
-</div>
-{% endblock %}
+        <div class="field">
+            {{ form_label(registrationForm.plainPassword, null, { label_attr: { class: 'field__label' } }) }}
+            <div class="password">
+                {{ form_widget(registrationForm.plainPassword, { attr: { class: 'input' } }) }}
+                <button class="password__toggle" type="button" data-password-toggle aria-pressed="false" aria-label="Afficher le mot de passe">{{ ui.icon('eye') }}</button>
+            </div>
+            <span class="field__help">Entre 8 et 128 caractères.</span>
+            {{ form_errors(registrationForm.plainPassword) }}
+        </div>
 
-{% block stylesheets %}
-<style>
-.page--auth .main-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: calc(100vh - var(--nav-height));
-    padding: 3rem var(--section-px);
-}
+        <div class="field">
+            <label class="checkbox">
+                {{ form_widget(registrationForm.agreeTerms) }}
+                <span>J'accepte les <a href="{{ path('app_cgu') }}" target="_blank">conditions d'utilisation</a> et j'ai lu la
+                    <a href="{{ path('app_privacy') }}" target="_blank">politique de confidentialité</a>.</span>
+            </label>
+            {{ form_errors(registrationForm.agreeTerms) }}
+        </div>
 
-.auth-page { width: 100%; max-width: 480px; }
+        <button type="submit" class="button button--primary auth-form__submit">Créer mon compte {{ ui.icon('arrow-right') }}</button>
+    {{ form_end(registrationForm) }}
 
-.auth-card {
-    background: var(--color-bg-2);
-    border: 0.5px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    padding: 2.8rem;
-}
-
-.auth-card__header { margin-bottom: 2rem; text-align: center; }
-
-.auth-card__logo {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.3rem;
-    color: #F0F2F7;
-    display: inline-block;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
-}
-
-.auth-card__title { font-size: 1.6rem; margin-bottom: 0.5rem; }
-.auth-card__sub { font-size: 14px; font-weight: 300; }
-
-.auth-form__row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.auth-form__terms { margin-bottom: 1.5rem; }
-
-.auth-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--color-text-muted);
-    cursor: pointer;
-}
-
-.auth-checkbox input[type="checkbox"] { display: none; }
-
-.auth-checkbox__box {
-    width: 16px;
-    height: 16px;
-    border: 0.5px solid var(--color-border-md);
-    border-radius: 4px;
-    background: transparent;
-    flex-shrink: 0;
-    transition: var(--transition);
-    position: relative;
-}
-
-.auth-form__submit {
-    width: 100%;
-    justify-content: center;
-    padding: 0.8rem;
-    font-size: 15px;
-}
-
-.auth-card__footer {
-    margin-top: 1.8rem;
-    text-align: center;
-    font-size: 13.5px;
-    color: var(--color-text-faint);
-}
-
-
-input[type="checkbox"] {
-    display: inline-block !important;
-    width: 16px;
-    height: 16px;
-    accent-color: var(--color-accent);
-    cursor: pointer;
-}
-.auth-card__link { color: var(--color-accent); font-weight: 500; }
-
-@media (max-width: 480px) {
-    .auth-form__row { grid-template-columns: 1fr; }
-    .auth-card { padding: 1.8rem; }
-}
-</style>
+    <p class="auth__alt">Déjà inscrit ? <a href="{{ path('app_login') }}">Se connecter</a></p>
 {% endblock %}

@@ -1,0 +1,4 @@
+{# Valeur légale ou champ « À compléter » bien visible (jamais de valeur inventée). #}
+{% macro field(value, label) %}
+    {%- if value is not empty -%}{{ value }}{%- else -%}<span class="todo-field">À compléter : {{ label }}</span>{%- endif -%}
+{% endmacro %}

@@ -1,206 +1,48 @@
-{% extends 'base.html.twig' %}
+{% extends 'security/_auth_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
 
 {% block title %}Connexion{% endblock %}
-{% block body_class %}page--auth{% endblock %}
 
-{% block body %}
-<div class="auth-page">
-    <div class="auth-card">
+{% block auth_card %}
+    <span class="eyebrow">Connexion</span>
+    <h1>Bon retour.</h1>
+    <p>Connectez-vous pour accéder à la documentation.</p>
 
-        <div class="auth-card__header">
-            <a href="{{ path('app_home') }}" class="auth-card__logo">
-                dev<span style="color: var(--color-accent)">.</span>trade
-            </a>
-            <h1 class="auth-card__title">Connexion</h1>
-            <p class="auth-card__sub">Accédez à votre espace et à la documentation premium.</p>
-        </div>
-
-        {% if error %}
-            <div class="flash flash--danger" style="margin-bottom: 1.5rem;">
-                {{ error.messageKey|trans(error.messageData, 'security') }}
-            </div>
+    {% if error %}
+        {# Message générique : ne révèle pas si l'adresse existe (sauf le blocage temporaire, utile à l'utilisateur). #}
+        {% if 'Too many' in error.messageKey %}
+            <div class="form-alert">{{ ui.notice('Trop de tentatives. Réessayez dans quelques minutes.', 'risk') }}</div>
+        {% else %}
+            <div class="form-alert">{{ ui.notice('Identifiants incorrects. Vérifiez votre adresse e-mail et votre mot de passe.', 'risk') }}</div>
         {% endif %}
+    {% endif %}
 
-        <form method="post" class="auth-form">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <form method="post" class="auth-form">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <div class="form-group">
-                <label class="form-label" for="inputEmail">Email</label>
-                <input
-                    type="email"
-                    id="inputEmail"
-                    name="_username"
-                    class="form-control"
-                    value="{{ last_username }}"
-                    placeholder="votre@email.com"
-                    autocomplete="email"
-                    autofocus
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="inputPassword">
-                    Mot de passe
-                    <a href="{{ path('app_forgot_password') }}" class="auth-form__forgot">Mot de passe oublié ?</a>
-                </label>
-                <div class="input-password-wrap">
-                    <input
-                        type="password"
-                        id="inputPassword"
-                        name="_password"
-                        class="form-control"
-                        placeholder="••••••••"
-                        autocomplete="current-password"
-                        required
-                    >
-                    <button type="button" class="input-password-eye" onclick="togglePassword()" aria-label="Afficher le mot de passe">
-                        <i class="bi bi-eye" id="eyeIcon"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="auth-form__remember">
-                <label class="auth-checkbox">
-                    <input type="checkbox" name="_remember_me">
-                    <span class="auth-checkbox__box"></span>
-                    Se souvenir de moi
-                </label>
-            </div>
-
-            <button type="submit" class="btn btn--primary auth-form__submit">
-                Se connecter
-            </button>
-        </form>
-
-        <div class="auth-card__footer">
-            Pas encore de compte ?
-            <a href="{{ path('app_register') }}" class="auth-card__link">S'inscrire gratuitement →</a>
+        <div class="field">
+            <label class="field__label" for="username">Adresse e-mail</label>
+            <input class="input" type="email" id="username" name="_username" value="{{ last_username }}" autocomplete="email" required autofocus>
         </div>
 
-    </div>
-</div>
-{% endblock %}
+        <div class="field">
+            <div class="auth-form__inline">
+                <label class="field__label" for="password">Mot de passe</label>
+                <a href="{{ path('app_forgot_password') }}">Mot de passe oublié ?</a>
+            </div>
+            <div class="password">
+                <input class="input" type="password" id="password" name="_password" autocomplete="current-password" required>
+                <button class="password__toggle" type="button" data-password-toggle aria-pressed="false" aria-label="Afficher le mot de passe">{{ ui.icon('eye') }}</button>
+            </div>
+        </div>
 
-{% block stylesheets %}
-<style>
-.page--auth .main-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: calc(100vh - var(--nav-height));
-    padding: 3rem var(--section-px);
-}
-.auth-page { width: 100%; max-width: 440px; }
-.auth-card {
-    background: var(--color-bg-2);
-    border: 0.5px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    padding: 2.8rem;
-}
-.auth-card__header { margin-bottom: 2rem; text-align: center; }
-.auth-card__logo {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.3rem;
-    color: #F0F2F7;
-    display: inline-block;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
-}
-.auth-card__title { font-size: 1.6rem; margin-bottom: 0.5rem; }
-.auth-card__sub { font-size: 14px; font-weight: 300; }
-.auth-form__forgot {
-    float: right;
-    font-size: 12px;
-    color: var(--color-accent);
-    font-weight: 400;
-}
-.auth-form__remember { margin-bottom: 1.5rem; }
-.auth-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--color-text-muted);
-    cursor: pointer;
-}
-.auth-checkbox input { display: none; }
-.auth-checkbox__box {
-    width: 16px;
-    height: 16px;
-    border: 0.5px solid var(--color-border-md);
-    border-radius: 4px;
-    background: transparent;
-    flex-shrink: 0;
-    transition: var(--transition);
-    position: relative;
-}
-.auth-checkbox input:checked + .auth-checkbox__box {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-}
-.auth-checkbox input:checked + .auth-checkbox__box::after {
-    content: '✓';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 10px;
-    color: #080B10;
-    font-weight: 700;
-}
-.auth-form__submit {
-    width: 100%;
-    justify-content: center;
-    padding: 0.8rem;
-    font-size: 15px;
-    margin-top: 0.5rem;
-}
-.auth-card__footer {
-    margin-top: 1.8rem;
-    text-align: center;
-    font-size: 13.5px;
-    color: var(--color-text-faint);
-}
-.auth-card__link { color: var(--color-accent); font-weight: 500; }
+        <label class="checkbox">
+            <input type="checkbox" name="_remember_me">
+            <span>Rester connecté sur cet appareil</span>
+        </label>
 
-/* ── Œil mot de passe ── */
-.input-password-wrap {
-    position: relative;
-}
-.input-password-wrap .form-control {
-    padding-right: 2.8rem;
-}
-.input-password-eye {
-    position: absolute;
-    right: 0.8rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-faint);
-    font-size: 16px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    transition: color var(--transition);
-}
-.input-password-eye:hover {
-    color: var(--color-accent);
-}
-</style>
-{% endblock %}
+        <button type="submit" class="button button--primary auth-form__submit">Se connecter {{ ui.icon('arrow-right') }}</button>
+    </form>
 
-{% block javascripts %}
-<script>
-function togglePassword() {
-    const input   = document.getElementById('inputPassword');
-    const icon    = document.getElementById('eyeIcon');
-    const visible = input.type === 'text';
-    input.type    = visible ? 'password' : 'text';
-    icon.className = visible ? 'bi bi-eye' : 'bi bi-eye-slash';
-}
-</script>
+    <p class="auth__alt">Pas encore de compte ? <a href="{{ path('app_register') }}">Créer un compte gratuit</a></p>
 {% endblock %}

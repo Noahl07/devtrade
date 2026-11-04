@@ -1,0 +1,21 @@
+{# Carte de réalisation (accueil, portfolio). Variables : project, small (booléen, facultatif). #}
+{% set small = small ?? false %}
+<article class="work{{ small ? ' work--small' }}" data-reveal>
+    <div class="work__media">
+        {% if project.imageUrl %}
+            <img src="{{ project.imageUrl }}" alt="" loading="lazy" decoding="async" width="1280" height="800">
+        {% else %}
+            <span class="work__monogram" aria-hidden="true">{{ project.title|first|upper }}</span>
+        {% endif %}
+    </div>
+    <div class="work__body">
+        {% if project.type %}<span class="work__type">{{ project.type }}</span>{% endif %}
+        <h3 class="work__title"><a href="{{ path('app_portfolio_project', { slug: project.slug }) }}">{{ project.title }}</a></h3>
+        {% if project.shortDesc %}<p class="work__desc">{{ project.shortDesc }}</p>{% endif %}
+        {% if project.techStack is not empty %}
+            <ul class="stack-list" aria-label="Technologies">
+                {% for tech in project.techStack|slice(0, 5) %}<li>{{ tech }}</li>{% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</article>

@@ -1,0 +1,39 @@
+{% extends 'legal/_layout.html.twig' %}
+{% import 'legal/_macros.html.twig' as l %}
+
+{% block title %}Mentions légales{% endblock %}
+{% block legal_title %}Mentions légales{% endblock %}
+
+{% block legal_body %}
+<h2>Éditeur du site</h2>
+<p>Le site dev.trade est édité par :</p>
+<ul>
+    <li><strong>Nom ou raison sociale :</strong> {{ l.field(legal.editor_name, "nom ou raison sociale") }}</li>
+    <li><strong>Statut :</strong> {{ l.field(legal.editor_status, "statut juridique") }}</li>
+    <li><strong>SIRET :</strong> {{ l.field(legal.editor_siret, "numéro SIRET") }}</li>
+    <li><strong>TVA :</strong> {{ l.field(legal.editor_vat, "numéro de TVA ou mention d'exonération") }}</li>
+    <li><strong>Adresse :</strong> {{ l.field(legal.editor_address, "adresse") }}</li>
+    <li><strong>Contact :</strong> {{ contact_email }}</li>
+</ul>
+
+<h2>Directeur de la publication</h2>
+<p>{{ l.field(legal.publication_director, "nom du directeur de la publication") }}</p>
+
+<h2>Hébergement</h2>
+<p>Le site est hébergé par {{ l.field(legal.host_name, "nom de l'hébergeur") }},
+    {{ l.field(legal.host_address, "adresse de l'hébergeur") }}.</p>
+
+<h2>Propriété intellectuelle</h2>
+<p>Les contenus du site (textes, articles, graphiques, illustrations, code des démonstrations) sont protégés par le droit d'auteur.
+    Toute reproduction ou diffusion sans autorisation écrite est interdite.</p>
+<p>Les polices Fraunces, Inter et JetBrains Mono sont distribuées sous licence SIL Open Font License 1.1.
+    Les icônes et illustrations sont créées pour le site.</p>
+
+<h2>Avertissement</h2>
+<p>Le trading de CFD et de Forex comporte un risque élevé de perte en capital. Les contenus publiés sur ce site sont fournis à titre
+    éducatif et informatif : ils ne constituent ni un conseil en investissement ni une recommandation personnalisée.
+    Voir la page <a href="{{ path('app_risks') }}">Risques et limites</a>.</p>
+
+<h2>Données personnelles</h2>
+<p>Le traitement des données personnelles est décrit dans la <a href="{{ path('app_privacy') }}">politique de confidentialité</a>.</p>
+{% endblock %}

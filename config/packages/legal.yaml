@@ -1,0 +1,19 @@
+# Informations légales de l'éditeur (mentions légales, politique de confidentialité).
+#
+# À COMPLÉTER par l'éditeur, puis faire valider l'ensemble des pages légales par un professionnel.
+# Ne jamais inventer de SIRET, de numéro de TVA, d'adresse ou de nom : une valeur vide (~) s'affiche
+# sur le site comme « À compléter », bien visible.
+parameters:
+    legal.validated: false                # passer à true une fois les textes validés par un professionnel
+    legal.updated_at: '4 novembre 2026'
+    legal.editor_name: ~                  # nom et prénom, ou raison sociale
+    legal.editor_status: ~                # ex. entrepreneur individuel (micro-entreprise), SASU…
+    legal.editor_siret: ~
+    legal.editor_vat: ~                   # numéro de TVA intracommunautaire, ou mention d'exonération
+    legal.editor_address: ~
+    legal.publication_director: ~
+    legal.host_name: ~                    # hébergeur du site (ex. la société qui exploite Railway)
+    legal.host_address: ~
+    legal.email_provider: ~               # prestataire d'envoi des e-mails (sous-traitant RGPD)
+    legal.retention_account: ~            # durée de conservation d'un compte inactif
+    legal.retention_contact: ~            # durée de conservation des messages reçus par e-mail

@@ -256,6 +256,10 @@
     color: var(--accent);
 }
 
+.notice p {
+    margin: 0;
+}
+
 .notice strong {
     color: var(--text);
 }

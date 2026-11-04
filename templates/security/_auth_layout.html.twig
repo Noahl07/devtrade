@@ -1,0 +1,31 @@
+{# Mise en page commune des pages d'authentification. Blocs : auth_side_title, auth_side_points, auth_card. #}
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block meta_robots %}noindex, follow{% endblock %}
+
+{# Page refondue (Phase 4) #}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<div class="auth">
+    <aside class="auth__side" aria-hidden="true">
+        <span class="eyebrow">Espace membre</span>
+        <h2>{% block auth_side_title %}Apprendre, <em>à son rythme.</em>{% endblock %}</h2>
+        <ul class="auth__points">
+            {% block auth_side_points %}
+                <li>{{ ui.icon('book') }} Une documentation progressive, des bases aux méthodes quantitatives.</li>
+                <li>{{ ui.icon('shield') }} Aucune promesse de gain, des méthodes et leurs limites.</li>
+                <li>{{ ui.icon('lock') }} Vos données ne sont jamais revendues.</li>
+            {% endblock %}
+        </ul>
+    </aside>
+
+    <div class="auth__main">
+        <div class="auth__card">
+            {% block auth_card %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

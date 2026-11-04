@@ -3,6 +3,7 @@
 import './styles/ds.css';
 import './styles/ds/layout.css';
 import './styles/ds/home.css';
+import './styles/ds/pages.css';
 import { allow3D, lazyScene } from './js/device.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -55,6 +56,68 @@ if (menu && typeof menu.showModal === 'function') {
 document.querySelectorAll('[data-flash-close]').forEach((button) => {
     button.addEventListener('click', () => button.closest('.flash')?.remove());
 });
+
+// ── Champ mot de passe : afficher / masquer ───────────────────────────────
+document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    const input = button.parentElement.querySelector('input');
+    button.addEventListener('click', () => {
+        const show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        button.setAttribute('aria-pressed', String(show));
+        button.setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+    });
+});
+
+// ── Lecture : sommaire généré depuis les titres + barre de progression ─────
+const readingBody = document.querySelector('[data-reading-body]');
+if (readingBody) {
+    const toc = document.querySelector('[data-toc]');
+    const headings = [...readingBody.querySelectorAll('h2, h3')];
+    const slug = (text) => text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'section';
+    const links = new Map();
+
+    if (toc && headings.length > 1) {
+        headings.forEach((heading, i) => {
+            heading.id ||= `${slug(heading.textContent)}-${i + 1}`;
+            const li = document.createElement('li');
+            if (heading.tagName === 'H3') {
+                li.className = 'toc__sub';
+            }
+            const a = document.createElement('a');
+            a.href = `#${heading.id}`;
+            a.textContent = heading.textContent;
+            li.appendChild(a);
+            toc.appendChild(li);
+            links.set(heading, a);
+        });
+        toc.closest('[data-toc-wrap]')?.removeAttribute('hidden');
+
+        const spy = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    links.forEach((a) => a.removeAttribute('aria-current'));
+                    links.get(entry.target)?.setAttribute('aria-current', 'true');
+                }
+            });
+        }, { rootMargin: '-90px 0px -70% 0px' });
+        headings.forEach((h) => spy.observe(h));
+    }
+
+    const bar = document.querySelector('[data-read-progress]');
+    if (bar) {
+        let frame = 0;
+        const update = () => {
+            const rect = readingBody.getBoundingClientRect();
+            const total = rect.height - window.innerHeight * 0.6;
+            const progress = Math.min(1, Math.max(0, -rect.top / Math.max(total, 1)));
+            bar.style.transform = `scaleX(${progress})`;
+            frame = 0;
+        };
+        window.addEventListener('scroll', () => { frame ||= requestAnimationFrame(update); }, { passive: true });
+        update();
+    }
+}
 
 // ── Révélations au défilement (discrètes, coupées si mouvement réduit) ─────
 // Sans JavaScript, tout reste visible : l'état masqué n'est posé qu'ici,
