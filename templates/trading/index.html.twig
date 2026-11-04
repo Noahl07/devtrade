@@ -193,9 +193,14 @@
                     <h3>Gain cumulé, trade après trade</h3>
                     <p>En R : chaque gain ou perte compté en multiples du risque pris, ce qui rend la courbe indépendante du réglage de risque.
                         Points mensuels. La pente change nettement en avril 2021 (rupture détectée statistiquement).</p>
+                    <div class="ch-ranges" data-chart-ranges="r-cumule" role="group" aria-label="Période affichée" hidden>
+                        <button type="button" class="ch-range" data-from="" aria-pressed="true">Depuis 2016</button>
+                        <button type="button" class="ch-range" data-from="2021-01" aria-pressed="false">Depuis 2021</button>
+                        <button type="button" class="ch-range" data-from="2026-01" aria-pressed="false">2026</button>
+                    </div>
                 </figcaption>
                 <div class="sh-chart__plot" data-chart="r-cumule" data-src="{{ asset('data/shiro/r-cumule.json') }}"
-                     role="img" aria-label="Courbe du gain cumulé en R de 2016 à octobre 2026 : quasi plate jusqu'en 2021, puis en hausse régulière jusqu'à environ 90 R."></div>
+                     role="img" aria-label="Courbe du gain cumulé en R de 2016 à octobre 2026 : quasi plate jusqu'en 2021, puis en hausse régulière jusqu'à environ 90 R."><p class="ch-loading" aria-hidden="true">Chargement du graphique…</p></div>
             </figure>
 
             <figure class="sh-chart" data-reveal>
@@ -206,7 +211,7 @@
                         autour de +0,2 R depuis : l'avantage existe, mais il varie.</p>
                 </figcaption>
                 <div class="sh-chart__plot" data-chart="avantage" data-src="{{ asset('data/shiro/avantage.json') }}"
-                     role="img" aria-label="Avantage estimé par trade : environ +0,05 R en 2016, puis hausse progressive jusqu'à environ +0,23 R en 2026, intervalle à 95 % entre +0,11 et +0,34 R à la fin."></div>
+                     role="img" aria-label="Avantage estimé par trade : environ +0,05 R en 2016, puis hausse progressive jusqu'à environ +0,23 R en 2026, intervalle à 95 % entre +0,11 et +0,34 R à la fin."><p class="ch-loading" aria-hidden="true">Chargement du graphique…</p></div>
             </figure>
 
             <figure class="sh-chart" data-reveal>
@@ -217,7 +222,7 @@
                         (0,5 à 1,5 % par trade). Médiane +20 % dans le scénario récent, +11 % dans le scénario prudent. Une simulation n'est pas une prévision.</p>
                 </figcaption>
                 <div class="sh-chart__plot" data-chart="monte-carlo" data-src="{{ asset('data/shiro/monte-carlo.json') }}"
-                     role="img" aria-label="Éventail de rendements simulés sur un an : médiane d'environ +20 %, 90 % des trajectoires entre environ +4 % et +39 %."></div>
+                     role="img" aria-label="Éventail de rendements simulés sur un an : médiane d'environ +20 %, 90 % des trajectoires entre environ +4 % et +39 %."><p class="ch-loading" aria-hidden="true">Chargement du graphique…</p></div>
             </figure>
 
             {% if summary %}
@@ -246,7 +251,7 @@
                         connu et stable, ce qui n'est pas le cas : c'est un repère théorique, <strong>jamais une taille de position à utiliser</strong>.
                         Les 0,5 à 1,5 % du robot sont volontairement très en dessous.</p>
                     <div class="sh-chart__plot" data-chart="kelly" data-src="{{ asset('data/shiro/kelly.json') }}"
-                         role="img" aria-label="Courbes de croissance théorique selon le risque par trade, pour trois scénarios d'avantage."></div>
+                         role="img" aria-label="Courbes de croissance théorique selon le risque par trade, pour trois scénarios d'avantage."><p class="ch-loading" aria-hidden="true">Chargement du graphique…</p></div>
                 </div>
             </details>
         </div>

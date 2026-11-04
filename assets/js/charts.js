@@ -100,6 +100,13 @@ export function createChart(container, spec) {
         container.appendChild(legend);
     }
 
+    const hint = document.createElement('p');
+    hint.className = 'ch-hint';
+    hint.textContent = window.matchMedia('(hover: hover)').matches
+        ? 'Survolez la courbe pour lire les valeurs (ou flèches du clavier).'
+        : 'Touchez la courbe pour lire les valeurs.';
+    container.appendChild(hint);
+
     let revealed = false;
     let cursorIndex = null;
     let scale = null;
@@ -126,7 +133,17 @@ export function createChart(container, spec) {
         }
 
         // Axe X
-        if (spec.xType === 'date') {
+        if (spec.xType === 'date' && xmax - xmin < 2 * 365.25 * 864e5) {
+            // Période courte : repères mensuels
+            const start = new Date(xmin);
+            const months = Math.round((xmax - xmin) / (30.44 * 864e5));
+            const every = Math.max(1, Math.ceil(months / Math.max(1, Math.floor(iw / 56))));
+            for (let k = 0; k <= months; k += every) {
+                const date = Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + k, 1);
+                const t = el('text', { x: sx(date), y: HEIGHT - 8, 'text-anchor': 'middle' }, axis);
+                t.textContent = new Date(date).toLocaleDateString('fr-FR', { month: 'short', timeZone: 'UTC' }).replace('.', '');
+            }
+        } else if (spec.xType === 'date') {
             const first = new Date(xmin).getUTCFullYear() + 1;
             const last = new Date(xmax).getUTCFullYear();
             const every = Math.ceil((last - first + 1) / Math.max(1, Math.floor(iw / 64)));
@@ -191,7 +208,17 @@ export function createChart(container, spec) {
             const x = xmin + ((px - MARGIN.left) / iw) * (xmax - xmin);
             showCursor(nearestIndex(xs, x));
         });
-        hit.addEventListener('pointerleave', hideCursor);
+        // Au doigt : un appui affiche la valeur, glisser horizontalement la fait défiler.
+        hit.addEventListener('pointerdown', (event) => {
+            const rect = svg.getBoundingClientRect();
+            const px = ((event.clientX - rect.left) / rect.width) * width;
+            showCursor(nearestIndex(xs, xmin + ((px - MARGIN.left) / iw) * (xmax - xmin)));
+        });
+        hit.addEventListener('pointerleave', (event) => {
+            if (event.pointerType === 'mouse') {
+                hideCursor();
+            }
+        });
 
         if (revealed) {
             svg.classList.remove('is-pending');

@@ -25,7 +25,8 @@ Encore
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
-    .enableVersioning(Encore.isProduction())
+    // Versionnage aussi en dev : le nom du fichier change à chaque build, le navigateur ne peut pas garder une ancienne version.
+    .enableVersioning()
 
     // PostCSS / Autoprefixer
     .enablePostCssLoader()

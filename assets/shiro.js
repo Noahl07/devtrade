@@ -96,14 +96,16 @@ const signed = (v, d) => `${v > 0 ? '+' : ''}${fr(v, d)}`;
 const CHARTS = {
     'r-cumule': (data) => ({
         xType: 'date',
-        label: `Gain cumulé en R, ${data.meta.trades} trades, points mensuels`,
+        label: data.meta.from
+            ? `Gain cumulé en R depuis ${frMonth(data.meta.from)}, points mensuels`
+            : `Gain cumulé en R, ${data.meta.trades} trades, points mensuels`,
         zero: true,
         series: [{ type: 'line', className: 'ch-line--gold', points: data.points }],
         markers: data.meta.breaks.map((d) => ({ x: d, label: `Rupture · ${frMonth(d)}` })),
         yFormat: (v) => `${fr(v, 0)} R`,
         tooltip: (i) => ({
             title: `Fin ${frMonth(data.points[i][0])}`,
-            rows: [['Gain cumulé', `${signed(data.points[i][1], 1)} R`]],
+            rows: [[data.meta.from ? 'Gain depuis le début de la période' : 'Gain cumulé', `${signed(data.points[i][1], 1)} R`]],
         }),
     }),
     avantage: (data) => ({
@@ -174,36 +176,79 @@ const CHARTS = {
     }),
 };
 
+// Zoom sur une période de la courbe cumulée : la courbe repart de 0 au début de la période choisie.
+function sliceCumulative(data, from) {
+    if (!from) {
+        return data;
+    }
+    const index = data.points.findIndex((p) => p[0] >= from);
+    if (index < 0) {
+        return data;
+    }
+    const base = index > 0 ? data.points[index - 1][1] : 0;
+    const points = data.points.slice(index).map(([month, value]) => [month, Math.round((value - base) * 100) / 100]);
+    if (index > 0) {
+        points.unshift([data.points[index - 1][0], 0]);
+    }
+    return {
+        meta: { ...data.meta, breaks: data.meta.breaks.filter((b) => b >= points[0][0]), from },
+        points,
+    };
+}
+
+function showChartError(plot, error) {
+    const message = document.createElement('p');
+    message.className = 'ch-loading ch-loading--error';
+    message.textContent = 'Graphique indisponible pour le moment. Rechargez la page ; les données annuelles restent consultables plus bas.';
+    plot.replaceChildren(message);
+    console.warn('Graphique indisponible :', error);
+}
+
 async function mountChart(plot) {
     if (plot.dataset.mounted) {
         return;
     }
     plot.dataset.mounted = '1';
     try {
-        const response = await fetch(plot.dataset.src, { headers: { Accept: 'application/json' } });
+        // « no-cache » : le navigateur revalide les données à chaque visite (jamais d'ancienne version servie).
+        const response = await fetch(plot.dataset.src, { headers: { Accept: 'application/json' }, cache: 'no-cache' });
         if (!response.ok) {
-            throw new Error(String(response.status));
+            throw new Error(`HTTP ${response.status}`);
         }
-        const chart = createChart(plot, CHARTS[plot.dataset.chart](await response.json()));
+        const data = await response.json();
+        const build = CHARTS[plot.dataset.chart];
+        let chart = createChart(plot, build(data));
         // L'élément conteneur garde sa description pour les lecteurs d'écran ; le SVG porte la sienne.
         plot.removeAttribute('role');
         onceVisible(plot, () => chart.reveal(), '0px 0px -15% 0px');
+
+        // Boutons de période (seulement pour la courbe cumulée)
+        const ranges = document.querySelector(`[data-chart-ranges="${plot.dataset.chart}"]`);
+        if (ranges) {
+            ranges.hidden = false;
+            ranges.querySelectorAll('button').forEach((button) => {
+                button.addEventListener('click', () => {
+                    ranges.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+                    chart.destroy();
+                    chart = createChart(plot, build(sliceCumulative(data, button.dataset.from)));
+                    chart.reveal();
+                });
+            });
+        }
     } catch (error) {
         plot.dataset.mounted = '';
-        const message = document.createElement('p');
-        message.className = 'muted small';
-        message.textContent = 'Graphique indisponible pour le moment. Les données annuelles restent consultables ci-dessous.';
-        plot.replaceChildren(message);
-        console.warn('Graphique indisponible :', error);
+        showChartError(plot, error);
     }
 }
 
+// Les données sont légères (quelques Ko) : les graphiques visibles sont montés dès le chargement,
+// l'animation de tracé attend que le graphique entre à l'écran. Ceux repliés attendent l'ouverture.
 document.querySelectorAll('[data-chart]').forEach((plot) => {
     const details = plot.closest('details');
     if (details) {
         details.addEventListener('toggle', () => details.open && mountChart(plot));
     } else {
-        onceVisible(plot, () => mountChart(plot), '0px 0px 300px 0px');
+        mountChart(plot);
     }
 });
 
