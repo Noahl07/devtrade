@@ -15,6 +15,10 @@ export function isLowPowerDevice() {
     if (navigator.connection?.saveData) {
         return true;
     }
+    // Connexion lente : ~140 Ko compressés de three.js ne valent pas l'attente.
+    if (['slow-2g', '2g', '3g'].includes(navigator.connection?.effectiveType)) {
+        return true;
+    }
     if (navigator.deviceMemory && navigator.deviceMemory < 4) {
         return true;
     }
@@ -37,6 +41,8 @@ export function lazyScene(container, load) {
             return;
         }
         observer.disconnect();
+        // Attendre que le navigateur soit inactif : la 3D ne passe jamais avant le contenu.
+        await new Promise((resolve) => ('requestIdleCallback' in window ? requestIdleCallback(resolve, { timeout: 2500 }) : setTimeout(resolve, 600)));
         try {
             const { mount } = await load();
             dispose = mount(container, { onReady: () => container.classList.add('is-3d') });
