@@ -13,7 +13,7 @@ Disallow: /compte
 Disallow: /mot-de-passe-oublie
 Disallow: /reinitialisation
 
-# Pas d'indexation des articles premium
-Disallow: /documentation/article/premium
+# Articles réservés aux membres (connexion requise, y compris pour les gratuits)
+Disallow: /documentation/article/
 
 Sitemap: {{ absolute_url(path('app_sitemap')) }}
