@@ -29,6 +29,9 @@
     <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
 
     {# ── Design system + layout (polices auto-hébergées, aucune ressource tierce) ── #}
+    {# Préchargement des deux polices visibles dès le premier écran (évite un saut de mise en page) #}
+    <link rel="preload" href="{{ asset('build/fonts/inter-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('build/fonts/fraunces-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
     {{ encore_entry_link_tags('site') }}
 
     {# Pages pas encore refondues (Phase 4) : ancien CSS, ramené aux tokens par legacy-bridge.css.
