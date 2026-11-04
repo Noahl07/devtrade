@@ -36,6 +36,7 @@ final class TradingPageTest extends WebTestCase
         }
         self::assertSame(3, $client->getCrawler()->filter('[data-panel]')->count());
         self::assertStringContainsString('0,5 à 1,5 % du solde par trade', $text);
+        self::assertStringContainsString('Drawdown max', $text);
         self::assertStringContainsString('Backtest : simulation', $text);
         self::assertStringContainsString("n'est pas incluse dans le testeur", $text);
         self::assertSelectorExists('#limites');
@@ -59,9 +60,25 @@ final class TradingPageTest extends WebTestCase
         yield 'ancien drawdown' => ['<12'];
         yield 'urgence artificielle' => ['nombre limité'];
         yield 'placeholder' => ['TODO'];
-        yield 'drawdown MT5 « maximal » (sous-estime le repli en %)' => ['5,45'];
-        yield 'horaire de sortie (paramètre interne)' => ['01:20'];
-        yield 'durée de position (paramètre interne)' => ['25 min'];
+        yield 'ratio de Sharpe MT5' => ['36,25'];
+        // Anti rétro-ingénierie : rien qui désigne le mécanisme, le moment ou les jours de trade.
+        foreach (self::SECRETS as $secret) {
+            yield 'secret : ' . $secret => [$secret];
+        }
+    }
+
+    /** Termes qui permettraient de reconstituer la stratégie. Aussi vérifiés sur l'accueil. */
+    public const SECRETS = ['fixing', 'gotobi', '09:55', '00:55', '01:20', '25 min', 'dates exactes', 'décalées',
+        '5 secondes', 'seconde près', 'Ito', 'Krohn', 'Bessho', 'Tokyo'];
+
+    public function testPublicChartDataIsMonthlyOnly(): void
+    {
+        foreach (glob(\dirname(__DIR__, 2) . '/public/data/shiro/*.json') ?: [] as $file) {
+            $json = (string) file_get_contents($file);
+            // Aucune date au jour près (AAAA-MM-JJ) : seules des valeurs mensuelles sont publiées.
+            self::assertDoesNotMatchRegularExpression('/\d{4}-\d{2}-\d{2}/', $json, basename($file));
+            self::assertStringNotContainsString('nominal', $json, basename($file));
+        }
     }
 
     public function testWaitlistRequiresCsrfToken(): void

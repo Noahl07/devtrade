@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Service\ShiroCalendar;
 use App\Service\WaitlistRegistration;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -17,7 +16,6 @@ class TradingController extends AbstractController
 {
     #[Route('/trading', name: 'app_trading', methods: ['GET'])]
     public function index(
-        ShiroCalendar $calendar,
         #[Autowire('%shiro.backtests%')] array $backtests,
         #[Autowire('%shiro.costs_note%')] string $costsNote,
         #[Autowire('%shiro.demo_since%')] string $demoSince,
@@ -38,7 +36,6 @@ class TradingController extends AbstractController
             'costs_note' => $costsNote,
             'demo_since' => $demoSince,
             'symbol'     => $symbol,
-            'calendar'   => $calendar->upcomingByMonth(),
             'summary'    => is_array($summary) ? $summary : null,
         ]);
     }

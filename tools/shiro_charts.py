@@ -7,8 +7,9 @@ Usage : python tools/shiro_charts.py chemin/vers/tokyo2016.csv [--out public/dat
 Reprend la méthode de tokyofix_quant.py (filtre/lisseur de Kalman, ruptures, Kelly, Monte Carlo
 par blocs), réécrite en Python pur (aucune dépendance) pour être rejouée n'importe où.
 
-Le CSV source n'est PAS publié (il contient les prix d'entrée et de sortie) : seuls des dates et des
-valeurs agrégées en R sortent d'ici. Ne jamais ajouter d'horaire, de prix ou de paramètre du robot.
+Le CSV source n'est PAS publié (il contient les prix d'entrée et de sortie). Anti rétro-ingénierie :
+seules des valeurs MENSUELLES en R sortent d'ici (aucune date de trade, aucun résultat par trade).
+Ne jamais ajouter d'horaire, de prix, de jour de trade ou de paramètre du robot.
 """
 import argparse
 import csv
@@ -97,6 +98,14 @@ def segments(y, lo=0, hi=None, min_seg=40, pen_mult=2.0, s2=None, out=None):
     return out
 
 
+def monthly(rows):
+    """Garde le dernier point de chaque mois (date ramenée au mois) : aucune date de trade publiée."""
+    out = {}
+    for row in rows:
+        out[row[0][:7]] = [row[0][:7]] + row[1:]
+    return list(out.values())
+
+
 def growth(R, mu, f):
     m = sum(R) / len(R)
     tot = 0.0
@@ -160,11 +169,13 @@ def main():
     for t in trades:
         total += t["R"]
         cum.append([t["day"], round(total, 2)])
-    breaks = [trades[c]["day"] for c in cuts]
+    breaks = [trades[c]["day"][:7] for c in cuts]
+    cum = monthly(cum)
 
     # 2. Avantage lissé (Kalman) avec intervalle à 95 %
     edge = [[t["day"], round(fit["xs"][i], 4), round(fit["xs"][i] - 1.96 * math.sqrt(fit["Ps"][i]), 4),
              round(fit["xs"][i] + 1.96 * math.sqrt(fit["Ps"][i]), 4)] for i, t in enumerate(trades)]
+    edge = monthly(edge)
 
     # 3. Monte Carlo 1 an, scénario récent, réglage 1,5 % / 0,5 %
     xT, PT = fit["xf"][-1], fit["Pf"][-1]
@@ -194,7 +205,7 @@ def main():
     first, last = trades[0]["day"], trades[-1]["day"]
     meta = {
         "source": "Journal du testeur de stratégie MetaTrader 5, USDJPY (backtest, pas de résultat réel)",
-        "period": [first, last],
+        "period": [first[:7], last[:7]],
         "trades": n,
         "unit": "R : gain ou perte d'un trade en multiples du risque pris",
         "edge_now": round(xT, 3),
@@ -207,7 +218,7 @@ def main():
                                         ensure_ascii=False, separators=(",", ":"))
     dump("r-cumule.json", {"meta": meta, "points": cum})
     dump("avantage.json", {"meta": meta, "points": edge})
-    dump("monte-carlo.json", {"meta": {**meta, "risk": "1,5 % dates exactes / 0,5 % dates décalées",
+    dump("monte-carlo.json", {"meta": {**meta, "risk": "0,5 à 1,5 % par trade (réglage par défaut)",
                                        "paths": 5000, "horizon_trades": 65,
                                        "median_recent": round((percentile(finals, 50) - 1) * 100, 1),
                                        "median_prudent": round((percentile(finals_prudent, 50) - 1) * 100, 1)},

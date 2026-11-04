@@ -12,14 +12,15 @@ parameters:
     shiro.demo_since: '30 octobre 2026'
     shiro.costs_note: >-
         La commission du courtier (environ 1 pip aller-retour) n'est pas incluse dans le testeur.
-        Selon le dossier, l'avantage reste positif jusqu'à environ 2 pips de coûts supplémentaires,
-        et un retard de 5 secondes à l'entrée retire environ un tiers du résultat.
+        Selon nos tests, l'avantage reste positif avec des coûts supplémentaires modérés,
+        mais une exécution lente ou de mauvaise qualité le réduit nettement.
 
-    # Tests au réglage par défaut du robot (1,5 % de risque les dates exactes, 0,5 % les dates décalées).
+    # Tests au réglage par défaut du robot (0,5 à 1,5 % de risque par trade).
     # Source : rapports du testeur MetaTrader 5 fournis par l'auteur le 3 novembre 2026 (captures).
-    # « Baisse max » = drawdown RELATIF du capital (fonds) indiqué par MT5 : c'est le plus grand repli
-    # en pourcentage. Le « drawdown maximal » de MT5 (5,45 %) est le plus grand repli en dollars, exprimé
-    # en % du capital à ce moment-là : il sous-estime le pire repli en pourcentage.
+    # « Drawdown max » = « Fond Drawdown Maximal » du rapport MT5 (choix de l'auteur, 4 novembre 2026) :
+    # plus forte baisse du capital en valeur, rapportée au capital du moment. Pour mémoire, le
+    # « Fond Drawdown Relatif » (plus grand repli en %) vaut 7,15 % / 6,04 % / 3,02 % sur les mêmes tests.
+    # Ne jamais publier ici la répartition du risque par type de jour (anti rétro-ingénierie).
     # num / decimals / prefix / suffix : animation des compteurs (la valeur affichée reste `value`).
     shiro.backtests:
         -   id: defaut_2016
@@ -28,7 +29,7 @@ parameters:
             title: "Dix ans d'historique"
             period: 'Janvier 2016 → octobre 2026'
             trades: 709
-            risk: '0,5 à 1,5 % du solde par trade (1,5 % dates exactes, 0,5 % dates décalées)'
+            risk: '0,5 à 1,5 % du solde par trade (réglage par défaut)'
             deposit: '10 000 USD'
             net: '+24 236,96 USD'
             source: 'Testeur de stratégie MetaTrader 5, ticks réels'
@@ -37,7 +38,7 @@ parameters:
                 - { label: 'Résultat cumulé', value: '+242,4 %', num: 242.4, decimals: 1, prefix: '+', suffix: ' %' }
                 - { label: 'Profit factor', value: '2,08', num: 2.08, decimals: 2 }
                 - { label: 'Trades gagnants', value: '57,0 %', num: 57.0, decimals: 1, suffix: ' %' }
-                - { label: 'Baisse max du capital', value: '7,15 %', num: 7.15, decimals: 2, suffix: ' %' }
+                - { label: 'Drawdown max', value: '5,45 %', num: 5.45, decimals: 2, suffix: ' %' }
 
         -   id: defaut_2021
             published: true
@@ -45,7 +46,7 @@ parameters:
             title: 'Depuis la rupture de 2021'
             period: 'Janvier 2021 → octobre 2026'
             trades: 376
-            risk: '0,5 à 1,5 % du solde par trade (1,5 % dates exactes, 0,5 % dates décalées)'
+            risk: '0,5 à 1,5 % du solde par trade (réglage par défaut)'
             deposit: '10 000 USD'
             net: '+16 054,01 USD'
             source: 'Testeur de stratégie MetaTrader 5, ticks réels'
@@ -54,7 +55,7 @@ parameters:
                 - { label: 'Résultat cumulé', value: '+160,5 %', num: 160.5, decimals: 1, prefix: '+', suffix: ' %' }
                 - { label: 'Profit factor', value: '2,44', num: 2.44, decimals: 2 }
                 - { label: 'Trades gagnants', value: '59,8 %', num: 59.8, decimals: 1, suffix: ' %' }
-                - { label: 'Baisse max du capital', value: '6,04 %', num: 6.04, decimals: 2, suffix: ' %' }
+                - { label: 'Drawdown max', value: '5,45 %', num: 5.45, decimals: 2, suffix: ' %' }
 
         -   id: defaut_2026
             published: true
@@ -62,7 +63,7 @@ parameters:
             title: 'Année en cours'
             period: 'Janvier → octobre 2026'
             trades: 55
-            risk: '0,5 à 1,5 % du solde par trade (1,5 % dates exactes, 0,5 % dates décalées)'
+            risk: '0,5 à 1,5 % du solde par trade (réglage par défaut)'
             deposit: '10 000 USD'
             net: '+1 855,72 USD'
             source: 'Testeur de stratégie MetaTrader 5, ticks réels'
@@ -71,13 +72,14 @@ parameters:
                 - { label: 'Résultat cumulé', value: '+18,6 %', num: 18.6, decimals: 1, prefix: '+', suffix: ' %' }
                 - { label: 'Profit factor', value: '3,26', num: 3.26, decimals: 2 }
                 - { label: 'Trades gagnants', value: '58,2 %', num: 58.2, decimals: 1, suffix: ' %' }
-                - { label: 'Baisse max du capital', value: '3,02 %', num: 3.02, decimals: 2, suffix: ' %' }
+                - { label: 'Drawdown max', value: '2,98 %', num: 2.98, decimals: 2, suffix: ' %' }
 
         # Test du dossier v1.15 à risque fixe 0,5 % (693 trades, +57 %, baisse max du solde 3,2 %, PF 1,77) :
         # remplacé par les tests au réglage par défaut ci-dessus. Il reste la base des graphiques en R
         # (public/data/shiro/, générés par tools/shiro_charts.py depuis tokyo2016.csv).
 
     # Prochaines dates de trade : prévision fournie par l'auteur (3 novembre 2026).
+    # NON PUBLIÉES sur le site (elles révèlent la règle de sélection des jours) : réservées aux clients.
     # Les jours fériés japonais n'ont PAS été recalculés ici : à vérifier avant chaque mise à jour.
     # type : exact (le 5, 10, 15, 20, 25 ou 30), decale (reporté au jour ouvré précédent), ignore (fin d'année).
     shiro.calendar:

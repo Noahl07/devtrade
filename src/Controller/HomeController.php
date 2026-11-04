@@ -7,7 +7,6 @@ namespace App\Controller;
 use App\Repository\DocumentCategoryRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\ProjectRepository;
-use App\Service\ShiroCalendar;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +19,6 @@ class HomeController extends AbstractController
         ProjectRepository $projectRepo,
         DocumentCategoryRepository $categoryRepo,
         DocumentRepository $documentRepo,
-        ShiroCalendar $calendar,
         #[Autowire('%shiro.demo_since%')] string $demoSince,
     ): Response {
         // Réalisations réelles uniquement (base de données) : aucun projet inventé.
@@ -41,7 +39,6 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'featuredProjects' => $featuredProjects,
             'categories'       => $categories,
-            'calendar'         => $calendar->upcomingByMonth(),
             'demo_since'       => $demoSince,
         ]);
     }
