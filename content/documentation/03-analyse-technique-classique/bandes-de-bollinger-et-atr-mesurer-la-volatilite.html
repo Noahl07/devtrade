@@ -2,107 +2,110 @@
 {
     "slug": "bandes-de-bollinger-et-atr-mesurer-la-volatilite",
     "title": "Bandes de Bollinger et ATR — mesurer la volatilité",
-    "excerpt": "Bandes de Bollinger, Average True Range (ATR), Keltner Channels — comprendre et utiliser les indicateurs de volatilité pour dimensionner ses stops, identifier les compressions et les explosions de prix.",
-    "readingTime": 17,
+    "excerpt": "Calcul de l'ATR et des bandes de Bollinger, stops et objectifs calibrés sur la volatilité (exemple chiffré de taille de position), compression et expansion, et ce que la statistique permet vraiment de dire sur les sorties de bandes.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 8,
     "module": "analyse-technique-classique"
 }
 -->
-<h2>La volatilité — la dimension oubliée de l'analyse technique</h2>
-<p>La plupart des traders débutants se concentrent sur la direction du prix : va-t-il monter ou descendre ? Mais il y a une deuxième dimension tout aussi importante : <strong>de combien va-t-il bouger ?</strong> C'est la question de la volatilité, et elle est centrale pour le dimensionnement des stops, la gestion des positions et l'identification des moments de breakout.</p>
- 
-<p>Les deux outils de référence pour mesurer la volatilité en analyse technique sont les <strong>Bandes de Bollinger</strong> et l'<strong>Average True Range (ATR)</strong>. Ils sont complémentaires : Bollinger mesure la volatilité relative par rapport à la moyenne, ATR mesure la volatilité absolue en valeur de prix.</p>
- 
-<h2>L'Average True Range (ATR) — la mesure universelle</h2>
-<p>Développé par J. Welles Wilder en 1978, l'ATR est la mesure de volatilité la plus utilisée par les traders professionnels. Il répond à une question simple : <strong>en moyenne, de combien de points/pips le prix se déplace-t-il sur une période donnée ?</strong></p>
- 
-<h3>Calcul de l'ATR</h3>
-<p>L'ATR est basé sur le "True Range" (TR) de chaque période :</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li>TR = Maximum de : (High − Low), |High − Close précédent|, |Low − Close précédent|</li>
-<li>ATR(14) = Moyenne mobile exponentielle des TR sur 14 périodes</li>
+<li>La volatilité répond à la question « <strong>de combien</strong> le prix bouge-t-il ? », indispensable pour placer stops et objectifs.</li>
+<li>L'<strong>ATR</strong> mesure l'amplitude moyenne d'une bougie, en unités de prix (pips, points, dollars).</li>
+<li>Les <strong>bandes de Bollinger</strong> encadrent le prix à deux écarts-types de sa moyenne : elles s'écartent quand la volatilité monte et se resserrent quand elle baisse.</li>
+<li>Une compression annonce souvent un mouvement plus ample, <strong>sans en donner la direction</strong>.</li>
 </ul>
-<p>La période 14 est la plus commune mais on peut adapter : ATR(7) pour plus de réactivité, ATR(20) pour plus de stabilité.</p>
- 
-<h3>Utilisations pratiques de l'ATR</h3>
- 
-<p><strong>1. Dimensionner les stop-loss</strong><br>
-C'est l'utilisation la plus professionnelle. Au lieu de placer un SL arbitraire à 20 pips, vous placez votre SL à 1.5× ou 2× l'ATR de la période. Ainsi votre stop s'adapte automatiquement à la volatilité du moment.</p>
- 
-<p>Exemple sur EUR/USD H1 avec ATR(14) = 15 pips :<br>
-SL = 1.5 × 15 = <strong>22.5 pips</strong> sous votre entrée long</p>
- 
-<svg viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:650px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
-  <text x="325" y="18" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">ATR — SL dynamique vs SL fixe</text>
-  <!-- Prix simulé -->
-  <polyline points="50,120 90,110 130,115 170,95 210,85 250,90 290,75 330,65 370,55 410,60 450,45 490,55 530,40 570,50 610,38" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
-  <!-- SL fixe (ligne horizontale) -->
-  <line x1="50" y1="140" x2="610" y2="140" stroke="#e05555" stroke-width="1" stroke-dasharray="5,3"/>
-  <text x="55" y="136" fill="#e05555" font-size="10" font-family="sans-serif">SL fixe 20 pips</text>
-  <!-- SL ATR dynamique (suit le prix) -->
-  <polyline points="50,138 90,128 130,133 170,115 210,105 250,110 290,95 330,85 370,75 410,80 450,65 490,75 530,60 570,70 610,58" fill="none" stroke="#3EB489" stroke-width="1.5" stroke-dasharray="4,2"/>
-  <text x="55" y="152" fill="#3EB489" font-size="10" font-family="sans-serif">SL ATR (1.5×) — s'adapte à la volatilité</text>
-  <!-- Zone entre prix et SL ATR -->
-  <text x="325" y="168" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Le SL ATR garde une distance proportionnelle à la volatilité réelle du marché</text>
-</svg>
- 
-<p><strong>2. Identifier les périodes de faible volatilité (compression)</strong><br>
-Quand l'ATR est inhabituellement bas par rapport à ses valeurs récentes, le marché est en compression — une explosion de volatilité est souvent imminente. Cette information est précieuse pour préparer des entrées sur breakout.</p>
- 
-<p><strong>3. Définir des objectifs de profit réalistes</strong><br>
-Un take-profit de 100 pips sur EUR/USD H1 avec ATR = 12 pips est peu réaliste. Un TP de 3× l'ATR (36 pips) est beaucoup plus atteignable. L'ATR calibre vos attentes à la réalité du marché.</p>
- 
-<h2>Les Bandes de Bollinger — la volatilité relative</h2>
-<p>Développées par John Bollinger dans les années 1980, les Bandes de Bollinger sont composées de trois lignes :</p>
+</div>
+
+<h2>Pourquoi mesurer la volatilité</h2>
+<p>Un stop de 20 pips n'a pas le même sens un jour calme et un jour d'annonce. Trop serré par rapport aux mouvements normaux du marché, il sera touché par le simple bruit ; trop large, il impose une petite taille de position. Mesurer la volatilité permet de régler stops, objectifs et tailles sur ce que le marché fait réellement.</p>
+
+<h2>L'ATR (Average True Range)</h2>
+<p>L'ATR, lui aussi publié par J. Welles Wilder en 1978, part du <strong>vrai range</strong> de chaque bougie, qui tient compte des écarts d'ouverture :</p>
+<pre><code>Vrai range = le plus grand de :
+  plus haut − plus bas
+  |plus haut − clôture précédente|
+  |plus bas − clôture précédente|
+ATR(14) = moyenne lissée des vrais ranges sur 14 périodes</code></pre>
+<p>Wilder utilise un lissage particulier : chaque nouvelle valeur pèse pour 1/14 de l'ATR. C'est l'équivalent d'une moyenne exponentielle plus lente que celle que l'on noterait habituellement EMA 14. Les plateformes affichent toutes ce calcul par défaut.</p>
+<p>L'ATR s'exprime dans l'unité du prix : un ATR(14) de 15 pips sur l'EUR/USD en 1 heure signifie qu'une bougie d'une heure couvre en moyenne 15 pips récemment. Il ne donne aucune direction.</p>
+
+<h2>Calibrer stop, objectif et taille avec l'ATR</h2>
+<ol class="doc-steps">
+<li><strong>Relevez l'ATR</strong> de l'unité de temps d'exécution : par exemple 15 pips en 1 heure.</li>
+<li><strong>Placez le stop au point d'invalidation</strong>, et vérifiez qu'il est à au moins 1 à 1,5 ATR de l'entrée. Sinon, le bruit normal risque de le toucher.</li>
+<li><strong>Calculez la taille</strong> : avec 100 € de risque et un stop de 22,5 pips (1,5 × 15), un pip valant environ 9,20 € par lot : 100 ÷ (22,5 × 9,20) ≈ <strong>0,48 lot</strong>.</li>
+<li><strong>Vérifiez l'objectif</strong> : un objectif à 100 pips quand l'ATR journalier est de 60 pips demande en moyenne près de deux jours pleins de mouvement dans votre sens. Est-ce cohérent avec votre horizon ?</li>
+</ol>
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">L'ATR ne remplace pas la structure</strong>
+<p>Un stop placé « à 1,5 ATR » sans regarder le graphique peut se retrouver juste au-dessus d'un creux évident, là où d'autres stops s'accumulent. Placez d'abord le stop au-delà du niveau qui invalide votre idée, puis utilisez l'ATR pour vérifier qu'il n'est pas absurdement serré.</p>
+</aside>
+
+<h2>Les bandes de Bollinger</h2>
+<p>Créées par John Bollinger dans les années 1980 :</p>
 <ul>
-<li><strong>Bande médiane :</strong> Moyenne Mobile Simple sur 20 périodes (SMA20)</li>
-<li><strong>Bande supérieure :</strong> SMA20 + 2 écarts-types</li>
-<li><strong>Bande inférieure :</strong> SMA20 − 2 écarts-types</li>
+<li><strong>bande médiane</strong> : moyenne mobile simple sur 20 périodes ;</li>
+<li><strong>bandes supérieure et inférieure</strong> : la médiane plus ou moins 2 écarts-types des 20 dernières clôtures.</li>
 </ul>
- 
-<p>La propriété fondamentale : statistiquement, <strong>environ 95% des prix se trouvent à l'intérieur des bandes</strong> (théorème de l'écart-type). Quand le prix touche ou sort d'une bande, c'est un événement statistiquement significatif.</p>
- 
-<svg viewBox="0 0 650 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:650px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
-  <text x="325" y="18" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Bandes de Bollinger — structure et phases</text>
-  <!-- Bande supérieure -->
-  <polyline points="40,60 100,55 160,45 220,50 280,65 340,70 400,60 460,45 520,40 580,50 620,55" fill="none" stroke="rgba(212,169,75,0.6)" stroke-width="1.5"/>
-  <!-- Bande inférieure -->
-  <polyline points="40,140 100,145 160,155 220,150 280,135 340,130 400,140 460,155 520,160 580,150 620,145" fill="none" stroke="rgba(212,169,75,0.6)" stroke-width="1.5"/>
-  <!-- Remplissage zone -->
-  <path d="M40,60 C100,55 160,45 220,50 280,65 340,70 400,60 460,45 520,40 580,50 620,55 L620,145 C580,150 520,160 460,155 400,140 340,130 280,135 220,150 160,155 100,145 40,140 Z" fill="rgba(212,169,75,0.05)"/>
-  <!-- SMA20 -->
-  <polyline points="40,100 100,100 160,100 220,100 280,100 340,100 400,100 460,100 520,100 580,100 620,100" fill="none" stroke="rgba(212,169,75,0.4)" stroke-width="1" stroke-dasharray="4,3"/>
-  <!-- Prix -->
-  <polyline points="40,95 80,88 120,75 160,50 200,58 240,80 280,95 320,110 360,125 400,118 440,100 480,85 520,68 560,75 600,90" fill="none" stroke="#5b9bd5" stroke-width="2"/>
-  <!-- Annotations -->
-  <text x="160" y="40" fill="#D4A94B" font-size="9" font-family="sans-serif">Expansion (volatilité haute)</text>
-  <text x="300" y="175" fill="#D4A94B" font-size="9" font-family="sans-serif">Contraction "Squeeze" (volatilité basse)</text>
-  <text x="520" y="35" fill="#D4A94B" font-size="9" font-family="sans-serif">Expansion</text>
-  <!-- Touch bande sup -->
-  <circle cx="160" cy="50" r="5" fill="none" stroke="#e05555" stroke-width="1.5"/>
-  <text x="155" y="30" fill="#e05555" font-size="9" font-family="sans-serif" text-anchor="middle">Touch</text>
-  <!-- Touch bande inf -->
-  <circle cx="360" cy="125" r="5" fill="none" stroke="#3EB489" stroke-width="1.5"/>
-  <text x="355" y="145" fill="#3EB489" font-size="9" font-family="sans-serif" text-anchor="middle">Touch</text>
-</svg>
- 
-<h3>Le Bollinger Squeeze — anticiper les explosions</h3>
-<p>Quand les bandes se resserrent fortement (compression), le marché accumule de l'énergie. Cette phase de "squeeze" précède souvent une explosion directionnelle forte. La difficulté : on sait qu'une explosion arrive, pas dans quelle direction. D'où l'importance des autres outils (structure, OB, FVG) pour déterminer le biais directionnel.</p>
- 
-<h3>Trois utilisations clés des Bollinger Bands</h3>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" aria-hidden="true">
+  <path d="M20,60 C90,62 150,88 200,100 S290,108 330,108 S390,40 470,35 S580,40 620,45" fill="none" stroke="rgba(150,170,220,0.85)" stroke-width="1.8" />
+  <path d="M20,170 C90,168 150,142 200,130 S290,124 330,124 S390,150 470,170 S580,178 620,175" fill="none" stroke="rgba(150,170,220,0.85)" stroke-width="1.8" />
+  <path d="M20,115 C120,115 200,115 330,116 S420,100 470,102 S580,108 620,110" fill="none" stroke="rgba(150,170,220,0.45)" stroke-width="1.4" stroke-dasharray="4 4" />
+  <polyline points="20,100 50,135 80,90 110,140 140,105 170,125 200,112 230,120 260,114 290,118 320,112 345,92 370,70 395,58 420,72 445,48 470,60 500,85 530,70 560,95 590,80 620,100" fill="none" stroke="#D9D3C3" stroke-width="2" />
+  <rect x="200" y="96" width="135" height="40" rx="6" fill="rgba(200,164,92,0.1)" stroke="rgba(200,164,92,0.6)" stroke-dasharray="4 3" />
+  </svg>
+<span class="doc-label is-accent" style="left:41.88%;top:67.74%">compression</span>
+<span class="doc-label is-positive" style="left:73.44%;top:85.13%">expansion : les bandes s'écartent</span>
+<span class="doc-label is-muted" style="left:17.19%;top:85.13%">volatilité normale</span>
+</div>
+<figcaption>Les bandes se resserrent quand le prix se calme, puis s'écartent quand il repart. La compression ne dit pas dans quel sens (illustration).</figcaption>
+</figure>
+
+<h3>Ce que la statistique permet de dire</h3>
+<p>Si les variations de prix suivaient une loi normale, environ 95 % des clôtures resteraient à l'intérieur de bandes à deux écarts-types. Ce n'est pas le cas : les marchés connaissent plus souvent qu'une loi normale des mouvements extrêmes, et la moyenne bouge en même temps que le prix. En pratique, les clôtures sortent des bandes plus souvent que 5 % du temps, avec des différences selon le marché et la période. Une sortie de bande est donc un événement notable, pas une anomalie qui devrait se corriger.</p>
+
+<h3>Trois lectures utiles</h3>
+<table>
+<thead><tr><th>Situation</th><th>Lecture</th><th>Piège</th></tr></thead>
+<tbody>
+<tr><td>Bandes très resserrées (squeeze)</td><td>Volatilité inhabituellement basse : un mouvement plus ample devient probable</td><td>La première sortie est souvent un faux départ</td></tr>
+<tr><td>Prix qui « longe » la bande supérieure</td><td>Tendance haussière forte</td><td>Vendre parce que le prix « touche la bande »</td></tr>
+<tr><td>Prix loin de la médiane en range</td><td>Retour vers la moyenne fréquent</td><td>Appliquer cette logique en pleine tendance</td></tr>
+</tbody>
+</table>
+
+<h2>Combiner ATR et Bollinger</h2>
 <ul>
-<li><strong>Surextension :</strong> Prix touche ou sort de la bande extérieure → possible retour vers la SMA20. Attention : en tendance forte, le prix peut "longer" la bande supérieure plusieurs bougies.</li>
-<li><strong>Squeeze + breakout :</strong> Bandes très serrées → attendre le breakout directionnel pour entrer dans le sens de la cassure</li>
-<li><strong>Retour à la moyenne :</strong> La SMA20 agit comme un aimant. Les prix qui s'en éloignent fortement ont tendance à y revenir — c'est la base des stratégies "mean reversion"</li>
+<li><strong>Compression</strong> (bandes serrées, ATR au plus bas depuis des semaines) : préparez un scénario dans les deux sens, avec des ordres de part et d'autre du range, et réduisez la taille si les stops sont proches.</li>
+<li><strong>Expansion</strong> (ATR qui bondit) : élargissez les stops, donc réduisez la taille pour garder le même risque en euros.</li>
+<li><strong>Après une annonce</strong> : l'ATR est gonflé pendant plusieurs bougies par une seule très grande bougie ; tenez-en compte avant de l'utiliser pour vos stops.</li>
 </ul>
- 
-<h2>Combiner ATR et Bollinger en pratique</h2>
-<p>Ces deux indicateurs sont complémentaires :</p>
-<ul>
-<li><strong>ATR faible + Bollinger Squeeze</strong> → compression maximale, explosion imminente. Préparer les breakouts.</li>
-<li><strong>ATR élevé + prix en bande extérieure</strong> → volatilité élevée et surextension. Prudence sur les entrées en tendance.</li>
-<li><strong>ATR pour le sizing :</strong> toujours dimensionner les SL en multiple d'ATR, jamais avec un nombre fixe arbitraire.</li>
-</ul>
- 
-<blockquote>L'ATR est l'outil de gestion du risque le plus sous-utilisé par les traders débutants. Intégrez-le systématiquement dans votre calcul de stop-loss — vous éviterez 80% des stops touchés "pour rien" en periode de haute volatilité.</blockquote>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Pendant six séances, l'or évolue entre 2 340 $ et 2 352 $ en bougies d'une heure ; les bandes de Bollinger n'ont jamais été aussi serrées depuis un mois et l'ATR(14) tombe à 3 $. Le trader place un achat stop à 2 354 $ et une vente stop à 2 338 $. Les statistiques américaines déclenchent la vente ; il annule l'autre ordre. Son stop, au-dessus du range, est à 16 $ de l'entrée, environ cinq fois l'ATR comprimé : il réduit sa taille en conséquence.</p>
+</aside>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>La volatilité ne dit pas où va le marché, elle dit combien de place il lui faut. Réglez vos stops et vos tailles sur elle, et considérez les sorties de bandes comme des informations, pas comme des signaux de retour automatiques.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Plus haut 1,0890, plus bas 1,0870, clôture précédente 1,0850. Quel est le vrai range ?</summary>
+<p>Le plus grand de 20 pips (1,0890 − 1,0870), 40 pips (|1,0890 − 1,0850|) et 20 pips (|1,0870 − 1,0850|) : 40 pips, à cause de l'écart avec la clôture précédente.</p>
+</details>
+<details>
+<summary>L'ATR double alors que votre risque reste de 100 €. Que devient votre taille de position si vous gardez un stop à 1,5 ATR ?</summary>
+<p>Elle est divisée par deux : le stop est deux fois plus éloigné pour le même montant risqué.</p>
+</details>
+<details>
+<summary>Le prix clôture au-dessus de la bande supérieure. Est-ce un signal de vente ?</summary>
+<p>Pas en soi. En tendance, le prix peut longer la bande pendant longtemps ; une sortie de bande signale surtout une accélération.</p>
+</details>

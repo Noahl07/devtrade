@@ -2,75 +2,132 @@
 {
     "slug": "tendances-supports-resistances",
     "title": "Tendances, supports et résistances",
-    "excerpt": "Identifier les tendances et les niveaux clés — le fondement de toute analyse graphique.",
-    "readingTime": 13,
+    "excerpt": "Reconnaître une tendance par ses sommets et ses creux, tracer des supports et résistances comme des zones, comprendre pourquoi un support cassé devient résistance, tracer lignes de tendance et canaux, et savoir quand un niveau compte vraiment.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 1,
     "module": "analyse-technique-classique"
 }
 -->
-<h2>La tendance — concept fondamental</h2>
-<p>Charles Dow, père de l'analyse technique moderne, a formulé au XIXe siècle le premier principe de sa théorie : <em>"Le marché évolue en tendances."</em> Un siècle plus tard, ce principe reste aussi vrai. Comprendre et identifier la tendance est la base de toute analyse graphique.</p>
-
-<h3>Les trois types de tendances</h3>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Tendance haussière (Uptrend)</strong> : succession de Higher Highs (HH) et Higher Lows (HL). Chaque sommet dépasse le précédent, chaque creux est plus haut que le précédent.</li>
-<li><strong>Tendance baissière (Downtrend)</strong> : succession de Lower Highs (LH) et Lower Lows (LL). Chaque sommet est plus bas que le précédent, chaque creux enfonce le précédent.</li>
-<li><strong>Tendance latérale (Range / Consolidation)</strong> : le prix oscille entre deux niveaux horizontaux sans direction claire. Représente 60-70% du temps de marché.</li>
+<li>Une <strong>tendance haussière</strong> enchaîne des sommets et des creux de plus en plus hauts ; une tendance baissière, l'inverse. Sinon, le marché est en <strong>range</strong>.</li>
+<li>Un <strong>support</strong> est une zone où les achats ont déjà arrêté la baisse ; une <strong>résistance</strong>, une zone où les ventes ont arrêté la hausse.</li>
+<li>Ce sont des <strong>zones</strong>, pas des lignes au pip près.</li>
+<li>Un support cassé devient souvent résistance, et inversement : c'est la <strong>polarité</strong>.</li>
 </ul>
+</div>
 
-<h3>Les trois horizons temporels</h3>
-<p>Dow identifiait également trois horizons dans une tendance :</p>
+<h2>La tendance : le premier repère</h2>
+<p>Au début du XXe siècle, Charles Dow, cofondateur du <em>Wall Street Journal</em>, a posé l'idée sur laquelle repose l'analyse technique : les marchés évoluent en tendances. Pour la reconnaître, on ne regarde pas la pente « à l'œil », mais la succession des <strong>sommets</strong> et des <strong>creux</strong>.</p>
+
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" aria-hidden="true">
+  <polyline points="40,195 120,130 170,165 260,95 310,128 410,60 460,92 560,40" fill="none" stroke="#4FB38F" stroke-width="2.5" />
+  <line x1="40" y1="195" x2="470" y2="90" stroke="rgba(200,164,92,0.6)" stroke-dasharray="5 4" />
+  <g fill="#E2CB91"><circle cx="170" cy="165" r="4" /><circle cx="310" cy="128" r="4" /><circle cx="460" cy="92" r="4" /></g>
+  <g fill="#7FD1B9"><circle cx="120" cy="130" r="4" /><circle cx="260" cy="95" r="4" /><circle cx="410" cy="60" r="4" /></g>
+  </svg>
+<span class="doc-label doc-label--start doc-label--caps is-muted" style="left:3.12%;top:7.66%">TENDANCE HAUSSIÈRE : SOMMETS ET CREUX DE PLUS EN PLUS HAUTS</span>
+<span class="doc-label is-positive" style="left:18.75%;top:49.48%">sommet</span>
+<span class="doc-label is-positive" style="left:40.62%;top:34.26%">sommet plus haut</span>
+<span class="doc-label is-positive" style="left:64.06%;top:19.04%">sommet plus haut</span>
+<span class="doc-label is-accent" style="left:26.56%;top:78.61%">creux</span>
+<span class="doc-label is-accent" style="left:49.69%;top:63.39%">creux plus haut</span>
+<span class="doc-label is-accent" style="left:78.12%;top:49.48%">creux plus haut</span>
+<span class="doc-label doc-label--end is-accent" style="left:90.62%;top:85.13%">ligne de tendance (relie les creux)</span>
+</div>
+<figcaption>Tant que chaque creux reste au-dessus du précédent, la tendance haussière est intacte. Un creux plus bas que le précédent est le premier signal d'alerte.</figcaption>
+</figure>
+
+<table>
+<thead><tr><th>État du marché</th><th>Sommets</th><th>Creux</th><th>Approche habituelle</th></tr></thead>
+<tbody>
+<tr><td>Tendance haussière</td><td>De plus en plus hauts</td><td>De plus en plus hauts</td><td>Chercher des achats sur les replis</td></tr>
+<tr><td>Tendance baissière</td><td>De plus en plus bas</td><td>De plus en plus bas</td><td>Chercher des ventes sur les rebonds</td></tr>
+<tr><td>Range</td><td>À peu près au même niveau</td><td>À peu près au même niveau</td><td>Acheter près du bas, vendre près du haut, ou attendre la sortie</td></tr>
+</tbody>
+</table>
+<p>Une tendance dépend de l'unité de temps. Le même marché peut monter en graphique journalier et baisser en graphique de 15 minutes, le temps d'un repli. Dow distinguait déjà la tendance primaire (des mois ou des années), la tendance secondaire (des semaines) et les mouvements mineurs (des jours). L'article <em>Analyse multi-timeframe</em> montre comment les combiner.</p>
+
+<h2>Supports et résistances</h2>
+<p>Un <strong>support</strong> est une zone de prix où la baisse s'est arrêtée parce que les acheteurs y ont été plus nombreux que les vendeurs. Une <strong>résistance</strong> est une zone où la hausse s'est arrêtée pour la raison inverse.</p>
+<p>Pourquoi le prix réagit-il à nouveau quand il y revient ? Parce que les participants se souviennent de ces niveaux et y placent des ordres : ceux qui ont acheté trop tard et veulent sortir sans perte, ceux qui ont raté le premier rebond et attendent une seconde chance, ceux qui y placent leurs stops. Ces ordres accumulés rendent une réaction probable, sans jamais la garantir.</p>
+
+<h3>Des zones, pas des lignes</h3>
+<p>Le prix ne respecte jamais un niveau au pip près. Tracez une <strong>zone</strong> qui englobe les mèches et les corps des réactions passées. Sa largeur dépend de la volatilité : quelques pips sur un graphique de 15 minutes, beaucoup plus sur un graphique journalier. Un bon repère : environ un quart à la moitié de l'ATR de l'unité de temps utilisée.</p>
+
+<h2>La polarité : un support cassé devient résistance</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" aria-hidden="true">
+  <rect x="30" y="112" width="580" height="22" fill="rgba(200,164,92,0.14)" stroke="rgba(200,164,92,0.5)" stroke-dasharray="4 4" />
+  <polyline points="40,60 90,118 130,70 180,120 220,80 270,124 310,175 350,195 400,150 430,116 470,150 520,185 590,200" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+  </svg>
+<span class="doc-label is-positive" style="left:24.22%;top:16.27%">la zone sert de support</span>
+<span class="doc-label is-negative" style="left:46.88%;top:45.36%">cassure</span>
+<span class="doc-label is-accent" style="left:67.19%;top:43.55%">retour : elle sert de résistance</span>
+<span class="doc-label doc-label--end is-muted" style="left:93.75%;top:67.18%">zone</span>
+</div>
+<figcaption>Les acheteurs piégés sous l'ancien support vendent quand le prix y revient, ce qui en fait une résistance.</figcaption>
+</figure>
+<p>Les acheteurs qui ont acheté sur le support se retrouvent en perte après la cassure. Quand le prix remonte jusqu'à leur prix d'achat, beaucoup en profitent pour sortir sans perte : leurs ventes freinent la hausse. Ceux qui ont raté la cassure y voient une seconde occasion de vendre. Ce retour sur un niveau cassé est l'une des configurations les plus utilisées en analyse technique.</p>
+
+<h2>Reconnaître un niveau qui compte</h2>
+<table>
+<thead><tr><th>Critère</th><th>Pourquoi il renforce le niveau</th></tr></thead>
+<tbody>
+<tr><td>Réaction nette et rapide</td><td>Un rejet franc montre qu'il y avait beaucoup d'ordres</td></tr>
+<tr><td>Unité de temps élevée</td><td>Un niveau hebdomadaire est vu par plus de participants qu'un niveau de 5 minutes</td></tr>
+<tr><td>Plusieurs réactions passées</td><td>Le niveau est connu ; mais chaque test consomme une partie des ordres qui l'ont défendu</td></tr>
+<tr><td>Chiffre rond (1,1000 ; 20 000 points)</td><td>Beaucoup d'ordres y sont placés par simple commodité</td></tr>
+<tr><td>Volume élevé lors des réactions (sur les marchés qui en publient un)</td><td>Des échanges importants ont eu lieu à ce prix</td></tr>
+</tbody>
+</table>
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">Un niveau testé souvent n'est pas plus solide</strong>
+<p>On lit parfois qu'un niveau touché trois ou quatre fois est « plus fort ». C'est discutable : chaque test absorbe des ordres d'achat ou de vente qui ne seront plus là la fois suivante. Un niveau qui se fait tester de plus en plus vite, avec des rebonds de plus en plus faibles, est souvent sur le point de céder.</p>
+</aside>
+
+<h2>Lignes de tendance et canaux</h2>
 <ul>
-<li><strong>Tendance primaire</strong> : plusieurs mois à plusieurs années (investisseurs long terme)</li>
-<li><strong>Tendance secondaire</strong> : semaines à mois (swing traders)</li>
-<li><strong>Tendance mineure</strong> : heures à jours (day traders)</li>
+<li>Une <strong>ligne de tendance haussière</strong> relie au moins deux creux de la tendance ; un troisième contact la valide. Elle sert de support « en pente ».</li>
+<li>Une <strong>ligne baissière</strong> relie les sommets d'une tendance baissière.</li>
+<li>Un <strong>canal</strong> ajoute une parallèle passant par les extrêmes opposés : le prix oscille entre les deux.</li>
 </ul>
+<p>Les lignes de tendance sont plus subjectives que les niveaux horizontaux : selon les points choisis, deux traders tracent deux lignes différentes. Utilisez-les comme repère visuel de la pente, et donnez plus de poids aux niveaux horizontaux.</p>
 
-<blockquote>Un trader professionnel identifie d'abord la tendance sur le timeframe supérieur (H4, Daily) puis cherche des entrées dans la direction de cette tendance sur un timeframe inférieur (M15, H1). C'est l'essence du multi-timeframe trading.</blockquote>
+<h2>Méthode pas à pas</h2>
+<ol class="doc-steps">
+<li><strong>Commencez par l'unité de temps la plus haute</strong> que vous utilisez (journalière ou 4 heures) : sommets et creux, donc tendance ou range.</li>
+<li><strong>Tracez deux ou trois zones majeures</strong>, pas davantage : celles où le prix a réagi le plus nettement.</li>
+<li><strong>Descendez d'une unité de temps</strong> pour affiner les zones proches du prix actuel.</li>
+<li><strong>Écrivez votre scénario</strong> : « si le prix revient dans telle zone et y montre un rejet, je cherche un achat ; s'il clôture en dessous, l'idée est fausse ».</li>
+<li><strong>Nettoyez le graphique</strong> chaque semaine : supprimez les niveaux qui n'ont plus servi.</li>
+</ol>
 
-<h2>Les supports et résistances</h2>
-<p>Un <strong>support</strong> est un niveau de prix où la demande est suffisamment forte pour stopper ou inverser une baisse. Une <strong>résistance</strong> est un niveau où l'offre est suffisamment forte pour stopper ou inverser une hausse.</p>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>En graphique journalier, l'EUR/USD a buté deux fois vers 1,0950 – 1,0965, puis a cassé ce niveau et monté à 1,1050. Le prix revient ensuite vers 1,0960. Le trader repère une ancienne résistance devenue support potentiel. Il attend une bougie de rejet en 1 heure dans la zone, place un stop sous 1,0935 et vise le dernier sommet à 1,1050.</p>
+</aside>
 
-<h3>Pourquoi les S/R fonctionnent-ils ?</h3>
-<p>Les supports et résistances fonctionnent parce que les acteurs du marché ont une <strong>mémoire collective</strong>. Un niveau où le prix a rebondi plusieurs fois par le passé est gravé dans la mémoire des traders — quand le prix y retourne, beaucoup placent leurs ordres à ce niveau, créant une réaction auto-réalisatrice.</p>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Les supports et résistances ne prédisent pas que le prix va rebondir : ils indiquent où une réaction est plus probable, et donc où placer un scénario, une entrée et un stop. Le prix décide ensuite.</p>
+</aside>
 
-<h3>La polarité — support devient résistance</h3>
-<p>L'un des concepts les plus puissants en analyse technique : <strong>quand un support est cassé, il devient résistance, et vice-versa</strong>. Cette polarité est liée à la psychologie des participants piégés :</p>
-<ul>
-<li>Les acheteurs qui ont acheté au support et se sont retrouvés piégés quand il a été cassé veulent "sortir au seuil de rentabilité" quand le prix revient au niveau cassé — créant une pression vendeuse (nouvelle résistance)</li>
-<li>Les vendeurs qui ont raté la cassure veulent entrer au prochain retour sur le niveau — ajoutant aussi à la pression vendeuse</li>
-</ul>
-
-<h3>Zones vs Niveaux</h3>
-<p>Une erreur classique est de tracer des supports et résistances comme des lignes précises. En réalité, ce sont des <strong>zones</strong> — le prix ne respecte jamais un niveau au pip près. Tracer une zone de 5-20 pips autour d'un niveau significatif est plus réaliste et évite les faux-signaux.</p>
-
-<h2>Identifier les niveaux significatifs</h2>
-<p>Tous les niveaux ne sont pas égaux. Un niveau est d'autant plus significatif qu'il a été :</p>
-<ul>
-<li>Testé plusieurs fois (3+ touches = niveau majeur)</li>
-<li>Accompagné de volume élevé lors des réactions</li>
-<li>Respecté sur plusieurs timeframes (niveau hebdomadaire > niveau journalier > niveau horaire)</li>
-<li>Situé à un niveau psychologique rond (1.2000 sur EUR/USD, 4000 sur SP500)</li>
-</ul>
-
-<h2>Les lignes de tendance</h2>
-<p>Une ligne de tendance haussière relie les Higher Lows successifs. Elle agit comme support dynamique — le prix revient la tester avant de repartir à la hausse. Une ligne de tendance baissière relie les Lower Highs — elle agit comme résistance dynamique.</p>
-
-<p>Pour tracer une ligne de tendance valide :</p>
-<ul>
-<li>Minimum 2 points de contact (3+ pour une ligne majeure)</li>
-<li>Les touches doivent être significatives (pas des micro-mouvements)</li>
-<li>La ligne ne doit pas couper des bougies (sinon elle est mal tracée)</li>
-</ul>
-
-<h2>Les canaux de prix</h2>
-<p>Un canal est formé par deux lignes de tendance parallèles — une ligne de tendance principale et une ligne de canal tracée parallèlement à partir des extremums opposés. Le prix oscille entre les deux lignes. Les canaux sont particulièrement utiles pour identifier les objectifs de prix et les zones de retournement potentielles.</p>
-
-<h2>Application pratique</h2>
-<ul>
-<li>Sur un graphique vierge, identifiez d'abord la tendance principale (H4 ou Daily)</li>
-<li>Tracez les 2-3 niveaux les plus significatifs (ceux avec le plus de touches)</li>
-<li>Descendez sur le H1 ou M15 pour chercher des entrées dans la direction de la tendance principale</li>
-<li>Utilisez les supports comme zones d'achat en uptrend, les résistances comme zones de vente en downtrend</li>
-</ul>
+<h2>Testez-vous</h2>
+<details>
+<summary>Les derniers sommets sont 1,1020, 1,1060, 1,1040 et les derniers creux 1,0960, 1,0990, 1,0950. La tendance haussière est-elle intacte ?</summary>
+<p>Non : le dernier sommet (1,1040) est plus bas que le précédent, et le dernier creux (1,0950) casse le précédent. La tendance haussière est remise en cause.</p>
+</details>
+<details>
+<summary>Pourquoi tracer une zone plutôt qu'une ligne ?</summary>
+<p>Parce que les ordres se répartissent autour d'un niveau et que le prix le dépasse souvent de quelques pips avant de réagir. Une ligne exacte ferait conclure trop vite à une cassure.</p>
+</details>
+<details>
+<summary>Un support a été touché pour la cinquième fois en deux jours, avec des rebonds de plus en plus faibles. Comment l'interpréter ?</summary>
+<p>Plutôt comme un signe d'affaiblissement : les acheteurs qui le défendaient sont de moins en moins nombreux, et une cassure devient plus probable.</p>
+</details>

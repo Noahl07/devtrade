@@ -2,72 +2,135 @@
 {
     "slug": "multi-timeframe-bases",
     "title": "Multi-timeframe analysis — bases",
-    "excerpt": "Utiliser plusieurs unités de temps pour définir le biais et trouver des entrées précises.",
-    "readingTime": 12,
+    "excerpt": "Lire le marché sur trois unités de temps : la tendance de fond, la zone de travail et le point d'entrée. Rapports entre unités de temps, combinaisons selon le style, exemple complet et erreurs qui transforment l'analyse en confusion.",
+    "readingTime": 5,
     "accessLevel": "free",
     "position": 10,
     "module": "analyse-technique-classique"
 }
 -->
-<h2>Pourquoi le multi-timeframe est indispensable</h2>
-<p>Un trader qui ne regarde qu'un seul timeframe est aveugle au contexte global. Il peut prendre un trade haussier "parfait" sur le M15 sans savoir qu'en Daily il est en pleine résistance majeure — et perdre. Le multi-timeframe analysis (MTA) est la pratique de <strong>lire le marché sur plusieurs unités de temps simultanément</strong> pour s'assurer que toutes les temporalités sont alignées.</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Chaque unité de temps a un <strong>rôle</strong> : la plus haute donne la direction, l'intermédiaire la zone, la plus basse le point d'entrée.</li>
+<li>Gardez un rapport d'environ <strong>4 à 6</strong> entre deux unités de temps successives, et <strong>trois unités au maximum</strong>.</li>
+<li>Un signal sur une petite unité de temps contre la tendance de la grande est le plus souvent un simple repli.</li>
+<li>L'analyse se fait de haut en bas, <strong>avant</strong> la séance ; l'exécution, sur la petite unité seulement.</li>
+</ul>
+</div>
 
-<h2>La structure classique Top-Down</h2>
-<p>L'approche Top-Down consiste à partir du timeframe le plus grand vers le plus petit :</p>
+<h2>Pourquoi plusieurs unités de temps</h2>
+<p>Un même marché peut être en hausse sur le graphique journalier, en baisse sur le graphique d'une heure et sans direction sur celui de 5 minutes. Aucune de ces lectures n'est fausse : elles décrivent des horizons différents. Un trader qui ne regarde qu'une seule unité de temps prend sans le savoir des positions contre une tendance plus large, ou entre au milieu de nulle part.</p>
 
-<ol>
-<li><strong>Timeframe de biais (HTF)</strong> : Weekly ou Daily → définir la tendance principale, identifier les niveaux clés majeurs</li>
-<li><strong>Timeframe intermédiaire</strong> : H4 ou H1 → confirmer la structure, identifier les zones d'entrée potentielles</li>
-<li><strong>Timeframe d'exécution (LTF)</strong> : M15 ou M5 → trouver l'entrée précise, placer SL et TP</li>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
+  <defs><marker id="mtf" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#C8A45C" /></marker></defs>
+  <rect x="20" y="20" width="600" height="56" rx="8" fill="rgba(120,140,190,0.14)" stroke="rgba(150,170,220,0.6)" />
+  <rect x="80" y="96" width="480" height="56" rx="8" fill="rgba(200,164,92,0.12)" stroke="#C8A45C" />
+  <rect x="150" y="172" width="340" height="56" rx="8" fill="rgba(79,179,143,0.14)" stroke="#4FB38F" />
+  <line x1="320" y1="76" x2="320" y2="92" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#mtf)" />
+  <line x1="320" y1="152" x2="320" y2="168" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#mtf)" />
+  </svg>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:50%;top:15.38%">Unité haute (ex. journalier) : la direction</span>
+<span class="doc-label" style="left:50%;top:23.12%">tendance, grandes zones, où se situe le prix</span>
+<span class="doc-label doc-label--lg doc-label--strong is-accent" style="left:50%;top:45.78%">Unité intermédiaire (ex. 4 h) : la zone</span>
+<span class="doc-label" style="left:50%;top:53.52%">où chercher une entrée, scénario et invalidation</span>
+<span class="doc-label doc-label--lg doc-label--strong is-positive" style="left:50%;top:76.18%">Unité basse (ex. 1 h) : l'entrée</span>
+<span class="doc-label" style="left:50%;top:83.92%">signal, stop précis, taille</span>
+</div>
+<figcaption>L'analyse descend de la grande unité de temps vers la petite ; chaque étage restreint le choix de l'étage suivant.</figcaption>
+</figure>
+
+<h2>Choisir ses trois unités de temps</h2>
+<table>
+<thead><tr><th>Style</th><th class="ta-center">Direction</th><th class="ta-center">Zone</th><th class="ta-center">Entrée</th></tr></thead>
+<tbody>
+<tr><td>Swing trading (jours à semaines)</td><td class="ta-center">Hebdomadaire</td><td class="ta-center">Journalier</td><td class="ta-center">4 h</td></tr>
+<tr><td>Day trading</td><td class="ta-center">Journalier</td><td class="ta-center">1 h</td><td class="ta-center">15 min</td></tr>
+<tr><td>Intraday rapide</td><td class="ta-center">4 h</td><td class="ta-center">15 min</td><td class="ta-center">5 min ou 3 min</td></tr>
+</tbody>
+</table>
+<p>Le rapport de 4 à 6 entre deux unités (1 h → 15 min : 4 ; journalier → 4 h : 6) laisse à chaque étage assez de bougies pour être lisible, sans perdre le lien avec l'étage supérieur. Choisissez d'abord l'unité d'<strong>entrée</strong> qui correspond à votre disponibilité, puis remontez.</p>
+
+<h2>Ce que l'on cherche à chaque étage</h2>
+<h3>L'unité haute : la direction</h3>
+<ul>
+<li>Sommets et creux : tendance haussière, baissière ou range.</li>
+<li>Les deux ou trois zones majeures les plus proches du prix.</li>
+<li>La position du prix : en début de mouvement, au milieu, ou contre une grande résistance ?</li>
+</ul>
+<h3>L'unité intermédiaire : la zone</h3>
+<ul>
+<li>Le repli en cours atteint-il une zone intéressante (support, retracement, moyenne) ?</li>
+<li>Le scénario écrit : où acheter, où il devient faux, où prendre les bénéfices.</li>
+</ul>
+<h3>L'unité basse : l'entrée</h3>
+<ul>
+<li>Un signal que le repli se termine : cassure d'une petite structure baissière, bougie de rejet.</li>
+<li>Un stop placé au-delà de la petite structure, et une taille calculée.</li>
+</ul>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple complet (illustratif)</strong>
+<p><strong>Journalier</strong> : l'EUR/USD fait des sommets et des creux de plus en plus hauts ; l'ancienne résistance de 1,0850 a été cassée la semaine dernière. <strong>4 heures</strong> : le prix revient vers 1,0850 – 1,0860, ancienne résistance devenue support possible, qui coïncide avec le retracement de 50 % de la dernière hausse. Scénario : achat dans la zone, invalidé sous 1,0830, objectif le dernier sommet à 1,0960. <strong>1 heure</strong> : dans la zone, le prix cesse de faire des creux plus bas et casse son dernier petit sommet à 1,0868. Entrée sur le premier repli vers 1,0862, stop à 1,0828, objectif 1,0960 : 98 pips de gain potentiel pour 34 pips de risque.</p>
+</aside>
+
+<h2>Quand les unités de temps se contredisent</h2>
+<table>
+<thead><tr><th>Situation</th><th>Décision raisonnable</th></tr></thead>
+<tbody>
+<tr><td>Haute haussière, basse haussière</td><td>Configuration la plus simple : acheter les replis</td></tr>
+<tr><td>Haute haussière, basse baissière</td><td>Repli probable : attendre que la basse se retourne dans une zone</td></tr>
+<tr><td>Haute en range</td><td>Travailler les bornes du range, ou attendre la sortie</td></tr>
+<tr><td>Haute contre une zone majeure</td><td>Prudence : réduire la taille ou passer</td></tr>
+</tbody>
+</table>
+
+<h2>Les erreurs qui brouillent tout</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Bonnes pratiques</h4>
+<ul>
+<li>Analyse de haut en bas avant la séance, notée par écrit</li>
+<li>Trois unités de temps, toujours les mêmes</li>
+<li>Pendant la séance, ne regarder que l'unité d'entrée</li>
+</ul>
+</div>
+<div class="doc-compare__dont">
+<h4>Pièges</h4>
+<ul>
+<li>Changer d'unité de temps jusqu'à en trouver une qui confirme son idée</li>
+<li>Ouvrir six graphiques et ne plus savoir lequel décide</li>
+<li>Sortir d'un trade sur un signal de 1 minute alors que le scénario est en 4 heures</li>
+</ul>
+</div>
+</div>
+
+<h2>Checklist avant d'entrer</h2>
+<ol class="doc-steps">
+<li><strong>Direction</strong> : quelle est la tendance sur l'unité haute ?</li>
+<li><strong>Zone</strong> : le prix est-il dans une zone préparée sur l'unité intermédiaire ?</li>
+<li><strong>Signal</strong> : l'unité basse montre-t-elle un retournement dans le sens de la direction ?</li>
+<li><strong>Risque</strong> : le stop est-il logique, la taille calculée, l'objectif à au moins 1,5 fois le risque ?</li>
+<li><strong>Calendrier</strong> : aucune annonce majeure dans les minutes qui viennent ?</li>
 </ol>
 
-<blockquote>Le timeframe supérieur définit le biais (haussier ou baissier). Le timeframe intermédiaire valide le contexte. Le timeframe d'exécution donne l'entrée précise. Ne jamais trader à contre-biais du timeframe supérieur sauf en cas de confluences exceptionnelles.</blockquote>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>La grande unité de temps choisit le camp, la moyenne choisit l'endroit, la petite choisit le moment. Inverser cet ordre, c'est laisser le bruit de court terme décider à votre place.</p>
+</aside>
 
-<h2>Correspondance entre timeframes</h2>
-<p>Règle générale : le timeframe d'exécution doit être <strong>4 à 6 fois plus petit</strong> que le timeframe intermédiaire :</p>
-
-<ul>
-<li>Swing trader (jours/semaines) : biais Weekly → contexte Daily → entrée H4</li>
-<li>Day trader (séance) : biais Daily → contexte H4 → entrée H1/M30</li>
-<li>Intraday scalper : biais H4 → contexte H1 → entrée M15/M5</li>
-<li>Ultra-scalper : biais H1 → contexte M15 → entrée M1/M5</li>
-</ul>
-
-<h2>Le concept de biais directionnel</h2>
-<p>Avant de placer le moindre trade, vous devez répondre à une question fondamentale : <em>"Quel est le biais du marché sur mon timeframe de référence ?"</em></p>
-
-<p>En ICT, le biais se détermine à partir de :</p>
-<ul>
-<li>La structure de marché (HH/HL = haussier, LH/LL = baissier)</li>
-<li>La position par rapport aux niveaux clés (premium ou discount)</li>
-<li>L'état de la liquidité (quels niveaux ont été pris, lesquels restent)</li>
-<li>Le contexte macro (DXY pour les paires USD, données économiques)</li>
-</ul>
-
-<h2>Exemple pratique MTA en ICT</h2>
-<p>Voici comment s'applique le multi-timeframe dans une approche ICT :</p>
-
-<ul>
-<li><strong>Daily</strong> : tendance haussière (HH/HL), prix dans zone discount (sous l'equilibrium du range), FVG bullish non mitigé à 1.2850 sur EUR/USD</li>
-<li><strong>H4</strong> : BOS haussier récent, retrace vers le FVG daily, Order Block bullish H4 à 1.2855</li>
-<li><strong>M15</strong> : CHoCH haussier sur M15, bougie d'entrée sur l'OB H4, Stop-Loss sous le swing low M15</li>
-</ul>
-
-<p>Tous les timeframes sont alignés haussiers → trade à haute probabilité.</p>
-
-<h2>Les erreurs fréquentes en MTA</h2>
-<ul>
-<li><strong>Biais switching</strong> : changer de biais au milieu d'un trade parce qu'un LTF a fait un signal adverse. Le biais HTF prime toujours.</li>
-<li><strong>Trop de timeframes</strong> : analyser 6 timeframes différents crée de la confusion. 3 suffisent.</li>
-<li><strong>Ignorer le HTF</strong> : se concentrer uniquement sur le LTF pour l'excitation des signaux rapides — sans le contexte, ces signaux sont du bruit.</li>
-<li><strong>Forcer la confluence</strong> : interpréter chaque timeframe pour qu'il confirme son biais préexistant — le confirmation bias en action.</li>
-</ul>
-
-<h2>Outil pratique — la checklist MTA avant d'entrer</h2>
-<ul>
-<li>Quelle est la tendance sur le Daily/Weekly ?</li>
-<li>Où est le prix par rapport aux niveaux majeurs H4 ?</li>
-<li>Y a-t-il un FVG ou OB non mitigé dans la direction du biais ?</li>
-<li>Le LTF montre-t-il un signal d'entrée dans la direction du HTF ?</li>
-<li>Mon SL est-il logiquement placé et correspond-il à mon risk management ?</li>
-</ul>
+<h2>Testez-vous</h2>
+<details>
+<summary>Vous tradez en 5 minutes. Quelles unités de temps choisir pour la zone et la direction ?</summary>
+<p>Par exemple 30 minutes (ou 15 minutes) pour la zone et 2 heures à 4 heures pour la direction, en gardant un rapport d'environ 4 à 6 entre les étages.</p>
+</details>
+<details>
+<summary>Le journalier est haussier, et le graphique de 1 heure fait des creux plus bas depuis ce matin. Faut-il vendre ?</summary>
+<p>Ce n'est pas le scénario prioritaire : c'est probablement un repli dans la tendance journalière. On attend plutôt que le 1 heure se retourne à la hausse dans une zone.</p>
+</details>
+<details>
+<summary>Dans l'exemple, quel est le rapport gain/risque du trade ?</summary>
+<p>98 pips de gain potentiel pour 34 pips de risque, soit environ 2,9.</p>
+</details>

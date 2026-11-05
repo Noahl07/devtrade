@@ -2,71 +2,105 @@
 {
     "slug": "retracements-fibonacci",
     "title": "Retracements de Fibonacci",
-    "excerpt": "Les niveaux clés de Fibonacci, leur logique et leur application en trading.",
-    "readingTime": 11,
+    "excerpt": "D'où viennent les ratios de Fibonacci, comment tracer correctement retracements et extensions (exemple chiffré sur l'EUR/USD), pourquoi ces niveaux réagissent parfois, et comment les utiliser sans tomber dans le piège du niveau qui marche toujours après coup.",
+    "readingTime": 4,
     "accessLevel": "free",
     "position": 9,
     "module": "analyse-technique-classique"
 }
 -->
-<h2>L'origine de Fibonacci en trading</h2>
-<p>Leonardo Fibonacci était un mathématicien italien du XIIIe siècle qui a introduit en Europe une séquence numérique découverte en Inde : 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89... où chaque nombre est la somme des deux précédents. La propriété remarquable : le rapport entre un nombre et le suivant tend vers <strong>0.618</strong> (le nombre d'or, φ).</p>
-
-<p>Ce nombre d'or apparaît partout dans la nature (spirales de coquillages, phyllotaxie des plantes, proportions du corps humain) et, selon les techniciens de marché, dans les mouvements de prix financiers. En réalité, Fibonacci fonctionne en partie parce que <em>des millions de traders l'utilisent</em> — créant une prophétie auto-réalisatrice.</p>
-
-<h2>Les niveaux de retracement clés</h2>
-<p>Les niveaux de retracement Fibonacci se calculent en pourcentage d'un mouvement de prix (d'un swing low à un swing high ou vice versa) :</p>
-
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>23.6%</strong> : retracement superficiel, souvent vu en tendance très forte</li>
-<li><strong>38.2%</strong> : retracement modéré, premier niveau de support significatif</li>
-<li><strong>50%</strong> : milieu du range, niveau psychologique important (pas un ratio Fibonacci pur mais très respecté)</li>
-<li><strong>61.8%</strong> : le "Golden Ratio" — le niveau le plus important en Fibonacci, zone de retournement très fréquente</li>
-<li><strong>78.6%</strong> : retracement profond, souvent le dernier soutien avant invalidation du swing</li>
+<li>Les retracements mesurent la profondeur d'un repli en <strong>pourcentage du mouvement précédent</strong> : 38,2 %, 50 %, 61,8 %, 78,6 %.</li>
+<li>Ils se tracent d'un <strong>creux à un sommet</strong> nets (en tendance haussière), mèches comprises.</li>
+<li>Ils réagissent parfois parce que beaucoup de traders les regardent, pas parce que le marché obéit au nombre d'or.</li>
+<li>Avec cinq niveaux dans un repli, l'un d'eux « marche » presque toujours après coup : n'utilisez Fibonacci qu'<strong>en accord avec une zone déjà identifiée</strong>.</li>
+</ul>
+</div>
+
+<h2>D'où viennent ces ratios</h2>
+<p>Leonardo de Pise, dit Fibonacci, a fait connaître en Europe au XIIIe siècle une suite où chaque nombre est la somme des deux précédents : 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89… Le rapport entre un nombre et le suivant tend vers 0,618 ; entre un nombre et celui situé deux rangs plus loin, vers 0,382. Le niveau 78,6 % est la racine carrée de 0,618, et le 50 % n'a rien à voir avec la suite : il est utilisé parce qu'un repli de moitié est un repère naturel.</p>
+<p>Le nombre d'or apparaît dans certaines structures naturelles, mais on lui prête aussi beaucoup de présences imaginaires. Rien ne prouve que les marchés y obéissent. L'explication la plus simple de l'intérêt de ces niveaux est qu'ils sont <strong>très regardés</strong> : des ordres s'y accumulent.</p>
+
+<h2>Tracer un retracement</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" aria-hidden="true">
+  <g stroke="rgba(150,170,220,0.45)" stroke-dasharray="4 4">
+    <line x1="60" y1="40" x2="505" y2="40" /><line x1="60" y1="77.8" x2="505" y2="77.8" /><line x1="60" y1="101.1" x2="505" y2="101.1" />
+    <line x1="60" y1="120" x2="505" y2="120" /><line x1="60" y1="165.8" x2="505" y2="165.8" /><line x1="60" y1="200" x2="505" y2="200" />
+  </g>
+  <rect x="60" y="133" width="445" height="12" fill="rgba(200,164,92,0.18)" />
+  <line x1="60" y1="138.9" x2="505" y2="138.9" stroke="#C8A45C" stroke-width="1.5" />
+  <polyline points="70,200 120,170 150,182 200,120 230,135 300,40 340,70 370,60 420,139 450,120 480,128 505,95" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+  <circle cx="420" cy="139" r="5" fill="#C8A45C" />
+  <g font-family="sans-serif" font-size="12" text-anchor="end">
+    </g>
+  </svg>
+<span class="doc-label doc-label--end is-muted" style="left:98.13%;top:17.3%">0 % · 1,1000</span>
+<span class="doc-label doc-label--end doc-label--info" style="left:98.13%;top:33.83%">23,6 % · 1,0953</span>
+<span class="doc-label doc-label--end doc-label--info" style="left:98.13%;top:43.83%">38,2 % · 1,0924</span>
+<span class="doc-label doc-label--end doc-label--info" style="left:98.13%;top:52.09%">50 % · 1,0900</span>
+<span class="doc-label doc-label--end is-accent" style="left:98.13%;top:60.35%">61,8 % · 1,0876</span>
+<span class="doc-label doc-label--end doc-label--info" style="left:98.13%;top:72.09%">78,6 % · 1,0843</span>
+<span class="doc-label doc-label--end is-muted" style="left:98.13%;top:86.87%">100 % · 1,0800</span>
+<span class="doc-label doc-label--start is-muted" style="left:10.94%;top:92.96%">creux</span>
+<span class="doc-label is-muted" style="left:46.88%;top:10.35%">sommet</span>
+</div>
+<figcaption>Hausse de 1,0800 à 1,1000 : le repli s'arrête ici vers 61,8 %, qui coïncide (dans cet exemple) avec un ancien sommet devenu support (illustration).</figcaption>
+</figure>
+<table>
+<thead><tr><th>Niveau</th><th class="ta-center">Calcul</th><th class="ta-center">Prix</th></tr></thead>
+<tbody>
+<tr><td>38,2 %</td><td class="ta-center">1,1000 − 0,0200 × 0,382</td><td class="ta-center">1,0924</td></tr>
+<tr><td>50 %</td><td class="ta-center">1,1000 − 0,0200 × 0,5</td><td class="ta-center">1,0900</td></tr>
+<tr><td>61,8 %</td><td class="ta-center">1,1000 − 0,0200 × 0,618</td><td class="ta-center is-accent">1,0876</td></tr>
+<tr><td>78,6 %</td><td class="ta-center">1,1000 − 0,0200 × 0,786</td><td class="ta-center">1,0843</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>En tendance haussière</strong> : du creux au sommet du mouvement ; les niveaux sont des zones de repli possibles.</li>
+<li><strong>En tendance baissière</strong> : du sommet au creux ; les niveaux sont des zones de rebond possibles.</li>
+<li><strong>Mèches comprises</strong>, sur un mouvement net et récent. Si vous hésitez sur le point de départ, le mouvement n'est sans doute pas assez clair.</li>
 </ul>
 
-<blockquote>En ICT, la zone 61.8-79% s'appelle l'OTE (Optimal Trade Entry). C'est dans cette zone que se placent les entrées les plus précises sur les Order Blocks et FVG, combinant Fibonacci et structure ICT.</blockquote>
+<h2>Les extensions : estimer un objectif</h2>
+<p>Les extensions prolongent le mouvement au-delà de son point de départ, souvent à 127,2 % et 161,8 %. Mesurées depuis le creux de l'exemple : 1,0800 + 0,0200 × 1,272 ≈ <strong>1,1054</strong> et 1,0800 + 0,0200 × 1,618 ≈ <strong>1,1124</strong>. Ce sont des repères pour prendre des bénéfices, à confronter aux zones de résistance réelles.</p>
 
-<h2>Comment tracer correctement les Fibonacci</h2>
-<p>L'erreur la plus commune est de mal identifier le swing à utiliser :</p>
-<ul>
-<li>En <strong>tendance haussière</strong> : tracer du swing low au swing high le plus récent. Les niveaux de retracement (38.2%, 50%, 61.8%) sont des zones d'achat potentielles.</li>
-<li>En <strong>tendance baissière</strong> : tracer du swing high au swing low le plus récent. Les niveaux de retracement sont des zones de vente potentielles.</li>
-<li>Utiliser les <strong>mèches</strong> des bougies pour les extremums, pas les corps</li>
-<li>Plus le swing est significatif (long, fort, clair), plus les niveaux seront respectés</li>
-</ul>
+<h2>Le piège : un niveau marche toujours après coup</h2>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Cinq niveaux, cinq chances d'avoir raison</strong>
+<p>Entre 23,6 % et 78,6 %, les niveaux couvrent presque tout le repli possible. Où qu'il s'arrête, un niveau se trouvera à proximité. En regardant un graphique passé, on a l'impression que Fibonacci « fonctionne » à chaque fois. C'est une illusion : il faut décider <strong>avant</strong> quel niveau compte, et pourquoi.</p>
+</aside>
+<p>La bonne démarche consiste à partir d'une <strong>zone déjà identifiée</strong> pour une autre raison (ancien sommet devenu support, figure, VWAP) et à regarder si un niveau de Fibonacci la recoupe. La coïncidence renforce la zone ; le niveau seul ne suffit pas.</p>
 
-<h2>Les extensions Fibonacci</h2>
-<p>Les extensions permettent de définir des <strong>objectifs de prix</strong> au-delà du swing initial :</p>
-<ul>
-<li><strong>127.2%</strong> : premier objectif modéré</li>
-<li><strong>161.8%</strong> : objectif classique, extension golden ratio</li>
-<li><strong>261.8%</strong> : objectif ambitieux en tendance forte</li>
-</ul>
+<h2>Trader un retracement pas à pas</h2>
+<ol class="doc-steps">
+<li><strong>Tendance identifiée</strong> sur l'unité de temps supérieure.</li>
+<li><strong>Mouvement net</strong> à mesurer : un creux et un sommet clairs.</li>
+<li><strong>Zone de confluence</strong> : un niveau de Fibonacci qui recoupe une zone de structure.</li>
+<li><strong>Signal dans la zone</strong> : bougie de rejet ou cassure d'une petite structure baissière sur une unité de temps inférieure.</li>
+<li><strong>Stop sous le 78,6 %</strong> ou sous la zone de structure : un repli plus profond remet en cause le mouvement. Objectif : le sommet précédent, puis une extension.</li>
+</ol>
 
-<h2>Confluence Fibonacci + Structure</h2>
-<p>Un niveau Fibonacci seul a peu de valeur. Sa puissance vient de la <strong>confluence avec d'autres éléments</strong> :</p>
-<ul>
-<li>Fibonacci 61.8% + Order Block ICT = OTE setup</li>
-<li>Fibonacci 50% + VWAP journalier = zone d'entrée institutionnelle</li>
-<li>Fibonacci 61.8% + FVG = zone de mitigation premium</li>
-<li>Fibonacci 38.2% + support horizontal clé = double support</li>
-</ul>
+<p>Dans la méthode ICT, la zone entre 62 % et 79 % porte un nom, l'<em>Optimal Trade Entry</em> ; elle est traitée dans le module <em>ICT avancé</em>.</p>
 
-<p>Plus il y a de confluences sur un niveau, plus la probabilité d'une réaction est élevée.</p>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Fibonacci est une règle graduée, pas une boule de cristal. Il aide à mesurer un repli et à estimer un objectif ; c'est la structure du marché qui dit quel niveau mérite votre attention.</p>
+</aside>
 
-<h2>Multi-timeframe Fibonacci</h2>
-<p>Tracez vos Fibonacci sur plusieurs timeframes :</p>
-<ul>
-<li>Le 61.8% hebdomadaire peut correspondre à un support journalier majeur</li>
-<li>Un 50% hebdomadaire peut coïncider avec un ancien top mensuel devenu support</li>
-<li>Ces confluences multi-timeframe sont particulièrement puissantes</li>
-</ul>
-
-<h2>Les limites de Fibonacci</h2>
-<ul>
-<li>Le choix du swing est subjectif — deux traders peuvent tracer des Fibonacci différents sur le même graphique</li>
-<li>Tous les niveaux ne se respectent pas — le marché ne "connaît" pas Fibonacci</li>
-<li>L'utilisation en isolation sans confluence est peu fiable</li>
-<li>Ne pas chercher à "forcer" un trade parce qu'on est sur un niveau Fibonacci</li>
-</ul>
+<h2>Testez-vous</h2>
+<details>
+<summary>Un indice monte de 18 000 à 18 600. Où se situe le retracement de 50 % ?</summary>
+<p>18 600 − 600 × 0,5 = 18 300.</p>
+</details>
+<details>
+<summary>Dans une tendance baissière, entre quels points tracez-vous le retracement ?</summary>
+<p>Du sommet de départ du mouvement baissier jusqu'à son creux : les niveaux indiquent alors des zones de rebond possibles.</p>
+</details>
+<details>
+<summary>Pourquoi est-il trompeur de vérifier Fibonacci en regardant des graphiques passés ?</summary>
+<p>Parce qu'avec cinq niveaux répartis sur tout le repli, l'un d'eux est presque toujours proche du point de retournement. Sans décision prise à l'avance, on ne mesure rien.</p>
+</details>

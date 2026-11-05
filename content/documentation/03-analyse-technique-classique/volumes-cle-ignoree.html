@@ -2,76 +2,121 @@
 {
     "slug": "volumes-cle-ignoree",
     "title": "Volumes — la clé ignorée",
-    "excerpt": "Volume comme confirmation de mouvement, accumulation/distribution, volume climax.",
-    "readingTime": 10,
+    "excerpt": "Ce que mesure vraiment le volume selon le marché (bourse, futures ou forex), la relation effort / résultat de Wyckoff, les climax, le volume relatif, la confirmation des cassures, et les erreurs d'interprétation à éviter.",
+    "readingTime": 5,
     "accessLevel": "free",
     "position": 5,
     "module": "analyse-technique-classique"
 }
 -->
-<h2>Pourquoi le volume est la donnée la plus ignorée</h2>
-<p>La plupart des traders débutants regardent uniquement le prix. C'est une erreur fondamentale. Le prix dit <em>où</em> le marché va. Le volume dit <em>avec quelle conviction</em>. Un mouvement de prix sans volume est une rumeur. Un mouvement de prix avec un volume exceptionnel est un fait.</p>
-
-<p>Richard Wyckoff, l'un des plus grands analystes de marché du XXe siècle, a construit toute sa méthode autour de l'analyse prix/volume. Il appelait le volume "l'effort" et le prix "le résultat" — la relation entre les deux révèle l'intention des acteurs dominants du marché.</p>
-
-<h2>Les principes fondamentaux volume/prix</h2>
-
-<h3>Volume confirme la tendance</h3>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li>En uptrend : les bougies haussières ont un volume plus élevé que les bougies baissières — les acheteurs sont plus actifs sur les poussées que sur les pullbacks</li>
-<li>En downtrend : les bougies baissières ont un volume plus élevé — les vendeurs dominent les mouvements directionnels</li>
-<li>Si le volume ne confirme pas la direction (tendance haussière avec volume décroissant), méfiance — la tendance s'essouffle</li>
+<li>Le prix dit <strong>où</strong> le marché est allé ; le volume dit <strong>combien</strong> d'échanges il a fallu pour y aller.</li>
+<li>Sur les actions et les futures, le volume est réel ; sur le forex et les CFD, il ne s'agit que de l'activité chez votre broker (<strong>volume de ticks</strong>).</li>
+<li>Comparez toujours le volume à sa <strong>moyenne récente</strong> : c'est l'écart qui renseigne, pas le chiffre brut.</li>
+<li>Gros volume et petit mouvement : un camp absorbe l'autre. Petit volume et grand mouvement : peu d'opposition.</li>
+</ul>
+</div>
+
+<h2>Ce que mesure le volume, selon le marché</h2>
+<table>
+<thead><tr><th>Marché</th><th>Ce que vous voyez</th><th>Fiabilité</th></tr></thead>
+<tbody>
+<tr><td>Actions, ETF</td><td>Le nombre de titres échangés sur la bourse (parfois toutes places confondues)</td><td class="is-positive">Bonne</td></tr>
+<tr><td>Contrats à terme</td><td>Le nombre de contrats échangés, publié par la bourse</td><td class="is-positive">Bonne (attention aux changements d'échéance)</td></tr>
+<tr><td>Forex, CFD</td><td>Le nombre de variations de prix chez votre broker</td><td class="is-accent">Indicatif : bien corrélé à l'activité, mais pas un volume réel</td></tr>
+<tr><td>Cryptoactifs</td><td>Le volume d'une plateforme donnée</td><td class="is-accent">Variable selon la plateforme</td></tr>
+</tbody>
+</table>
+<p>Le volume de ticks reste utile sur le forex : il monte quand l'activité monte, aux ouvertures et aux annonces. Mais n'en tirez pas de conclusions fines sur « les institutions » : vous ne voyez qu'une petite fenêtre du marché.</p>
+
+<h2>Effort et résultat</h2>
+<p>Richard Wyckoff, analyste américain du début du XXe siècle, appelait le volume l'<strong>effort</strong> et le mouvement du prix le <strong>résultat</strong>. Quand les deux ne concordent pas, quelque chose se passe :</p>
+<table>
+<thead><tr><th>Effort (volume)</th><th>Résultat (mouvement)</th><th>Lecture</th></tr></thead>
+<tbody>
+<tr><td>Fort</td><td>Fort, dans le même sens</td><td>Mouvement soutenu par une vraie participation</td></tr>
+<tr><td>Fort</td><td>Faible (petite bougie, longue mèche)</td><td><strong>Absorption</strong> : un camp encaisse les ordres de l'autre sans céder</td></tr>
+<tr><td>Faible</td><td>Fort</td><td>Peu d'opposition sur le chemin, souvent dans une zone vide d'ordres</td></tr>
+<tr><td>Faible</td><td>Faible</td><td>Désintérêt ; pause du marché</td></tr>
+</tbody>
+</table>
+
+<h2>Le climax : quand tout le monde sort en même temps</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" aria-hidden="true">
+  <g>
+    <line x1="60" y1="40" x2="60" y2="80" stroke="#D2655A" stroke-width="2" /><rect x="52" y="45" width="16" height="30" fill="#D2655A" />
+    <line x1="100" y1="60" x2="100" y2="100" stroke="#D2655A" stroke-width="2" /><rect x="92" y="68" width="16" height="25" fill="#D2655A" />
+    <line x1="140" y1="80" x2="140" y2="125" stroke="#D2655A" stroke-width="2" /><rect x="132" y="88" width="16" height="30" fill="#D2655A" />
+    <line x1="180" y1="100" x2="180" y2="140" stroke="#D2655A" stroke-width="2" /><rect x="172" y="110" width="16" height="25" fill="#D2655A" />
+    <line x1="220" y1="118" x2="220" y2="170" stroke="#D2655A" stroke-width="2" /><rect x="212" y="125" width="16" height="38" fill="#D2655A" />
+    <line x1="270" y1="150" x2="270" y2="210" stroke="#4FB38F" stroke-width="2.5" /><rect x="260" y="152" width="20" height="14" fill="#4FB38F" />
+    <line x1="320" y1="130" x2="320" y2="165" stroke="#4FB38F" stroke-width="2" /><rect x="312" y="135" width="16" height="22" fill="#4FB38F" />
+    <line x1="360" y1="115" x2="360" y2="150" stroke="#4FB38F" stroke-width="2" /><rect x="352" y="120" width="16" height="22" fill="#4FB38F" />
+    <line x1="400" y1="125" x2="400" y2="155" stroke="#D2655A" stroke-width="2" /><rect x="392" y="130" width="16" height="18" fill="#D2655A" />
+    <line x1="440" y1="135" x2="440" y2="170" stroke="#D2655A" stroke-width="2" /><rect x="432" y="140" width="16" height="16" fill="#D2655A" />
+    <line x1="480" y1="105" x2="480" y2="150" stroke="#4FB38F" stroke-width="2" /><rect x="472" y="110" width="16" height="32" fill="#4FB38F" />
+  </g>
+  <line x1="30" y1="228" x2="610" y2="228" stroke="rgba(245,241,230,0.15)" />
+  <g fill="rgba(245,241,230,0.3)">
+    <rect x="52" y="214" width="16" height="14" /><rect x="92" y="212" width="16" height="16" /><rect x="132" y="210" width="16" height="18" /><rect x="172" y="208" width="16" height="20" /><rect x="212" y="203" width="16" height="25" />
+    <rect x="312" y="215" width="16" height="13" /><rect x="352" y="217" width="16" height="11" /><rect x="392" y="222" width="16" height="6" /><rect x="432" y="223" width="16" height="5" /><rect x="472" y="214" width="16" height="14" />
+  </g>
+  <rect x="260" y="178" width="20" height="50" fill="rgba(200,164,92,0.85)" />
+  </svg>
+<span class="doc-label doc-label--end is-accent" style="left:39.38%;top:72.23%">volume record, longue mèche</span>
+<span class="doc-label doc-label--start is-muted" style="left:46.88%;top:72.23%">puis replis sur faible volume</span>
+<span class="doc-label is-negative" style="left:21.88%;top:9.92%">baisse prolongée</span>
+<span class="doc-label is-positive" style="left:87.5%;top:47.62%">reprise</span>
+<span class="doc-label doc-label--end is-muted" style="left:96.88%;top:93%">volume</span>
+</div>
+<figcaption>Un climax de vente typique : volume exceptionnel sur une bougie qui rejette les prix bas, puis replis sur volume faible (illustration).</figcaption>
+</figure>
+<p>Après une longue baisse, une séance de panique concentre un volume exceptionnel : les derniers vendeurs capitulent, et des acheteurs prêts à absorber cette offre apparaissent. Si la bougie rejette les prix bas et que les replis suivants se font sur volume faible, la baisse a peut-être épuisé ses vendeurs. Le <strong>climax d'achat</strong> est l'équivalent en haut de marché, dans l'euphorie.</p>
+<p>Un climax ne marque pas toujours le point bas exact : il annonce souvent une phase de stabilisation, pendant laquelle le prix peut revenir tester la zone.</p>
+
+<h2>Mesurer le volume relatif</h2>
+<p>Un volume de 2 millions de titres ne veut rien dire en soi. Ce qui compte, c'est le rapport avec la normale :</p>
+<pre><code>Volume relatif = volume de la bougie ÷ moyenne du volume des 20 dernières bougies comparables</code></pre>
+<p>En intraday, comparez à la même heure des jours précédents : le volume est toujours plus élevé à l'ouverture et à la clôture d'une bourse, sans que cela signifie quoi que ce soit de particulier.</p>
+
+<h2>Le volume et les cassures</h2>
+<ul>
+<li>Une cassure accompagnée d'un volume nettement supérieur à la normale montre une vraie participation.</li>
+<li>Une cassure sur volume faible, surtout hors des heures actives, est plus souvent suivie d'un retour dans la zone.</li>
+<li>Un volume record <strong>sans</strong> progression du prix au-delà du niveau suggère que le niveau absorbe les ordres : prudence avant de suivre la cassure.</li>
 </ul>
 
-<h3>Effort vs Résultat (Wyckoff)</h3>
-<p>C'est l'analyse la plus puissante :</p>
-<ul>
-<li><strong>Effort important / Résultat faible</strong> : gros volume mais petite bougie ou mèche → absorption. Des mains fortes absorbent les ordres de l'autre camp. Signal de retournement potentiel.</li>
-<li><strong>Effort faible / Résultat important</strong> : petit volume mais grande bougie → chemin de moindre résistance, pas d'opposition. Tendance solide, peu de résistance.</li>
-</ul>
+<h2>Tendance et volume</h2>
+<p>Dans une tendance saine, le volume augmente plutôt dans les mouvements qui vont dans son sens et diminue dans les replis. Une tendance qui progresse sur un volume de plus en plus faible n'est pas forcément finie, mais elle repose sur moins de participants.</p>
+<p>Le module <em>Price action et Wyckoff</em> approfondit ces lectures avec la méthode Wyckoff et la VSA (<em>Volume Spread Analysis</em>).</p>
 
-<h2>Accumulation et Distribution</h2>
+<h2>Intégrer le volume pas à pas</h2>
+<ol class="doc-steps">
+<li><strong>Affichez le volume</strong> sous le graphique, avec sa moyenne sur 20 périodes.</li>
+<li><strong>Repérez les bougies à plus de deux fois la moyenne</strong> et notez ce que le prix a fait ensuite.</li>
+<li><strong>Sur vos zones clés</strong>, regardez si les réactions passées se sont faites avec un volume important.</li>
+<li><strong>Sur le forex</strong>, servez-vous du volume de ticks pour repérer les moments d'activité, pas pour deviner les intentions.</li>
+</ol>
 
-<h3>Accumulation</h3>
-<p>Phase où les "smart money" (mains fortes, institutions) achètent progressivement un actif sans faire monter le prix — ils absorbent discrètement les vendeurs. Caractérisée par :</p>
-<ul>
-<li>Range latéral sur du volume croissant</li>
-<li>Volume élevé sur les bougies de rebond (demande)</li>
-<li>Volume faible sur les baisses (absence d'offre)</li>
-<li>Tests du bas de range sur volume décroissant (plus de vendeurs)</li>
-</ul>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Le volume n'est pas un signal à lui seul : c'est une information de contexte. Il aide à juger si un mouvement est soutenu, absorbé ou fragile, à condition de savoir ce que mesure le volume affiché sur votre marché.</p>
+</aside>
 
-<h3>Distribution</h3>
-<p>Phase inverse — les institutions vendent progressivement leurs positions après une hausse. Caractérisée par :</p>
-<ul>
-<li>Range latéral après une hausse, sur volume élevé</li>
-<li>Volume fort sur les baisses (pression vendeuse)</li>
-<li>Volume faible sur les rallyes (absence de demande réelle)</li>
-<li>Faux breakouts haussiers sur gros volume → piège pour les acheteurs tard arrivés</li>
-</ul>
-
-<h2>Le Volume Climax</h2>
-<p>Un volume climax est une bougie avec un volume <strong>exceptionnellement élevé</strong> — souvent 3-5x le volume moyen. Il signale généralement l'épuisement d'un mouvement :</p>
-
-<ul>
-<li><strong>Selling Climax</strong> : gros volume sur une bougie baissière après une chute prolongée → les derniers vendeurs paniques sortent, souvent le signal d'un bottom important</li>
-<li><strong>Buying Climax</strong> : gros volume sur une bougie haussière après une hausse prolongée → euphorie et distribution institutionnelle, souvent signal d'un top</li>
-</ul>
-
-<blockquote>Le volume climax en fin de tendance est l'un des signaux les plus fiables en trading. Quand tout le monde vend dans la panique et que le volume explose, c'est souvent exactement là que les institutions achètent. Wyckoff appelait ça le "Selling Climax" — la fin de la capitulation.</blockquote>
-
-<h2>No Demand et No Supply (VSA)</h2>
-<p>En Volume Spread Analysis (VSA), deux patterns très importants :</p>
-
-<ul>
-<li><strong>No Demand</strong> : bougie haussière sur faible volume après une hausse. Le marché monte mais sans acheteurs — les mains faibles pushent le prix, les mains fortes ne participent pas. Signal baissier.</li>
-<li><strong>No Supply</strong> : bougie baissière sur faible volume après une baisse. Le marché baisse mais sans vendeurs — signal haussier, les vendeurs sont épuisés.</li>
-</ul>
-
-<h2>Intégrer le volume dans son analyse</h2>
-<ul>
-<li>Regarder toujours le volume en même temps que le prix — c'est une habitude à développer</li>
-<li>Identifier les niveaux avec un volume historique exceptionnel — souvent des zones de S/R majeures</li>
-<li>Utiliser le volume pour confirmer les cassures (une cassure sur faible volume est souvent un faux breakout)</li>
-<li>Chercher les divergences volume/prix pour anticiper les retournements</li>
-</ul>
+<h2>Testez-vous</h2>
+<details>
+<summary>Une bougie de 1 heure affiche un volume trois fois supérieur à la moyenne, mais son corps est minuscule et sa mèche basse très longue, sur un support. Comment la lire ?</summary>
+<p>Comme une absorption possible : une forte pression vendeuse a été encaissée par des acheteurs sans faire baisser la clôture. À confirmer par la suite.</p>
+</details>
+<details>
+<summary>Pourquoi le volume de la première demi-heure de Wall Street ne doit-il pas être comparé à celui de 13 h à New York ?</summary>
+<p>Le volume suit un profil quotidien : il est naturellement plus élevé à l'ouverture. Il faut comparer chaque tranche horaire aux mêmes tranches des jours précédents.</p>
+</details>
+<details>
+<summary>Votre plateforme forex affiche un pic de volume sur l'EUR/USD. Que pouvez-vous en conclure ?</summary>
+<p>Que l'activité chez votre broker a fortement augmenté, ce qui coïncide en général avec une hausse de l'activité du marché. Pas plus : il ne s'agit pas du volume réel échangé.</p>
+</details>

@@ -2,71 +2,118 @@
 {
     "slug": "rsi-macd-oscillateurs",
     "title": "RSI, MACD et oscillateurs",
-    "excerpt": "Lecture du RSI, divergences, MACD — utilisation correcte des oscillateurs sans les sur-trader.",
-    "readingTime": 11,
+    "excerpt": "Comment se calculent le RSI, le MACD et le stochastique, ce qu'ils mesurent vraiment (la vitesse du prix), pourquoi « suracheté » ne veut pas dire « vendre », et trois usages qui tiennent la route.",
+    "readingTime": 5,
     "accessLevel": "free",
     "position": 6,
     "module": "analyse-technique-classique"
 }
 -->
-<h2>Les oscillateurs — que mesurent-ils ?</h2>
-<p>Les oscillateurs sont des indicateurs qui oscillent entre deux valeurs extrêmes (souvent 0 et 100 ou -100 et +100). Ils mesurent la <strong>force et la vitesse d'un mouvement de prix</strong> — ce qu'on appelle le momentum. Contrairement aux moyennes mobiles, les oscillateurs sont particulièrement utiles pour identifier les conditions de surachat/survente et les divergences.</p>
-
-<h2>Le RSI — Relative Strength Index</h2>
-<p>Créé par J. Welles Wilder en 1978, le RSI mesure la vitesse et l'amplitude des mouvements de prix sur une période (généralement 14 périodes) :</p>
-
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li>RSI > 70 : zone de <strong>surachat</strong> — le prix a monté trop vite, correction possible</li>
-<li>RSI &lt; 30 : zone de <strong>survente</strong> — le prix a baissé trop vite, rebond possible</li>
-<li>RSI autour de 50 : zone neutre, pas de signal clair</li>
+<li>Les oscillateurs mesurent l'<strong>élan</strong> (la vitesse et la régularité du mouvement), calculé à partir du seul prix.</li>
+<li>« Suracheté » signifie que le prix a beaucoup monté récemment, <strong>pas qu'il va baisser</strong>. En tendance forte, le RSI peut rester au-dessus de 70 très longtemps.</li>
+<li>Trois usages tiennent la route : lire le <strong>régime</strong> (élan haussier ou baissier), repérer l'<strong>essoufflement</strong> (divergences) et chercher des replis <strong>dans le sens de la tendance</strong>.</li>
+<li>Un oscillateur confirme une idée construite sur le prix ; il ne la remplace pas.</li>
 </ul>
+</div>
 
-<h3>L'erreur classique avec le RSI</h3>
-<p>Beaucoup de débutants vendent quand le RSI dépasse 70 et achètent quand il passe sous 30. C'est une erreur majeure. En tendance haussière forte, le RSI peut rester en surachat pendant des semaines. <em>Un RSI à 80 ne signifie pas vendre — ça peut signifier que la tendance est très forte.</em></p>
+<h2>Le RSI (Relative Strength Index)</h2>
+<p>Publié par J. Welles Wilder en 1978, le RSI compare l'ampleur des hausses récentes à celle des baisses récentes, sur 14 périodes par défaut :</p>
+<pre><code>RS  = moyenne des hausses ÷ moyenne des baisses (sur 14 périodes, lissées)
+RSI = 100 − 100 ÷ (1 + RS)</code></pre>
+<p>Si les hausses ont été en moyenne deux fois plus fortes que les baisses (RS = 2), le RSI vaut 66,7. Si elles ont été deux fois plus faibles (RS = 0,5), il vaut 33,3. Le RSI va de 0 à 100 ; 50 correspond à l'équilibre.</p>
 
-<blockquote>Le RSI utilisé seul comme signal d'entrée/sortie est une recette pour perdre de l'argent. Sa vraie valeur est dans les divergences et dans la confirmation de la structure de marché.</blockquote>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" aria-hidden="true">
+  <polyline points="20,120 60,110 90,115 130,90 160,95 200,70 230,74 270,52 300,58 340,36 370,44 410,30 440,60 470,52 510,80 540,72 580,95 620,90" fill="none" stroke="#D9D3C3" stroke-width="2" />
+  <line x1="20" y1="140" x2="620" y2="140" stroke="rgba(245,241,230,0.12)" />
+  <rect x="20" y="150" width="600" height="90" fill="rgba(245,241,230,0.03)" />
+  <line x1="20" y1="177" x2="620" y2="177" stroke="rgba(210,101,90,0.6)" stroke-dasharray="4 4" />
+  <line x1="20" y1="213" x2="620" y2="213" stroke="rgba(79,179,143,0.6)" stroke-dasharray="4 4" />
+  <rect x="155" y="150" width="260" height="27" fill="rgba(210,101,90,0.12)" />
+  <polyline points="20,195 60,187.8 90,190.5 130,178.8 160,175.2 200,172.5 230,174.3 270,170.7 300,173.4 340,168.9 370,171.6 410,170.7 440,184.2 470,181.5 510,193.2 540,190.5 580,199.5 620,197.7" fill="none" stroke="#C8A45C" stroke-width="2" />
+  </svg>
+<span class="doc-label" style="left:46.88%;top:9.92%">le prix continue de monter…</span>
+<span class="doc-label is-negative" style="left:46.88%;top:54.54%">… pendant que le RSI reste au-dessus de 70</span>
+<span class="doc-label doc-label--end is-negative" style="left:95.94%;top:64.92%">70</span>
+<span class="doc-label doc-label--end is-positive" style="left:95.94%;top:86.08%">30</span>
+<span class="doc-label doc-label--start is-muted" style="left:4.38%;top:89.15%">RSI 14</span>
+</div>
+<figcaption>Vendre à chaque passage au-dessus de 70 aurait fait vendre pendant toute la hausse (illustration).</figcaption>
+</figure>
 
-<h3>Les divergences RSI — le signal le plus puissant</h3>
-<p>Une divergence se produit quand le prix et le RSI évoluent dans des directions opposées :</p>
+<h2>Le MACD</h2>
+<p>Créé par Gerald Appel à la fin des années 1970, le MACD mesure l'écart entre deux moyennes exponentielles :</p>
+<table>
+<thead><tr><th>Composant</th><th>Calcul</th><th>Lecture</th></tr></thead>
+<tbody>
+<tr><td>Ligne MACD</td><td>EMA 12 − EMA 26</td><td>Positive : la moyenne rapide est au-dessus de la lente, élan haussier</td></tr>
+<tr><td>Ligne de signal</td><td>EMA 9 de la ligne MACD</td><td>Version lissée de la ligne MACD</td></tr>
+<tr><td>Histogramme</td><td>MACD − signal</td><td>Accélération ou ralentissement de l'élan</td></tr>
+</tbody>
+</table>
+<p>Le MACD n'est pas borné : sa valeur dépend du prix de l'actif. On ne peut donc pas parler de « surachat » à un niveau fixe, seulement comparer le MACD à ses propres valeurs passées.</p>
 
-<ul>
-<li><strong>Divergence bearish (régulière)</strong> : le prix fait un nouveau Higher High mais le RSI fait un Lower High. Le momentum s'affaiblit malgré la hausse des prix — signal d'épuisement haussier.</li>
-<li><strong>Divergence bullish (régulière)</strong> : le prix fait un nouveau Lower Low mais le RSI fait un Higher Low. Le momentum de la baisse s'affaiblit — signal d'épuisement baissier.</li>
-<li><strong>Divergence cachée haussière</strong> : le prix fait un Higher Low mais le RSI fait un Lower Low — continuation de la tendance haussière.</li>
-</ul>
+<h2>Le stochastique</h2>
+<p>Popularisé par George Lane, il situe la clôture dans la fourchette des N dernières périodes :</p>
+<pre><code>%K = (clôture − plus bas sur 14) ÷ (plus haut sur 14 − plus bas sur 14) × 100
+%D = moyenne de %K sur 3 périodes</code></pre>
+<p>À 100, la clôture est au plus haut de la période ; à 0, au plus bas. Très réactif, il est surtout utile en range, où les extrêmes reviennent souvent vers le milieu.</p>
 
-<p>Les divergences RSI sont particulièrement fiables quand elles apparaissent sur des zones de support/résistance clés ou des Order Blocks ICT.</p>
+<h2>Ce que « suracheté » veut vraiment dire</h2>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">L'erreur la plus courante</strong>
+<p>Vendre parce que le RSI dépasse 70, acheter parce qu'il passe sous 30. Un RSI élevé décrit une hausse forte et régulière : c'est précisément ce qu'on observe au cœur des meilleures tendances. Utilisées ainsi, ces zones font prendre position contre les mouvements les plus puissants.</p>
+</aside>
 
-<h2>Le MACD — Moving Average Convergence Divergence</h2>
-<p>Développé par Gerald Appel, le MACD mesure la relation entre deux EMA :</p>
-<ul>
-<li><strong>Ligne MACD</strong> : EMA 12 - EMA 26</li>
-<li><strong>Ligne Signal</strong> : EMA 9 de la ligne MACD</li>
-<li><strong>Histogramme</strong> : différence entre MACD et Signal</li>
-</ul>
+<h2>Trois usages qui tiennent la route</h2>
+<h3>1. Lire le régime</h3>
+<p>En tendance haussière, le RSI oscille souvent entre 40 et 80 et rebondit vers 40 – 50 lors des replis. En tendance baissière, il oscille plutôt entre 20 et 60. Un RSI qui ne parvient plus à dépasser 60 après un long régime haussier signale un changement.</p>
+<h3>2. Repérer l'essoufflement</h3>
+<p>Quand le prix fait un nouveau sommet mais que l'oscillateur n'en fait pas, l'élan faiblit : c'est une <strong>divergence</strong>. L'article suivant leur est consacré.</p>
+<h3>3. Chercher un repli dans le sens de la tendance</h3>
+<p>Dans une tendance haussière identifiée sur une unité de temps supérieure, un RSI qui revient vers 40 – 50 ou un stochastique qui sort de la zone basse peut signaler la fin d'un repli. On achète alors avec la tendance, pas contre elle.</p>
 
-<h3>Signaux MACD</h3>
-<ul>
-<li>Croisement MACD au-dessus de la Signal → signal haussier</li>
-<li>Croisement MACD en dessous de la Signal → signal baissier</li>
-<li>MACD au-dessus de zéro → momentum haussier dominant</li>
-<li>MACD en dessous de zéro → momentum baissier dominant</li>
-</ul>
+<table>
+<thead><tr><th>Indicateur</th><th>Point fort</th><th>Limite</th></tr></thead>
+<tbody>
+<tr><td>RSI</td><td>Borné, lisible, bon pour lire le régime</td><td>Reste longtemps en zone extrême en tendance</td></tr>
+<tr><td>MACD</td><td>Montre la tendance et son accélération</td><td>Lent, non borné</td></tr>
+<tr><td>Stochastique</td><td>Très réactif, utile en range</td><td>Beaucoup de faux signaux en tendance</td></tr>
+</tbody>
+</table>
 
-<h3>Divergences MACD</h3>
-<p>Comme le RSI, les divergences MACD sont ses signaux les plus fiables. Une divergence bearish sur un résistance clé ou un OB baissier ICT augmente significativement la probabilité d'un retournement.</p>
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">Ils disent presque la même chose</strong>
+<p>RSI, MACD et stochastique sont tous calculés à partir des mêmes prix. Trois oscillateurs d'accord ne font pas trois confirmations indépendantes : ils répètent la même information. Un seul suffit.</p>
+</aside>
 
-<h2>Le Stochastique</h2>
-<p>Le Stochastique (14, 3, 3) mesure la position du prix actuel par rapport à son range sur N périodes. Comme le RSI, les zones 80+ (surachat) et 20- (survente) sont les zones d'intérêt.</p>
+<h2>Utiliser un oscillateur pas à pas</h2>
+<ol class="doc-steps">
+<li><strong>Déterminez la tendance</strong> sur le prix (sommets et creux) dans l'unité de temps supérieure.</li>
+<li><strong>Choisissez un seul oscillateur</strong> et gardez ses réglages par défaut au début.</li>
+<li><strong>Dans le sens de la tendance</strong>, attendez qu'il signale la fin d'un repli, sur une zone déjà repérée.</li>
+<li><strong>Contre la tendance</strong>, ne l'utilisez que pour repérer une divergence, et attendez une confirmation sur le prix.</li>
+</ol>
 
-<p>Le croisement des deux lignes Stochastique (%K et %D) génère des signaux d'entrée dans les zones extrêmes. Particulièrement utile en marché range.</p>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Un oscillateur mesure la vitesse, pas la destination. Il aide à juger si un mouvement accélère ou s'essouffle ; c'est le prix qui dit si l'essoufflement se transforme en retournement.</p>
+</aside>
 
-<h2>Comment utiliser les oscillateurs correctement</h2>
-<ul>
-<li><strong>Ne jamais trader un oscillateur seul</strong> — toujours en confluence avec la structure de marché</li>
-<li>Les divergences sur des niveaux clés (S/R, OB, FVG) ont beaucoup plus de valeur</li>
-<li>En tendance forte, ignorer les signaux à contre-tendance (RSI peut rester en surachat longtemps)</li>
-<li>Utiliser les oscillateurs pour <em>confirmer</em> un setup identifié par la structure, pas pour <em>générer</em> le setup</li>
-</ul>
-
-<blockquote>Les oscillateurs répondent à la question "est-ce que le momentum soutient mon analyse ?". Ils ne remplacent pas l'analyse de la structure de marché — ils l'enrichissent.</blockquote>
+<h2>Testez-vous</h2>
+<details>
+<summary>Sur 14 périodes, la hausse moyenne vaut 3 et la baisse moyenne 1. Quel est le RSI ?</summary>
+<p>RS = 3, donc RSI = 100 − 100 ÷ 4 = 75.</p>
+</details>
+<details>
+<summary>Le RSI est à 78 dans une tendance haussière régulière. Faut-il vendre ?</summary>
+<p>Pas sur cette seule base : c'est le signe d'une hausse forte. Il faudrait au moins une divergence et une cassure de structure sur le prix pour envisager un retournement.</p>
+</details>
+<details>
+<summary>Le plus haut sur 14 périodes est 120, le plus bas 100, la clôture 115. Quel est le %K du stochastique ?</summary>
+<p>(115 − 100) ÷ (120 − 100) × 100 = 75.</p>
+</details>

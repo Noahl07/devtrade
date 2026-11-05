@@ -2,122 +2,107 @@
 {
     "slug": "divergences-rsi-et-macd-quand-l-elan-trahit-le-prix",
     "title": "Divergences RSI et MACD — quand l'élan trahit le prix",
-    "excerpt": "Divergences régulières et cachées sur RSI et MACD — apprendre à détecter les signes précurseurs de retournement et de continuation avant qu'ils n'apparaissent sur le graphique de prix.",
-    "readingTime": 16,
+    "excerpt": "Divergences classiques et cachées, comment choisir les bons points de comparaison, pourquoi une divergence n'est pas un signal d'entrée, et la séquence divergence, cassure de structure puis entrée qui la rend exploitable.",
+    "readingTime": 5,
     "accessLevel": "free",
     "position": 7,
     "module": "analyse-technique-classique"
 }
 -->
-<h2>La divergence — quand le prix et l'élan racontent des histoires différentes</h2>
-<p>Une divergence se produit quand le <strong>prix</strong> et un <strong>oscillateur</strong> (RSI, MACD) évoluent dans des directions opposées. C'est l'un des signaux les plus précieux en analyse technique car il indique souvent un affaiblissement du mouvement en cours — avant que ce retournement ne soit visible sur le graphique de prix lui-même.</p>
- 
-<p>Il existe deux grandes familles de divergences :</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Divergences régulières</strong> : signalent un retournement de tendance</li>
-<li><strong>Divergences cachées</strong> : signalent une continuation de tendance</li>
+<li>Une <strong>divergence</strong> apparaît quand le prix et l'oscillateur ne font pas la même chose : nouveau sommet du prix, sommet plus bas de l'oscillateur (ou l'inverse en creux).</li>
+<li>La divergence <strong>classique</strong> signale un essoufflement ; la divergence <strong>cachée</strong>, une possible reprise de la tendance après un repli.</li>
+<li>Une divergence peut durer longtemps et s'enchaîner plusieurs fois : ce n'est <strong>pas un signal d'entrée</strong>.</li>
+<li>Elle devient exploitable quand le prix confirme : <strong>cassure de structure</strong>, puis entrée sur un retour.</li>
 </ul>
- 
-<h2>Les divergences régulières — signaux de retournement</h2>
- 
-<h3>Divergence Baissière Régulière</h3>
-<p>Le prix fait des <strong>plus hauts croissants</strong> (Higher Highs) mais l'oscillateur fait des <strong>plus hauts décroissants</strong> (Lower Highs). Signal : l'élan haussier s'épuise malgré la progression du prix. Les institutions distribuent en silence pendant que le prix monte encore.</p>
- 
-<svg viewBox="0 0 650 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:650px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
-  <text x="325" y="16" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Divergence Baissière Régulière — Prix ↗ mais RSI ↘</text>
-  <!-- PRIX - section haute -->
-  <text x="40" y="35" fill="#6b7280" font-size="10" font-family="sans-serif">PRIX</text>
-  <polyline points="50,90 100,80 150,85 200,65 250,70 300,50 350,55" fill="none" stroke="#5b9bd5" stroke-width="2"/>
-  <!-- HH1 -->
-  <circle cx="200" cy="65" r="4" fill="#e05555"/>
-  <text x="200" y="58" fill="#e05555" font-size="9" font-family="sans-serif" text-anchor="middle">HH1</text>
-  <!-- HH2 -->
-  <circle cx="300" cy="50" r="4" fill="#e05555"/>
-  <text x="300" y="43" fill="#e05555" font-size="9" font-family="sans-serif" text-anchor="middle">HH2</text>
-  <!-- Ligne prix HH1-HH2 -->
-  <line x1="200" y1="65" x2="300" y2="50" stroke="#e05555" stroke-width="1.5" stroke-dasharray="4,2"/>
-  <!-- RSI - section basse -->
-  <text x="40" y="125" fill="#6b7280" font-size="10" font-family="sans-serif">RSI</text>
-  <line x1="50" y1="150" x2="620" y2="150" stroke="#2d3748" stroke-width="0.5"/>
-  <polyline points="50,155 100,148 150,152 200,135 250,140 300,148 350,152" fill="none" stroke="#3EB489" stroke-width="2"/>
-  <!-- RSI point 1 -->
-  <circle cx="200" cy="135" r="4" fill="#3EB489"/>
-  <text x="200" y="128" fill="#3EB489" font-size="9" font-family="sans-serif" text-anchor="middle">RSI H1</text>
-  <!-- RSI point 2 (plus bas) -->
-  <circle cx="300" cy="148" r="4" fill="#3EB489"/>
-  <text x="300" y="141" fill="#3EB489" font-size="9" font-family="sans-serif" text-anchor="middle">RSI H2</text>
-  <!-- Ligne RSI -->
-  <line x1="200" y1="135" x2="300" y2="148" stroke="#3EB489" stroke-width="1.5" stroke-dasharray="4,2"/>
-  <!-- Flèche signal baissier -->
-  <text x="390" y="75" fill="#e05555" font-size="12" font-family="sans-serif">↓ Signal</text>
-  <text x="390" y="90" fill="#e05555" font-size="10" font-family="sans-serif">Baissier</text>
-  <!-- Annotation -->
-  <text x="325" y="190" fill="#9ca3af" font-size="9" font-family="sans-serif" text-anchor="middle">Prix monte encore mais le RSI fait des sommets de plus en plus bas → affaiblissement de l'élan</text>
-</svg>
- 
-<h3>Divergence Haussière Régulière</h3>
-<p>Le prix fait des <strong>plus bas décroissants</strong> (Lower Lows) mais l'oscillateur fait des <strong>plus bas croissants</strong> (Higher Lows). Signal : la pression vendeuse s'épuise malgré la baisse du prix. Les institutions accumulent discrètement.</p>
- 
-<h2>Les divergences cachées — signaux de continuation</h2>
-<p>Les divergences cachées sont moins connues mais très utiles pour confirmer la continuation d'une tendance.</p>
- 
-<h3>Divergence Haussière Cachée</h3>
-<p>En tendance haussière : le prix fait un <strong>plus bas plus haut</strong> (Higher Low) mais l'oscillateur fait un <strong>plus bas plus bas</strong> (Lower Low). C'est un signal de continuation haussière — le repli est temporaire, la tendance va reprendre.</p>
- 
-<h3>Divergence Baissière Cachée</h3>
-<p>En tendance baissière : le prix fait un <strong>plus haut plus bas</strong> (Lower High) mais l'oscillateur fait un <strong>plus haut plus haut</strong> (Higher High). Signal de continuation baissière.</p>
- 
-<svg viewBox="0 0 650 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:650px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
-  <text x="325" y="16" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Les 4 types de divergences — résumé visuel</text>
-  <!-- Régulière baissière -->
-  <text x="80" y="35" fill="#e05555" font-size="10" font-family="sans-serif" text-anchor="middle">Rég. Baissière</text>
-  <polyline points="40,60 80,48 120,52" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
-  <polyline points="40,80 80,75 120,78" fill="none" stroke="#3EB489" stroke-width="1.5"/>
-  <line x1="40" y1="60" x2="120" y2="52" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
-  <line x1="40" y1="80" x2="120" y2="78" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="80" y="98" fill="#6b7280" font-size="8" font-family="sans-serif" text-anchor="middle">Prix ↗ / RSI ↘</text>
-  <!-- Régulière haussière -->
-  <text x="230" y="35" fill="#3EB489" font-size="10" font-family="sans-serif" text-anchor="middle">Rég. Haussière</text>
-  <polyline points="190,75 230,82 270,78" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
-  <polyline points="190,60 230,65 270,63" fill="none" stroke="#3EB489" stroke-width="1.5"/>
-  <line x1="190" y1="75" x2="270" y2="78" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
-  <line x1="190" y1="60" x2="270" y2="63" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="230" y="98" fill="#6b7280" font-size="8" font-family="sans-serif" text-anchor="middle">Prix ↘ / RSI ↗</text>
-  <!-- Cachée haussière -->
-  <text x="400" y="35" fill="#3EB489" font-size="10" font-family="sans-serif" text-anchor="middle">Cachée Haussière</text>
-  <polyline points="360,75 400,68 440,72" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
-  <polyline points="360,60 400,66 440,64" fill="none" stroke="#3EB489" stroke-width="1.5"/>
-  <line x1="360" y1="75" x2="440" y2="72" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
-  <line x1="360" y1="60" x2="440" y2="64" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="400" y="98" fill="#6b7280" font-size="8" font-family="sans-serif" text-anchor="middle">Prix HL / RSI LL</text>
-  <!-- Cachée baissière -->
-  <text x="560" y="35" fill="#e05555" font-size="10" font-family="sans-serif" text-anchor="middle">Cachée Baissière</text>
-  <polyline points="520,55 560,62 600,58" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
-  <polyline points="520,75 560,68 600,72" fill="none" stroke="#3EB489" stroke-width="1.5"/>
-  <line x1="520" y1="55" x2="600" y2="58" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
-  <line x1="520" y1="75" x2="600" y2="72" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="560" y="98" fill="#6b7280" font-size="8" font-family="sans-serif" text-anchor="middle">Prix LH / RSI HH</text>
-  <!-- Légende -->
-  <line x1="200" y1="125" x2="225" y2="125" stroke="#5b9bd5" stroke-width="1.5"/>
-  <text x="230" y="129" fill="#5b9bd5" font-size="9" font-family="sans-serif">Prix</text>
-  <line x1="270" y1="125" x2="295" y2="125" stroke="#3EB489" stroke-width="1.5"/>
-  <text x="300" y="129" fill="#3EB489" font-size="9" font-family="sans-serif">Oscillateur</text>
-  <text x="325" y="155" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Rég. = Retournement | Cachée = Continuation</text>
-</svg>
- 
-<h2>Divergences sur RSI vs MACD — quelle différence ?</h2>
-<p><strong>RSI (Relative Strength Index) :</strong> Mesure la vitesse et la magnitude des mouvements de prix. Très réactif, meilleur pour les divergences sur des timeframes courts (M15, H1). Le RSI diverge tôt — parfois trop tôt.</p>
- 
-<p><strong>MACD (Moving Average Convergence Divergence) :</strong> Mesure la convergence/divergence de deux moyennes mobiles exponentielles. Plus lent et plus stable que le RSI. Les divergences MACD sont souvent plus fiables sur H4 et Daily.</p>
- 
-<p><strong>Règle pratique :</strong> Chercher une divergence sur les deux oscillateurs simultanément pour les signaux les plus forts. Divergence RSI + Divergence MACD + niveau de prix clé = confluence puissante.</p>
- 
-<h2>Les erreurs classiques avec les divergences</h2>
+</div>
+
+<h2>Le principe</h2>
+<p>Un oscillateur comme le RSI ou le MACD mesure la vitesse du mouvement. Quand le prix monte encore mais de moins en moins vite, l'oscillateur baisse alors que le prix fait un nouveau sommet. Cette discordance dit une chose précise : <strong>l'élan diminue</strong>. Elle ne dit ni quand le mouvement s'arrêtera, ni jusqu'où ira la correction.</p>
+
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 270" aria-hidden="true">
+  <polyline points="30,140 110,90 160,120 270,70 320,105 440,52 490,95 560,130 610,150" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+  <line x1="270" y1="70" x2="440" y2="52" stroke="#4FB38F" stroke-width="1.8" stroke-dasharray="5 4" />
+  <g fill="#4FB38F"><circle cx="270" cy="70" r="4" /><circle cx="440" cy="52" r="4" /></g>
+  <line x1="20" y1="165" x2="620" y2="165" stroke="rgba(245,241,230,0.12)" />
+  <polyline points="30,230 110,190 160,215 270,185 320,220 440,205 490,228 560,240 610,245" fill="none" stroke="#C8A45C" stroke-width="2" />
+  <line x1="270" y1="185" x2="440" y2="205" stroke="#D2655A" stroke-width="1.8" stroke-dasharray="5 4" />
+  <g fill="#D2655A"><circle cx="270" cy="185" r="4" /><circle cx="440" cy="205" r="4" /></g>
+  <line x1="320" y1="105" x2="610" y2="105" stroke="rgba(150,170,220,0.6)" stroke-dasharray="3 3" />
+  </svg>
+<span class="doc-label is-positive" style="left:55.47%;top:13.26%">prix : sommet plus haut</span>
+<span class="doc-label is-negative" style="left:55.47%;top:65.85%">RSI : sommet plus bas</span>
+<span class="doc-label doc-label--end doc-label--info" style="left:94.38%;top:34.74%">dernier creux</span>
+<span class="doc-label doc-label--end doc-label--info" style="left:93.75%;top:56.96%">confirmation : cassure</span>
+<span class="doc-label doc-label--start is-muted" style="left:4.38%;top:94%">oscillateur (RSI)</span>
+</div>
+<figcaption>Divergence baissière classique : elle ne devient un scénario de vente qu'à la cassure du dernier creux (illustration).</figcaption>
+</figure>
+
+<h2>Les quatre divergences</h2>
+<table>
+<thead><tr><th>Type</th><th>Prix</th><th>Oscillateur</th><th>Lecture</th></tr></thead>
+<tbody>
+<tr><td>Classique baissière</td><td>Sommet plus haut</td><td>Sommet plus bas</td><td class="is-negative">Essoufflement de la hausse</td></tr>
+<tr><td>Classique haussière</td><td>Creux plus bas</td><td>Creux plus haut</td><td class="is-positive">Essoufflement de la baisse</td></tr>
+<tr><td>Cachée haussière</td><td>Creux plus haut (repli dans une hausse)</td><td>Creux plus bas</td><td class="is-positive">Le repli a été vif mais la tendance tient : reprise possible</td></tr>
+<tr><td>Cachée baissière</td><td>Sommet plus bas (rebond dans une baisse)</td><td>Sommet plus haut</td><td class="is-negative">Rebond vif dans une baisse qui tient</td></tr>
+</tbody>
+</table>
+<p>Moyen mnémotechnique : la divergence <strong>classique</strong> se lit sur les <strong>extrêmes</strong> du mouvement (nouveaux sommets ou creux du prix) ; la divergence <strong>cachée</strong> se lit sur les <strong>replis</strong>, dans le sens de la tendance.</p>
+
+<h2>Choisir les bons points</h2>
 <ul>
-<li><strong>Trader la divergence immédiatement :</strong> Une divergence peut durer de nombreuses bougies avant de se matérialiser. Attendre une confirmation (chandelier de retournement, BOS/CHoCH sur un timeframe inférieur)</li>
-<li><strong>Ignorer la tendance dominante :</strong> Les divergences baissières en forte tendance haussière échouent souvent. Privilégier les divergences dans le sens du retournement de tendance</li>
-<li><strong>Comparer les mauvais points :</strong> Les deux points de comparaison doivent être des vrais swing highs/lows clairement identifiables</li>
-<li><strong>Utiliser sans confluence :</strong> Une divergence seule n'est pas un signal de trading — elle doit être confirmée par le contexte prix</li>
+<li>Comparez deux <strong>sommets (ou creux) nets</strong> du prix, séparés par un vrai repli, et l'oscillateur <strong>aux mêmes bougies</strong>.</li>
+<li>Ne reliez pas un sommet du prix à un sommet de l'oscillateur situé quelques bougies plus loin.</li>
+<li>Restez sur la même unité de temps pour le prix et l'indicateur.</li>
+<li>Une divergence entre deux sommets très éloignés dans le temps (des dizaines de bougies) a peu de sens.</li>
 </ul>
- 
-<blockquote>La divergence est un outil de timing, pas de direction. Elle vous dit "quelque chose va changer" mais c'est l'analyse de la structure de prix qui vous dit "dans quelle direction".</blockquote>
+
+<h2>Pourquoi une divergence n'est pas un signal d'entrée</h2>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Les divergences s'enchaînent</strong>
+<p>Dans une tendance forte, le prix peut faire trois ou quatre nouveaux sommets, chacun avec une divergence baissière, avant que le retournement n'arrive, ou sans qu'il arrive. Vendre à la première divergence, c'est vendre au milieu de la hausse.</p>
+</aside>
+<p>La séquence qui rend la divergence exploitable :</p>
+<ol class="doc-steps">
+<li><strong>Repérez la divergence</strong> sur une zone déjà identifiée (résistance majeure, objectif d'une figure).</li>
+<li><strong>Attendez la cassure de structure</strong> : pour une divergence baissière, une clôture sous le dernier creux qui a précédé le sommet.</li>
+<li><strong>Entrez sur le retour</strong> vers la zone cassée, ou sur une bougie de rejet dans une unité de temps inférieure.</li>
+<li><strong>Placez le stop</strong> au-dessus du dernier sommet : s'il est dépassé, l'essoufflement n'était qu'une pause.</li>
+<li><strong>Visez prudemment</strong> : une divergence annonce une correction, pas forcément un retournement complet. Un premier objectif sur le creux précédent est raisonnable.</li>
+</ol>
+
+<h2>RSI ou MACD ?</h2>
+<p>Le RSI réagit plus vite et montre des divergences plus tôt, donc aussi plus souvent à tort. Le MACD, construit sur des moyennes exponentielles, est plus lent : ses divergences sont plus rares et plus tardives. Les deux sont calculés à partir des mêmes prix : une divergence présente sur les deux n'est pas une double confirmation, c'est la même information vue deux fois.</p>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Le Nasdaq 100 atteint 20 400 points, puis 20 650 une semaine plus tard, dans une zone de résistance hebdomadaire. Le RSI journalier passe de 74 au premier sommet à 63 au second. Le trader ne vend pas. Trois jours plus tard, l'indice clôture sous 20 180, le creux entre les deux sommets : la structure haussière est cassée. Il vend sur le retour vers 20 250, stop au-dessus de 20 650, premier objectif sur le creux précédent la hausse.</p>
+</aside>
+
+<h2>Vérifier par soi-même</h2>
+<p>Sur un historique, relevez 50 divergences classiques sur votre marché et votre unité de temps. Pour chacune, notez si le prix a ensuite cassé le dernier creux ou sommet, et ce qui s'est passé après. Vous verrez vite qu'une partie importante des divergences n'aboutit à rien, et que l'attente de la cassure élimine beaucoup de ces cas.</p>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>La divergence est une alerte : « le mouvement fatigue ». C'est la cassure de structure sur le prix qui transforme cette alerte en scénario, avec un point d'invalidation clair.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Le prix fait un creux plus haut que le précédent dans une tendance haussière, mais le RSI fait un creux plus bas. Quel type de divergence est-ce ?</summary>
+<p>Une divergence cachée haussière : le repli a été vif, mais la structure haussière du prix tient. Elle soutient plutôt une reprise de la hausse.</p>
+</details>
+<details>
+<summary>Vous repérez une divergence baissière classique au milieu d'une forte tendance haussière, loin de toute résistance. Que faites-vous ?</summary>
+<p>Rien, sinon la noter. Sans zone ni cassure de structure, elle a de fortes chances d'être suivie d'un nouveau sommet.</p>
+</details>
+<details>
+<summary>Où placer le stop d'une vente prise après une divergence baissière et la cassure du dernier creux ?</summary>
+<p>Au-dessus du dernier sommet : s'il est dépassé, la hausse a repris et le scénario est invalidé.</p>
+</details>
