@@ -314,9 +314,13 @@
         gap: var(--space-5);
     }
 
+    /* Sur petit écran, l'article d'abord : la navigation (sommaire, articles du module) passe en dessous. */
     .reading__aside {
+        order: 1;
         position: static;
         max-height: none;
+        padding-top: var(--space-6);
+        border-top: var(--hairline) solid var(--border);
     }
 }
 
@@ -1159,6 +1163,12 @@ select.input {
 @media (max-width: 640px) {
     .prose .doc-compare { grid-template-columns: 1fr; }
     .prose .doc-figure { padding: var(--space-2); }
+    /* Colonnes lisibles : le tableau défile dans son cadre plutôt que d'écraser chaque cellule. */
+    .prose th,
+    .prose td { min-width: 8.5rem; }
+    /* Schéma : taille de texte lisible, défilement horizontal dans la figure si besoin. */
+    .prose figure { overflow-x: auto; }
+    .prose figure > .doc-figure { min-width: 520px; }
 }
 
 .prose td.ta-center,
