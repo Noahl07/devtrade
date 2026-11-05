@@ -1,0 +1,114 @@
+<!--meta
+{
+    "slug": "fair-value-gaps-imbalances-de-prix",
+    "title": "Fair Value Gaps — imbalances de prix",
+    "excerpt": "Identifier et trader les FVG — les inefficiences que le marché revient combler.",
+    "readingTime": 14,
+    "accessLevel": "free",
+    "position": 6,
+    "module": "ict-inner-circle-trader"
+}
+-->
+<h2>Qu'est-ce qu'un Fair Value Gap ?</h2>
+<p>Un <strong>Fair Value Gap (FVG)</strong> est une zone d'inefficience de prix créée quand le marché se déplace si rapidement qu'aucune transaction n'a eu lieu à certains niveaux. Il se forme sur un pattern de <strong>3 bougies</strong> spécifique et représente un déséquilibre que le marché cherche naturellement à combler.</p>
+ 
+<h2>Identification — le pattern 3 bougies</h2>
+ 
+<svg width="100%" viewBox="0 0 520 230" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:520px;margin:1.5rem auto">
+ 
+  <!-- FVG BULLISH (gauche) -->
+  <text x="120" y="20" text-anchor="middle" fill="#3EB489" font-size="12" font-family="sans-serif" font-weight="bold">FVG Bullish</text>
+ 
+  <!-- Bougie 1 -->
+  <rect x="40" y="145" width="30" height="55" rx="2" fill="#e05555" opacity="0.7"/>
+  <line x1="55" y1="132" x2="55" y2="145" stroke="#e05555" stroke-width="1.5" opacity="0.7"/>
+  <line x1="55" y1="200" x2="55" y2="212" stroke="#e05555" stroke-width="1.5" opacity="0.7"/>
+  <text x="55" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C1</text>
+  <!-- High C1 marker -->
+  <line x1="35" y1="132" x2="75" y2="132" stroke="rgba(232,234,240,0.3)" stroke-width="0.8"/>
+  <text x="30" y="136" text-anchor="end" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">H(C1)</text>
+ 
+  <!-- Bougie 2 impulsive -->
+  <rect x="85" y="80" width="30" height="80" rx="2" fill="#3EB489"/>
+  <line x1="100" y1="65" x2="100" y2="80" stroke="#3EB489" stroke-width="2"/>
+  <line x1="100" y1="160" x2="100" y2="170" stroke="#3EB489" stroke-width="2"/>
+  <text x="100" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C2</text>
+ 
+  <!-- Bougie 3 -->
+  <rect x="130" y="65" width="30" height="50" rx="2" fill="#3EB489" opacity="0.8"/>
+  <line x1="145" y1="52" x2="145" y2="65" stroke="#3EB489" stroke-width="1.5"/>
+  <line x1="145" y1="115" x2="145" y2="128" stroke="#3EB489" stroke-width="1.5"/>
+  <text x="145" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C3</text>
+  <!-- Low C3 marker -->
+  <line x1="125" y1="115" x2="165" y2="115" stroke="rgba(232,234,240,0.3)" stroke-width="0.8"/>
+  <text x="170" y="119" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">L(C3)</text>
+ 
+  <!-- FVG zone (entre H(C1) et L(C3)) -->
+  <rect x="35" y="115" width="130" height="17" rx="2" fill="rgba(62,180,137,0.2)" stroke="#3EB489" stroke-width="1.2"/>
+  <text x="100" y="127" text-anchor="middle" fill="#3EB489" font-size="10" font-family="sans-serif" font-weight="bold">FVG</text>
+ 
+  <!-- CE line -->
+  <line x1="35" y1="124" x2="165" y2="124" stroke="#D4A94B" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="170" y="128" fill="#D4A94B" font-size="9" font-family="sans-serif">CE 50%</text>
+ 
+  <!-- Separator -->
+  <line x1="270" y1="10" x2="270" y2="210" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+ 
+  <!-- FVG BEARISH (droite) -->
+  <text x="395" y="20" text-anchor="middle" fill="#e05555" font-size="12" font-family="sans-serif" font-weight="bold">FVG Bearish</text>
+ 
+  <!-- Bougie 1 haussière -->
+  <rect x="295" y="80" width="30" height="50" rx="2" fill="#3EB489" opacity="0.7"/>
+  <line x1="310" y1="68" x2="310" y2="80" stroke="#3EB489" stroke-width="1.5" opacity="0.7"/>
+  <line x1="310" y1="130" x2="310" y2="142" stroke="#3EB489" stroke-width="1.5" opacity="0.7"/>
+  <text x="310" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C1</text>
+  <!-- Low C1 marker -->
+  <line x1="290" y1="130" x2="330" y2="130" stroke="rgba(232,234,240,0.3)" stroke-width="0.8"/>
+  <text x="285" y="134" text-anchor="end" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">L(C1)</text>
+ 
+  <!-- Bougie 2 impulsive baissière -->
+  <rect x="340" y="100" width="30" height="85" rx="2" fill="#e05555"/>
+  <line x1="355" y1="86" x2="355" y2="100" stroke="#e05555" stroke-width="2"/>
+  <line x1="355" y1="185" x2="355" y2="198" stroke="#e05555" stroke-width="2"/>
+  <text x="355" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C2</text>
+ 
+  <!-- Bougie 3 baissière -->
+  <rect x="385" y="115" width="30" height="65" rx="2" fill="#e05555" opacity="0.8"/>
+  <line x1="400" y1="100" x2="400" y2="115" stroke="#e05555" stroke-width="1.5"/>
+  <line x1="400" y1="180" x2="400" y2="192" stroke="#e05555" stroke-width="1.5"/>
+  <text x="400" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C3</text>
+  <!-- High C3 marker -->
+  <line x1="380" y1="100" x2="420" y2="100" stroke="rgba(232,234,240,0.3)" stroke-width="0.8"/>
+  <text x="425" y="104" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">H(C3)</text>
+ 
+  <!-- FVG zone bearish (entre L(C1) et H(C3)) -->
+  <rect x="290" y="100" width="130" height="30" rx="2" fill="rgba(224,85,85,0.2)" stroke="#e05555" stroke-width="1.2"/>
+  <text x="355" y="119" text-anchor="middle" fill="#e05555" font-size="10" font-family="sans-serif" font-weight="bold">FVG</text>
+ 
+  <!-- CE bearish -->
+  <line x1="290" y1="115" x2="420" y2="115" stroke="#D4A94B" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="425" y="119" fill="#D4A94B" font-size="9" font-family="sans-serif">CE 50%</text>
+</svg>
+ 
+<p><strong>FVG Bullish</strong> : le <em>High de C1</em> est inférieur au <em>Low de C3</em> → espace vide entre ces deux niveaux.</p>
+<p><strong>FVG Bearish</strong> : le <em>Low de C1</em> est supérieur au <em>High de C3</em> → espace vide entre ces deux niveaux.</p>
+ 
+<h2>Le Consequent Encroachment (CE)</h2>
+<p>Le <strong>CE</strong> est le niveau médian du FVG (50%). C'est la zone de réaction la plus fréquente quand le prix revient dans le FVG. En ICT, le CE est utilisé comme zone d'entrée précise et comme premier objectif de take-profit.</p>
+<blockquote>Le prix ne comble pas toujours le FVG en entier. Une réaction au CE (50% du FVG) est très fréquente et souvent plus fiable qu'attendre le remplissage complet.</blockquote>
+ 
+<h2>FVG vs Order Block</h2>
+<ul>
+<li>L'<strong>OB</strong> est basé sur une bougie spécifique (la dernière à contre-sens)</li>
+<li>Le <strong>FVG</strong> est basé sur un espace entre 3 bougies (déséquilibre)</li>
+<li>Les deux peuvent coexister — une zone OB + FVG est une confluence puissante</li>
+</ul>
+ 
+<h2>Trading pratique des FVG</h2>
+<ol>
+<li>Identifier un FVG créé lors d'un mouvement impulsif (BOS ou CHoCH)</li>
+<li>Attendre le retour du prix dans le FVG</li>
+<li>Entrer au CE (50%) ou à la limite haute/basse du FVG</li>
+<li>Stop-Loss au-delà du FVG complet (invalidation)</li>
+<li>Take-Profit sur le prochain niveau de liquidité ou OB adverse</li>
+</ol>
