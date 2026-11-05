@@ -2,75 +2,138 @@
 {
     "slug": "le-marche-actions-comprendre-les-bourses-mondiales",
     "title": "Le marché actions — comprendre les bourses mondiales",
-    "excerpt": "Comment fonctionnent les bourses, comment lire une action, les indices majeurs (S&P 500, CAC 40, Nikkei), les différents types d'ordres et les spécificités du trading d'actions.",
-    "readingTime": 21,
+    "excerpt": "Ce qu'est une action, comment fonctionne une bourse et ses enchères d'ouverture et de clôture, comment sont construits les indices, les ratios de base, et ce que les résultats trimestriels, dividendes et divisions d'actions changent pour un trader.",
+    "readingTime": 7,
     "accessLevel": "free",
     "position": 2,
     "module": "marches-financiers-expliques"
 }
 -->
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Une action est une <strong>part de propriété</strong> d'une entreprise ; son prix reflète ce que les investisseurs attendent de ses bénéfices futurs.</li>
+<li>Les bourses ont des <strong>horaires fixes</strong> et ouvrent et ferment par des <strong>enchères</strong> : les écarts de prix entre deux séances sont fréquents.</li>
+<li>Un <strong>indice</strong> (CAC 40, S&amp;P 500, Nasdaq 100) résume un panier d'actions ; la plupart sont pondérés par la taille des entreprises.</li>
+<li>Pour un trader, les dates de <strong>résultats</strong> et de <strong>dividendes</strong> comptent autant que le graphique.</li>
+</ul>
+</div>
+
 <h2>Qu'est-ce qu'une action ?</h2>
-<p>Une <strong>action</strong> (ou share/stock) représente une part de propriété dans une entreprise. Quand vous achetez une action Apple, vous devenez propriétaire d'une infime fraction d'Apple — avec les droits qui en découlent : droit de vote aux assemblées générales, droit aux dividendes (si l'entreprise en verse), et droit à une part des actifs en cas de liquidation.</p>
- 
-<p>Les entreprises émettent des actions pour lever des capitaux — c'est le principe de l'Introduction en Bourse (IPO). Au lieu d'emprunter à une banque (dette), elles vendent des parts de propriété (capitaux propres).</p>
- 
-<h2>Comment fonctionne une bourse ?</h2>
-<p>Une bourse est un marché <strong>centralisé et réglementé</strong> où acheteurs et vendeurs se rencontrent pour échanger des titres financiers. Les bourses majeures :</p>
- 
+<p>Une action représente une fraction du capital d'une entreprise. Elle donne en général un droit de vote aux assemblées et un droit sur les bénéfices distribués (les dividendes). Une entreprise émet des actions pour financer son développement sans s'endetter : c'est l'introduction en bourse, puis les augmentations de capital.</p>
+<p>Ensuite, ces actions s'échangent entre investisseurs sur le <strong>marché secondaire</strong>. L'entreprise ne touche rien sur ces échanges ; son cours reflète simplement ce que le marché pense de sa valeur, à un instant donné.</p>
+
+<h2>Les grandes places boursières</h2>
+<table>
+<thead><tr><th>Place</th><th>Indices phares</th><th class="ta-center">Séance (heure de Paris)</th></tr></thead>
+<tbody>
+<tr><td>Euronext Paris</td><td>CAC 40</td><td class="ta-center">9 h – 17 h 30</td></tr>
+<tr><td>Deutsche Börse (Xetra)</td><td>DAX</td><td class="ta-center">9 h – 17 h 30</td></tr>
+<tr><td>New York (NYSE, Nasdaq)</td><td>S&amp;P 500, Nasdaq 100, Dow Jones</td><td class="ta-center">15 h 30 – 22 h</td></tr>
+<tr><td>Londres (LSE)</td><td>FTSE 100</td><td class="ta-center">9 h – 17 h 30</td></tr>
+<tr><td>Tokyo</td><td>Nikkei 225, Topix</td><td class="ta-center">Nuit européenne, avec une pause à midi</td></tr>
+</tbody>
+</table>
+<p>Pour Wall Street, retirez une heure pendant les semaines où l'écart Paris – New York n'est que de 5 heures (voir <em>Les sessions de marché</em>). Les actions américaines s'échangent aussi avant et après la séance, avec beaucoup moins de volume et des spreads plus larges.</p>
+
+<h2>Comment se forme le prix : séance continue et enchères</h2>
+<p>Pendant la séance, les ordres d'achat et de vente se rencontrent en continu dans le carnet d'ordres (voir <em>Comprendre les marchés financiers</em>). Mais l'ouverture et la clôture se font par <strong>enchères</strong> (on parle aussi de fixing) :</p>
 <ul>
-<li><strong>NYSE (New York Stock Exchange)</strong> : la plus grande capitalisation mondiale. Héberge les blue chips américaines (Johnson & Johnson, ExxonMobil, Berkshire Hathaway...)</li>
-<li><strong>NASDAQ</strong> : dominé par la technologie. Apple, Microsoft, Amazon, Alphabet, Meta, Nvidia... Le NAS100 est l'indice des 100 plus grandes capitalisations non-financières du NASDAQ.</li>
-<li><strong>Euronext Paris</strong> : principale bourse française. CAC 40 = les 40 plus grandes capitalisations françaises.</li>
-<li><strong>London Stock Exchange (LSE)</strong> : principale bourse européenne hors zone euro.</li>
-<li><strong>Tokyo Stock Exchange (TSE)</strong> : Nikkei 225 = 225 entreprises japonaises majeures.</li>
+<li>pendant quelques minutes, les ordres s'accumulent sans être exécutés ;</li>
+<li>la bourse calcule le prix unique qui permet d'échanger le plus grand nombre de titres ;</li>
+<li>tous les ordres compatibles sont exécutés à ce prix.</li>
 </ul>
- 
-<h2>Les indices boursiers — thermomètres des marchés</h2>
-<p>Un indice boursier est une mesure de la performance d'un groupe d'actions sélectionnées selon des critères définis. Il permet de mesurer "le marché" en un seul chiffre.</p>
- 
-<h3>Méthodes de calcul</h3>
+<p>Le cours de clôture, issu de cette enchère, sert de référence aux fonds indiciels, aux valorisations et aux contrats dérivés. C'est pourquoi les volumes de fin de séance sont souvent les plus élevés de la journée.</p>
+
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Le risque d'écart d'ouverture</strong>
+<p>Entre deux séances, l'information continue d'arriver : résultats publiés le soir, annonce d'un concurrent, nouvelle macroéconomique. Le lendemain, l'action peut ouvrir 5 %, 10 % ou davantage au-dessus ou en dessous de la clôture, sans aucune cotation entre les deux. Un stop placé dans cet intervalle sera exécuté au prix d'ouverture.</p>
+</aside>
+
+<h2>Les indices : un thermomètre du marché</h2>
+<p>Un indice suit l'évolution d'un panier d'actions selon une règle publiée. Trois méthodes de pondération existent :</p>
+<table>
+<thead><tr><th>Méthode</th><th>Principe</th><th>Exemples</th></tr></thead>
+<tbody>
+<tr><td>Capitalisation flottante</td><td>Chaque entreprise pèse selon la valeur de ses actions réellement échangeables</td><td>S&amp;P 500, CAC 40, DAX, Nasdaq 100, MSCI World</td></tr>
+<tr><td>Prix</td><td>Une action chère pèse plus qu'une action bon marché, quelle que soit la taille de l'entreprise</td><td>Dow Jones, Nikkei 225</td></tr>
+<tr><td>Équipondération</td><td>Chaque entreprise a le même poids</td><td>Versions « equal weight » de certains indices</td></tr>
+</tbody>
+</table>
+<p>Conséquence importante : dans un indice pondéré par la capitalisation, <strong>quelques géants peuvent faire l'essentiel du mouvement</strong>. Aux États-Unis, une poignée de grandes valeurs technologiques représente une part très importante du S&amp;P 500 et plus encore du Nasdaq 100. Un indice en hausse ne veut donc pas dire que la majorité des actions montent.</p>
+<p>Autre point : le CAC 40 et la plupart des indices cotés sont des indices <strong>« de prix »</strong>, qui ignorent les dividendes. Leurs versions « dividendes réinvestis » (comme le CAC 40 GR) montent nettement plus sur longue période.</p>
+
+<h2>Quatre mesures à connaître</h2>
+<table>
+<thead><tr><th>Mesure</th><th>Calcul</th><th>Ce qu'elle indique</th></tr></thead>
+<tbody>
+<tr><td>Capitalisation</td><td>Cours × nombre d'actions</td><td>La valeur de l'entreprise selon le marché</td></tr>
+<tr><td>Bénéfice par action (BPA)</td><td>Bénéfice net ÷ nombre d'actions</td><td>Le chiffre le plus scruté aux publications de résultats</td></tr>
+<tr><td>PER (cours ÷ bénéfice)</td><td>Cours ÷ BPA</td><td>Combien d'années de bénéfices actuels le marché paie. Élevé : croissance attendue ou optimisme ; bas : entreprise mûre, risque perçu ou décote</td></tr>
+<tr><td>Rendement du dividende</td><td>Dividende annuel ÷ cours</td><td>Le revenu distribué ; un rendement très élevé signale parfois une baisse du cours liée à des difficultés</td></tr>
+</tbody>
+</table>
+<p>Ces ratios n'ont de sens que <strong>comparés</strong> : à l'historique de l'entreprise, à son secteur, au marché. Le module <em>Investissement</em> détaille l'analyse fondamentale.</p>
+
+<h2>Les événements qui font bouger une action</h2>
+<h3>Les résultats trimestriels</h3>
+<p>Quatre fois par an aux États-Unis (souvent deux fois en Europe), l'entreprise publie ses comptes, généralement avant l'ouverture ou après la clôture. Le cours réagit à l'écart avec les attentes des analystes, et surtout aux <strong>perspectives</strong> annoncées pour la suite. Une entreprise peut battre les attentes et chuter si ses prévisions déçoivent.</p>
+
+<h3>Le dividende</h3>
+<p>Le jour du détachement, le cours baisse mécaniquement d'environ le montant du dividende. Si vous détenez un CFD acheteur, le broker vous crédite l'équivalent ; si vous êtes vendeur, il vous débite. Ce n'est pas un gain ni une perte de marché, mais un ajustement à connaître pour ne pas mal interpréter son graphique ou son relevé.</p>
+
+<h3>Divisions et regroupements d'actions</h3>
+<p>Une division (<em>split</em>) de 1 pour 4 divise le cours par quatre et multiplie le nombre d'actions par quatre : la valeur ne change pas. Les graphiques sont ajustés, mais vérifiez-le avant d'utiliser d'anciens niveaux.</p>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Une action clôture à 120 € le mardi. Le soir, l'entreprise publie un chiffre d'affaires conforme aux attentes mais abaisse sa prévision annuelle. Le mercredi, elle ouvre à 106 €, soit −11,7 %. Un trader acheteur avec un stop à 115 € est exécuté vers 106 € : sa perte est près de trois fois celle qu'il avait prévue.</p>
+</aside>
+
+<h2>Trader des actions : ce qui change par rapport au forex</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Atouts</h4>
 <ul>
-<li><strong>Pondération par capitalisation (cap-weighted)</strong> : les entreprises les plus grandes pèsent le plus. S&P 500, CAC 40, MSCI World. Apple représente ~7% du S&P 500 à elle seule.</li>
-<li><strong>Pondération par prix (price-weighted)</strong> : les actions au prix le plus élevé pèsent le plus — méthode archaïque. Dow Jones Industrial Average (DJIA) utilise encore cette méthode.</li>
-<li><strong>Équipondéré (equal-weighted)</strong> : chaque entreprise pèse le même pourcentage.</li>
+<li>Volume réel, publié par la bourse</li>
+<li>Information abondante et réglementée sur chaque entreprise</li>
+<li>Possibilité d'acheter l'action elle-même, sans levier ni frais de nuit</li>
 </ul>
- 
-<h2>Lire une action — les métriques fondamentales</h2>
- 
-<h3>Price-to-Earnings (P/E Ratio)</h3>
-<p>Le ratio cours/bénéfice : Prix de l'action / Bénéfice par action. Un P/E de 20 signifie que les investisseurs payent 20€ pour chaque euro de bénéfice annuel. P/E élevé = entreprise de croissance (les investisseurs anticipent une forte croissance future). P/E bas = entreprise mature ou sous-valorisée.</p>
-<p>Moyenne historique S&P 500 : ~15-17x. En janvier 2021 (bulle post-COVID) : ~37x.</p>
- 
-<h3>Market Cap (Capitalisation boursière)</h3>
-<p>Prix de l'action × Nombre d'actions en circulation. Mesure la "taille" de l'entreprise selon le marché.</p>
+</div>
+<div class="doc-compare__dont">
+<h4>Contraintes</h4>
 <ul>
-<li>Mega cap : > 200 Mds$ (Apple, Microsoft, Saudi Aramco)</li>
-<li>Large cap : 10-200 Mds$</li>
-<li>Mid cap : 2-10 Mds$</li>
-<li>Small cap : 300M-2 Mds$</li>
-<li>Micro cap : < 300M$</li>
+<li>Horaires limités et écarts d'ouverture fréquents</li>
+<li>Calendrier de résultats à surveiller pour chaque titre</li>
+<li>Levier limité à 5 sur les CFD actions pour les particuliers en Europe</li>
+<li>Vente à découvert plus encadrée sur les actions réelles</li>
 </ul>
- 
-<h3>Dividend Yield</h3>
-<p>Dividende annuel / Prix de l'action. Un yield de 4% signifie que l'entreprise verse 4% de la valeur de l'action en dividendes chaque année. Important pour les investisseurs en revenus.</p>
- 
-<h3>EPS — Earnings Per Share</h3>
-<p>Bénéfice net / Nombre d'actions. L'EPS trimestriel est le chiffre le plus scruté lors des publications de résultats (earnings). Si l'EPS réel dépasse les estimations des analystes → l'action monte ("earnings beat"). Si en dessous → l'action chute ("earnings miss").</p>
- 
-<h2>Les heures de trading actions</h2>
-<p>Contrairement au Forex, les marchés actions ont des heures précises :</p>
-<ul>
-<li><strong>NYSE/NASDAQ</strong> : 9h30-16h00 ET (15h30-22h00 Paris)</li>
-<li><strong>Euronext Paris (CAC 40)</strong> : 9h00-17h30 Paris</li>
-<li><strong>Pre-market américain</strong> : 4h00-9h30 ET (10h00-15h30 Paris) — volume réduit, spreads larges</li>
-<li><strong>After-hours</strong> : 16h00-20h00 ET — publications de résultats souvent après la clôture</li>
-</ul>
- 
-<h2>Spécificités du trading d'actions vs Forex</h2>
-<ul>
-<li><strong>Données fondamentales cruciales</strong> : les earnings, guidance, rachats d'actions, dividendes influencent fortement les prix</li>
-<li><strong>Risque de gap overnight</strong> : une action peut gapper de -20% au lendemain matin suite à des résultats décevants publiés après clôture</li>
-<li><strong>Levier limité</strong> : maximum 1:2 sur les actions en Europe (ESMA)</li>
-<li><strong>Insider trading</strong> : les périodes autour des publications de résultats ont des règles strictes</li>
-<li><strong>Stock splits et dividendes</strong> : ajustent le prix sans vraie variation de valeur — attention aux graphiques historiques</li>
-</ul>
+</div>
+</div>
+
+<h2>Préparer une séance sur actions</h2>
+<ol class="doc-steps">
+<li><strong>Consultez le calendrier des résultats</strong> des titres que vous suivez et évitez de garder une position la veille d'une publication, sauf si c'est le but.</li>
+<li><strong>Regardez les contrats à terme</strong> sur indices avant l'ouverture : ils donnent la tendance de la nuit.</li>
+<li><strong>Repérez la clôture de la veille</strong> et les niveaux de l'écart d'ouverture, souvent testés dans la première heure.</li>
+<li><strong>Laissez passer les premières minutes</strong> si vous débutez : c'est le moment le plus désordonné de la séance.</li>
+</ol>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Une action n'est pas seulement un graphique : c'est une entreprise, avec un calendrier. La plupart des mauvaises surprises d'un trader d'actions viennent d'une date qu'il n'avait pas regardée.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Une action cote 50 € et l'entreprise gagne 2,50 € par action. Quel est son PER ?</summary>
+<p>50 ÷ 2,50 = 20 : le marché paie 20 fois le bénéfice annuel actuel.</p>
+</details>
+<details>
+<summary>Le Nasdaq 100 monte de 1 % alors que la majorité de ses valeurs baissent. Comment est-ce possible ?</summary>
+<p>L'indice est pondéré par la capitalisation : quelques très grandes entreprises en hausse suffisent à compenser de nombreuses petites baisses.</p>
+</details>
+<details>
+<summary>Le cours d'une action baisse de 1,20 € à l'ouverture, le jour où elle détache un dividende de 1,20 €. Est-ce une mauvaise nouvelle ?</summary>
+<p>Non, c'est l'ajustement mécanique du détachement : la valeur versée en dividende sort du cours. Les actionnaires reçoivent ce montant.</p>
+</details>

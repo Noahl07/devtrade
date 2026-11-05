@@ -2,72 +2,126 @@
 {
     "slug": "le-marche-crypto-opportunites-et-pieges",
     "title": "Le marché crypto — opportunités et pièges",
-    "excerpt": "Comprendre l'écosystème crypto — blockchain, Bitcoin, altcoins, DeFi, exchanges, régulation et les spécificités qui rendent la crypto unique parmi les classes d'actifs.",
-    "readingTime": 22,
+    "excerpt": "Blockchain, Bitcoin et ses halvings, Ethereum et les altcoins, plateformes centralisées ou garde personnelle, dérivés à fort levier et liquidations en cascade, cadre européen MiCA : ce qu'il faut savoir avant de trader des cryptoactifs.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 7,
     "module": "marches-financiers-expliques"
 }
 -->
-<h2>La blockchain — la technologie sous-jacente</h2>
-<p>Avant de comprendre les cryptomonnaies, il faut comprendre la <strong>blockchain</strong>. C'est un registre de transactions <strong>décentralisé, distribué et immuable</strong>. Au lieu d'une base de données centrale contrôlée par une banque ou un gouvernement, la blockchain est partagée et vérifiée par des milliers de nœuds indépendants.</p>
- 
-<p>Propriétés clés :</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Décentralisée</strong> : aucune autorité centrale ne contrôle le réseau</li>
-<li><strong>Immuable</strong> : une transaction validée ne peut pas être modifiée ou effacée</li>
-<li><strong>Transparente</strong> : toutes les transactions sont publiquement vérifiables (pseudonyme, pas anonyme)</li>
-<li><strong>Sans permission</strong> : n'importe qui peut participer sans approbation d'une autorité</li>
+<li>Les cryptoactifs s'échangent <strong>tous les jours, à toute heure</strong>, sur des plateformes du monde entier, avec une volatilité bien supérieure aux marchés traditionnels.</li>
+<li>Bitcoin a une offre plafonnée à <strong>21 millions</strong> d'unités ; son émission est divisée par deux tous les quatre ans environ (le <em>halving</em>).</li>
+<li>Le risque ne vient pas seulement du prix : <strong>faillite de plateforme</strong>, piratage, perte de clés, projets frauduleux.</li>
+<li>Dans l'Union européenne, les prestataires doivent désormais être agréés au titre du règlement <strong>MiCA</strong> : vérifiez-le avant de déposer de l'argent.</li>
 </ul>
- 
-<h2>Bitcoin — l'or numérique</h2>
-<p>Créé en 2009 par le mystérieux Satoshi Nakamoto (identité toujours inconnue), Bitcoin est la première et la plus grande cryptomonnaie. Son design est intentionnellement simple et conservateur :</p>
- 
+</div>
+
+<h2>La blockchain en deux minutes</h2>
+<p>Une blockchain est un registre de transactions <strong>partagé</strong> entre de nombreux ordinateurs indépendants. Chaque bloc de transactions est validé selon des règles communes puis ajouté à la chaîne ; une fois suffisamment de blocs ajoutés par-dessus, il devient pratiquement impossible à modifier.</p>
 <ul>
-<li><strong>Offre limitée</strong> : maximum 21 millions de BTC jamais créés (environ 19.7M en circulation fin 2024)</li>
-<li><strong>Halving</strong> : toutes les 210 000 blocs (~4 ans), la récompense des mineurs est divisée par deux — mécanisme déflationnaire intégré</li>
-<li><strong>Proof of Work</strong> : la sécurité du réseau est assurée par la puissance de calcul (mining)</li>
-<li><strong>Décentralisation maximale</strong> : aucune entreprise, gouvernement ou individu ne contrôle Bitcoin</li>
+<li><strong>Pas d'autorité centrale</strong> qui puisse annuler une transaction ou geler un compte sur la chaîne elle-même.</li>
+<li><strong>Transparente</strong> : toutes les transactions sont publiques. Les adresses ne portent pas de nom, mais elles ne sont pas anonymes pour autant.</li>
+<li><strong>Irréversible</strong> : une erreur d'adresse ou un envoi à un escroc ne se rattrapent pas.</li>
 </ul>
- 
-<p>Bitcoin est souvent comparé à l'or : valeur refuge, réserve de valeur, offre limitée. Les critiques pointent sa volatilité bien supérieure à l'or et son coût énergétique.</p>
- 
-<h2>L'écosystème Ethereum et les altcoins</h2>
-<p><strong>Ethereum</strong> va bien au-delà d'une simple monnaie. C'est une plateforme de <strong>smart contracts</strong> — des programmes informatiques qui s'exécutent automatiquement sur la blockchain selon des conditions prédéfinies. Cette technologie a permis la création de :</p>
- 
+
+<h2>Bitcoin : une offre programmée</h2>
+<p>Lancé en 2009 par un auteur sous pseudonyme, Satoshi Nakamoto, Bitcoin est le premier et le plus grand cryptoactif. Sa règle d'émission est fixée dans le code : les nouveaux bitcoins récompensent les « mineurs » qui valident les blocs, et cette récompense est divisée par deux tous les 210 000 blocs, soit environ tous les quatre ans.</p>
+<figure>
+<svg viewBox="0 0 640 230" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Récompense par bloc de Bitcoin après chaque halving</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">BITCOINS CRÉÉS PAR BLOC</text>
+  <g font-family="sans-serif" font-size="12.5">
+    <rect x="60" y="40" width="90" height="140" rx="4" fill="rgba(200,164,92,0.55)"/><text x="105" y="34" text-anchor="middle" fill="#E2CB91" font-weight="bold">50</text>
+    <rect x="165" y="110" width="90" height="70" rx="4" fill="rgba(200,164,92,0.45)"/><text x="210" y="104" text-anchor="middle" fill="#E2CB91" font-weight="bold">25</text>
+    <rect x="270" y="145" width="90" height="35" rx="4" fill="rgba(200,164,92,0.38)"/><text x="315" y="139" text-anchor="middle" fill="#E2CB91" font-weight="bold">12,5</text>
+    <rect x="375" y="162.5" width="90" height="17.5" rx="3" fill="rgba(200,164,92,0.32)"/><text x="420" y="156" text-anchor="middle" fill="#E2CB91" font-weight="bold">6,25</text>
+    <rect x="480" y="171.25" width="90" height="8.75" rx="2" fill="rgba(200,164,92,0.28)"/><text x="525" y="165" text-anchor="middle" fill="#E2CB91" font-weight="bold">3,125</text>
+  </g>
+  <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="middle">
+    <text x="105" y="198">2009</text><text x="210" y="198">2012</text><text x="315" y="198">2016</text><text x="420" y="198">2020</text><text x="525" y="198">2024</text>
+  </g>
+  <text x="320" y="222" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Chaque halving divise l'émission par deux, jusqu'au plafond de 21 millions.</text>
+</svg>
+<figcaption>La récompense par bloc est passée de 50 à 3,125 bitcoins ; près de 20 millions d'unités existent déjà.</figcaption>
+</figure>
+<p>Cette rareté programmée nourrit la comparaison avec l'or. Mais l'or a des milliers d'années d'histoire et une volatilité bien moindre. Le prix du Bitcoin a connu plusieurs chutes de plus de 70 % depuis ses sommets, et une partie des bitcoins existants est sans doute perdue à jamais : clés égarées, portefeuilles oubliés. Certaines études l'ont estimée jusqu'à environ un cinquième de l'offre.</p>
+
+<h2>Ethereum et les autres cryptoactifs</h2>
+<p><strong>Ethereum</strong> permet d'exécuter des programmes sur sa blockchain, les <em>smart contracts</em>. Sur cette base se sont développés la finance décentralisée (prêts et échanges sans intermédiaire), les jetons non fongibles et les <strong>stablecoins</strong>, des jetons censés valoir 1 dollar ou 1 euro. Depuis 2022, Ethereum est validé par « preuve d'enjeu » plutôt que par minage.</p>
+<p>Il existe des milliers d'autres jetons, les <em>altcoins</em>. Beaucoup ont perdu l'essentiel de leur valeur, et certains étaient des escroqueries dès le départ : créateurs qui vident la caisse (<em>rug pull</em>), hausses organisées puis reventes massives (<em>pump and dump</em>).</p>
+
+<h2>Où et comment les échanger</h2>
+<table>
+<thead><tr><th>Moyen</th><th>Fonctionnement</th><th>Risque principal</th></tr></thead>
+<tbody>
+<tr><td>Plateforme centralisée</td><td>Compte en ligne, carnet d'ordres, la plateforme garde vos actifs</td><td>Faillite ou piratage de la plateforme (Mt. Gox en 2014, FTX en 2022)</td></tr>
+<tr><td>Garde personnelle (portefeuille)</td><td>Vous détenez vous-même les clés</td><td>Perte des clés ou de la phrase de récupération : fonds perdus définitivement</td></tr>
+<tr><td>Échange décentralisé</td><td>Échange direct via des smart contracts</td><td>Failles de code, faux jetons, liquidité faible</td></tr>
+<tr><td>CFD et produits cotés (ETP)</td><td>Exposition au prix sans détenir le jeton</td><td>Frais, levier (plafonné à 2 sur les CFD pour les particuliers européens)</td></tr>
+</tbody>
+</table>
+
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Vérifier l'agrément</strong>
+<p>Le règlement européen MiCA, entré en application fin 2024, impose aux prestataires de services sur cryptoactifs d'obtenir un agrément pour servir des clients dans l'Union, après une période de transition. En France, l'AMF publie la liste des prestataires autorisés et une liste noire des sites non autorisés. Un service qui n'y figure pas ne vous offre aucune des garanties prévues par le règlement.</p>
+</aside>
+
+<h2>Ce qui rend ce marché particulier pour un trader</h2>
 <ul>
-<li><strong>DeFi (Finance Décentralisée)</strong> : prêts, emprunts, échanges de devises sans intermédiaire bancaire</li>
-<li><strong>NFT (Non-Fungible Tokens)</strong> : représentation numérique d'actifs uniques</li>
-<li><strong>DAOs</strong> : organisations autonomes décentralisées gouvernées par des votes on-chain</li>
+<li><strong>Ouvert en permanence</strong> : pas de clôture, mais une liquidité plus faible la nuit et le week-end, propice aux mouvements brusques.</li>
+<li><strong>Volatilité élevée</strong> : des variations de plusieurs pour cent dans la journée sont courantes, et de plus de 10 % lors des phases de stress.</li>
+<li><strong>Prix fragmenté</strong> : chaque plateforme a son propre carnet ; les prix peuvent différer, surtout en période agitée.</li>
+<li><strong>Données publiques sur la chaîne</strong> : mouvements des gros portefeuilles, flux vers les plateformes. Elles intéressent beaucoup de traders, mais leur interprétation reste incertaine.</li>
+<li><strong>Liens avec les actifs risqués</strong> : depuis 2020, le Bitcoin évolue souvent dans le même sens que les valeurs technologiques, surtout en période de stress. Ce lien varie selon les périodes.</li>
 </ul>
- 
-<p><strong>Les altcoins</strong> (toutes les cryptos autres que Bitcoin) sont des milliers de projets de qualité très variable. Pour chaque projet sérieux (Ethereum, Solana, Chainlink...), il existe des centaines de projets sans valeur réelle ou de pures escroqueries (rug pulls, pump & dump).</p>
- 
-<h2>Les exchanges — comment acheter et trader les cryptos</h2>
- 
-<h3>Exchanges Centralisés (CEX)</h3>
-<p>Binance, Coinbase, Kraken, Bybit... Fonctionnent comme des brokers traditionnels. Vous créez un compte, vous déposez des fonds, vous tradez. Pratiques mais vous n'avez pas la garde de vos cryptos ("Not your keys, not your coins").</p>
- 
-<p>Risques : hack de l'exchange (Mt. Gox 2014, FTX 2022), faillite, gel des retraits.</p>
- 
-<h3>Exchanges Décentralisés (DEX)</h3>
-<p>Uniswap, dYdX, Curve... Échanges peer-to-peer sans intermédiaire, via smart contracts. Vous gardez la garde de vos fonds (wallet personnel). Plus complexes à utiliser, liquidité parfois limitée sur les petits tokens.</p>
- 
-<h2>Les spécificités du marché crypto pour le trader</h2>
- 
-<h3>Ce qui rend la crypto unique</h3>
+
+<h2>Le piège des dérivés à fort levier</h2>
+<p>De nombreuses plateformes proposent des contrats « perpétuels » avec des leviers de 50 ou 100. Une position à levier 50 est liquidée dès que le prix bouge d'environ 2 % contre elle. Quand le marché chute, les liquidations forcées déclenchent des ventes, qui provoquent d'autres liquidations : des cascades de ce type expliquent beaucoup des chutes éclair du marché crypto.</p>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Un trader ouvre une position acheteuse de 10 000 $ sur le Bitcoin avec 200 $ de marge (levier 50). Un week-end, le prix recule de 2,5 % en quelques minutes. La position est liquidée : les 200 $ sont perdus, et le prix remonte une heure plus tard. Avec une position sans levier de 200 $, la perte aurait été de 5 $, sans liquidation.</p>
+</aside>
+
+<h2>Les risques propres aux cryptoactifs</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Précautions</h4>
 <ul>
-<li><strong>Ouvert 24/7/365</strong> : pas de week-end, pas de jours fériés — un avantage et un inconvénient psychologique</li>
-<li><strong>Volatilité extrême</strong> : des mouvements de 10-30% en une journée sont courants, même sur Bitcoin</li>
-<li><strong>Manipulation plus facile</strong> : market cap plus faible que les marchés traditionnels → les "baleines" peuvent déplacer le marché</li>
-<li><strong>Données on-chain uniques</strong> : flux des wallets, exchange inflows, positions des baleines — visibles publiquement, contrairement à n'importe quel autre marché</li>
-<li><strong>Corrélation croissante avec le NAS100</strong> : depuis 2021, Bitcoin se comporte souvent comme un actif risqué technologique</li>
+<li>Plateforme agréée, et seulement le montant nécessaire laissé dessus</li>
+<li>Double authentification, phrase de récupération conservée hors ligne</li>
+<li>Envoi test d'un petit montant avant tout gros transfert</li>
+<li>Taille de position adaptée à une volatilité plusieurs fois supérieure à celle des actions</li>
 </ul>
- 
-<h3>Les risques spécifiques à la crypto</h3>
+</div>
+<div class="doc-compare__dont">
+<h4>Pièges courants</h4>
 <ul>
-<li><strong>Risque réglementaire</strong> : les gouvernements peuvent interdire ou restreindre les cryptos (Chine 2021)</li>
-<li><strong>Risque technologique</strong> : bugs de smart contracts, hacks de protocoles (des milliards perdus chaque année)</li>
-<li><strong>Risque de liquidité</strong> : en période de stress, la liquidité peut s'évaporer instantanément sur les petits tokens</li>
-<li><strong>Risque de garde</strong> : perte des clés privées = perte permanente des fonds (on estime que ~20% des BTC sont perdus à jamais)</li>
+<li>Jetons inconnus recommandés sur les réseaux sociaux</li>
+<li>Promesses de rendement fixe sur des dépôts</li>
+<li>Levier de 50 ou 100 sur des plateformes non agréées</li>
+<li>Faux supports techniques qui demandent votre phrase de récupération</li>
 </ul>
+</div>
+</div>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Le marché crypto combine la volatilité d'un marché jeune et des risques que les marchés traditionnels ont appris à encadrer : garde des actifs, solidité des intermédiaires, fraudes. Sur ce marché, la sécurité de vos fonds passe avant la stratégie de trading.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Combien de bitcoins un mineur reçoit-il par bloc depuis le halving de 2024 ?</summary>
+<p>3,125 bitcoins, plus les frais de transaction du bloc.</p>
+</details>
+<details>
+<summary>À partir de quelle baisse environ une position à levier 50 est-elle liquidée ?</summary>
+<p>Vers 2 % de baisse : la perte atteint alors la totalité de la marge déposée (un cinquantième de la position).</p>
+</details>
+<details>
+<summary>Que se passe-t-il si vous perdez la phrase de récupération d'un portefeuille personnel ?</summary>
+<p>Personne ne peut la régénérer : sans elle, et si l'appareil est perdu, les fonds deviennent inaccessibles définitivement.</p>
+</details>

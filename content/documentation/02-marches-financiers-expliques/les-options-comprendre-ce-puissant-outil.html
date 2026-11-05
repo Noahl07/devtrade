@@ -2,58 +2,137 @@
 {
     "slug": "les-options-comprendre-ce-puissant-outil",
     "title": "Les Options — comprendre ce puissant outil",
-    "excerpt": "Call, Put, strike, expiration, prime, Greeks — démystifier les options financières pour comprendre leur rôle dans les marchés et les stratégies de base accessibles aux traders.",
-    "readingTime": 24,
+    "excerpt": "Call, put, prix d'exercice, prime : ce qu'est une option, son profil de gain, ce qui compose son prix (valeur intrinsèque et valeur temps), les « grecques », les stratégies de base, et ce que le marché des options dit aux autres traders.",
+    "readingTime": 7,
     "accessLevel": "free",
     "position": 6,
     "module": "marches-financiers-expliques"
 }
 -->
-<h2>Qu'est-ce qu'une option ?</h2>
-<p>Une <strong>option</strong> est un contrat qui donne à son acheteur le <strong>droit (mais pas l'obligation)</strong> d'acheter ou vendre un actif à un prix défini (le strike) avant ou à une date d'expiration. En échange de ce droit, l'acheteur paie une <strong>prime</strong> au vendeur.</p>
- 
-<p>Analogie simple : vous payez 1 000€ pour avoir le droit d'acheter un appartement à 200 000€ dans les 3 prochains mois, quel que soit son prix de marché à ce moment. Si l'appartement vaut 250 000€ dans 3 mois, vous exercez votre droit et faites 49 000€ de profit (250 000 - 200 000 - 1 000). Si l'appartement vaut 180 000€, vous abandonnez simplement votre option et perdez seulement votre prime de 1 000€.</p>
- 
-<h2>Call et Put</h2>
- 
-<h3>Call Option (option d'achat)</h3>
-<p>Donne le droit d'<strong>acheter</strong> l'actif au prix strike. Un call profite quand l'actif monte. L'acheteur d'un call est haussier (long call). Le vendeur d'un call (short call) est baissier ou neutre.</p>
- 
-<h3>Put Option (option de vente)</h3>
-<p>Donne le droit de <strong>vendre</strong> l'actif au prix strike. Un put profite quand l'actif baisse. L'acheteur d'un put est baissier (long put). C'est l'équivalent d'une assurance sur une position longue.</p>
- 
-<h2>Les 4 positions possibles</h2>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Long Call</strong> : parie sur la hausse, risque limité à la prime, gain potentiellement illimité</li>
-<li><strong>Long Put</strong> : parie sur la baisse, risque limité à la prime, gain limité (l'actif ne peut pas valoir moins que 0)</li>
-<li><strong>Short Call (vendu)</strong> : encaisse la prime, risque illimité à la hausse</li>
-<li><strong>Short Put (vendu)</strong> : encaisse la prime, risque important à la baisse</li>
+<li>Une option donne le <strong>droit, sans obligation</strong>, d'acheter (call) ou de vendre (put) un actif à un prix fixé, jusqu'à une date donnée. Ce droit se paie : c'est la <strong>prime</strong>.</li>
+<li>L'acheteur d'une option risque au plus la prime ; le <strong>vendeur</strong> encaisse la prime mais peut perdre beaucoup plus.</li>
+<li>Une option perd de la valeur avec le temps et réagit à la <strong>volatilité attendue</strong> autant qu'au prix.</li>
+<li>Même sans en trader, le marché des options renseigne sur la nervosité des investisseurs (indice VIX).</li>
 </ul>
- 
-<h2>Les "Greeks" — mesurer la sensibilité d'une option</h2>
-<p>Les Greeks sont des mesures mathématiques qui quantifient comment le prix d'une option change selon différents facteurs :</p>
- 
+</div>
+
+<h2>Le principe, avec une analogie</h2>
+<p>Vous versez 1 000 € à un vendeur pour avoir le droit d'acheter sa maison 200 000 € dans les trois mois. Si, entre-temps, des maisons identiques se vendent 230 000 €, vous exercez votre droit : vous achetez 200 000 € un bien qui en vaut 230 000. Si les prix baissent, vous renoncez, et vous n'avez perdu que vos 1 000 €. Le vendeur, lui, a encaissé 1 000 € mais s'est engagé à vendre à 200 000 € quoi qu'il arrive.</p>
+<p>Une option financière fonctionne de la même façon, sur une action, un indice, une devise ou une matière première.</p>
+
+<h2>Le vocabulaire de base</h2>
+<table>
+<thead><tr><th>Terme</th><th>Définition</th></tr></thead>
+<tbody>
+<tr><td>Call</td><td>Droit d'<strong>acheter</strong> au prix d'exercice</td></tr>
+<tr><td>Put</td><td>Droit de <strong>vendre</strong> au prix d'exercice</td></tr>
+<tr><td>Prix d'exercice (<em>strike</em>)</td><td>Le prix auquel le droit peut être exercé</td></tr>
+<tr><td>Échéance</td><td>La date limite du droit</td></tr>
+<tr><td>Prime</td><td>Le prix de l'option, payé par l'acheteur au vendeur</td></tr>
+<tr><td>Dans, à ou hors de la monnaie</td><td>Un call est « dans la monnaie » si le cours dépasse le prix d'exercice, « hors de la monnaie » s'il est en dessous (l'inverse pour un put)</td></tr>
+</tbody>
+</table>
+<p>Sur les actions américaines, un contrat porte en général sur 100 actions : une prime affichée à 4 $ coûte 400 $ par contrat.</p>
+
+<h2>Le profil de gain d'un call</h2>
+<figure>
+<svg viewBox="0 0 640 250" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Gain ou perte à l'échéance d'un call de prix d'exercice 100 acheté 4</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">ACHAT D'UN CALL · PRIX D'EXERCICE 100 · PRIME 4</text>
+  <line x1="60" y1="150" x2="600" y2="150" stroke="rgba(245,241,230,0.3)"/>
+  <text x="52" y="154" text-anchor="end" fill="#A8B3AE" font-size="12" font-family="sans-serif">0</text>
+  <polyline points="60,174 330,174 600,30" fill="none" stroke="#C8A45C" stroke-width="2.5"/>
+  <line x1="330" y1="40" x2="330" y2="190" stroke="rgba(245,241,230,0.2)" stroke-dasharray="3 3"/>
+  <line x1="375" y1="40" x2="375" y2="190" stroke="rgba(79,179,143,0.5)" stroke-dasharray="3 3"/>
+  <text x="195" y="196" text-anchor="middle" fill="#E89A90" font-size="12" font-family="sans-serif">perte maximale : la prime (−4)</text>
+  <text x="330" y="212" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">100</text>
+  <text x="380" y="212" fill="#7FD1B9" font-size="12" font-family="sans-serif">104 : point mort</text>
+  <text x="560" y="62" text-anchor="end" fill="#7FD1B9" font-size="12" font-family="sans-serif">gain si le cours dépasse 104</text>
+  <text x="320" y="240" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">À l'échéance : gain = max(cours − 100 ; 0) − 4. À 120, le gain est de 16.</text>
+</svg>
+<figcaption>La perte de l'acheteur est plafonnée à la prime ; son gain croît avec le cours au-delà du point mort.</figcaption>
+</figure>
+
+<h2>Les quatre positions de base</h2>
+<table>
+<thead><tr><th>Position</th><th>Anticipation</th><th>Perte maximale</th><th>Gain maximal</th></tr></thead>
+<tbody>
+<tr><td>Achat de call</td><td>Hausse</td><td class="is-positive">La prime</td><td>Sans limite théorique</td></tr>
+<tr><td>Achat de put</td><td>Baisse</td><td class="is-positive">La prime</td><td>Prix d'exercice moins la prime (le cours ne descend pas sous zéro)</td></tr>
+<tr><td>Vente de call</td><td>Stabilité ou baisse</td><td class="is-negative">Sans limite théorique</td><td>La prime</td></tr>
+<tr><td>Vente de put</td><td>Stabilité ou hausse</td><td class="is-negative">Prix d'exercice moins la prime</td><td>La prime</td></tr>
+</tbody>
+</table>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Vendre des options : petits gains fréquents, grosses pertes rares</strong>
+<p>Vendre des options rapporte souvent la prime, mois après mois, ce qui donne une impression de régularité. Mais un mouvement violent peut effacer en une séance des années de primes. Ne vendez jamais d'option sans comprendre la perte maximale possible et sans couverture.</p>
+</aside>
+
+<h2>Ce qui compose le prix d'une option</h2>
 <ul>
-<li><strong>Delta (Δ)</strong> : variation du prix de l'option pour +1$ de l'actif sous-jacent. Un call à 0.5 delta gagne 0.5$ si l'action monte de 1$. Delta entre 0 et 1 pour les calls, -1 et 0 pour les puts.</li>
-<li><strong>Gamma (Γ)</strong> : vitesse de variation du Delta. Élevé pour les options proches du strike et de l'expiration.</li>
-<li><strong>Theta (Θ)</strong> : décroissance temporelle — une option perd de la valeur chaque jour qui passe (toutes choses égales par ailleurs). L'ennemi des acheteurs d'options, l'ami des vendeurs.</li>
-<li><strong>Vega (V)</strong> : sensibilité à la volatilité implicite. Une hausse de volatilité augmente la valeur des options (calls et puts).</li>
-<li><strong>Rho (ρ)</strong> : sensibilité aux taux d'intérêt. Généralement mineur sauf pour les options long terme.</li>
+<li><strong>Valeur intrinsèque</strong> : ce que rapporterait l'exercice immédiat. Un call de prix d'exercice 100 sur une action à 106 a une valeur intrinsèque de 6.</li>
+<li><strong>Valeur temps</strong> : le reste de la prime. Elle rémunère la possibilité que l'option devienne plus intéressante d'ici l'échéance. Elle est d'autant plus grande que l'échéance est lointaine et que la <strong>volatilité attendue</strong> est forte.</li>
 </ul>
- 
-<h2>Pourquoi les options sont importantes pour le trader</h2>
-<p>Même si vous ne tradez pas directement les options, leur marché vous donne des informations précieuses :</p>
- 
+<p>À l'échéance, la valeur temps a disparu : il ne reste que la valeur intrinsèque, ou rien.</p>
+
+<h2>Les « grecques »</h2>
+<table>
+<thead><tr><th>Lettre</th><th>Mesure</th><th>Lecture pratique</th></tr></thead>
+<tbody>
+<tr><td>Delta</td><td>Variation de la prime pour 1 de variation du sous-jacent</td><td>Un call de delta 0,5 gagne environ 0,50 si l'action monte de 1</td></tr>
+<tr><td>Gamma</td><td>Vitesse de variation du delta</td><td>Élevé près du prix d'exercice et de l'échéance : la position change vite</td></tr>
+<tr><td>Thêta</td><td>Perte de valeur par jour qui passe</td><td>Joue contre l'acheteur, pour le vendeur ; s'accélère à l'approche de l'échéance</td></tr>
+<tr><td>Véga</td><td>Sensibilité à la volatilité attendue</td><td>Une hausse de la volatilité attendue renchérit calls et puts</td></tr>
+<tr><td>Rhô</td><td>Sensibilité aux taux d'intérêt</td><td>Surtout notable pour les échéances longues</td></tr>
+</tbody>
+</table>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif) : avoir raison et perdre</strong>
+<p>Avant des résultats, vous achetez un call sur une action très attendue. Les résultats sont bons et l'action monte de 3 %. Pourtant, votre option baisse : avant l'annonce, l'incertitude gonflait la volatilité attendue, donc la prime. Une fois la nouvelle connue, cette volatilité retombe, et la baisse de valeur temps efface le gain lié au cours.</p>
+</aside>
+
+<h2>Deux stratégies de base</h2>
+<h3>Le call couvert</h3>
+<p>Vous détenez 100 actions à 150 $ et vendez un call de prix d'exercice 160 $ à un mois pour 2 $. Si l'action reste sous 160 $, vous gardez actions et prime (200 $). Si elle monte au-dessus, vos actions sont vendues à 160 $ : votre gain est plafonné à 10 $ de hausse plus 2 $ de prime, soit 12 $ par action. Vous échangez une partie du potentiel de hausse contre un revenu, sans réduire beaucoup le risque de baisse.</p>
+<h3>Le put de protection</h3>
+<p>Vous détenez des actions et achetez un put : en cas de chute sous le prix d'exercice, le put compense la perte. Comme une assurance, il coûte une prime, perdue si la chute n'arrive pas.</p>
+
+<h2>Turbos et warrants : les produits les plus proposés en France</h2>
+<p>Les particuliers français rencontrent souvent des <strong>warrants</strong> (proches des options, émis par des banques) et des <strong>turbos</strong>. Un turbo à barrière désactivante suit le sous-jacent avec effet de levier, mais il est <strong>définitivement désactivé</strong> si le cours touche sa barrière, même un instant : le capital investi est alors perdu en tout ou partie. Lisez toujours le document d'informations clés et repérez la barrière avant d'acheter.</p>
+
+<h2>Ce que les options disent aux autres traders</h2>
 <ul>
-<li><strong>VIX</strong> (Volatility Index) : calculé à partir des prix des options S&P 500. Mesure les anticipations de volatilité du marché pour les 30 prochains jours. C'est l'un des indicateurs de sentiment les plus suivis.</li>
-<li><strong>Put/Call Ratio</strong> : ratio des volumes d'options put vs call. Ratio élevé = sentiment bearish excessif → signal contrarian haussier. Ratio bas = euphorie → signal contrarian baissier.</li>
-<li><strong>Options Expiration (OpEx)</strong> : chaque 3ème vendredi du mois, des volumes massifs d'options expirent. Les teneurs de marché (qui ont vendu ces options) se couvrent jusqu'au dernier moment, créant souvent des mouvements inhabituels vers les "max pain" levels (le niveau où la valeur totale des options expirant est minimale).</li>
+<li><strong>Le VIX</strong> mesure la volatilité attendue sur 30 jours, calculée à partir des options sur le S&amp;P 500. Il monte quand les investisseurs achètent de la protection : on l'appelle souvent l'indice de la peur.</li>
+<li><strong>Le ratio puts/calls</strong> compare les volumes de puts et de calls. Des valeurs extrêmes signalent parfois un excès de pessimisme ou d'optimisme ; la lecture est délicate et ne donne pas de signal fiable à elle seule.</li>
+<li><strong>Les échéances mensuelles</strong>, le troisième vendredi du mois, concentrent de gros volumes. La couverture des teneurs de marché peut influencer les mouvements des indices autour de certains prix d'exercice ; l'ampleur réelle de cet effet reste débattue.</li>
 </ul>
- 
-<h2>Les stratégies optionnelles de base</h2>
- 
-<h3>Covered Call — générer des revenus sur une position longue</h3>
-<p>Vous possédez 100 actions Apple à 150$. Vous vendez un call Apple à strike 160$ expirant dans 30 jours pour encaisser 2$ de prime (200$ sur 100 actions). Si Apple monte au-dessus de 160$, vous vendez vos actions à 160$ (vous avez quand même 10$ + 2$ = 12$ de gain). Si Apple ne monte pas à 160$, vous gardez vos actions ET la prime de 200$.</p>
- 
-<h3>Protective Put — assurer une position longue</h3>
-<p>Achat d'un put sur une position long existante. Coûte de la prime mais limite les pertes à la baisse — comme une assurance.</p>
+
+<h2>Avant d'acheter une option</h2>
+<ol class="doc-steps">
+<li><strong>Écrivez votre scénario complet</strong> : direction, amplitude et <em>délai</em>. Une option exige d'avoir raison sur les trois.</li>
+<li><strong>Calculez le point mort</strong> : prix d'exercice plus prime pour un call, moins la prime pour un put.</li>
+<li><strong>Regardez la volatilité attendue</strong> : une option achetée juste avant un événement connu est souvent chère.</li>
+<li><strong>Limitez la prime totale</strong> à un montant que vous acceptez de perdre en entier.</li>
+</ol>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Une option est un pari sur le prix, le délai et la volatilité à la fois. Elle permet de limiter son risque à l'achat, mais le temps joue contre l'acheteur, et la vente expose à des pertes que la prime encaissée ne compense pas.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Vous achetez un put de prix d'exercice 50 pour une prime de 3. L'action termine à 44 à l'échéance. Quel est votre résultat ?</summary>
+<p>Valeur intrinsèque : 50 − 44 = 6. Résultat : 6 − 3 = +3 par action.</p>
+</details>
+<details>
+<summary>Un call vaut 7 alors que le cours dépasse de 5 son prix d'exercice. Que représentent les 2 restants ?</summary>
+<p>La valeur temps : la possibilité, payée par l'acheteur, que l'option prenne encore de la valeur avant l'échéance.</p>
+</details>
+<details>
+<summary>Qu'arrive-t-il à un turbo dont le sous-jacent touche la barrière quelques secondes avant de remonter ?</summary>
+<p>Il est désactivé définitivement : la remontée du cours ne le réactive pas.</p>
+</details>
