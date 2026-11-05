@@ -1,0 +1,72 @@
+<!--meta
+{
+    "slug": "multi-timeframe-bases",
+    "title": "Multi-timeframe analysis — bases",
+    "excerpt": "Utiliser plusieurs unités de temps pour définir le biais et trouver des entrées précises.",
+    "readingTime": 12,
+    "accessLevel": "free",
+    "module": "analyse-technique-classique"
+}
+-->
+<h2>Pourquoi le multi-timeframe est indispensable</h2>
+<p>Un trader qui ne regarde qu'un seul timeframe est aveugle au contexte global. Il peut prendre un trade haussier "parfait" sur le M15 sans savoir qu'en Daily il est en pleine résistance majeure — et perdre. Le multi-timeframe analysis (MTA) est la pratique de <strong>lire le marché sur plusieurs unités de temps simultanément</strong> pour s'assurer que toutes les temporalités sont alignées.</p>
+
+<h2>La structure classique Top-Down</h2>
+<p>L'approche Top-Down consiste à partir du timeframe le plus grand vers le plus petit :</p>
+
+<ol>
+<li><strong>Timeframe de biais (HTF)</strong> : Weekly ou Daily → définir la tendance principale, identifier les niveaux clés majeurs</li>
+<li><strong>Timeframe intermédiaire</strong> : H4 ou H1 → confirmer la structure, identifier les zones d'entrée potentielles</li>
+<li><strong>Timeframe d'exécution (LTF)</strong> : M15 ou M5 → trouver l'entrée précise, placer SL et TP</li>
+</ol>
+
+<blockquote>Le timeframe supérieur définit le biais (haussier ou baissier). Le timeframe intermédiaire valide le contexte. Le timeframe d'exécution donne l'entrée précise. Ne jamais trader à contre-biais du timeframe supérieur sauf en cas de confluences exceptionnelles.</blockquote>
+
+<h2>Correspondance entre timeframes</h2>
+<p>Règle générale : le timeframe d'exécution doit être <strong>4 à 6 fois plus petit</strong> que le timeframe intermédiaire :</p>
+
+<ul>
+<li>Swing trader (jours/semaines) : biais Weekly → contexte Daily → entrée H4</li>
+<li>Day trader (séance) : biais Daily → contexte H4 → entrée H1/M30</li>
+<li>Intraday scalper : biais H4 → contexte H1 → entrée M15/M5</li>
+<li>Ultra-scalper : biais H1 → contexte M15 → entrée M1/M5</li>
+</ul>
+
+<h2>Le concept de biais directionnel</h2>
+<p>Avant de placer le moindre trade, vous devez répondre à une question fondamentale : <em>"Quel est le biais du marché sur mon timeframe de référence ?"</em></p>
+
+<p>En ICT, le biais se détermine à partir de :</p>
+<ul>
+<li>La structure de marché (HH/HL = haussier, LH/LL = baissier)</li>
+<li>La position par rapport aux niveaux clés (premium ou discount)</li>
+<li>L'état de la liquidité (quels niveaux ont été pris, lesquels restent)</li>
+<li>Le contexte macro (DXY pour les paires USD, données économiques)</li>
+</ul>
+
+<h2>Exemple pratique MTA en ICT</h2>
+<p>Voici comment s'applique le multi-timeframe dans une approche ICT :</p>
+
+<ul>
+<li><strong>Daily</strong> : tendance haussière (HH/HL), prix dans zone discount (sous l'equilibrium du range), FVG bullish non mitigé à 1.2850 sur EUR/USD</li>
+<li><strong>H4</strong> : BOS haussier récent, retrace vers le FVG daily, Order Block bullish H4 à 1.2855</li>
+<li><strong>M15</strong> : CHoCH haussier sur M15, bougie d'entrée sur l'OB H4, Stop-Loss sous le swing low M15</li>
+</ul>
+
+<p>Tous les timeframes sont alignés haussiers → trade à haute probabilité.</p>
+
+<h2>Les erreurs fréquentes en MTA</h2>
+<ul>
+<li><strong>Biais switching</strong> : changer de biais au milieu d'un trade parce qu'un LTF a fait un signal adverse. Le biais HTF prime toujours.</li>
+<li><strong>Trop de timeframes</strong> : analyser 6 timeframes différents crée de la confusion. 3 suffisent.</li>
+<li><strong>Ignorer le HTF</strong> : se concentrer uniquement sur le LTF pour l'excitation des signaux rapides — sans le contexte, ces signaux sont du bruit.</li>
+<li><strong>Forcer la confluence</strong> : interpréter chaque timeframe pour qu'il confirme son biais préexistant — le confirmation bias en action.</li>
+</ul>
+
+<h2>Outil pratique — la checklist MTA avant d'entrer</h2>
+<ul>
+<li>Quelle est la tendance sur le Daily/Weekly ?</li>
+<li>Où est le prix par rapport aux niveaux majeurs H4 ?</li>
+<li>Y a-t-il un FVG ou OB non mitigé dans la direction du biais ?</li>
+<li>Le LTF montre-t-il un signal d'entrée dans la direction du HTF ?</li>
+<li>Mon SL est-il logiquement placé et correspond-il à mon risk management ?</li>
+</ul>

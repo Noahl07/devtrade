@@ -1,0 +1,76 @@
+<!--meta
+{
+    "slug": "premium-and-discount-zones-d-interet-optimal",
+    "title": "Premium & Discount — zones d'intérêt optimal",
+    "excerpt": "Equilibrium, zones premium/discount et leur application pour définir les entrées ICT.",
+    "readingTime": 10,
+    "accessLevel": "free",
+    "module": "ict-inner-circle-trader"
+}
+-->
+<h2>Le concept Premium &amp; Discount</h2>
+<p>En ICT, tout se résume à une règle simple : <strong>acheter dans les zones discount, vendre dans les zones premium</strong>. Ce concept est formalisé à travers les niveaux de Fibonacci appliqués à tout range identifiable.</p>
+ 
+<h2>L'Equilibrium — le 50% du range</h2>
+<p>Pour tout range entre un swing low et un swing high, le niveau à <strong>50% (0.5 Fibonacci)</strong> est appelé l'Equilibrium — la valeur équitable de l'actif.</p>
+ 
+<svg width="100%" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:500px;margin:1.5rem auto">
+  <!-- Main range -->
+  <rect x="80" y="30" width="360" height="200" rx="4" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+ 
+  <!-- Premium zone -->
+  <rect x="80" y="30" width="360" height="100" rx="4" fill="rgba(224,85,85,0.07)"/>
+  <text x="260" y="65" text-anchor="middle" fill="#e05555" font-size="13" font-family="sans-serif" font-weight="bold">ZONE PREMIUM</text>
+  <text x="260" y="83" text-anchor="middle" fill="rgba(224,85,85,0.7)" font-size="11" font-family="sans-serif">Vendre ici — chercher OB &amp; FVG bearish</text>
+ 
+  <!-- OTE Sell zone -->
+  <rect x="80" y="88" width="360" height="42" rx="2" fill="rgba(224,85,85,0.12)" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="450" y="112" text-anchor="start" fill="#e05555" font-size="10" font-family="sans-serif">OTE Sell</text>
+  <text x="450" y="124" text-anchor="start" fill="rgba(224,85,85,0.6)" font-size="9" font-family="sans-serif">62–79%</text>
+ 
+  <!-- Equilibrium line -->
+  <line x1="80" y1="130" x2="440" y2="130" stroke="#D4A94B" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="450" y="134" fill="#D4A94B" font-size="11" font-family="sans-serif" font-weight="bold">EQ 50%</text>
+ 
+  <!-- Discount zone -->
+  <rect x="80" y="130" width="360" height="100" rx="0" fill="rgba(62,180,137,0.07)"/>
+  <text x="260" y="165" text-anchor="middle" fill="#3EB489" font-size="13" font-family="sans-serif" font-weight="bold">ZONE DISCOUNT</text>
+  <text x="260" y="183" text-anchor="middle" fill="rgba(62,180,137,0.7)" font-size="11" font-family="sans-serif">Acheter ici — chercher OB &amp; FVG bullish</text>
+ 
+  <!-- OTE Buy zone -->
+  <rect x="80" y="130" width="360" height="40" rx="2" fill="rgba(62,180,137,0.12)" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="450" y="152" text-anchor="start" fill="#3EB489" font-size="10" font-family="sans-serif">OTE Buy</text>
+  <text x="450" y="164" text-anchor="start" fill="rgba(62,180,137,0.6)" font-size="9" font-family="sans-serif">62–79%</text>
+ 
+  <!-- Fib labels left -->
+  <text x="75" y="34" text-anchor="end" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">1.0</text>
+  <text x="75" y="92" text-anchor="end" fill="rgba(224,85,85,0.5)" font-size="9" font-family="sans-serif">0.62</text>
+  <text x="75" y="134" text-anchor="end" fill="#D4A94B" font-size="9" font-family="sans-serif">0.50</text>
+  <text x="75" y="170" text-anchor="end" fill="rgba(62,180,137,0.5)" font-size="9" font-family="sans-serif">0.38</text>
+  <text x="75" y="230" text-anchor="end" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">0.0</text>
+</svg>
+ 
+<h2>Règles d'application</h2>
+<ul>
+<li><strong>Prix au-dessus de l'EQ (zone premium)</strong> : contexte de vente. Cherchez les OB bearish, FVG bearish.</li>
+<li><strong>Prix en dessous de l'EQ (zone discount)</strong> : contexte d'achat. Cherchez les OB bullish, FVG bullish.</li>
+</ul>
+ 
+<h2>L'OTE — Optimal Trade Entry</h2>
+<p>L'<strong>OTE</strong> est la zone de retracement idéale pour entrer. Elle correspond aux niveaux Fibonacci <strong>62%-79%</strong> d'un swing :</p>
+<ul>
+<li>En uptrend : OTE bullish au retracement 62%-79% d'un swing haussier — zone discount optimale</li>
+<li>En downtrend : OTE bearish au retracement 62%-79% d'un swing baissier — zone premium optimale</li>
+</ul>
+<p>L'OTE est d'autant plus puissant quand il coïncide avec un Order Block et/ou un Fair Value Gap.</p>
+ 
+<h2>Application pratique</h2>
+<ol>
+<li>Identifiez le swing high et swing low les plus récents</li>
+<li>Tracez un Fibonacci retracement (0 au low, 1 au high)</li>
+<li>Le 0.5 = Equilibrium — votre frontière premium/discount</li>
+<li>Prix sous le 0.5 → chercher des achats dans la zone 0.62-0.79 (OTE discount)</li>
+<li>Prix au-dessus du 0.5 → chercher des ventes dans la zone 0.38-0.21 (OTE premium inversé)</li>
+</ol>
+ 
+<blockquote>Le setup idéal ICT : prix en zone discount sur le Daily + retrace sur OTE H4 + OB bullish M15 dans la zone discount. Toutes les confluences alignées = haute probabilité.</blockquote>

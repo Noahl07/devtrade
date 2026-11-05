@@ -1,0 +1,122 @@
+<!--meta
+{
+    "slug": "divergences-rsi-et-macd-quand-l-elan-trahit-le-prix",
+    "title": "Divergences RSI et MACD — quand l'élan trahit le prix",
+    "excerpt": "Divergences régulières et cachées sur RSI et MACD — apprendre à détecter les signes précurseurs de retournement et de continuation avant qu'ils n'apparaissent sur le graphique de prix.",
+    "readingTime": 16,
+    "accessLevel": "free",
+    "module": "analyse-technique-classique"
+}
+-->
+<h2>La divergence — quand le prix et l'élan racontent des histoires différentes</h2>
+<p>Une divergence se produit quand le <strong>prix</strong> et un <strong>oscillateur</strong> (RSI, MACD) évoluent dans des directions opposées. C'est l'un des signaux les plus précieux en analyse technique car il indique souvent un affaiblissement du mouvement en cours — avant que ce retournement ne soit visible sur le graphique de prix lui-même.</p>
+ 
+<p>Il existe deux grandes familles de divergences :</p>
+<ul>
+<li><strong>Divergences régulières</strong> : signalent un retournement de tendance</li>
+<li><strong>Divergences cachées</strong> : signalent une continuation de tendance</li>
+</ul>
+ 
+<h2>Les divergences régulières — signaux de retournement</h2>
+ 
+<h3>Divergence Baissière Régulière</h3>
+<p>Le prix fait des <strong>plus hauts croissants</strong> (Higher Highs) mais l'oscillateur fait des <strong>plus hauts décroissants</strong> (Lower Highs). Signal : l'élan haussier s'épuise malgré la progression du prix. Les institutions distribuent en silence pendant que le prix monte encore.</p>
+ 
+<svg viewBox="0 0 650 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:650px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
+  <text x="325" y="16" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Divergence Baissière Régulière — Prix ↗ mais RSI ↘</text>
+  <!-- PRIX - section haute -->
+  <text x="40" y="35" fill="#6b7280" font-size="10" font-family="sans-serif">PRIX</text>
+  <polyline points="50,90 100,80 150,85 200,65 250,70 300,50 350,55" fill="none" stroke="#5b9bd5" stroke-width="2"/>
+  <!-- HH1 -->
+  <circle cx="200" cy="65" r="4" fill="#e05555"/>
+  <text x="200" y="58" fill="#e05555" font-size="9" font-family="sans-serif" text-anchor="middle">HH1</text>
+  <!-- HH2 -->
+  <circle cx="300" cy="50" r="4" fill="#e05555"/>
+  <text x="300" y="43" fill="#e05555" font-size="9" font-family="sans-serif" text-anchor="middle">HH2</text>
+  <!-- Ligne prix HH1-HH2 -->
+  <line x1="200" y1="65" x2="300" y2="50" stroke="#e05555" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <!-- RSI - section basse -->
+  <text x="40" y="125" fill="#6b7280" font-size="10" font-family="sans-serif">RSI</text>
+  <line x1="50" y1="150" x2="620" y2="150" stroke="#2d3748" stroke-width="0.5"/>
+  <polyline points="50,155 100,148 150,152 200,135 250,140 300,148 350,152" fill="none" stroke="#3EB489" stroke-width="2"/>
+  <!-- RSI point 1 -->
+  <circle cx="200" cy="135" r="4" fill="#3EB489"/>
+  <text x="200" y="128" fill="#3EB489" font-size="9" font-family="sans-serif" text-anchor="middle">RSI H1</text>
+  <!-- RSI point 2 (plus bas) -->
+  <circle cx="300" cy="148" r="4" fill="#3EB489"/>
+  <text x="300" y="141" fill="#3EB489" font-size="9" font-family="sans-serif" text-anchor="middle">RSI H2</text>
+  <!-- Ligne RSI -->
+  <line x1="200" y1="135" x2="300" y2="148" stroke="#3EB489" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <!-- Flèche signal baissier -->
+  <text x="390" y="75" fill="#e05555" font-size="12" font-family="sans-serif">↓ Signal</text>
+  <text x="390" y="90" fill="#e05555" font-size="10" font-family="sans-serif">Baissier</text>
+  <!-- Annotation -->
+  <text x="325" y="190" fill="#9ca3af" font-size="9" font-family="sans-serif" text-anchor="middle">Prix monte encore mais le RSI fait des sommets de plus en plus bas → affaiblissement de l'élan</text>
+</svg>
+ 
+<h3>Divergence Haussière Régulière</h3>
+<p>Le prix fait des <strong>plus bas décroissants</strong> (Lower Lows) mais l'oscillateur fait des <strong>plus bas croissants</strong> (Higher Lows). Signal : la pression vendeuse s'épuise malgré la baisse du prix. Les institutions accumulent discrètement.</p>
+ 
+<h2>Les divergences cachées — signaux de continuation</h2>
+<p>Les divergences cachées sont moins connues mais très utiles pour confirmer la continuation d'une tendance.</p>
+ 
+<h3>Divergence Haussière Cachée</h3>
+<p>En tendance haussière : le prix fait un <strong>plus bas plus haut</strong> (Higher Low) mais l'oscillateur fait un <strong>plus bas plus bas</strong> (Lower Low). C'est un signal de continuation haussière — le repli est temporaire, la tendance va reprendre.</p>
+ 
+<h3>Divergence Baissière Cachée</h3>
+<p>En tendance baissière : le prix fait un <strong>plus haut plus bas</strong> (Lower High) mais l'oscillateur fait un <strong>plus haut plus haut</strong> (Higher High). Signal de continuation baissière.</p>
+ 
+<svg viewBox="0 0 650 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:650px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
+  <text x="325" y="16" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Les 4 types de divergences — résumé visuel</text>
+  <!-- Régulière baissière -->
+  <text x="80" y="35" fill="#e05555" font-size="10" font-family="sans-serif" text-anchor="middle">Rég. Baissière</text>
+  <polyline points="40,60 80,48 120,52" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
+  <polyline points="40,80 80,75 120,78" fill="none" stroke="#3EB489" stroke-width="1.5"/>
+  <line x1="40" y1="60" x2="120" y2="52" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="40" y1="80" x2="120" y2="78" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="80" y="98" fill="#6b7280" font-size="8" font-family="sans-serif" text-anchor="middle">Prix ↗ / RSI ↘</text>
+  <!-- Régulière haussière -->
+  <text x="230" y="35" fill="#3EB489" font-size="10" font-family="sans-serif" text-anchor="middle">Rég. Haussière</text>
+  <polyline points="190,75 230,82 270,78" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
+  <polyline points="190,60 230,65 270,63" fill="none" stroke="#3EB489" stroke-width="1.5"/>
+  <line x1="190" y1="75" x2="270" y2="78" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="190" y1="60" x2="270" y2="63" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="230" y="98" fill="#6b7280" font-size="8" font-family="sans-serif" text-anchor="middle">Prix ↘ / RSI ↗</text>
+  <!-- Cachée haussière -->
+  <text x="400" y="35" fill="#3EB489" font-size="10" font-family="sans-serif" text-anchor="middle">Cachée Haussière</text>
+  <polyline points="360,75 400,68 440,72" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
+  <polyline points="360,60 400,66 440,64" fill="none" stroke="#3EB489" stroke-width="1.5"/>
+  <line x1="360" y1="75" x2="440" y2="72" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="360" y1="60" x2="440" y2="64" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="400" y="98" fill="#6b7280" font-size="8" font-family="sans-serif" text-anchor="middle">Prix HL / RSI LL</text>
+  <!-- Cachée baissière -->
+  <text x="560" y="35" fill="#e05555" font-size="10" font-family="sans-serif" text-anchor="middle">Cachée Baissière</text>
+  <polyline points="520,55 560,62 600,58" fill="none" stroke="#5b9bd5" stroke-width="1.5"/>
+  <polyline points="520,75 560,68 600,72" fill="none" stroke="#3EB489" stroke-width="1.5"/>
+  <line x1="520" y1="55" x2="600" y2="58" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="520" y1="75" x2="600" y2="72" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="560" y="98" fill="#6b7280" font-size="8" font-family="sans-serif" text-anchor="middle">Prix LH / RSI HH</text>
+  <!-- Légende -->
+  <line x1="200" y1="125" x2="225" y2="125" stroke="#5b9bd5" stroke-width="1.5"/>
+  <text x="230" y="129" fill="#5b9bd5" font-size="9" font-family="sans-serif">Prix</text>
+  <line x1="270" y1="125" x2="295" y2="125" stroke="#3EB489" stroke-width="1.5"/>
+  <text x="300" y="129" fill="#3EB489" font-size="9" font-family="sans-serif">Oscillateur</text>
+  <text x="325" y="155" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Rég. = Retournement | Cachée = Continuation</text>
+</svg>
+ 
+<h2>Divergences sur RSI vs MACD — quelle différence ?</h2>
+<p><strong>RSI (Relative Strength Index) :</strong> Mesure la vitesse et la magnitude des mouvements de prix. Très réactif, meilleur pour les divergences sur des timeframes courts (M15, H1). Le RSI diverge tôt — parfois trop tôt.</p>
+ 
+<p><strong>MACD (Moving Average Convergence Divergence) :</strong> Mesure la convergence/divergence de deux moyennes mobiles exponentielles. Plus lent et plus stable que le RSI. Les divergences MACD sont souvent plus fiables sur H4 et Daily.</p>
+ 
+<p><strong>Règle pratique :</strong> Chercher une divergence sur les deux oscillateurs simultanément pour les signaux les plus forts. Divergence RSI + Divergence MACD + niveau de prix clé = confluence puissante.</p>
+ 
+<h2>Les erreurs classiques avec les divergences</h2>
+<ul>
+<li><strong>Trader la divergence immédiatement :</strong> Une divergence peut durer de nombreuses bougies avant de se matérialiser. Attendre une confirmation (chandelier de retournement, BOS/CHoCH sur un timeframe inférieur)</li>
+<li><strong>Ignorer la tendance dominante :</strong> Les divergences baissières en forte tendance haussière échouent souvent. Privilégier les divergences dans le sens du retournement de tendance</li>
+<li><strong>Comparer les mauvais points :</strong> Les deux points de comparaison doivent être des vrais swing highs/lows clairement identifiables</li>
+<li><strong>Utiliser sans confluence :</strong> Une divergence seule n'est pas un signal de trading — elle doit être confirmée par le contexte prix</li>
+</ul>
+ 
+<blockquote>La divergence est un outil de timing, pas de direction. Elle vous dit "quelque chose va changer" mais c'est l'analyse de la structure de prix qui vous dit "dans quelle direction".</blockquote>
