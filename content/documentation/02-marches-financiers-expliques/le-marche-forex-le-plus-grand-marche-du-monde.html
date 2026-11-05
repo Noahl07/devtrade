@@ -39,21 +39,22 @@
 
 <h2>Lire une paire de devises</h2>
 <p>Une paire s'écrit <strong>devise de base / devise de cotation</strong>. Le prix indique combien d'unités de la seconde il faut pour une unité de la première.</p>
-<figure>
-<svg viewBox="0 0 640 200" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>Lecture de la paire EUR/USD</title>
-  <text x="320" y="60" text-anchor="middle" fill="#F5F1E6" font-size="34" font-family="sans-serif" font-weight="bold">EUR / USD = 1,0850</text>
-  <line x1="180" y1="72" x2="180" y2="108" stroke="#4FB38F" stroke-width="1.5"/>
-  <text x="180" y="128" text-anchor="middle" fill="#7FD1B9" font-size="13" font-family="sans-serif" font-weight="bold">Devise de base</text>
-  <text x="180" y="146" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">ce que vous achetez ou vendez</text>
-  <line x1="300" y1="72" x2="300" y2="108" stroke="#C8A45C" stroke-width="1.5"/>
-  <text x="300" y="128" text-anchor="middle" fill="#E2CB91" font-size="13" font-family="sans-serif" font-weight="bold">Devise de cotation</text>
-  <text x="300" y="146" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">celle du prix</text>
-  <line x1="460" y1="72" x2="460" y2="108" stroke="rgba(150,170,220,0.8)" stroke-width="1.5"/>
-  <text x="460" y="128" text-anchor="middle" fill="#B9C6E6" font-size="13" font-family="sans-serif" font-weight="bold">Prix</text>
-  <text x="460" y="146" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">1 euro = 1,0850 dollar</text>
-  <text x="320" y="186" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Si le prix monte, l'euro s'apprécie contre le dollar. Acheter la paire, c'est parier sur cette hausse.</text>
-</svg>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" aria-hidden="true">
+  <line x1="180" y1="72" x2="180" y2="108" stroke="#4FB38F" stroke-width="1.5" />
+  <line x1="300" y1="72" x2="300" y2="108" stroke="#C8A45C" stroke-width="1.5" />
+  <line x1="460" y1="72" x2="460" y2="108" stroke="rgba(150,170,220,0.8)" stroke-width="1.5" />
+  </svg>
+<span class="doc-label doc-label--xxl doc-label--strong doc-label--bright" style="left:50%;top:24.05%">EUR / USD = 1,0850</span>
+<span class="doc-label doc-label--lg doc-label--strong is-positive" style="left:28.12%;top:61.72%">Devise de base</span>
+<span class="doc-label" style="left:28.12%;top:70.9%">ce que vous échangez</span>
+<span class="doc-label doc-label--lg doc-label--strong is-accent" style="left:46.88%;top:61.72%">Devise de cotation</span>
+<span class="doc-label" style="left:46.88%;top:70.9%">celle du prix</span>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:71.88%;top:61.72%">Prix</span>
+<span class="doc-label" style="left:71.88%;top:70.9%">1 euro = 1,0850 dollar</span>
+<span class="doc-label is-muted" style="left:50%;top:90.9%">Si le prix monte, l'euro s'apprécie contre le dollar. Acheter la paire, c'est parier sur cette hausse.</span>
+</div>
 <figcaption>La première devise est celle que l'on achète ou vend ; le prix est exprimé dans la seconde.</figcaption>
 </figure>
 

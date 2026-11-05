@@ -23,37 +23,43 @@
 <p>Le marché des changes fonctionne 24 heures sur 24, cinq jours sur sept, mais l'activité suit le soleil : elle dépend des grandes places financières ouvertes à un instant donné. Quand Tokyo est seule, les volumes sont faibles et les prix évoluent souvent dans une fourchette étroite. Quand Londres ouvre, puis quand New York la rejoint, les volumes et la volatilité augmentent nettement.</p>
 <p>La méthode ICT (<em>Inner Circle Trader</em>, popularisée par Michael J. Huddleston) en tire une règle simple : concentrer son attention sur quelques <strong>fenêtres horaires précises</strong>, les Kill Zones, et rester à l'écart le reste du temps. L'idée n'est pas que le prix « obéit » à une horloge, mais que les grands flux d'ordres arrivent à des moments prévisibles : ouvertures de session, publications économiques, fixings.</p>
 
-<figure>
-<svg viewBox="0 0 640 210" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>Les Kill Zones sur 24 heures, en heure de Paris</title>
-  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">HEURE DE PARIS (HORS SEMAINES DE DÉCALAGE)</text>
-  <rect x="20" y="70" width="600" height="44" rx="6" fill="rgba(245,241,230,0.04)" stroke="rgba(245,241,230,0.12)"/>
-  <rect x="70" y="70" width="100" height="44" rx="6" fill="rgba(120,140,190,0.18)" stroke="rgba(150,170,220,0.55)"/>
-  <text x="120" y="89" text-anchor="middle" fill="#B9C6E6" font-size="12.5" font-family="sans-serif" font-weight="bold">ASIE</text>
-  <text x="120" y="104" text-anchor="middle" fill="#B9C6E6" font-size="12" font-family="sans-serif">2 h – 6 h</text>
-  <rect x="220" y="62" width="75" height="60" rx="6" fill="rgba(46,139,115,0.25)" stroke="#2E8B73" stroke-width="1.5"/>
-  <text x="257" y="86" text-anchor="middle" fill="#7FD1B9" font-size="12.5" font-family="sans-serif" font-weight="bold">LONDRES</text>
-  <text x="257" y="101" text-anchor="middle" fill="#7FD1B9" font-size="12" font-family="sans-serif">8 h – 11 h</text>
-  <rect x="345" y="62" width="75" height="60" rx="6" fill="rgba(200,164,92,0.22)" stroke="#C8A45C" stroke-width="1.5"/>
-  <text x="382" y="86" text-anchor="middle" fill="#E2CB91" font-size="12.5" font-family="sans-serif" font-weight="bold">NEW YORK</text>
-  <text x="382" y="101" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif">13 h – 16 h</text>
-  <rect x="420" y="70" width="50" height="44" rx="6" fill="rgba(245,241,230,0.06)" stroke="rgba(245,241,230,0.3)" stroke-dasharray="3 3"/>
-  <text x="445" y="89" text-anchor="middle" fill="#D9D3C3" font-size="10.5" font-family="sans-serif" font-weight="bold">CLÔTURE</text>
-  <text x="445" y="103" text-anchor="middle" fill="#D9D3C3" font-size="10.5" font-family="sans-serif">LONDRES</text>
-  <rect x="245" y="132" width="25" height="10" rx="3" fill="#C8A45C"/>
-  <rect x="420" y="132" width="25" height="10" rx="3" fill="#C8A45C"/>
-  <rect x="520" y="132" width="25" height="10" rx="3" fill="#C8A45C"/>
-  <text x="20" y="141" fill="#A8B3AE" font-size="12" font-family="sans-serif">Silver Bullet</text>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 210" aria-hidden="true">
+  <rect x="20" y="70" width="600" height="44" rx="6" fill="rgba(245,241,230,0.04)" stroke="rgba(245,241,230,0.12)" />
+  <rect x="70" y="70" width="100" height="44" rx="6" fill="rgba(120,140,190,0.18)" stroke="rgba(150,170,220,0.55)" />
+  <rect x="220" y="62" width="75" height="60" rx="6" fill="rgba(46,139,115,0.25)" stroke="#2E8B73" stroke-width="1.5" />
+  <rect x="345" y="62" width="75" height="60" rx="6" fill="rgba(200,164,92,0.22)" stroke="#C8A45C" stroke-width="1.5" />
+  <rect x="420" y="70" width="50" height="44" rx="6" fill="rgba(245,241,230,0.06)" stroke="rgba(245,241,230,0.3)" stroke-dasharray="3 3" />
+  <rect x="245" y="132" width="25" height="10" rx="3" fill="#C8A45C" />
+  <rect x="420" y="132" width="25" height="10" rx="3" fill="#C8A45C" />
+  <rect x="520" y="132" width="25" height="10" rx="3" fill="#C8A45C" />
   <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="middle">
-    <text x="20" y="168">0 h</text><text x="120" y="168">4 h</text><text x="220" y="168">8 h</text><text x="320" y="168">12 h</text>
-    <text x="420" y="168">16 h</text><text x="520" y="168">20 h</text><text x="620" y="168">24 h</text>
-  </g>
+    </g>
   <g stroke="rgba(245,241,230,0.15)">
-    <line x1="20" y1="150" x2="20" y2="156"/><line x1="120" y1="150" x2="120" y2="156"/><line x1="220" y1="150" x2="220" y2="156"/>
-    <line x1="320" y1="150" x2="320" y2="156"/><line x1="420" y1="150" x2="420" y2="156"/><line x1="520" y1="150" x2="520" y2="156"/><line x1="620" y1="150" x2="620" y2="156"/>
+    <line x1="20" y1="150" x2="20" y2="156" /><line x1="120" y1="150" x2="120" y2="156" /><line x1="220" y1="150" x2="220" y2="156" />
+    <line x1="320" y1="150" x2="320" y2="156" /><line x1="420" y1="150" x2="420" y2="156" /><line x1="520" y1="150" x2="520" y2="156" /><line x1="620" y1="150" x2="620" y2="156" />
   </g>
-  <text x="320" y="196" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Échelle : 25 px par heure. Les fenêtres dorées en bas sont les trois Silver Bullet.</text>
-</svg>
+  </svg>
+<span class="doc-label doc-label--start doc-label--caps is-muted" style="left:3.12%;top:8.39%">HEURE DE PARIS (HORS SEMAINES DE DÉCALAGE)</span>
+<span class="doc-label doc-label--strong doc-label--info" style="left:18.75%;top:40.3%">ASIE</span>
+<span class="doc-label doc-label--info" style="left:18.75%;top:47.52%">2 h – 6 h</span>
+<span class="doc-label doc-label--strong is-positive" style="left:40.16%;top:38.87%">LONDRES</span>
+<span class="doc-label is-positive" style="left:40.16%;top:46.1%">8 h – 11 h</span>
+<span class="doc-label doc-label--strong is-accent" style="left:59.69%;top:38.87%">NEW YORK</span>
+<span class="doc-label is-accent" style="left:59.69%;top:46.1%">13 h – 16 h</span>
+<span class="doc-label doc-label--sm doc-label--strong" style="left:69.53%;top:40.63%">CLÔTURE</span>
+<span class="doc-label doc-label--sm" style="left:69.53%;top:47.3%">LONDRES</span>
+<span class="doc-label doc-label--start is-muted" style="left:3.12%;top:65.14%">Silver Bullet</span>
+<span class="doc-label is-muted" style="left:3.12%;top:78%">0 h</span>
+<span class="doc-label is-muted" style="left:18.75%;top:78%">4 h</span>
+<span class="doc-label is-muted" style="left:34.38%;top:78%">8 h</span>
+<span class="doc-label is-muted" style="left:50%;top:78%">12 h</span>
+<span class="doc-label is-muted" style="left:65.62%;top:78%">16 h</span>
+<span class="doc-label is-muted" style="left:81.25%;top:78%">20 h</span>
+<span class="doc-label is-muted" style="left:96.88%;top:78%">24 h</span>
+<span class="doc-label is-muted" style="left:50%;top:91.33%">Échelle : 25 px par heure. Les fenêtres dorées en bas sont les trois Silver Bullet.</span>
+</div>
 <figcaption>Les Kill Zones de la méthode ICT, placées sur une journée en heure de Paris (écart habituel de 6 heures avec New York).</figcaption>
 </figure>
 

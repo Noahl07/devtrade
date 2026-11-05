@@ -38,21 +38,22 @@
 <p>Sur les actions américaines, un contrat porte en général sur 100 actions : une prime affichée à 4 $ coûte 400 $ par contrat.</p>
 
 <h2>Le profil de gain d'un call</h2>
-<figure>
-<svg viewBox="0 0 640 250" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>Gain ou perte à l'échéance d'un call de prix d'exercice 100 acheté 4</title>
-  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">ACHAT D'UN CALL · PRIX D'EXERCICE 100 · PRIME 4</text>
-  <line x1="60" y1="150" x2="600" y2="150" stroke="rgba(245,241,230,0.3)"/>
-  <text x="52" y="154" text-anchor="end" fill="#A8B3AE" font-size="12" font-family="sans-serif">0</text>
-  <polyline points="60,174 330,174 600,30" fill="none" stroke="#C8A45C" stroke-width="2.5"/>
-  <line x1="330" y1="40" x2="330" y2="190" stroke="rgba(245,241,230,0.2)" stroke-dasharray="3 3"/>
-  <line x1="375" y1="40" x2="375" y2="190" stroke="rgba(79,179,143,0.5)" stroke-dasharray="3 3"/>
-  <text x="195" y="196" text-anchor="middle" fill="#E89A90" font-size="12" font-family="sans-serif">perte maximale : la prime (−4)</text>
-  <text x="330" y="212" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">100</text>
-  <text x="380" y="212" fill="#7FD1B9" font-size="12" font-family="sans-serif">104 : point mort</text>
-  <text x="560" y="62" text-anchor="end" fill="#7FD1B9" font-size="12" font-family="sans-serif">gain si le cours dépasse 104</text>
-  <text x="320" y="240" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">À l'échéance : gain = max(cours − 100 ; 0) − 4. À 120, le gain est de 16.</text>
-</svg>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
+  <line x1="60" y1="150" x2="600" y2="150" stroke="rgba(245,241,230,0.3)" />
+  <polyline points="60,174 330,174 600,30" fill="none" stroke="#C8A45C" stroke-width="2.5" />
+  <line x1="330" y1="40" x2="330" y2="190" stroke="rgba(245,241,230,0.2)" stroke-dasharray="3 3" />
+  <line x1="375" y1="40" x2="375" y2="190" stroke="rgba(79,179,143,0.5)" stroke-dasharray="3 3" />
+  </svg>
+<span class="doc-label doc-label--start doc-label--caps is-muted" style="left:3.12%;top:7.05%">ACHAT D'UN CALL · PRIX D'EXERCICE 100 · PRIME 4</span>
+<span class="doc-label doc-label--end is-muted" style="left:8.12%;top:59.92%">0</span>
+<span class="doc-label is-negative" style="left:30.47%;top:76.72%">perte maximale : la prime (−4)</span>
+<span class="doc-label" style="left:51.56%;top:83.12%">100</span>
+<span class="doc-label doc-label--start is-positive" style="left:59.38%;top:83.12%">104 : point mort</span>
+<span class="doc-label doc-label--end is-positive" style="left:87.5%;top:23.12%">gain si le cours dépasse 104</span>
+<span class="doc-label is-muted" style="left:50%;top:94.32%">À l'échéance : gain = max(cours − 100 ; 0) − 4. À 120, le gain est de 16.</span>
+</div>
 <figcaption>La perte de l'acheteur est plafonnée à la prime ; son gain croît avec le cours au-delà du point mort.</figcaption>
 </figure>
 
