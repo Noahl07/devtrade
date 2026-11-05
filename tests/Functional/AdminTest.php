@@ -9,10 +9,12 @@ use App\Entity\DocumentCategory;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Entity\WaitlistEntry;
+use App\Service\DocumentationBundle;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /** Back-office refondu : accès, rendu, validation, réordonnancement, aperçu, liste d'attente. */
 final class AdminTest extends WebTestCase
@@ -39,7 +41,7 @@ final class AdminTest extends WebTestCase
     /** @return iterable<string, array{string}> */
     public static function adminPages(): iterable
     {
-        foreach (['/admin', '/admin/categories', '/admin/categories/nouvelle', '/admin/documents', '/admin/documents/nouveau',
+        foreach (['/admin', '/admin/categories', '/admin/categories/nouvelle', '/admin/documents', '/admin/documents/nouveau', '/admin/documents/import',
             '/admin/projets', '/admin/projets/nouveau', '/admin/utilisateurs', '/admin/waitlist'] as $url) {
             yield $url => [$url];
         }
@@ -169,6 +171,96 @@ final class AdminTest extends WebTestCase
         self::assertResponseRedirects('/admin/waitlist');
         $this->em->clear();
         self::assertNull($this->em->find(WaitlistEntry::class, $entry->getId()));
+    }
+
+    // ── Import du lot de documentation ──────────────────────────────────────
+
+    public function testImportShowsThePlanThenAppliesItWithoutDeletingAnything(): void
+    {
+        $this->loginAdmin();
+        $category = $this->category('import');
+        $existing = $this->document($category, 'existant');
+        $untouched = $this->document($category, 'hors-lot');
+
+        $this->uploadBundle($this->bundleFile($category, $existing));
+        self::assertResponseIsSuccessful();
+        $page = $this->client->getCrawler();
+        self::assertSame('1', trim($page->filter('tr:contains("Articles créés") td')->text()));
+        self::assertSame('1', trim($page->filter('tr:contains("Articles mis à jour") td')->text()));
+        self::assertStringContainsString('hors-lot', $page->filter('details')->last()->text(), 'Les articles absents du lot sont signalés');
+
+        // Rien n'est écrit avant la confirmation.
+        $this->em->clear();
+        self::assertSame('existant', $this->em->find(Document::class, $existing->getId())->getTitle());
+
+        $this->client->submit($page->filter('form[action="/admin/documents/import/confirmer"]')->form());
+        self::assertResponseRedirects('/admin/documents');
+        $this->em->clear();
+        $updated = $this->em->find(Document::class, $existing->getId());
+        self::assertSame('Titre réécrit', $updated->getTitle());
+        self::assertSame(2, $updated->getPosition());
+        $created = $this->em->getRepository(Document::class)->findOneBy(['slug' => "nouveau-{$this->suffix}"]);
+        self::assertNotNull($created);
+        self::assertTrue($created->isPublished());
+        self::assertNotNull($this->em->find(Document::class, $untouched->getId()), 'Aucune suppression');
+        self::assertSame(7, $this->em->find(DocumentCategory::class, $category->getId())->getPosition());
+    }
+
+    public function testImportRequiresCsrfAndRefusesForeignFiles(): void
+    {
+        $this->loginAdmin();
+        $category = $this->category('import');
+        $existing = $this->document($category, 'existant');
+
+        $this->client->request('POST', '/admin/documents/import', ['_token' => 'faux'], ['bundle' => $this->bundleFile($category, $existing)]);
+        self::assertResponseStatusCodeSame(403);
+
+        $path = sys_get_temp_dir() . "/image-{$this->suffix}.gz";
+        file_put_contents($path, "\x89PNG\r\n\x1a\n" . str_repeat('x', 64));
+        $this->uploadBundle(new UploadedFile($path, 'image.gz', null, null, true));
+        self::assertStringContainsString('Type de fichier refusé', (string) $this->client->getResponse()->getContent());
+
+        $path = sys_get_temp_dir() . "/autre-{$this->suffix}.json";
+        file_put_contents($path, '{"format":"autre","version":1}');
+        $this->uploadBundle(new UploadedFile($path, 'autre.json', null, null, true));
+        self::assertStringContainsString('pas un lot de documentation devtrade', (string) $this->client->getResponse()->getContent());
+    }
+
+    public function testImportCannotConfirmAnUploadThatIsNotFromThisSession(): void
+    {
+        $this->loginAdmin();
+        $category = $this->category('import');
+        $existing = $this->document($category, 'existant');
+        $this->uploadBundle($this->bundleFile($category, $existing));
+        $form = $this->client->getCrawler()->filter('form[action="/admin/documents/import/confirmer"]')->form();
+
+        // Jeton d'envoi falsifié (un autre fichier déposé sur le serveur, par exemple) : refusé.
+        $this->client->request('POST', '/admin/documents/import/confirmer', ['_token' => $form['_token']->getValue(), 'token' => str_repeat('a', 32)]);
+        self::assertResponseRedirects('/admin/documents/import');
+        $this->client->followRedirect();
+        self::assertSelectorTextContains('.flash', 'Envoi inconnu ou expiré');
+        $this->em->clear();
+        self::assertSame('existant', $this->em->find(Document::class, $existing->getId())->getTitle());
+    }
+
+    /** Lot de test : met à jour un article existant et en crée un autre, dans un module existant. */
+    private function bundleFile(DocumentCategory $category, Document $existing): UploadedFile
+    {
+        $module = ['slug' => $category->getSlug(), 'name' => $category->getName(), 'description' => null, 'icon' => null, 'accessLevel' => 'free', 'position' => 7];
+        $article = static fn (string $slug, string $title, int $position): array => ['slug' => $slug, 'title' => $title, 'excerpt' => 'Résumé', 'readingTime' => 4,
+            'accessLevel' => 'free', 'position' => $position, 'module' => $category->getSlug(), 'content' => "<h2>$title</h2><p>Texte.</p>", 'published' => true];
+        $bundle = ['format' => DocumentationBundle::FORMAT, 'version' => DocumentationBundle::VERSION, 'generatedAt' => 'test', 'modules' => [$module],
+            'articles' => [$article((string) $existing->getSlug(), 'Titre réécrit', 2), $article("nouveau-{$this->suffix}", 'Article créé', 1)]];
+        $path = sys_get_temp_dir() . "/lot-{$this->suffix}.json.gz";
+        file_put_contents($path, gzencode(json_encode($bundle, JSON_THROW_ON_ERROR)));
+
+        return new UploadedFile($path, basename($path), null, null, true);
+    }
+
+    private function uploadBundle(UploadedFile $file): void
+    {
+        $token = (string) $this->client->request('GET', '/admin/documents/import')->filter('input[name="_token"]')->attr('value');
+        $this->client->request('POST', '/admin/documents/import', ['_token' => $token], ['bundle' => $file]);
     }
 
     // ── Outils ──────────────────────────────────────────────────────────────

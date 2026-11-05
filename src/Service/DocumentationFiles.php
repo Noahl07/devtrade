@@ -10,29 +10,31 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Articles de documentation sous forme de fichiers versionnés (content/documentation/<module>/<article>.html).
+ * Articles de documentation sous forme de fichiers (<racine>/<NN-module>/<article>.html).
  * Chaque fichier commence par un commentaire JSON de métadonnées, suivi du contenu HTML de l'article.
  *
- * export : base → fichiers (sauvegarde et point de départ de la réécriture, relisible en git diff).
- * apply  : fichiers → base, uniquement pour les articles existants (aucune création, aucune suppression).
+ * Deux racines : content/documentation (articles gratuits, versionnés dans git) et
+ * content/premium (articles Premium, ignorés par git car le dépôt est public).
  *
+ * export : base → fichiers. bundle : fichiers → lot d'import (voir DocumentationBundle).
  * Ordre : « position » dans les métadonnées pour l'article, préfixe NN- du dossier pour le module.
  */
 final class DocumentationFiles
 {
     private const META_START = '<!--meta';
     private const META_END = '-->';
-    private const EDITABLE = ['title', 'excerpt', 'readingTime', 'accessLevel', 'position'];
+    public const PUBLIC_DIR = 'documentation';
+    public const PREMIUM_DIR = 'premium';
 
     public function __construct(
         private readonly Connection $db,
-        #[Autowire('%kernel.project_dir%/content/documentation')] private readonly string $directory,
+        #[Autowire('%kernel.project_dir%/content')] private readonly string $root,
     ) {
     }
 
     public function directory(): string
     {
-        return $this->directory;
+        return $this->root;
     }
 
     public function export(): int
@@ -55,7 +57,8 @@ final class DocumentationFiles
                 'position' => (int) $row['position'],
                 'module' => $row['module'],
             ];
-            $file = sprintf('%s/%02d-%s/%s.html', $this->directory, (int) $row['module_position'], $row['module'], $row['slug']);
+            $dir = $row['access_level'] === 'premium' ? self::PREMIUM_DIR : self::PUBLIC_DIR;
+            $file = sprintf('%s/%s/%02d-%s/%s.html', $this->root, $dir, (int) $row['module_position'], $row['module'], $row['slug']);
             $fs->dumpFile($file, self::META_START . "\n" . json_encode($meta, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n" . self::META_END . "\n" . rtrim(str_replace("\r\n", "\n", (string) $row['content'])) . "\n");
         }
 
@@ -63,87 +66,79 @@ final class DocumentationFiles
     }
 
     /**
-     * Modules dont la position (préfixe NN- du dossier) diffère de la base.
+     * Tous les articles des deux racines.
      *
-     * @return list<array{slug: string, from: int, to: int}>
+     * @return list<array{file: string, modulePosition: int, meta: array<string, mixed>, content: string}>
      */
-    public function moduleChanges(): array
+    public function entries(): array
     {
-        if (!is_dir($this->directory)) {
-            return [];
-        }
-        $current = array_column($this->db->fetchAllAssociative('SELECT slug, position FROM document_category'), 'position', 'slug');
-        $changes = [];
-        foreach ((new Finder())->directories()->in($this->directory)->depth(0)->sortByName() as $dir) {
-            if (preg_match('/^(\d+)-(.+)$/', $dir->getFilename(), $m) && isset($current[$m[2]]) && (int) $current[$m[2]] !== (int) $m[1]) {
-                $changes[] = ['slug' => $m[2], 'from' => (int) $current[$m[2]], 'to' => (int) $m[1]];
-            }
-        }
-
-        return $changes;
-    }
-
-    /**
-     * @return list<array{slug: string, file: string, fields: array<string, array{0: mixed, 1: mixed}>, missing?: bool}>
-     */
-    public function diff(): array
-    {
-        if (!is_dir($this->directory)) {
-            return [];
-        }
-        $current = array_column($this->db->fetchAllAssociative('SELECT slug, title, excerpt, reading_time AS "readingTime", access_level AS "accessLevel", position, content FROM document'), null, 'slug');
-        $changes = [];
-
-        foreach ((new Finder())->files()->in($this->directory)->name('*.html')->sortByName() as $file) {
-            [$meta, $content] = $this->read($file->getPathname());
-            $slug = (string) ($meta['slug'] ?? '');
-            $relative = $file->getRelativePathname();
-            if (!isset($current[$slug])) {
-                $changes[] = ['slug' => $slug, 'file' => $relative, 'fields' => [], 'missing' => true];
+        $entries = [];
+        foreach ([self::PUBLIC_DIR, self::PREMIUM_DIR] as $dir) {
+            $base = $this->root . '/' . $dir;
+            if (!is_dir($base)) {
                 continue;
             }
-            $fields = [];
-            foreach (self::EDITABLE as $field) {
-                if (array_key_exists($field, $meta) && (string) $meta[$field] !== (string) $current[$slug][$field]) {
-                    $fields[$field] = [$current[$slug][$field], $meta[$field]];
+            foreach ((new Finder())->files()->in($base)->name('*.html')->sortByName() as $file) {
+                [$meta, $content] = $this->read($file->getPathname());
+                $moduleDir = basename($file->getPath());
+                if (!preg_match('/^(\d+)-(.+)$/', $moduleDir, $m) || ($meta['module'] ?? null) !== $m[2]) {
+                    throw new \RuntimeException(sprintf('%s : le dossier « %s » ne correspond pas au module « %s ».', $file->getPathname(), $moduleDir, $meta['module'] ?? '?'));
                 }
-            }
-            if ($this->normalize($content) !== $this->normalize((string) $current[$slug]['content'])) {
-                $fields['content'] = [(string) $current[$slug]['content'], $content];
-            }
-            if ($fields !== []) {
-                $changes[] = ['slug' => $slug, 'file' => $relative, 'fields' => $fields];
+                $isPremium = ($meta['accessLevel'] ?? 'free') === 'premium';
+                if ($isPremium !== ($dir === self::PREMIUM_DIR)) {
+                    throw new \RuntimeException(sprintf('%s : un article %s doit être rangé dans content/%s.', $file->getPathname(), $isPremium ? 'Premium' : 'gratuit', $isPremium ? self::PREMIUM_DIR : self::PUBLIC_DIR));
+                }
+                $entries[] = [
+                    'file' => $dir . '/' . $file->getRelativePathname(),
+                    'modulePosition' => (int) $m[1],
+                    'meta' => $meta,
+                    'content' => $content,
+                ];
             }
         }
 
-        return $changes;
+        return $entries;
     }
 
     /**
-     * @param list<array{slug: string, fields: array<string, array{0: mixed, 1: mixed}>, missing?: bool}> $changes
-     * @param list<array{slug: string, from: int, to: int}>                                              $modules
+     * Lot d'import construit depuis les fichiers ; les métadonnées des modules (nom, description…) viennent de la base locale.
+     *
+     * @return array<string, mixed>
      */
-    public function apply(array $changes, array $modules = []): int
+    public function bundle(): array
     {
-        $columns = ['title' => 'title', 'excerpt' => 'excerpt', 'readingTime' => 'reading_time', 'accessLevel' => 'access_level', 'position' => 'position', 'content' => 'content'];
-        $count = 0;
-        $this->db->transactional(function (Connection $db) use ($changes, $modules, $columns, &$count): void {
-            foreach ($modules as $module) {
-                $db->update('document_category', ['position' => $module['to']], ['slug' => $module['slug']]);
-            }
-            foreach ($changes as $change) {
-                if (($change['missing'] ?? false) || $change['fields'] === []) {
-                    continue;
-                }
-                $data = ['updated_at' => (new \DateTime())->format('Y-m-d H:i:s')];
-                foreach ($change['fields'] as $field => [, $new]) {
-                    $data[$columns[$field]] = $new;
-                }
-                $count += $db->update('document', $data, ['slug' => $change['slug']]);
-            }
-        });
+        $entries = $this->entries();
+        $categories = array_column($this->db->fetchAllAssociative('SELECT slug, name, description, icon, access_level FROM document_category'), null, 'slug');
+        $published = array_column($this->db->fetchAllAssociative('SELECT slug, is_published FROM document'), 'is_published', 'slug');
 
-        return $count;
+        $modules = [];
+        $articles = [];
+        foreach ($entries as $entry) {
+            $slug = (string) $entry['meta']['module'];
+            if (!isset($categories[$slug])) {
+                throw new \RuntimeException(sprintf('Module « %s » absent de la base locale.', $slug));
+            }
+            $modules[$slug] = [
+                'slug' => $slug,
+                'name' => $categories[$slug]['name'],
+                'description' => $categories[$slug]['description'],
+                'icon' => $categories[$slug]['icon'],
+                'accessLevel' => $categories[$slug]['access_level'],
+                'position' => $entry['modulePosition'],
+            ];
+            $articles[] = $entry['meta'] + [
+                'content' => $entry['content'],
+                'published' => (bool) ($published[$entry['meta']['slug']] ?? true),
+            ];
+        }
+
+        return [
+            'format' => DocumentationBundle::FORMAT,
+            'version' => DocumentationBundle::VERSION,
+            'generatedAt' => (new \DateTimeImmutable())->format(\DATE_ATOM),
+            'modules' => array_values($modules),
+            'articles' => $articles,
+        ];
     }
 
     /** @return array{0: array<string, mixed>, 1: string} */
@@ -155,15 +150,7 @@ final class DocumentationFiles
         }
         $end = strpos($raw, self::META_END);
         $meta = json_decode(trim(substr($raw, strlen(self::META_START), $end - strlen(self::META_START))), true, 8, JSON_THROW_ON_ERROR);
-        if (isset($meta['accessLevel']) && !in_array($meta['accessLevel'], ['free', 'premium'], true)) {
-            throw new \RuntimeException(sprintf('%s : niveau d\'accès « %s » non géré.', $path, $meta['accessLevel']));
-        }
 
         return [$meta, rtrim(substr($raw, $end + strlen(self::META_END) + 1))];
-    }
-
-    private function normalize(string $html): string
-    {
-        return rtrim(str_replace("\r\n", "\n", $html));
     }
 }
