@@ -2,76 +2,110 @@
 {
     "slug": "moyennes-mobiles-ma-ema-vwap",
     "title": "Moyennes mobiles — MA, EMA, VWAP",
-    "excerpt": "Simple vs exponentielle, croissements, VWAP institutionnel — utilisation pratique des moyennes mobiles.",
-    "readingTime": 12,
+    "excerpt": "Calcul de la moyenne simple et exponentielle avec exemples, choix des périodes, croisements et leurs faux signaux, moyennes comme filtre de tendance, et le VWAP : pourquoi les institutions l'utilisent et ses limites sur le forex.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 4,
     "module": "analyse-technique-classique"
 }
 -->
-<h2>Qu'est-ce qu'une moyenne mobile ?</h2>
-<p>Une moyenne mobile (Moving Average) est un indicateur qui <strong>lisse les données de prix sur une période définie</strong>, filtrant le "bruit" pour révéler la tendance sous-jacente. C'est l'un des indicateurs les plus utilisés en trading — à la fois simple à comprendre et étonnamment efficace.</p>
-
-<h2>La Moyenne Mobile Simple (SMA)</h2>
-<p>La SMA (Simple Moving Average) calcule simplement la moyenne arithmétique des N dernières clôtures :</p>
-<pre><code>SMA(20) = (C1 + C2 + ... + C20) ÷ 20</code></pre>
-
-<p>Chaque période a le même poids dans le calcul. Avantage : simple, très lisible. Inconvénient : réagit lentement aux changements de prix récents car les données anciennes ont autant d'importance que les récentes.</p>
-
-<p><strong>Les périodes standard :</strong></p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li>SMA 20 : tendance court terme (1 mois de séances)</li>
-<li>SMA 50 : tendance moyen terme (référence institutionnelle majeure)</li>
-<li>SMA 200 : tendance long terme (bull/bear market en journalier)</li>
+<li>Une moyenne mobile <strong>lisse le prix</strong> pour montrer sa direction ; elle est toujours <strong>en retard</strong> sur lui.</li>
+<li>La moyenne <strong>exponentielle</strong> (EMA) réagit plus vite que la moyenne <strong>simple</strong> (SMA), au prix de davantage de faux signaux.</li>
+<li>Les moyennes servent surtout de <strong>filtre de tendance</strong> et de repère dynamique ; leurs croisements, seuls, se trompent souvent en range.</li>
+<li>Le <strong>VWAP</strong> est le prix moyen pondéré par les volumes de la séance : la référence d'exécution des grands ordres.</li>
 </ul>
+</div>
 
-<h2>La Moyenne Mobile Exponentielle (EMA)</h2>
-<p>L'EMA donne un <strong>poids plus important aux données récentes</strong>. Elle réagit donc plus rapidement aux mouvements de prix, mais génère aussi plus de faux signaux en marché volatile.</p>
+<h2>La moyenne mobile simple (SMA)</h2>
+<p>La SMA de période N est la moyenne des N dernières clôtures. Chaque nouvelle bougie ajoute une clôture et retire la plus ancienne : la moyenne « glisse » le long du graphique.</p>
+<pre><code>SMA(5) = (100 + 102 + 101 + 104 + 105) ÷ 5 = 102,4</code></pre>
+<p>Toutes les clôtures ont le même poids. Conséquence : une clôture très ancienne qui sort du calcul peut faire bouger la moyenne alors que le prix récent n'a pas changé.</p>
 
-<p><strong>Les périodes EMA les plus utilisées :</strong></p>
+<h2>La moyenne mobile exponentielle (EMA)</h2>
+<p>L'EMA donne plus de poids aux clôtures récentes. À chaque bougie :</p>
+<pre><code>EMA = EMA précédente + α × (clôture − EMA précédente),  avec α = 2 ÷ (N + 1)</code></pre>
+<p>Pour une EMA 20, α ≈ 0,095 : chaque nouvelle clôture compte pour environ 9,5 % de la nouvelle valeur. L'EMA colle donc davantage au prix et tourne plus tôt après un retournement.</p>
+
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" aria-hidden="true">
+  <polyline points="20,170 60,150 90,160 130,120 160,130 200,95 230,105 270,70 300,85 330,60 360,90 390,80 420,115 450,105 480,140 510,130 540,160 580,150 620,175" fill="none" stroke="rgba(245,241,230,0.55)" stroke-width="1.8" />
+  <path d="M20,168 C90,150 150,128 210,104 S300,74 340,74 S420,92 470,120 S560,150 620,162" fill="none" stroke="#C8A45C" stroke-width="2.5" />
+  <path d="M20,172 C110,160 190,135 260,110 S360,86 420,96 S530,124 620,142" fill="none" stroke="rgba(150,170,220,0.9)" stroke-width="2.5" />
+  </svg>
+<span class="doc-label doc-label--start" style="left:4.69%;top:9%">prix</span>
+<span class="doc-label doc-label--start doc-label--strong is-accent" style="left:14.06%;top:9%">EMA : suit le prix de plus près</span>
+<span class="doc-label doc-label--start doc-label--strong doc-label--info" style="left:53.12%;top:9%">SMA : plus lisse, plus en retard</span>
+<span class="doc-label is-muted" style="left:51.56%;top:91.27%">Au retournement, l'EMA tourne avant la SMA de même période.</span>
+</div>
+<figcaption>Même période, deux calculs : l'EMA réagit plus vite, la SMA filtre davantage les à-coups (illustration).</figcaption>
+</figure>
+
+<h2>Quelles périodes utiliser ?</h2>
+<table>
+<thead><tr><th>Période</th><th>Usage courant</th></tr></thead>
+<tbody>
+<tr><td>9 à 21</td><td>Rythme du mouvement à court terme, repli « normal » en tendance</td></tr>
+<tr><td>50</td><td>Tendance intermédiaire</td></tr>
+<tr><td>200 (journalier)</td><td>Tendance de long terme, très regardée par les médias et les investisseurs</td></tr>
+</tbody>
+</table>
+<p>Aucune période n'est « la bonne ». Les plus utilisées ont un léger intérêt pratique : beaucoup de participants les regardent. Méfiez-vous de la tentation d'ajuster la période jusqu'à ce qu'elle colle parfaitement au passé : c'est le meilleur moyen d'obtenir un réglage qui ne fonctionnera plus ensuite.</p>
+
+<h2>Trois usages concrets</h2>
+<h3>1. Filtre de tendance</h3>
+<p>Ne chercher que des achats quand le prix est au-dessus d'une moyenne longue qui monte, que des ventes en dessous d'une moyenne qui baisse. C'est l'usage le plus robuste : il ne donne pas de point d'entrée, il évite de lutter contre la tendance.</p>
+<h3>2. Repère dynamique</h3>
+<p>En tendance régulière, le prix revient souvent vers une moyenne courte ou intermédiaire avant de repartir. La moyenne sert alors de zone de repli, à combiner avec un niveau horizontal ou une bougie de rejet.</p>
+<h3>3. Croisements</h3>
+<p>Le croisement d'une moyenne rapide au-dessus d'une moyenne lente signale un changement de rythme. Les plus célèbres : la « croix dorée » (SMA 50 au-dessus de la SMA 200) et la « croix de la mort » (l'inverse).</p>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Le défaut des croisements</strong>
+<p>Un croisement arrive par construction <strong>après</strong> une bonne partie du mouvement. En tendance, il en capte le milieu ; en range, il produit une succession de faux signaux, chacun payant le spread. Une stratégie de croisement seule a typiquement un faible taux de réussite et dépend de quelques grandes tendances pour être rentable, si elle l'est.</p>
+</aside>
+
+<h2>Le VWAP : le prix moyen de la séance</h2>
+<pre><code>VWAP = Σ (prix × volume) ÷ Σ volume, depuis le début de la séance</code></pre>
+<p>Le VWAP indique à quel prix moyen tout le volume de la journée s'est échangé. Les gérants qui doivent acheter ou vendre de grosses quantités sont souvent évalués sur leur capacité à exécuter <strong>au VWAP ou mieux</strong>. Des algorithmes fractionnent leurs ordres pour suivre ce prix moyen, ce qui explique l'intérêt que les traders lui portent :</p>
 <ul>
-<li>EMA 8/9 : signaux très rapides, scalping et day trading</li>
-<li>EMA 21 : tendance court terme, populaire en ICT</li>
-<li>EMA 50 : tendance moyen terme</li>
-<li>EMA 200 : tendance long terme, niveau institutionnel majeur</li>
+<li>au-dessus du VWAP, les acheteurs du jour sont en moyenne gagnants ; en dessous, perdants ;</li>
+<li>un prix qui s'éloigne beaucoup du VWAP revient souvent vers lui en fin de séance, sans que ce soit systématique ;</li>
+<li>le <strong>VWAP ancré</strong> part d'un point choisi (un sommet, une publication de résultats) et montre le prix moyen des positions prises depuis.</li>
 </ul>
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">VWAP et forex</strong>
+<p>Le VWAP a besoin du volume réel. Sur les actions et les futures, il est publié par la bourse. Sur le forex et les CFD, la plateforme utilise le volume de votre broker (le nombre de variations de prix) : le VWAP obtenu est une approximation, utile mais moins fiable.</p>
+</aside>
 
-<blockquote>La EMA 200 journalière est suivie par les plus grandes institutions mondiales. Un prix au-dessus de la 200 EMA = biais haussier macroéconomique. Un prix en dessous = biais baissier. Simple mais extrêmement puissant comme filtre de biais directionnel.</blockquote>
+<h2>Mettre en place les moyennes sur son graphique</h2>
+<ol class="doc-steps">
+<li><strong>Une moyenne longue</strong> pour le contexte (par exemple SMA 200 en journalier, ou EMA 50 sur l'unité de temps supérieure).</li>
+<li><strong>Une moyenne courte</strong>, au plus, pour le rythme du mouvement.</li>
+<li><strong>Le VWAP</strong> si vous faites du day trading sur actions, indices ou futures.</li>
+<li><strong>Rien de plus</strong> : cinq moyennes sur un graphique donnent toujours raison à quelqu'un, donc ne vous apprennent rien.</li>
+</ol>
 
-<h2>Les croissements de moyennes mobiles</h2>
+<h2>Vérifier par soi-même</h2>
+<p>Sur votre plateforme, testez une règle simple sur plusieurs années : « acheter au croisement EMA 20 / EMA 50 en graphique de 4 heures, vendre au croisement inverse ». Notez le nombre de trades, le taux de réussite, le gain moyen contre la perte moyenne, et le résultat <strong>après frais</strong>. Puis ajoutez un seul filtre (par exemple, ne prendre que les achats au-dessus de la SMA 200 journalière) et comparez. Cet exercice vaut mieux que n'importe quelle affirmation sur la « puissance » d'une moyenne.</p>
 
-<h3>Golden Cross</h3>
-<p>La SMA 50 croise au-dessus de la SMA 200 — signal haussier fort sur le long terme. Ce signal est suivi par des millions de traders et institutions, ce qui le rend auto-réalisateur dans une certaine mesure.</p>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Une moyenne mobile vous dit dans quel sens le marché est allé, pas où il va. Utilisez-la pour rester du bon côté de la tendance, et cherchez vos entrées ailleurs.</p>
+</aside>
 
-<h3>Death Cross</h3>
-<p>La SMA 50 croise en dessous de la SMA 200 — signal baissier fort. Souvent accompagné d'une accélération baissière.</p>
-
-<h3>Les croissements rapides</h3>
-<p>En day trading, les croissements EMA 9/EMA 21 ou EMA 8/EMA 21 donnent des signaux de momentum à court terme. Ces signaux sont plus fiables quand ils se produisent dans la direction de la tendance supérieure.</p>
-
-<h2>Le VWAP — Volume Weighted Average Price</h2>
-<p>Le VWAP est une moyenne mobile pondérée par le volume — il calcule le prix moyen d'un actif <strong>en tenant compte du volume traité à chaque niveau</strong>. C'est la référence absolue des traders institutionnels et des algorithmes.</p>
-
-<p>Formule simplifiée :</p>
-<pre><code>VWAP = Σ(Prix × Volume) ÷ Σ(Volume)</code></pre>
-
-<p>Le VWAP se remet à zéro à chaque nouvelle séance (version journalière). Il existe également des VWAP hebdomadaires, mensuels et "anchored" (ancré depuis un point spécifique).</p>
-
-<h3>Pourquoi le VWAP est institutionnel</h3>
-<p>Les algorithmes des grandes institutions (fonds de pension, ETF, desks de trading) utilisent le VWAP comme <strong>benchmark d'exécution</strong> : ils s'efforcent d'exécuter leurs ordres au VWAP ou mieux. Résultat : le VWAP agit comme support/résistance dynamique extrêmement respecté.</p>
-
-<h3>Utilisation du VWAP en trading</h3>
-<ul>
-<li>Prix au-dessus du VWAP = contexte haussier pour la séance, chercher des achats sur retour au VWAP</li>
-<li>Prix en dessous du VWAP = contexte baissier pour la séance, chercher des ventes sur retour au VWAP</li>
-<li>Les bandes de déviation standard (1σ, 2σ) autour du VWAP définissent les zones de "fair value" et d'extrême</li>
-</ul>
-
-<h2>Les limites des moyennes mobiles</h2>
-<ul>
-<li>Indicateur <strong>retardé</strong> par nature — il décrit ce qui s'est passé, pas ce qui va se passer</li>
-<li>Inefficace en marché <strong>range</strong> — génère des faux signaux en série</li>
-<li>Le choix de la période est arbitraire — toute période peut être "optimisée" sur le passé (overfitting)</li>
-</ul>
-
-<p>Les moyennes mobiles sont des outils de <strong>confirmation</strong> de tendance, pas de prédiction. Utilisées seules, elles donnent des résultats médiocres. Combinées à la structure de marché et aux zones clés, elles ajoutent une couche de confirmation utile.</p>
+<h2>Testez-vous</h2>
+<details>
+<summary>Les cinq dernières clôtures sont 50, 52, 51, 53 et 54. Quelle est la SMA 5 ?</summary>
+<p>(50 + 52 + 51 + 53 + 54) ÷ 5 = 52.</p>
+</details>
+<details>
+<summary>Pourquoi une stratégie de croisement de moyennes perd-elle souvent de l'argent en range ?</summary>
+<p>Les moyennes se croisent à chaque oscillation, toujours en retard : on achète en haut du range et on revend en bas, en payant les frais à chaque fois.</p>
+</details>
+<details>
+<summary>Le prix est nettement sous le VWAP en milieu de séance. Qu'est-ce que cela indique sur les acheteurs du jour ?</summary>
+<p>En moyenne, ceux qui ont acheté depuis l'ouverture sont en perte : la pression de la séance est plutôt vendeuse.</p>
+</details>
