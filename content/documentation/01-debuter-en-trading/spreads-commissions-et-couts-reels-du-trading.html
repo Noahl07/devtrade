@@ -2,74 +2,153 @@
 {
     "slug": "spreads-commissions-et-couts-reels-du-trading",
     "title": "Spreads, commissions et coûts réels du trading",
-    "excerpt": "Spread, commission, swap, slippage — comprendre tous les coûts réels du trading est indispensable pour calculer votre vraie rentabilité et choisir le bon broker.",
-    "readingTime": 15,
+    "excerpt": "Spread, commission, frais de financement de nuit, glissement, conversion de devise : ce que coûte vraiment un trade, pourquoi ce coût pèse beaucoup plus sur un stop serré, et comment mesurer vos propres frais.",
+    "readingTime": 7,
     "accessLevel": "free",
     "position": 6,
     "module": "debuter-en-trading"
 }
 -->
-<h2>Le coût invisible qui détruit la plupart des traders débutants</h2>
-<p>On vous apprend à analyser les marchés, à placer des ordres, à gérer votre risque. Mais rarement on vous explique <strong>combien vous coûte réellement chaque trade</strong>. Pourtant, les coûts de trading sont l'un des facteurs les plus déterminants dans la rentabilité à long terme. Un système gagnant sur le papier peut devenir perdant en réel si les coûts ne sont pas maîtrisés.</p>
- 
-<h2>Le spread — le coût le plus visible</h2>
-<p>Le spread est la différence entre le <strong>prix Ask</strong> (prix auquel vous achetez) et le <strong>prix Bid</strong> (prix auquel vous vendez). C'est la première barrière que vous franchissez à chaque trade — vous êtes immédiatement en négatif dès l'ouverture.</p>
- 
-<svg viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
-  <text x="300" y="18" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Bid / Ask — le spread en action</text>
-  <line x1="80" y1="70" x2="520" y2="70" stroke="#2d3748" stroke-width="1"/>
-  <!-- Bid -->
-  <line x1="190" y1="50" x2="190" y2="100" stroke="#3EB489" stroke-width="2"/>
-  <text x="190" y="42" fill="#3EB489" font-size="12" font-family="monospace" text-anchor="middle">BID</text>
-  <text x="190" y="115" fill="#3EB489" font-size="11" font-family="monospace" text-anchor="middle">1.08450</text>
-  <text x="190" y="127" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Vous vendez ici</text>
-  <!-- Ask -->
-  <line x1="390" y1="50" x2="390" y2="100" stroke="#e05555" stroke-width="2"/>
-  <text x="390" y="42" fill="#e05555" font-size="12" font-family="monospace" text-anchor="middle">ASK</text>
-  <text x="390" y="115" fill="#e05555" font-size="11" font-family="monospace" text-anchor="middle">1.08453</text>
-  <text x="390" y="127" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Vous achetez ici</text>
-  <!-- Spread zone -->
-  <rect x="190" y="57" width="200" height="22" rx="2" fill="rgba(212,169,75,0.15)" stroke="#D4A94B" stroke-width="0.5"/>
-  <text x="290" y="72" fill="#D4A94B" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">SPREAD = 0.3 pip</text>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Chaque trade paie au minimum le <strong>spread</strong>, souvent une <strong>commission</strong>, parfois du <strong>glissement</strong> et des <strong>frais de nuit</strong>.</li>
+<li>Ce coût se juge <strong>par rapport à votre stop</strong> : 1 pip de frais, c'est 2 % du risque avec un stop de 50 pips, mais 20 % avec un stop de 5 pips.</li>
+<li>Plus vous tradez souvent et serré, plus les frais décident de votre résultat. Sur une année, ils peuvent dépasser le tiers d'un petit compte.</li>
+<li>Mesurez vos coûts réels sur vos relevés, pas sur la publicité du broker.</li>
+</ul>
+</div>
+
+<h2>Le coût que personne ne regarde</h2>
+<p>On passe des heures à chercher de bons points d'entrée, et presque jamais à calculer ce que coûte chaque entrée. Pourtant, une méthode légèrement gagnante avant frais peut devenir perdante après frais. Les coûts sont aussi la seule partie du trading que vous pouvez <strong>contrôler entièrement</strong>.</p>
+
+<h2>Le spread</h2>
+<p>Le spread est l'écart entre le prix d'achat (<em>ask</em>) et le prix de vente (<em>bid</em>). Dès que vous ouvrez une position, vous êtes en perte de ce montant : si vous fermiez immédiatement, vous revendriez au bid ce que vous venez d'acheter à l'ask.</p>
+<table>
+<thead><tr><th>Marché</th><th>Spread habituel en séance active</th><th>Quand il s'élargit</th></tr></thead>
+<tbody>
+<tr><td>EUR/USD</td><td>Quelques dixièmes de pip à 1 pip</td><td>Nuit, 23 h à Paris, annonces</td></tr>
+<tr><td>GBP/USD, USD/JPY</td><td>Moins de 1 à 2 pips</td><td>Idem</td></tr>
+<tr><td>Paires exotiques (USD/TRY, EUR/ZAR…)</td><td>Souvent plus de 10 pips</td><td>En permanence élevé</td></tr>
+<tr><td>Or (XAU/USD)</td><td>De l'ordre de quelques dizaines de cents par once</td><td>Statistiques américaines, nuit</td></tr>
+<tr><td>Indices (DAX, Nasdaq 100)</td><td>De moins de 1 point à quelques points</td><td>Hors séance de la bourse sous-jacente</td></tr>
+</tbody>
+</table>
+<p>Ces ordres de grandeur varient beaucoup d'un broker et d'un type de compte à l'autre. Le spread affiché dans une publicité est souvent un <strong>minimum</strong>, pas une moyenne.</p>
+
+<h2>Les deux façons dont un broker se rémunère</h2>
+<table>
+<thead><tr><th></th><th>Compte « standard »</th><th>Compte « raw » ou ECN</th></tr></thead>
+<tbody>
+<tr><td>Spread</td><td>Plus large, frais inclus dedans</td><td>Proche du spread du marché</td></tr>
+<tr><td>Commission</td><td>Aucune</td><td>Fixe, par lot et par sens (par exemple 3,50 $ à l'ouverture et 3,50 $ à la fermeture)</td></tr>
+<tr><td>Pour qui</td><td>Petites tailles, peu de trades</td><td>Traders actifs, qui veulent un coût lisible</td></tr>
+</tbody>
+</table>
+<p>Pour comparer, convertissez tout en pips. Sur l'EUR/USD, un lot standard vaut 10 $ par pip : une commission de 7 $ aller-retour équivaut donc à <strong>0,7 pip</strong>.</p>
+
+<h2>Les frais de financement de nuit (swap)</h2>
+<p>Une position sur CFD ou sur le forex encore ouverte au changement de journée (en général 23 h à Paris) paie ou reçoit un intérêt, appelé <strong>swap</strong> ou <em>rollover</em>. Il reflète l'écart de taux d'intérêt entre les deux devises, ou le coût de financement de l'actif, auquel le broker ajoute sa marge.</p>
+<ul>
+<li>Le plus souvent, il est <strong>négatif dans les deux sens</strong> une fois la marge du broker déduite.</li>
+<li>Sur le forex, un swap <strong>triple</strong> est généralement appliqué le mercredi soir, pour couvrir le week-end. Sur d'autres instruments, c'est souvent le vendredi : consultez la fiche de chaque instrument.</li>
+<li>Pour un day trader, il est nul. Pour un swing trader qui garde des positions plusieurs semaines, il peut devenir le premier poste de coût.</li>
+</ul>
+
+<h2>Le glissement</h2>
+<p>Le glissement (<em>slippage</em>) est l'écart entre le prix voulu et le prix obtenu. Il touche surtout les ordres au marché et les ordres stop, dans les moments rapides : ouverture de session, annonces, faible liquidité. Il peut parfois jouer en votre faveur, mais les stops, déclenchés au moment où le prix accélère contre vous, glissent le plus souvent dans le mauvais sens.</p>
+
+<h2>Les coûts que l'on oublie</h2>
+<ul>
+<li><strong>Conversion de devise</strong> : votre compte est en euros, l'instrument en dollars. Chaque gain, perte ou frais est converti, parfois avec une marge.</li>
+<li><strong>Frais d'inactivité, de retrait ou de dépôt</strong> : précisés dans la grille tarifaire, rarement mis en avant.</li>
+<li><strong>Données de marché et plateformes</strong> : pour les futures et certains logiciels d'analyse, abonnements mensuels.</li>
+<li><strong>Fiscalité</strong> : les gains sont imposables. Renseignez-vous sur le régime qui s'applique à votre situation et aux produits que vous utilisez.</li>
+</ul>
+
+<h2>Le point clé : le coût rapporté à votre stop</h2>
+<p>Prenons un coût total d'<strong>1 pip</strong> par trade sur l'EUR/USD (spread, commission et un peu de glissement). Son poids dépend entièrement de la distance de votre stop :</p>
+<figure>
+<svg viewBox="0 0 640 230" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Part du risque consommée par 1 pip de frais selon la distance du stop</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">1 PIP DE FRAIS, EN % DU RISQUE PRIS</text>
+  <g font-family="sans-serif" font-size="12.5">
+    <text x="130" y="60" text-anchor="end" fill="#D9D3C3">stop de 5 pips</text><rect x="140" y="46" width="400" height="20" rx="4" fill="rgba(210,101,90,0.55)"/><text x="550" y="61" fill="#E89A90" font-weight="bold">20 %</text>
+    <text x="130" y="100" text-anchor="end" fill="#D9D3C3">stop de 10 pips</text><rect x="140" y="86" width="200" height="20" rx="4" fill="rgba(200,164,92,0.5)"/><text x="350" y="101" fill="#E2CB91" font-weight="bold">10 %</text>
+    <text x="130" y="140" text-anchor="end" fill="#D9D3C3">stop de 25 pips</text><rect x="140" y="126" width="80" height="20" rx="4" fill="rgba(79,179,143,0.45)"/><text x="230" y="141" fill="#7FD1B9" font-weight="bold">4 %</text>
+    <text x="130" y="180" text-anchor="end" fill="#D9D3C3">stop de 50 pips</text><rect x="140" y="166" width="40" height="20" rx="4" fill="rgba(79,179,143,0.45)"/><text x="190" y="181" fill="#7FD1B9" font-weight="bold">2 %</text>
+  </g>
+  <text x="320" y="216" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Même frais, même marché : seul l'horizon du trade change.</text>
 </svg>
- 
-<p>Le spread est exprimé en <strong>pips</strong> (Forex) ou en points (indices/matières premières). Exemples typiques :</p>
+<figcaption>Avec un stop de 5 pips, un cinquième de chaque perte potentielle est déjà payé en frais.</figcaption>
+</figure>
+
+<p>Conséquence directe sur le taux de réussite nécessaire. Pour des trades visant deux fois le risque (gain de 2 pour une perte de 1), il faut gagner un tiers des trades pour être à l'équilibre sans frais. Avec 1 pip de frais :</p>
+<table>
+<thead><tr><th>Stop</th><th>Objectif</th><th class="ta-center">Gain net</th><th class="ta-center">Perte nette</th><th class="ta-center">Taux de réussite d'équilibre</th></tr></thead>
+<tbody>
+<tr><td>5 pips</td><td>10 pips</td><td class="ta-center">9 pips</td><td class="ta-center">6 pips</td><td class="ta-center is-negative">40,0 %</td></tr>
+<tr><td>10 pips</td><td>20 pips</td><td class="ta-center">19 pips</td><td class="ta-center">11 pips</td><td class="ta-center">36,7 %</td></tr>
+<tr><td>25 pips</td><td>50 pips</td><td class="ta-center">49 pips</td><td class="ta-center">26 pips</td><td class="ta-center">34,7 %</td></tr>
+<tr><td>50 pips</td><td>100 pips</td><td class="ta-center">99 pips</td><td class="ta-center">51 pips</td><td class="ta-center is-positive">34,0 %</td></tr>
+</tbody>
+</table>
+<p>Le calcul : taux d'équilibre = perte nette ÷ (gain net + perte nette). Sans frais, il serait de 33,3 % sur chaque ligne.</p>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif) : le coût d'une année</strong>
+<p>Un day trader prend 3 trades par jour de 0,5 lot sur l'EUR/USD, avec 1 pip de coût total par trade, soit 5 $. Sur 220 jours de bourse : 3 × 5 $ × 220 = <strong>3 300 $ de frais par an</strong>. Sur un compte de 10 000 $, la méthode doit rapporter 33 % avant frais rien que pour finir à zéro.</p>
+</aside>
+
+<h2>Calculer son point mort par trade</h2>
+<p>Point mort (en pips) = spread moyen + commission convertie en pips + glissement moyen. Sur un compte raw de l'EUR/USD : 0,2 pip de spread + 0,7 pip de commission + 0,1 pip de glissement = <strong>1 pip</strong>. Chaque trade doit parcourir ce chemin dans votre sens avant de rapporter quoi que ce soit.</p>
+
+<h2>Mesurer ses vrais coûts</h2>
+<ol class="doc-steps">
+<li><strong>Relevez le spread</strong> de vos instruments à vos heures de trading habituelles, plusieurs jours de suite.</li>
+<li><strong>Exportez vos relevés</strong> de compte sur un mois : commissions, swaps, conversions sont détaillés ligne par ligne.</li>
+<li><strong>Comparez le prix voulu et le prix obtenu</strong> sur vos ordres stop et au marché : c'est votre glissement réel.</li>
+<li><strong>Exprimez le total en part de votre risque moyen</strong>, comme dans le tableau ci-dessus.</li>
+<li><strong>Ajoutez une colonne « frais »</strong> à votre journal de trading, et jugez votre méthode sur le résultat net.</li>
+</ol>
+
+<h2>Réduire ses coûts</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Ce qui aide</h4>
 <ul>
-<li><strong>EUR/USD :</strong> 0.1 à 0.5 pip (très liquide)</li>
-<li><strong>GBP/USD :</strong> 0.5 à 1 pip</li>
-<li><strong>XAU/USD (Gold) :</strong> 20 à 50 points</li>
-<li><strong>NAS100 :</strong> 0.5 à 2 points selon broker</li>
-<li><strong>Paires exotiques :</strong> 5 à 50 pips — le piège des débutants</li>
+<li>Trader aux heures où le spread est le plus serré</li>
+<li>Préférer les ordres limite quand la méthode le permet</li>
+<li>Viser des mouvements plus amples, avec des stops moins serrés</li>
+<li>Choisir un type de compte adapté à votre fréquence de trading</li>
 </ul>
- 
-<h2>Les deux modèles de tarification broker</h2>
-<p><strong>1. Compte Market Maker (sans commission)</strong><br>
-Le broker se rémunère uniquement via le spread — plus large qu'en ECN. Convient aux petits comptes.</p>
- 
-<p><strong>2. Compte ECN/Raw Spread (avec commission)</strong><br>
-Le spread est quasi-nul (0.0 à 0.1 pip) mais vous payez une commission fixe par lot. Exemple typique : <strong>3.5€ aller + 3.5€ retour = 7€ total pour 1 lot d'EUR/USD</strong>.</p>
- 
-<h2>Le swap — le coût des positions overnight</h2>
-<p>Le swap est un intérêt crédité ou débité sur vos positions maintenues ouvertes au-delà de <strong>17h00 ET</strong>. Il reflète le différentiel de taux d'intérêt entre les deux devises.</p>
+</div>
+<div class="doc-compare__dont">
+<h4>Ce qui coûte cher</h4>
 <ul>
-<li>Certaines positions génèrent un <strong>swap positif</strong> (vous gagnez des intérêts)</li>
-<li>D'autres génèrent un <strong>swap négatif</strong> (vous payez) — le cas le plus fréquent</li>
-<li>Le mercredi, le swap est <strong>triplé</strong> pour compenser le week-end</li>
+<li>Les paires exotiques et les marchés peu liquides</li>
+<li>Entrer au marché pendant les annonces</li>
+<li>Multiplier les petits trades par ennui</li>
+<li>Garder des semaines une position à swap négatif sans l'avoir prévu</li>
 </ul>
- 
-<h2>Le slippage — le coût imprévisible</h2>
-<p>Le slippage est la différence entre le prix voulu et le prix d'exécution réel. Il se produit en période de forte volatilité (news, ouverture de session). Exemple : vous visez 1.08450, votre ordre s'exécute à 1.08458 — vous avez perdu 0.8 pip sans le vouloir.</p>
-<p>Pour limiter le slippage : préférer les <strong>ordres limites</strong> aux ordres au marché, et éviter d'entrer sur les news majeures.</p>
- 
-<h2>Calculer votre breakeven réel</h2>
-<blockquote>Breakeven = Spread + Commission (en pips) + Slippage moyen</blockquote>
-<p>Sur EUR/USD ECN (0.1 pip spread + 0.7 pip commission + 0.1 pip slippage) : <strong>Breakeven = 0.9 pip</strong>. Chaque trade doit faire au minimum 0.9 pip dans votre direction avant d'être profitable.</p>
- 
-<h2>Comment choisir son broker selon les coûts</h2>
-<ul>
-<li><strong>Scalping/Day trading :</strong> Broker ECN avec commissions basses (Pepperstone, IC Markets)</li>
-<li><strong>Swing trading :</strong> Le spread importe moins, privilégier la régulation et le swap</li>
-<li><strong>Débutant :</strong> Commencer sur démo pour mesurer les vrais coûts avant le réel</li>
-<li><strong>Toujours vérifier :</strong> Les brokers régulés (FCA, ASIC, CySEC) affichent leurs conditions clairement</li>
-</ul>
-<p>Réduire vos frais de 0.2 pip par trade peut représenter plusieurs centaines d'euros de gain annuel sur un compte actif. Un bon trader surveille ses coûts comme un chef d'entreprise surveille ses charges fixes.</p>
+</div>
+</div>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Les frais ne se négocient pas avec le marché, mais avec vos habitudes. Moins de trades, des objectifs plus amples et les bonnes heures réduisent souvent vos coûts davantage qu'un changement de broker.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Votre commission est de 3,50 $ par lot et par sens sur l'EUR/USD. Combien de pips coûte-t-elle pour un aller-retour ?</summary>
+<p>7 $ pour un aller-retour, et un pip vaut 10 $ par lot : 0,7 pip.</p>
+</details>
+<details>
+<summary>Pourquoi un stop de 5 pips est-il bien plus pénalisé par les frais qu'un stop de 50 pips ?</summary>
+<p>Les frais par trade sont à peu près les mêmes en pips. Rapportés à un risque dix fois plus petit, ils en représentent une part dix fois plus grande.</p>
+</details>
+<details>
+<summary>Vous gardez une position sur l'EUR/USD du lundi au vendredi. Combien de swaps payez-vous ?</summary>
+<p>Si vous fermez le vendredi avant 23 h, la position passe quatre changements de journée (lundi, mardi, mercredi et jeudi soir). Avec la règle la plus courante sur le forex, le mercredi compte triple : six nuits facturées au total. Vérifiez la fiche de l'instrument chez votre broker.</p>
+</details>

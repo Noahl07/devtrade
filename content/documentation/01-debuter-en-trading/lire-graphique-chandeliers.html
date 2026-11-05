@@ -2,72 +2,179 @@
 {
     "slug": "lire-graphique-chandeliers",
     "title": "Lire un graphique en chandeliers japonais",
-    "excerpt": "Anatomie d'une bougie, patterns essentiels et leur signification pour le trading.",
-    "readingTime": 12,
+    "excerpt": "Ouverture, plus haut, plus bas, clôture : lire une bougie, comprendre ce que racontent le corps et les mèches, passer d'une unité de temps à l'autre et éviter les erreurs de lecture les plus courantes.",
+    "readingTime": 7,
     "accessLevel": "free",
     "position": 4,
     "module": "debuter-en-trading"
 }
 -->
-<h2>L'histoire des chandeliers japonais</h2>
-<p>Les chandeliers japonais ont été développés au XVIIIe siècle par <strong>Munehisa Homma</strong>, un négociant en riz japonais qui a réalisé que les émotions humaines influençaient les prix de façon récurrente. Cette méthode d'analyse graphique a été introduite en Occident par Steve Nison dans les années 1990 et est aujourd'hui la représentation graphique standard de tous les traders professionnels.</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Chaque bougie résume une période avec <strong>quatre prix</strong> : ouverture, plus haut, plus bas, clôture.</li>
+<li>Le <strong>corps</strong> montre le chemin net parcouru ; les <strong>mèches</strong>, les prix atteints puis rejetés.</li>
+<li>Une bougie d'une heure contient exactement les quatre bougies de 15 minutes qui la composent : changer d'unité de temps ne change pas les données, seulement le niveau de détail.</li>
+<li>Une bougie ne se lit qu'<strong>une fois clôturée</strong> et <strong>dans son contexte</strong>.</li>
+</ul>
+</div>
 
-<h2>Anatomie d'une bougie japonaise</h2>
-<p>Chaque bougie représente 4 informations sur une période donnée (1 minute, 1 heure, 1 jour...) :</p>
+<h2>D'où viennent les chandeliers ?</h2>
+<p>La tradition attribue cette représentation à Munehisa Homma, négociant en riz au Japon au XVIIIe siècle. Elle a été popularisée en Occident par Steve Nison au début des années 1990. Elle est aujourd'hui l'affichage par défaut de presque toutes les plateformes, parce qu'elle montre en un coup d'œil ce qu'un simple tracé en ligne cache : l'amplitude et la direction de chaque période.</p>
+
+<h2>Trois façons d'afficher les mêmes prix</h2>
+<table>
+<thead><tr><th>Type</th><th>Ce qu'il montre</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td>Ligne</td><td>Uniquement les clôtures, reliées entre elles</td><td>Vue d'ensemble, comparaison de plusieurs actifs</td></tr>
+<tr><td>Barres (OHLC)</td><td>Les quatre prix, avec de petits traits pour l'ouverture et la clôture</td><td>Même information que les bougies, plus sobre</td></tr>
+<tr><td>Chandeliers</td><td>Les quatre prix, avec un corps coloré selon le sens</td><td>Lecture rapide du sens et de la force de chaque période</td></tr>
+</tbody>
+</table>
+
+<h2>Anatomie d'une bougie</h2>
+<figure>
+<svg viewBox="0 0 640 260" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Anatomie d'une bougie haussière et d'une bougie baissière</title>
+  <text x="180" y="24" text-anchor="middle" fill="#7FD1B9" font-size="13" font-family="sans-serif" font-weight="bold">BOUGIE HAUSSIÈRE</text>
+  <text x="460" y="24" text-anchor="middle" fill="#E89A90" font-size="13" font-family="sans-serif" font-weight="bold">BOUGIE BAISSIÈRE</text>
+  <line x1="180" y1="50" x2="180" y2="225" stroke="#4FB38F" stroke-width="2"/>
+  <rect x="155" y="90" width="50" height="95" rx="3" fill="#4FB38F"/>
+  <g fill="#D9D3C3" font-size="12" font-family="sans-serif">
+    <line x1="210" y1="50" x2="250" y2="50" stroke="rgba(245,241,230,0.3)"/><text x="256" y="54">plus haut</text>
+    <line x1="210" y1="90" x2="250" y2="90" stroke="rgba(245,241,230,0.3)"/><text x="256" y="94">clôture</text>
+    <line x1="210" y1="185" x2="250" y2="185" stroke="rgba(245,241,230,0.3)"/><text x="256" y="189">ouverture</text>
+    <line x1="210" y1="225" x2="250" y2="225" stroke="rgba(245,241,230,0.3)"/><text x="256" y="229">plus bas</text>
+  </g>
+  <text x="130" y="72" text-anchor="end" fill="#A8B3AE" font-size="12" font-family="sans-serif">mèche haute</text>
+  <text x="130" y="142" text-anchor="end" fill="#A8B3AE" font-size="12" font-family="sans-serif">corps</text>
+  <text x="130" y="210" text-anchor="end" fill="#A8B3AE" font-size="12" font-family="sans-serif">mèche basse</text>
+  <line x1="460" y1="50" x2="460" y2="225" stroke="#D2655A" stroke-width="2"/>
+  <rect x="435" y="75" width="50" height="120" rx="3" fill="#D2655A"/>
+  <g fill="#D9D3C3" font-size="12" font-family="sans-serif">
+    <line x1="490" y1="75" x2="530" y2="75" stroke="rgba(245,241,230,0.3)"/><text x="536" y="79">ouverture</text>
+    <line x1="490" y1="195" x2="530" y2="195" stroke="rgba(245,241,230,0.3)"/><text x="536" y="199">clôture</text>
+  </g>
+  <text x="320" y="252" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Le corps va de l'ouverture à la clôture ; les mèches, jusqu'aux extrêmes de la période.</text>
+</svg>
+<figcaption>Une bougie haussière clôture au-dessus de son ouverture, une baissière en dessous. Les couleurs varient selon les plateformes ; la lecture reste la même.</figcaption>
+</figure>
 
 <ul>
-<li><strong>Open (O)</strong> : prix d'ouverture de la période</li>
-<li><strong>High (H)</strong> : prix le plus haut atteint pendant la période</li>
-<li><strong>Low (L)</strong> : prix le plus bas atteint pendant la période</li>
-<li><strong>Close (C)</strong> : prix de clôture de la période</li>
+<li><strong>Ouverture</strong> : premier prix échangé de la période.</li>
+<li><strong>Plus haut</strong> et <strong>plus bas</strong> : les extrêmes atteints pendant la période.</li>
+<li><strong>Clôture</strong> : dernier prix de la période. C'est le prix le plus regardé, car il dit où le marché a fini par s'accorder.</li>
 </ul>
 
-<p>Le <strong>corps</strong> (body) représente l'écart entre l'open et le close. Les <strong>mèches</strong> (wicks/shadows) représentent les extrêmes atteints au-delà du corps.</p>
+<h2>Ce que racontent le corps et les mèches</h2>
+<table>
+<thead><tr><th>Forme</th><th>Lecture la plus courante</th></tr></thead>
+<tbody>
+<tr><td>Grand corps, petites mèches</td><td>Un camp a dominé toute la période, sans retour notable</td></tr>
+<tr><td>Petit corps, mèches des deux côtés</td><td>Hésitation : le prix est allé des deux côtés et a fini près de son point de départ</td></tr>
+<tr><td>Longue mèche basse, corps en haut</td><td>Les vendeurs ont poussé le prix vers le bas, puis les acheteurs l'ont ramené : un rejet des prix bas</td></tr>
+<tr><td>Longue mèche haute, corps en bas</td><td>Rejet des prix hauts</td></tr>
+<tr><td>Bougie bien plus grande que les précédentes</td><td>Arrivée d'une information ou de gros ordres ; la volatilité vient de changer</td></tr>
+</tbody>
+</table>
+<p>Ces lectures décrivent <strong>ce qui s'est passé</strong>, pas ce qui va se passer. Une longue mèche basse ne garantit aucune hausse : elle dit seulement que les prix bas ont été refusés, cette fois-ci.</p>
 
+<h2>Quelques formes à reconnaître</h2>
 <ul>
-<li><strong>Bougie haussière (bullish)</strong> : le close est supérieur à l'open — souvent représentée en vert ou blanc</li>
-<li><strong>Bougie baissière (bearish)</strong> : le close est inférieur à l'open — souvent représentée en rouge ou noir</li>
+<li><strong>Doji</strong> : ouverture et clôture presque identiques. Indécision ; plus parlant après un long mouvement qu'au milieu d'une fourchette.</li>
+<li><strong>Marteau</strong> et <strong>étoile filante</strong> : petit corps à une extrémité, longue mèche de l'autre (au moins deux fois le corps). Rejet d'un côté du marché.</li>
+<li><strong>Avalement</strong> (<em>engulfing</em>) : le corps d'une bougie recouvre entièrement celui de la précédente, en sens inverse.</li>
+<li><strong>Bougie incluse</strong> (<em>inside bar</em>) : son plus haut et son plus bas restent dans ceux de la bougie précédente. Compression de la volatilité.</li>
 </ul>
+<p>Leur définition précise, leurs variantes et leurs limites sont détaillées dans l'article <em>Les patterns de chandeliers japonais</em> du module Analyse technique.</p>
 
-<blockquote>La longueur du corps indique la force du mouvement. Une bougie avec un grand corps et peu de mèches signale une conviction forte des acheteurs ou vendeurs. Une bougie avec peu de corps et de longues mèches signale une indécision ou un rejet.</blockquote>
+<h2>Une bougie, plusieurs unités de temps</h2>
+<p>Une bougie peut représenter une minute, une heure, une journée ou une semaine. Les unités de temps s'emboîtent : quatre bougies de 15 minutes forment exactement une bougie d'une heure.</p>
+<figure>
+<svg viewBox="0 0 640 220" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Quatre bougies de 15 minutes forment une bougie d'une heure</title>
+  <text x="170" y="24" text-anchor="middle" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">4 BOUGIES DE 15 MIN</text>
+  <text x="500" y="24" text-anchor="middle" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">1 BOUGIE D'1 H</text>
+  <g transform="translate(0,-20)">
+    <line x1="80" y1="135" x2="80" y2="185" stroke="#4FB38F" stroke-width="2"/><rect x="66" y="140" width="28" height="40" rx="2" fill="#4FB38F"/>
+    <line x1="140" y1="110" x2="140" y2="165" stroke="#4FB38F" stroke-width="2"/><rect x="126" y="120" width="28" height="40" rx="2" fill="#4FB38F"/>
+    <line x1="200" y1="115" x2="200" y2="160" stroke="#D2655A" stroke-width="2"/><rect x="186" y="120" width="28" height="30" rx="2" fill="#D2655A"/>
+    <line x1="260" y1="120" x2="260" y2="170" stroke="#4FB38F" stroke-width="2"/><rect x="246" y="125" width="28" height="25" rx="2" fill="#4FB38F"/>
+    <line x1="40" y1="110" x2="300" y2="110" stroke="rgba(200,164,92,0.5)" stroke-dasharray="3 3"/>
+    <line x1="40" y1="185" x2="300" y2="185" stroke="rgba(200,164,92,0.5)" stroke-dasharray="3 3"/>
+    <text x="350" y="150" text-anchor="middle" fill="#E2CB91" font-size="22" font-family="sans-serif">→</text>
+    <line x1="500" y1="110" x2="500" y2="185" stroke="#4FB38F" stroke-width="2"/><rect x="480" y="125" width="40" height="55" rx="3" fill="#4FB38F"/>
+    <g fill="#D9D3C3" font-size="12" font-family="sans-serif">
+      <text x="530" y="114">plus haut : celui de la 2e</text>
+      <text x="530" y="129">clôture : celle de la 4e</text>
+      <text x="530" y="184">ouverture : celle de la 1re</text>
+      <text x="530" y="199">plus bas : celui de la 1re</text>
+    </g>
+  </g>
+  <text x="320" y="208" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Même données, moins de détail : la bougie d'une heure ne dit pas dans quel ordre les extrêmes ont été atteints.</text>
+</svg>
+<figcaption>Passer à une unité de temps supérieure résume les bougies, sans rien inventer ni rien perdre des extrêmes.</figcaption>
+</figure>
+<p>Conséquence pratique : une unité de temps élevée donne la <strong>direction générale</strong>, une unité de temps basse montre <strong>le détail de l'exécution</strong>. L'article <em>Analyse multi-timeframe</em> explique comment les combiner.</p>
 
-<h2>Les patterns de bougies essentiels</h2>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">La bougie journalière dépend de votre broker</strong>
+<p>Le marché des changes n'a pas d'heure de clôture officielle. Beaucoup de brokers clôturent la journée à 17 h à New York (23 h à Paris) : vous voyez cinq bougies par semaine. D'autres utilisent minuit UTC, ce qui ajoute une petite bougie le dimanche et décale tous les plus hauts et plus bas journaliers. Vérifiez l'heure du serveur de votre plateforme avant de comparer vos niveaux avec ceux d'un autre trader.</p>
+</aside>
 
-<h3>Doji</h3>
-<p>Open et close sont quasi identiques — le corps est minuscule ou inexistant. Le Doji signale une <strong>indécision totale</strong> du marché. Très significatif après une tendance prolongée — peut annoncer un retournement. En ICT, un Doji après un sweep de liquidité est souvent le signal d'entrée optimal.</p>
+<h2>Lire plusieurs bougies : le contexte d'abord</h2>
+<ol class="doc-steps">
+<li><strong>Où sommes-nous ?</strong> Près d'un niveau qui a déjà servi de support ou de résistance, ou au milieu de nulle part ?</li>
+<li><strong>Quelle est la tendance</strong> sur l'unité de temps supérieure ? Un rejet des prix bas a plus de poids dans une tendance haussière.</li>
+<li><strong>La bougie est-elle inhabituelle ?</strong> Comparez sa taille à celle des dix ou vingt précédentes.</li>
+<li><strong>Que fait la bougie suivante ?</strong> Une forme de retournement que la bougie suivante efface tout de suite n'a rien annoncé.</li>
+</ol>
 
-<h3>Hammer (Marteau)</h3>
-<p>Petit corps en haut de la bougie, longue mèche basse (2-3x la taille du corps), peu ou pas de mèche haute. Apparaît en fin de tendance baissière. La longue mèche basse signale que les vendeurs ont poussé le prix bas mais que les acheteurs ont repris le contrôle avant la clôture. <strong>Signal haussier fort</strong> s'il apparaît sur un support clé.</p>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Sur l'or, en bougies d'une heure, le prix baisse depuis le matin vers 2 300 $, un niveau qui a stoppé la baisse deux fois la semaine précédente. Une bougie descend jusqu'à 2 291 $, puis clôture à 2 304 $ avec une longue mèche basse. Le contexte (niveau connu, tendance de fond haussière) donne du sens à ce rejet. La même bougie au milieu d'une fourchette sans repère n'aurait pas la même valeur.</p>
+</aside>
 
-<h3>Shooting Star (Étoile Filante)</h3>
-<p>Inverse du Hammer — petit corps en bas, longue mèche haute. Signale un <strong>rejet de la zone haute</strong>. Les acheteurs ont essayé de pousser le prix mais les vendeurs ont repris le contrôle. Signal baissier fort sur une résistance.</p>
-
-<h3>Engulfing (Engloutissant)</h3>
-<p>Une bougie dont le corps englobe entièrement le corps de la bougie précédente.</p>
+<h2>Les erreurs de lecture les plus courantes</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Bonnes habitudes</h4>
 <ul>
-<li><strong>Bullish Engulfing</strong> : grosse bougie haussière après une petite baissière — signal d'achat fort</li>
-<li><strong>Bearish Engulfing</strong> : grosse bougie baissière après une petite haussière — signal de vente fort</li>
+<li>Attendre la clôture de la bougie avant de conclure</li>
+<li>Regarder d'abord l'unité de temps supérieure</li>
+<li>Comparer la taille d'une bougie à celles qui l'entourent</li>
+<li>Noter dans son journal les formes qui ont fonctionné et celles qui ont échoué</li>
 </ul>
-<p>En ICT, un Bullish Engulfing sur un Order Block est l'un des setups d'entrée les plus recherchés.</p>
-
-<h3>Pin Bar</h3>
-<p>Bougie avec une très longue mèche (3-5x le corps) dans un sens et peu ou pas de mèche dans l'autre. Le prix a été rejeté violemment. C'est l'un des patterns les plus fiables en price action. Une Pin Bar bullish sur une zone de support avec la mèche vers le bas signale un fort rejet et potentiel retournement à la hausse.</p>
-
-<h3>Inside Bar</h3>
-<p>Le range de la bougie (High à Low) est entièrement contenu dans le range de la bougie précédente. Signale une <strong>compression</strong> de la volatilité — souvent précurseur d'un mouvement fort dans une direction.</p>
-
-<h2>Lire plusieurs bougies en contexte</h2>
-<p>Un pattern de bougie isolé n'a que peu de valeur. La vraie puissance vient du <strong>contexte</strong> :</p>
+</div>
+<div class="doc-compare__dont">
+<h4>Pièges</h4>
 <ul>
-<li>Où apparaît le pattern ? Sur un support/résistance clé ? Dans un FVG ? Sur un Order Block ?</li>
-<li>Quelle est la tendance principale ? Un Hammer baissier n'a pas la même signification dans une tendance haussière vs baissière</li>
-<li>Quel est le volume associé ? Un Engulfing avec volume élevé est bien plus fiable qu'avec volume faible</li>
+<li>Prendre position sur une bougie encore ouverte : sa forme peut changer jusqu'à la dernière seconde</li>
+<li>Voir un retournement dans chaque doji d'une forte tendance</li>
+<li>Juger une forme isolée, sans niveau ni tendance</li>
+<li>Croire qu'une forme « marche » parce qu'on se souvient des fois où elle a marché</li>
 </ul>
+</div>
+</div>
 
-<h2>Les erreurs de débutant avec les chandeliers</h2>
-<ul>
-<li>Trader chaque Doji comme un retournement — un Doji dans une forte tendance n'est souvent qu'une pause</li>
-<li>Ignorer le contexte — un beau pattern dans une zone sans intérêt n'a pas de valeur</li>
-<li>Ne pas attendre la clôture de la bougie — une bougie qui "ressemble" à un Hammer peut encore changer avant sa clôture</li>
-<li>Sur-optimiser les couleurs et styles — le fond des chandeliers reste OHLC, peu importe le design</li>
-</ul>
+<h2>Exercice</h2>
+<p>Ouvrez un graphique journalier de l'EUR/USD ou du CAC 40 et choisissez dix bougies au hasard. Pour chacune, notez sans regarder la suite : le sens, la taille par rapport aux voisines, la présence d'un rejet. Puis regardez les trois bougies suivantes. Vous constaterez qu'une même forme est suivie de résultats très différents : c'est le contexte qui fait la différence.</p>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Une bougie raconte un combat terminé entre acheteurs et vendeurs. Elle vous dit qui a gagné cette période et à quel prix ; elle ne vous dit pas qui gagnera la suivante.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Une bougie ouvre à 100, monte à 108, descend à 97 et clôture à 101. Est-elle haussière ? Que retenez-vous de sa forme ?</summary>
+<p>Elle est légèrement haussière (clôture au-dessus de l'ouverture), mais son petit corps et ses mèches des deux côtés, surtout la longue mèche haute, montrent surtout une hésitation et un rejet des prix hauts.</p>
+</details>
+<details>
+<summary>Quelle est l'ouverture d'une bougie d'une heure formée de quatre bougies de 15 minutes ?</summary>
+<p>L'ouverture de la première bougie de 15 minutes. Sa clôture est celle de la quatrième ; son plus haut et son plus bas sont les extrêmes des quatre.</p>
+</details>
+<details>
+<summary>Pourquoi deux traders peuvent-ils voir des bougies journalières différentes sur le même marché ?</summary>
+<p>Parce que leurs plateformes ne clôturent pas la journée à la même heure. Une journée qui se termine à 23 h à Paris et une autre à 1 h du matin n'ont pas les mêmes plus hauts ni les mêmes plus bas.</p>
+</details>

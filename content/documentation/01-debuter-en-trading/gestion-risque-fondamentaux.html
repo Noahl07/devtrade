@@ -2,83 +2,156 @@
 {
     "slug": "gestion-risque-fondamentaux",
     "title": "Gestion du risque — les fondamentaux",
-    "excerpt": "Pourquoi 90% des traders perdent, le risk/reward, le sizing de position et les règles d'or.",
-    "readingTime": 11,
+    "excerpt": "Risque par trade, taille de position, rapport gain/risque, espérance, séries de pertes et drawdown : les calculs qui décident de la survie d'un compte, avec des tableaux chiffrés et une routine à appliquer avant chaque trade.",
+    "readingTime": 7,
     "accessLevel": "free",
     "position": 8,
     "module": "debuter-en-trading"
 }
 -->
-<h2>La vérité sur les statistiques du trading</h2>
-<p>Les études de la plupart des régulateurs financiers (AMF en France, ESMA en Europe) montrent que <strong>entre 74% et 89% des traders retail CFD perdent de l'argent</strong>. Ce n'est pas parce que les marchés sont impossibles à battre — c'est parce que la majorité trade sans gestion du risque sérieuse.</p>
-
-<p>Un trader peut avoir une stratégie gagnante à 40% de win rate et être très profitable. Un autre peut gagner 70% de ses trades et perdre de l'argent. La différence ? La gestion du risque et le rapport Risk/Reward.</p>
-
-<h2>Le concept de Risk/Reward (R:R)</h2>
-<p>Le ratio Risk/Reward compare la perte potentielle (risque) au gain potentiel (récompense) d'un trade.</p>
-
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>R:R 1:1</strong> : vous risquez 100€ pour gagner 100€</li>
-<li><strong>R:R 1:2</strong> : vous risquez 100€ pour gagner 200€</li>
-<li><strong>R:R 1:3</strong> : vous risquez 100€ pour gagner 300€</li>
+<li>Risquez un <strong>petit pourcentage fixe</strong> de votre capital par trade, souvent 0,5 à 1 % quand on débute.</li>
+<li>La <strong>taille de position se calcule</strong> à partir de ce risque et de la distance du stop ; elle ne se devine pas.</li>
+<li>Gagner souvent ne suffit pas : ce qui compte, c'est l'<strong>espérance</strong>, qui combine taux de réussite et rapport gain/risque.</li>
+<li>Les séries de pertes sont <strong>statistiquement inévitables</strong>, et une perte de 50 % exige un gain de 100 % pour revenir au point de départ.</li>
 </ul>
+</div>
 
-<blockquote>Avec un R:R de 1:2 et un win rate de seulement 40%, vous êtes profitable. Sur 10 trades : 4 gagnants × 200€ = 800€, 6 perdants × 100€ = 600€. Profit net : 200€. La plupart des débutants cherchent à avoir raison plutôt qu'à être profitable.</blockquote>
+<h2>Pourquoi tout commence ici</h2>
+<p>En 2018, l'ESMA a constaté qu'entre 74 % et 89 % des comptes CFD de particuliers perdaient de l'argent. Les causes les plus fréquentes ne sont pas de « mauvaises analyses » : ce sont des positions trop grosses, des stops absents ou déplacés, et une réaction émotionnelle aux pertes. Ce sont des erreurs de gestion du risque, et elles se corrigent avec quelques règles simples.</p>
 
-<h2>La règle du 1-2% par trade</h2>
-<p>La règle la plus importante en gestion du risque : <strong>ne jamais risquer plus de 1-2% de votre capital total sur un seul trade</strong>.</p>
-
-<p>Avec 1% de risque par trade :</p>
-<ul>
-<li>Il vous faudrait 100 trades perdants consécutifs pour perdre votre capital (probabilité statistiquement quasi nulle)</li>
-<li>Une série de 10 pertes consécutives (possible avec n'importe quelle stratégie) ne représente que -10% du capital</li>
-<li>Vous pouvez vous permettre d'apprendre et de faire des erreurs sans vous ruiner</li>
-</ul>
-
-<p>Avec 10% de risque par trade :</p>
-<ul>
-<li>10 pertes consécutives = capital à zéro</li>
-<li>La psychologie devient ingérable dès la 3ème perte</li>
-<li>Les décisions deviennent émotionnelles et irrationnelles</li>
-</ul>
+<h2>Le risque par trade, exprimé en R</h2>
+<p>Le <strong>risque</strong> d'un trade est ce que vous perdez si le stop est touché. Les traders l'appellent souvent <strong>1 R</strong>. Un trade qui gagne deux fois ce montant fait +2 R ; un trade stoppé fait −1 R. Raisonner en R permet de comparer des trades de tailles différentes, et de juger une méthode indépendamment du capital.</p>
+<p>La règle la plus répandue consiste à fixer 1 R à un <strong>pourcentage constant du capital</strong>. Voici ce que donnent dix pertes de suite selon ce pourcentage (chaque risque étant recalculé sur le capital restant) :</p>
+<table>
+<thead><tr><th>Risque par trade</th><th class="ta-center">Capital perdu après 10 pertes consécutives</th></tr></thead>
+<tbody>
+<tr><td>1 %</td><td class="ta-center is-positive">−9,6 %</td></tr>
+<tr><td>2 %</td><td class="ta-center">−18,3 %</td></tr>
+<tr><td>5 %</td><td class="ta-center is-negative">−40,1 %</td></tr>
+<tr><td>10 %</td><td class="ta-center is-negative">−65,1 %</td></tr>
+</tbody>
+</table>
+<p>À 1 %, une mauvaise série se rattrape. À 10 %, elle laisse un compte presque impossible à reconstruire, et un trader trop ébranlé pour suivre son plan.</p>
 
 <h2>Calculer la taille de position</h2>
-<p>La taille de position ne se choisit pas au hasard — elle se <strong>calcule</strong> à partir de votre risque en euros/dollars et de la distance de votre stop-loss.</p>
-
-<p>Formule :</p>
-<pre><code>Taille = (Capital × % Risque) ÷ (Distance SL en pips × Valeur du pip)
-</code></pre>
-
-<p>Exemple concret :</p>
+<pre><code>Taille (en lots) = montant risqué ÷ (distance du stop en pips × valeur d'un pip pour 1 lot)</code></pre>
 <ul>
-<li>Capital : 10 000€</li>
-<li>Risque par trade : 1% = 100€</li>
-<li>Stop-Loss : 20 pips sur EUR/USD</li>
-<li>Valeur d'1 pip sur 1 lot EUR/USD : 10€</li>
-<li>Taille = 100€ ÷ (20 × 10€) = 0.5 lot</li>
+<li>Capital : 10 000 €. Risque : 1 %, soit 100 €.</li>
+<li>Stop à 20 pips de l'entrée, sur l'EUR/USD.</li>
+<li>Valeur d'un pip pour un lot : 10 $, soit environ 9,20 € à un cours de 1,0850.</li>
+<li>Taille = 100 ÷ (20 × 9,20) ≈ 0,54, arrondie à la baisse : <strong>0,5 lot</strong>.</li>
+</ul>
+<p>Si le stop avait été à 40 pips, la taille aurait été divisée par deux. C'est tout l'intérêt de la méthode : <strong>le stop se place là où le marché l'impose, et c'est la taille qui s'adapte</strong>. Arrondissez toujours à la baisse.</p>
+
+<h2>Taux de réussite et rapport gain/risque</h2>
+<p>Un trader qui gagne 70 % du temps peut perdre de l'argent ; un autre qui ne gagne que 35 % du temps peut en gagner. Tout dépend du rapport entre gain moyen et perte moyenne. Le taux de réussite minimal pour être à l'équilibre, hors frais, vaut 1 ÷ (1 + rapport gain/risque) :</p>
+<table>
+<thead><tr><th>Gain moyen pour 1 R risqué</th><th class="ta-center">Taux de réussite d'équilibre</th></tr></thead>
+<tbody>
+<tr><td>0,5 R</td><td class="ta-center">66,7 %</td></tr>
+<tr><td>1 R</td><td class="ta-center">50 %</td></tr>
+<tr><td>1,5 R</td><td class="ta-center">40 %</td></tr>
+<tr><td>2 R</td><td class="ta-center">33,3 %</td></tr>
+<tr><td>3 R</td><td class="ta-center">25 %</td></tr>
+</tbody>
+</table>
+<p>Les frais remontent tous ces seuils, d'autant plus que vos stops sont serrés (voir <em>Spreads, commissions et coûts réels</em>).</p>
+
+<h2>L'espérance : la seule mesure qui compte</h2>
+<p>L'espérance est le résultat moyen d'un trade, en R :</p>
+<pre><code>Espérance = (taux de réussite × gain moyen) − (taux d'échec × perte moyenne)</code></pre>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Sur 100 trades, vous en gagnez 40 avec un gain moyen de 2 R, et vous en perdez 60 à −1 R. Espérance = 0,40 × 2 − 0,60 × 1 = <strong>+0,2 R par trade</strong>. Avec 1 R = 100 €, cela fait en moyenne 20 € par trade, avant frais, et seulement si ces chiffres se maintiennent sur un grand nombre de trades.</p>
+</aside>
+<p>Une espérance se mesure sur <strong>beaucoup de trades</strong>. Sur 10 ou 20 trades, le hasard domine : n'en tirez aucune conclusion, dans un sens comme dans l'autre.</p>
+
+<h2>Les séries de pertes sont normales</h2>
+<p>Même une méthode rentable aligne des pertes. Probabilité d'avoir <strong>au moins une série</strong> de pertes consécutives de la longueur indiquée, sur 100 trades indépendants :</p>
+<table>
+<thead><tr><th>Taux de réussite</th><th class="ta-center">5 pertes de suite</th><th class="ta-center">6 de suite</th><th class="ta-center">8 de suite</th><th class="ta-center">10 de suite</th></tr></thead>
+<tbody>
+<tr><td>40 %</td><td class="ta-center">98 %</td><td class="ta-center">87 %</td><td class="ta-center">49 %</td><td class="ta-center">20 %</td></tr>
+<tr><td>50 %</td><td class="ta-center">81 %</td><td class="ta-center">55 %</td><td class="ta-center">17 %</td><td class="ta-center">4 %</td></tr>
+<tr><td>60 %</td><td class="ta-center">46 %</td><td class="ta-center">21 %</td><td class="ta-center">4 %</td><td class="ta-center">1 %</td></tr>
+</tbody>
+</table>
+<p>Avec un taux de réussite de 40 %, typique des méthodes qui visent 2 R ou plus, une série de 8 pertes sur 100 trades a presque une chance sur deux de se produire. Prévoyez-la dans votre risque par trade, et dans votre tête.</p>
+
+<h2>Le drawdown et l'asymétrie des pertes</h2>
+<p>Le <strong>drawdown</strong> est la baisse du capital depuis son dernier plus haut. Il se rattrape plus difficilement qu'il ne se creuse, parce que le gain nécessaire se calcule sur un capital réduit :</p>
+<figure>
+<svg viewBox="0 0 640 250" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Gain nécessaire pour rattraper une perte</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">PERTE SUBIE → GAIN NÉCESSAIRE POUR REVENIR À ZÉRO</text>
+  <g font-family="sans-serif" font-size="12.5">
+    <text x="110" y="58" text-anchor="end" fill="#D9D3C3">−10 %</text><rect x="120" y="45" width="19" height="18" rx="3" fill="rgba(79,179,143,0.55)"/><text x="148" y="59" fill="#7FD1B9" font-weight="bold">+11,1 %</text>
+    <text x="110" y="94" text-anchor="end" fill="#D9D3C3">−20 %</text><rect x="120" y="81" width="42" height="18" rx="3" fill="rgba(79,179,143,0.55)"/><text x="171" y="95" fill="#7FD1B9" font-weight="bold">+25 %</text>
+    <text x="110" y="130" text-anchor="end" fill="#D9D3C3">−30 %</text><rect x="120" y="117" width="73" height="18" rx="3" fill="rgba(200,164,92,0.55)"/><text x="202" y="131" fill="#E2CB91" font-weight="bold">+42,9 %</text>
+    <text x="110" y="166" text-anchor="end" fill="#D9D3C3">−50 %</text><rect x="120" y="153" width="170" height="18" rx="3" fill="rgba(210,101,90,0.55)"/><text x="299" y="167" fill="#E89A90" font-weight="bold">+100 %</text>
+    <text x="110" y="202" text-anchor="end" fill="#D9D3C3">−70 %</text><rect x="120" y="189" width="397" height="18" rx="3" fill="rgba(210,101,90,0.75)"/><text x="526" y="203" fill="#E89A90" font-weight="bold">+233 %</text>
+  </g>
+  <text x="320" y="238" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Gain nécessaire = 1 ÷ (1 − perte) − 1. L'effort croît bien plus vite que la perte.</text>
+</svg>
+<figcaption>Au-delà de 30 % de perte, revenir au point de départ demande une performance que très peu de traders réalisent.</figcaption>
+</figure>
+
+<h2>Des limites qui vous arrêtent avant le pire</h2>
+<p>Un risque par trade raisonnable ne suffit pas si l'on enchaîne les trades sous le coup de la frustration. Ajoutez des <strong>coupe-circuits</strong> écrits à l'avance :</p>
+<ul>
+<li><strong>Perte maximale par jour</strong>, par exemple 2 R : atteinte, vous arrêtez jusqu'au lendemain.</li>
+<li><strong>Perte maximale par semaine</strong>, par exemple 5 R : atteinte, vous ne tradez plus qu'en démo jusqu'à la semaine suivante, et vous relisez votre journal.</li>
+<li><strong>Risque total ouvert</strong> : la somme des risques de toutes vos positions. Deux positions très liées (EUR/USD et GBP/USD dans le même sens) comptent presque comme une seule position double.</li>
 </ul>
 
-<p>Cette approche garantit que quel que soit le placement de votre stop-loss, vous risquez toujours le même montant en euros.</p>
+<h2>La routine avant chaque trade</h2>
+<ol class="doc-steps">
+<li><strong>Où est le stop ?</strong> À l'endroit où l'idée est fausse, pas à une distance choisie pour « faire tenir » la taille.</li>
+<li><strong>Combien je risque ?</strong> Votre pourcentage fixe, converti en euros.</li>
+<li><strong>Quelle taille ?</strong> Calculée avec la formule, arrondie à la baisse.</li>
+<li><strong>Où est l'objectif, et le rapport gain/risque est-il cohérent</strong> avec le taux de réussite de votre méthode ?</li>
+<li><strong>Mon risque total ouvert et mes limites du jour</strong> me permettent-ils ce trade ?</li>
+</ol>
 
-<h2>Le drawdown — comprendre les séries perdantes</h2>
-<p>Toute stratégie, même excellente, traverse des <strong>séries perdantes</strong>. Un drawdown est la baisse maximale du capital entre un sommet et un creux. C'est inévitable et normal.</p>
-
-<p>Ce qui distingue les traders professionnels :</p>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Règles qui protègent</h4>
 <ul>
-<li>Ils <em>acceptent</em> le drawdown comme faisant partie du jeu</li>
-<li>Ils ne changent pas de stratégie pendant un drawdown (sauf si les conditions de marché changent fondamentalement)</li>
-<li>Ils ne sur-tradent pas pour "récupérer" les pertes</li>
-<li>Ils ont des règles de circuit-breaker : maximum de pertes par jour/semaine avant d'arrêter</li>
+<li>Un stop sur chaque position, posé dès l'entrée</li>
+<li>Un pourcentage de risque fixe, écrit dans votre plan</li>
+<li>Des limites journalières et hebdomadaires</li>
+<li>Juger la méthode sur au moins 50 à 100 trades</li>
 </ul>
-
-<h2>Les règles d'or du risk management</h2>
+</div>
+<div class="doc-compare__dont">
+<h4>Habitudes qui ruinent</h4>
 <ul>
-<li><strong>Toujours avoir un stop-loss</strong> — sans exception, sans discussion</li>
-<li><strong>Ne jamais déplacer son SL dans la mauvaise direction</strong> — c'est accepter une perte plus grande qu'initialement prévue</li>
-<li><strong>Calculer la taille de position avant d'entrer</strong> — jamais à l'intuition</li>
-<li><strong>Respecter le ratio R:R minimum</strong> — en dessous de 1:1.5, le trade ne vaut généralement pas le risque</li>
-<li><strong>Maximum 2-3% de drawdown par jour</strong> — si atteint, arrêter de trader ce jour</li>
-<li><strong>Maximum 5-10% de drawdown par mois</strong> — si atteint, analyser et corriger</li>
+<li>Éloigner le stop quand le prix s'en approche</li>
+<li>Doubler la taille pour « se refaire » après une perte</li>
+<li>Augmenter le risque après une série gagnante</li>
+<li>Changer de méthode après cinq pertes</li>
 </ul>
+</div>
+</div>
 
-<blockquote>Le trading n'est pas un sprint — c'est un marathon. Préserver son capital sur le long terme est infiniment plus important que chercher à faire 100% en un mois. Les comptes soufflés par les débutants finissent tous de la même façon : trop de risque, trop vite.</blockquote>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Vous ne contrôlez pas l'issue d'un trade. Vous contrôlez combien vous perdez quand vous avez tort. Une gestion du risque stricte ne rend pas une méthode gagnante, mais elle vous laisse le temps de découvrir si elle l'est.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Compte de 8 000 €, risque de 1 %, stop de 25 pips sur l'EUR/USD (un pip vaut environ 9,20 € par lot). Quelle taille ?</summary>
+<p>80 € ÷ (25 × 9,20 €) ≈ 0,35 lot.</p>
+</details>
+<details>
+<summary>Votre méthode gagne 55 % du temps avec un gain moyen de 0,8 R. Son espérance est-elle positive ?</summary>
+<p>0,55 × 0,8 − 0,45 × 1 = 0,44 − 0,45 = −0,01 R : très légèrement négative avant frais, donc négative après frais.</p>
+</details>
+<details>
+<summary>Votre compte a perdu 25 %. Quel gain faut-il pour revenir au point de départ ?</summary>
+<p>1 ÷ 0,75 − 1 ≈ 33,3 %.</p>
+</details>

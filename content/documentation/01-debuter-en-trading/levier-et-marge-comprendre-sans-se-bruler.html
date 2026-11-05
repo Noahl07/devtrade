@@ -2,99 +2,149 @@
 {
     "slug": "levier-et-marge-comprendre-sans-se-bruler",
     "title": "Levier et marge — comprendre sans se brûler",
-    "excerpt": "Levier, marge, Margin Call, Stop Out — tout comprendre sur l'effet multiplicateur du levier pour l'utiliser intelligemment sans mettre son capital en danger.",
-    "readingTime": 16,
+    "excerpt": "Ce qu'est vraiment le levier, comment se calcule la marge, quand le broker ferme vos positions, les plafonds européens, et pourquoi votre levier doit découler de votre risque et non l'inverse. Exemples chiffrés.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 7,
     "module": "debuter-en-trading"
 }
 -->
-<h2>L'outil le plus mal compris du trading de détail</h2>
-<p>Le levier est présenté partout comme une opportunité : "tradez 100 000€ avec seulement 1 000€". C'est techniquement vrai. Mais cette présentation oublie l'autre face : <strong>les pertes sont amplifiées exactement de la même façon que les gains</strong>. Comprendre le levier en profondeur est l'une des compétences les plus importantes du trader.</p>
- 
-<h2>Qu'est-ce que le levier ?</h2>
-<p>Le levier est un mécanisme qui vous permet de contrôler une position dont la valeur notionnelle est supérieure à votre capital. Il est exprimé sous forme de ratio :</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Levier 1:10</strong> → avec 1 000€, vous contrôlez 10 000€</li>
-<li><strong>Levier 1:30</strong> → avec 1 000€, vous contrôlez 30 000€</li>
-<li><strong>Levier 1:500</strong> → avec 1 000€, vous contrôlez 500 000€ (brokers offshore — danger)</li>
+<li>Le levier permet de prendre une position plus grande que son capital. Il <strong>amplifie les gains et les pertes dans la même proportion</strong>.</li>
+<li>La <strong>marge</strong> est la somme bloquée en garantie. En Europe, le broker ferme vos positions quand vos fonds tombent sous <strong>50 % de la marge requise</strong>.</li>
+<li>Avec le levier maximal autorisé sur l'EUR/USD (30 fois), un mouvement d'environ <strong>180 pips</strong> contre vous suffit à déclencher cette fermeture.</li>
+<li>Le bon réflexe : fixer d'abord le montant que vous acceptez de perdre, en déduire la taille de position. Le levier n'est que le résultat.</li>
 </ul>
-<p>En Europe, la réglementation ESMA limite le levier maximum pour les traders de détail :</p>
+</div>
+
+<h2>Le levier en une phrase</h2>
+<p>Avec un levier de 10, chaque euro de votre compte vous permet de prendre une position de 10 euros. Si l'actif varie de 1 %, votre position varie de 1 % de sa taille, soit <strong>10 % de votre mise de départ</strong>. Le levier ne change rien au marché ; il change seulement la taille de la position par rapport à votre compte.</p>
+
+<h2>Levier disponible et levier utilisé</h2>
+<p>Il faut distinguer deux notions que les publicités mélangent volontiers :</p>
 <ul>
-<li>Forex majors : <strong>1:30</strong></li>
-<li>Forex mineurs / or : <strong>1:20</strong></li>
-<li>Indices majors : <strong>1:20</strong></li>
-<li>Actions : <strong>1:5</strong></li>
-<li>Crypto : <strong>1:2</strong></li>
+<li>le <strong>levier disponible</strong> : le maximum que le broker vous autorise (par exemple 30 fois) ;</li>
+<li>le <strong>levier utilisé</strong> (ou effectif) : la taille réelle de vos positions divisée par votre capital.</li>
 </ul>
- 
-<h2>La marge — le dépôt de garantie</h2>
-<p>La marge est la somme que votre broker "bloque" comme garantie pour ouvrir une position. Elle n'est pas perdue — c'est du capital réservé tant que la position est ouverte.</p>
- 
-<svg viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:650px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
-  <text x="325" y="20" fill="#9ca3af" font-size="11" font-family="sans-serif" text-anchor="middle">Exemple : compte 10 000€, levier 1:30, position 1 lot EUR/USD</text>
-  <!-- Capital total -->
-  <rect x="40" y="35" width="560" height="36" rx="4" fill="rgba(62,180,137,0.1)" stroke="#3EB489" stroke-width="0.5"/>
-  <text x="320" y="58" fill="#3EB489" font-size="12" font-family="sans-serif" text-anchor="middle">Capital total du compte : 10 000€</text>
-  <!-- Marge utilisée -->
-  <rect x="40" y="85" width="187" height="36" rx="4" fill="rgba(212,169,75,0.2)" stroke="#D4A94B" stroke-width="1"/>
-  <text x="133" y="106" fill="#D4A94B" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">Marge utilisée</text>
-  <text x="133" y="118" fill="#D4A94B" font-size="9" font-family="monospace" text-anchor="middle">3 333€ (1/30 de 100 000)</text>
-  <!-- Marge libre -->
-  <rect x="233" y="85" width="367" height="36" rx="4" fill="rgba(91,155,213,0.1)" stroke="#5b9bd5" stroke-width="0.5"/>
-  <text x="416" y="106" fill="#5b9bd5" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">Marge libre (Free Margin)</text>
-  <text x="416" y="118" fill="#5b9bd5" font-size="9" font-family="monospace" text-anchor="middle">6 667€ — disponible ou pour absorber les pertes</text>
-  <!-- Position notionnelle -->
-  <rect x="40" y="135" width="560" height="28" rx="4" fill="rgba(224,85,85,0.08)" stroke="#e05555" stroke-width="0.5"/>
-  <text x="320" y="153" fill="#e05555" font-size="11" font-family="sans-serif" text-anchor="middle">Position contrôlée : 100 000€ notionnel (1 lot standard EUR/USD)</text>
+<p>Disposer d'un levier de 30 ne vous oblige pas à l'utiliser. Un compte de 10 000 € avec une position de 20 000 € utilise un levier de 2, quel que soit le maximum autorisé.</p>
+
+<h2>Les plafonds européens</h2>
+<p>Depuis 2018, l'ESMA (puis l'AMF en France) limite le levier proposé aux clients particuliers sur les CFD :</p>
+<table>
+<thead><tr><th>Sous-jacent</th><th class="ta-center">Levier maximal</th><th class="ta-center">Marge minimale</th></tr></thead>
+<tbody>
+<tr><td>Paires de devises majeures (EUR/USD, USD/JPY…)</td><td class="ta-center">30</td><td class="ta-center">3,33 %</td></tr>
+<tr><td>Autres paires de devises, or, grands indices</td><td class="ta-center">20</td><td class="ta-center">5 %</td></tr>
+<tr><td>Autres matières premières, autres indices</td><td class="ta-center">10</td><td class="ta-center">10 %</td></tr>
+<tr><td>Actions individuelles</td><td class="ta-center">5</td><td class="ta-center">20 %</td></tr>
+<tr><td>Cryptomonnaies</td><td class="ta-center">2</td><td class="ta-center">50 %</td></tr>
+</tbody>
+</table>
+<p>Ces règles imposent aussi la <strong>protection contre le solde négatif</strong> : un particulier ne peut pas perdre plus que l'argent déposé sur son compte CFD.</p>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Levier de 500 : un signal d'alerte</strong>
+<p>Les brokers qui proposent 100, 500 ou plus à des particuliers européens sont en général établis hors de l'Union, sans ces protections. Le statut de « client professionnel », qui débloque un levier plus élevé, vous fait aussi perdre une partie des garanties. Dans les deux cas, demandez-vous d'abord ce que vous y gagnez vraiment.</p>
+</aside>
+
+<h2>La marge : un dépôt de garantie</h2>
+<p>Pour ouvrir une position, le broker bloque une partie de votre compte : la <strong>marge</strong>. Ce n'est pas un frais, et elle vous est rendue à la fermeture. Elle se calcule ainsi : marge = taille de la position ÷ levier.</p>
+
+<figure>
+<svg viewBox="0 0 640 220" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Compte de 10 000 euros avec une position d'un lot sur l'EUR/USD</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">COMPTE DE 10 000 € · 1 LOT EUR/USD · LEVIER MAXIMAL 30</text>
+  <rect x="20" y="40" width="600" height="40" rx="6" fill="rgba(245,241,230,0.04)" stroke="rgba(245,241,230,0.2)"/>
+  <text x="320" y="65" text-anchor="middle" fill="#D9D3C3" font-size="12.5" font-family="sans-serif">Fonds propres du compte : 10 000 €</text>
+  <rect x="20" y="92" width="200" height="44" rx="6" fill="rgba(200,164,92,0.22)" stroke="#C8A45C"/>
+  <text x="120" y="111" text-anchor="middle" fill="#E2CB91" font-size="12.5" font-family="sans-serif" font-weight="bold">Marge bloquée</text>
+  <text x="120" y="127" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif">3 333 € (100 000 € ÷ 30)</text>
+  <rect x="230" y="92" width="390" height="44" rx="6" fill="rgba(79,179,143,0.14)" stroke="#4FB38F"/>
+  <text x="425" y="111" text-anchor="middle" fill="#7FD1B9" font-size="12.5" font-family="sans-serif" font-weight="bold">Marge libre</text>
+  <text x="425" y="127" text-anchor="middle" fill="#7FD1B9" font-size="12" font-family="sans-serif">6 667 € pour absorber les pertes ou ouvrir d'autres positions</text>
+  <rect x="20" y="148" width="600" height="34" rx="6" fill="rgba(210,101,90,0.1)" stroke="#D2655A"/>
+  <text x="320" y="170" text-anchor="middle" fill="#E89A90" font-size="12.5" font-family="sans-serif">Position contrôlée : 100 000 € (levier utilisé : 10)</text>
+  <text x="320" y="206" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Un pip vaut ici environ 9,20 € (10 $ convertis à un cours de 1,0850).</text>
 </svg>
- 
-<h2>L'effet d'amplification — dans les deux sens</h2>
-<p><strong>Sans levier (1:1) :</strong><br>
-Vous achetez 10 000€ d'EUR/USD. Le prix monte de 1%. Gain : <strong>+100€ (+1%)</strong>.<br>
-Le prix baisse de 1%. Perte : <strong>-100€ (-1%)</strong>.</p>
- 
-<p><strong>Avec levier 1:30 :</strong><br>
-Vous contrôlez 300 000€ avec 10 000€. Le prix monte de 1%. Gain : <strong>+3 000€ (+30%)</strong>.<br>
-Le prix baisse de 1%. Perte : <strong>-3 000€ (-30% de votre capital)</strong>.</p>
- 
-<blockquote>Le levier n'amplifie pas vos compétences. Il amplifie vos résultats — bons ou mauvais. Un trader perdant avec levier perd beaucoup plus vite.</blockquote>
- 
-<h2>Le Margin Call et le Stop Out</h2>
-<p><strong>Margin Call :</strong> votre broker vous avertit que votre marge libre est insuffisante. Déclenché quand votre niveau de marge (equity/marge utilisée × 100) descend sous 100%.</p>
-<p><strong>Stop Out :</strong> si vous ignorez le Margin Call, le broker ferme automatiquement vos positions pour éviter un solde négatif. Déclenché typiquement à 50% de niveau de marge.</p>
- 
-<svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
-  <text x="300" y="18" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Niveaux de marge critiques</text>
-  <rect x="40" y="35" width="520" height="30" rx="4" fill="#1a2030"/>
-  <rect x="40" y="35" width="300" height="30" rx="4" fill="rgba(62,180,137,0.3)"/>
-  <rect x="340" y="35" width="90" height="30" fill="rgba(212,169,75,0.4)"/>
-  <rect x="430" y="35" width="130" height="30" rx="0 4 4 0" fill="rgba(224,85,85,0.4)"/>
-  <text x="190" y="54" fill="#3EB489" font-size="11" font-family="sans-serif" text-anchor="middle">Zone sûre (&gt;200%)</text>
-  <text x="385" y="54" fill="#D4A94B" font-size="10" font-family="sans-serif" text-anchor="middle">Margin Call</text>
-  <text x="495" y="54" fill="#e05555" font-size="10" font-family="sans-serif" text-anchor="middle">Stop Out</text>
-  <text x="40"  y="85" fill="#6b7280" font-size="9" font-family="monospace">500%+</text>
-  <text x="315" y="85" fill="#D4A94B" font-size="9" font-family="monospace">100%</text>
-  <text x="420" y="85" fill="#e05555" font-size="9" font-family="monospace">50%</text>
-  <text x="540" y="85" fill="#6b7280" font-size="9" font-family="monospace">0%</text>
-  <text x="300" y="110" fill="#6b7280" font-size="10" font-family="sans-serif" text-anchor="middle">Niveau de marge = (Equity / Marge utilisée) × 100</text>
-  <text x="300" y="128" fill="#4b5563" font-size="9" font-family="sans-serif" text-anchor="middle">Exemple : Equity 5 000€ / Marge 3 333€ = 150% → Margin Call approche</text>
-</svg>
- 
-<h2>La règle d'or : n'utilisez jamais le levier maximum</h2>
-<p>Ce n'est pas parce que votre broker offre un levier de 1:30 que vous devez l'utiliser. Les traders professionnels utilisent rarement plus de <strong>1:5 à 1:10</strong> en pratique. Voici pourquoi :</p>
+<figcaption>Sur l'EUR/USD, un lot standard représente 100 000 € : la marge bloquée est d'un trentième de ce montant.</figcaption>
+</figure>
+
+<h2>Niveau de marge, appel de marge et fermeture forcée</h2>
+<p>Le broker suit en permanence votre <strong>niveau de marge</strong> = fonds propres (capital + gains ou pertes en cours) ÷ marge bloquée × 100.</p>
 <ul>
-<li>Un levier de 1:30 sur un compte de 10 000€ avec 1 lot EUR/USD signifie qu'une fluctuation de seulement <strong>33 pips</strong> contre vous vide entièrement votre marge</li>
-<li>Sur EUR/USD, 33 pips se produit régulièrement en quelques minutes lors de news</li>
-<li>Les professionnels dimensionnent d'abord leur risque, puis calculent le levier résultant — jamais l'inverse</li>
+<li><strong>Appel de marge</strong> : un avertissement quand ce niveau baisse, souvent vers 100 %. Le seuil exact dépend du broker.</li>
+<li><strong>Fermeture forcée</strong> (<em>stop out</em>) : pour les particuliers en Europe, le broker doit fermer vos positions au plus tard quand ce niveau atteint <strong>50 %</strong>. Il commence en général par la position la plus perdante.</li>
 </ul>
- 
-<h2>Calculer le bon sizing avec le levier</h2>
-<ol>
-<li>Définissez votre risque max par trade : ex. <strong>1% de 10 000€ = 100€</strong></li>
-<li>Identifiez votre stop-loss : ex. <strong>20 pips</strong></li>
-<li>Sur EUR/USD : 1 pip = 10€/lot → 20 pips = 200€/lot → Taille = 100/200 = <strong>0.5 lot</strong></li>
-<li>Levier effectif résultant : 0.5 lot × 100 000 / 10 000 = <strong>levier de 5:1</strong></li>
+
+<h2>Le même compte, quatre tailles de position</h2>
+<p>Compte de 10 000 €, EUR/USD à 1,0850, levier maximal de 30, fermeture forcée à 50 % :</p>
+<table>
+<thead><tr><th class="ta-center">Taille</th><th class="ta-center">Levier utilisé</th><th class="ta-center">Marge bloquée</th><th class="ta-center">Perte si l'EUR/USD baisse de 1 %</th><th class="ta-center">Pips contre vous avant fermeture forcée</th></tr></thead>
+<tbody>
+<tr><td class="ta-center">0,1 lot</td><td class="ta-center">1</td><td class="ta-center">333 €</td><td class="ta-center">100 € (1 %)</td><td class="ta-center is-positive">hors d'atteinte</td></tr>
+<tr><td class="ta-center">0,5 lot</td><td class="ta-center">5</td><td class="ta-center">1 667 €</td><td class="ta-center">500 € (5 %)</td><td class="ta-center">environ 1 990</td></tr>
+<tr><td class="ta-center">1 lot</td><td class="ta-center">10</td><td class="ta-center">3 333 €</td><td class="ta-center">1 000 € (10 %)</td><td class="ta-center">environ 900</td></tr>
+<tr><td class="ta-center">3 lots</td><td class="ta-center">30</td><td class="ta-center">10 000 €</td><td class="ta-center is-negative">3 000 € (30 %)</td><td class="ta-center is-negative">environ 180</td></tr>
+</tbody>
+</table>
+<p>Une baisse de 1 % de l'EUR/USD représente environ 108 pips, un mouvement courant en une ou deux journées agitées. Avec 3 lots, elle coûte 30 % du compte, et un mouvement moins de deux fois plus grand ferme tout.</p>
+
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">La vraie leçon du tableau</strong>
+<p>La fermeture forcée n'est pas le vrai danger à 0,5 lot : il faudrait près de 2 000 pips. Le danger, c'est la perte elle-même, bien avant. C'est pourquoi on ne pilote pas son risque avec la marge, mais avec un stop et une taille calculée.</p>
+</aside>
+
+<h2>Le bon ordre : risque d'abord, levier ensuite</h2>
+<ol class="doc-steps">
+<li><strong>Fixez le risque du trade</strong> : par exemple 1 % de 10 000 €, soit 100 €.</li>
+<li><strong>Placez le stop</strong> à l'endroit où l'idée est invalidée : par exemple 20 pips sous l'entrée.</li>
+<li><strong>Calculez la valeur d'un pip pour un lot</strong> : environ 9,20 € sur l'EUR/USD pour un compte en euros.</li>
+<li><strong>Déduisez la taille</strong> : 100 € ÷ (20 pips × 9,20 €) ≈ <strong>0,54 lot</strong>, arrondi à 0,5 lot.</li>
+<li><strong>Constatez le levier qui en résulte</strong> : 50 000 € ÷ 10 000 € = 5. Vous ne l'avez pas choisi, il découle de votre risque.</li>
 </ol>
- 
-<blockquote>Le levier ne doit pas être une décision — il doit être la conséquence naturelle de votre gestion du risque. Si vous calculez toujours votre risque en % du capital d'abord, votre levier effectif restera raisonnable automatiquement.</blockquote>
+<p>Avec un stop deux fois plus serré (10 pips), la même règle donne 1 lot et un levier de 10, pour le même risque de 100 €. Le levier augmente, mais la perte possible reste la même : c'est le stop qui la limite.</p>
+
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Ce que le levier fait aux écarts de prix</strong>
+<p>Le calcul ci-dessus suppose que le stop est exécuté à son niveau. Lors d'un écart de prix (week-end, annonce majeure), il peut être exécuté bien plus loin. Plus la position est grosse, plus cet écart coûte cher : c'est une raison de réduire la taille avant ces moments.</p>
+</aside>
+
+<h2>Les erreurs les plus fréquentes</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Bonnes pratiques</h4>
+<ul>
+<li>Calculer chaque taille de position à partir du stop</li>
+<li>Additionner le risque de toutes les positions ouvertes, surtout si elles sont liées (EUR/USD et GBP/USD)</li>
+<li>Garder une large marge libre</li>
+</ul>
+</div>
+<div class="doc-compare__dont">
+<h4>À éviter</h4>
+<ul>
+<li>Choisir la taille d'après la marge disponible (« j'ai de quoi ouvrir 3 lots »)</li>
+<li>Ajouter à une position perdante pour « améliorer son prix moyen »</li>
+<li>Considérer la fermeture forcée comme un stop-loss</li>
+</ul>
+</div>
+</div>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Le levier n'est ni bon ni mauvais : c'est un réglage de taille. Ce qui ruine les comptes, ce n'est pas le levier disponible, c'est une taille de position décidée sans stop et sans calcul.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Vous avez 5 000 € et une position de 50 000 € sur le DAX. Quel levier utilisez-vous, et que perdez-vous si l'indice baisse de 2 % ?</summary>
+<p>Un levier de 10. Une baisse de 2 % sur 50 000 € coûte 1 000 €, soit 20 % de votre compte.</p>
+</details>
+<details>
+<summary>Quelle est la marge requise pour une position de 60 000 € sur l'or, avec le levier maximal européen ?</summary>
+<p>L'or est plafonné à un levier de 20 : 60 000 € ÷ 20 = 3 000 €.</p>
+</details>
+<details>
+<summary>Risque de 150 €, stop de 30 pips sur l'EUR/USD, un pip valant environ 9,20 € par lot. Quelle taille de position ?</summary>
+<p>150 € ÷ (30 × 9,20 €) ≈ 0,54 lot, arrondi à la baisse à 0,5 lot.</p>
+</details>
