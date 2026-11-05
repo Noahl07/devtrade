@@ -1,0 +1,77 @@
+<!--meta
+{
+    "slug": "moyennes-mobiles-ma-ema-vwap",
+    "title": "Moyennes mobiles — MA, EMA, VWAP",
+    "excerpt": "Simple vs exponentielle, croissements, VWAP institutionnel — utilisation pratique des moyennes mobiles.",
+    "readingTime": 12,
+    "accessLevel": "free",
+    "position": 4,
+    "module": "analyse-technique-classique"
+}
+-->
+<h2>Qu'est-ce qu'une moyenne mobile ?</h2>
+<p>Une moyenne mobile (Moving Average) est un indicateur qui <strong>lisse les données de prix sur une période définie</strong>, filtrant le "bruit" pour révéler la tendance sous-jacente. C'est l'un des indicateurs les plus utilisés en trading — à la fois simple à comprendre et étonnamment efficace.</p>
+
+<h2>La Moyenne Mobile Simple (SMA)</h2>
+<p>La SMA (Simple Moving Average) calcule simplement la moyenne arithmétique des N dernières clôtures :</p>
+<pre><code>SMA(20) = (C1 + C2 + ... + C20) ÷ 20</code></pre>
+
+<p>Chaque période a le même poids dans le calcul. Avantage : simple, très lisible. Inconvénient : réagit lentement aux changements de prix récents car les données anciennes ont autant d'importance que les récentes.</p>
+
+<p><strong>Les périodes standard :</strong></p>
+<ul>
+<li>SMA 20 : tendance court terme (1 mois de séances)</li>
+<li>SMA 50 : tendance moyen terme (référence institutionnelle majeure)</li>
+<li>SMA 200 : tendance long terme (bull/bear market en journalier)</li>
+</ul>
+
+<h2>La Moyenne Mobile Exponentielle (EMA)</h2>
+<p>L'EMA donne un <strong>poids plus important aux données récentes</strong>. Elle réagit donc plus rapidement aux mouvements de prix, mais génère aussi plus de faux signaux en marché volatile.</p>
+
+<p><strong>Les périodes EMA les plus utilisées :</strong></p>
+<ul>
+<li>EMA 8/9 : signaux très rapides, scalping et day trading</li>
+<li>EMA 21 : tendance court terme, populaire en ICT</li>
+<li>EMA 50 : tendance moyen terme</li>
+<li>EMA 200 : tendance long terme, niveau institutionnel majeur</li>
+</ul>
+
+<blockquote>La EMA 200 journalière est suivie par les plus grandes institutions mondiales. Un prix au-dessus de la 200 EMA = biais haussier macroéconomique. Un prix en dessous = biais baissier. Simple mais extrêmement puissant comme filtre de biais directionnel.</blockquote>
+
+<h2>Les croissements de moyennes mobiles</h2>
+
+<h3>Golden Cross</h3>
+<p>La SMA 50 croise au-dessus de la SMA 200 — signal haussier fort sur le long terme. Ce signal est suivi par des millions de traders et institutions, ce qui le rend auto-réalisateur dans une certaine mesure.</p>
+
+<h3>Death Cross</h3>
+<p>La SMA 50 croise en dessous de la SMA 200 — signal baissier fort. Souvent accompagné d'une accélération baissière.</p>
+
+<h3>Les croissements rapides</h3>
+<p>En day trading, les croissements EMA 9/EMA 21 ou EMA 8/EMA 21 donnent des signaux de momentum à court terme. Ces signaux sont plus fiables quand ils se produisent dans la direction de la tendance supérieure.</p>
+
+<h2>Le VWAP — Volume Weighted Average Price</h2>
+<p>Le VWAP est une moyenne mobile pondérée par le volume — il calcule le prix moyen d'un actif <strong>en tenant compte du volume traité à chaque niveau</strong>. C'est la référence absolue des traders institutionnels et des algorithmes.</p>
+
+<p>Formule simplifiée :</p>
+<pre><code>VWAP = Σ(Prix × Volume) ÷ Σ(Volume)</code></pre>
+
+<p>Le VWAP se remet à zéro à chaque nouvelle séance (version journalière). Il existe également des VWAP hebdomadaires, mensuels et "anchored" (ancré depuis un point spécifique).</p>
+
+<h3>Pourquoi le VWAP est institutionnel</h3>
+<p>Les algorithmes des grandes institutions (fonds de pension, ETF, desks de trading) utilisent le VWAP comme <strong>benchmark d'exécution</strong> : ils s'efforcent d'exécuter leurs ordres au VWAP ou mieux. Résultat : le VWAP agit comme support/résistance dynamique extrêmement respecté.</p>
+
+<h3>Utilisation du VWAP en trading</h3>
+<ul>
+<li>Prix au-dessus du VWAP = contexte haussier pour la séance, chercher des achats sur retour au VWAP</li>
+<li>Prix en dessous du VWAP = contexte baissier pour la séance, chercher des ventes sur retour au VWAP</li>
+<li>Les bandes de déviation standard (1σ, 2σ) autour du VWAP définissent les zones de "fair value" et d'extrême</li>
+</ul>
+
+<h2>Les limites des moyennes mobiles</h2>
+<ul>
+<li>Indicateur <strong>retardé</strong> par nature — il décrit ce qui s'est passé, pas ce qui va se passer</li>
+<li>Inefficace en marché <strong>range</strong> — génère des faux signaux en série</li>
+<li>Le choix de la période est arbitraire — toute période peut être "optimisée" sur le passé (overfitting)</li>
+</ul>
+
+<p>Les moyennes mobiles sont des outils de <strong>confirmation</strong> de tendance, pas de prédiction. Utilisées seules, elles donnent des résultats médiocres. Combinées à la structure de marché et aux zones clés, elles ajoutent une couche de confirmation utile.</p>

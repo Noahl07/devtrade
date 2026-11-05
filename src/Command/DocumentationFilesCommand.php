@@ -57,6 +57,10 @@ final class DocumentationFilesCommand extends Command
             return Command::INVALID;
         }
 
+        $modules = $this->files->moduleChanges();
+        $io->section(sprintf('Modules déplacés (%d)', count($modules)));
+        $io->listing($modules === [] ? ['aucun'] : array_map(static fn (array $m): string => sprintf('%s : %d → %d', $m['slug'], $m['from'], $m['to']), $modules));
+
         $changes = $this->files->diff();
         $missing = array_filter($changes, static fn (array $c): bool => $c['missing'] ?? false);
         $updates = array_values(array_filter($changes, static fn (array $c): bool => !($c['missing'] ?? false)));
@@ -66,9 +70,11 @@ final class DocumentationFilesCommand extends Command
             $io->table(['Fichier', 'Champs', 'Contenu (caractères)'], array_map(static function (array $c): array {
                 $content = $c['fields']['content'] ?? null;
 
+                $fields = array_map(static fn (string $f): string => $f === 'position' ? sprintf('position %s → %s', $c['fields'][$f][0], $c['fields'][$f][1]) : $f, array_keys($c['fields']));
+
                 return [
                     $c['file'],
-                    implode(', ', array_keys($c['fields'])),
+                    implode(', ', $fields),
                     $content ? sprintf('%d → %d', mb_strlen((string) $content[0]), mb_strlen((string) $content[1])) : '—',
                 ];
             }, $updates));
@@ -84,7 +90,7 @@ final class DocumentationFilesCommand extends Command
 
             return Command::SUCCESS;
         }
-        $io->success(sprintf('%d article(s) mis à jour.', $this->files->apply($updates)));
+        $io->success(sprintf('%d article(s) et %d module(s) mis à jour.', $this->files->apply($updates, $modules), count($modules)));
 
         return Command::SUCCESS;
     }

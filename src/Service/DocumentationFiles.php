@@ -15,12 +15,14 @@ use Symfony\Component\Finder\Finder;
  *
  * export : base → fichiers (sauvegarde et point de départ de la réécriture, relisible en git diff).
  * apply  : fichiers → base, uniquement pour les articles existants (aucune création, aucune suppression).
+ *
+ * Ordre : « position » dans les métadonnées pour l'article, préfixe NN- du dossier pour le module.
  */
 final class DocumentationFiles
 {
     private const META_START = '<!--meta';
     private const META_END = '-->';
-    private const EDITABLE = ['title', 'excerpt', 'readingTime', 'accessLevel'];
+    private const EDITABLE = ['title', 'excerpt', 'readingTime', 'accessLevel', 'position'];
 
     public function __construct(
         private readonly Connection $db,
@@ -50,6 +52,7 @@ final class DocumentationFiles
                 'excerpt' => $row['excerpt'],
                 'readingTime' => $row['reading_time'] !== null ? (int) $row['reading_time'] : null,
                 'accessLevel' => $row['access_level'],
+                'position' => (int) $row['position'],
                 'module' => $row['module'],
             ];
             $file = sprintf('%s/%02d-%s/%s.html', $this->directory, (int) $row['module_position'], $row['module'], $row['slug']);
@@ -60,6 +63,27 @@ final class DocumentationFiles
     }
 
     /**
+     * Modules dont la position (préfixe NN- du dossier) diffère de la base.
+     *
+     * @return list<array{slug: string, from: int, to: int}>
+     */
+    public function moduleChanges(): array
+    {
+        if (!is_dir($this->directory)) {
+            return [];
+        }
+        $current = array_column($this->db->fetchAllAssociative('SELECT slug, position FROM document_category'), 'position', 'slug');
+        $changes = [];
+        foreach ((new Finder())->directories()->in($this->directory)->depth(0)->sortByName() as $dir) {
+            if (preg_match('/^(\d+)-(.+)$/', $dir->getFilename(), $m) && isset($current[$m[2]]) && (int) $current[$m[2]] !== (int) $m[1]) {
+                $changes[] = ['slug' => $m[2], 'from' => (int) $current[$m[2]], 'to' => (int) $m[1]];
+            }
+        }
+
+        return $changes;
+    }
+
+    /**
      * @return list<array{slug: string, file: string, fields: array<string, array{0: mixed, 1: mixed}>, missing?: bool}>
      */
     public function diff(): array
@@ -67,7 +91,7 @@ final class DocumentationFiles
         if (!is_dir($this->directory)) {
             return [];
         }
-        $current = array_column($this->db->fetchAllAssociative('SELECT slug, title, excerpt, reading_time AS "readingTime", access_level AS "accessLevel", content FROM document'), null, 'slug');
+        $current = array_column($this->db->fetchAllAssociative('SELECT slug, title, excerpt, reading_time AS "readingTime", access_level AS "accessLevel", position, content FROM document'), null, 'slug');
         $changes = [];
 
         foreach ((new Finder())->files()->in($this->directory)->name('*.html')->sortByName() as $file) {
@@ -95,12 +119,18 @@ final class DocumentationFiles
         return $changes;
     }
 
-    /** @param list<array{slug: string, fields: array<string, array{0: mixed, 1: mixed}>, missing?: bool}> $changes */
-    public function apply(array $changes): int
+    /**
+     * @param list<array{slug: string, fields: array<string, array{0: mixed, 1: mixed}>, missing?: bool}> $changes
+     * @param list<array{slug: string, from: int, to: int}>                                              $modules
+     */
+    public function apply(array $changes, array $modules = []): int
     {
-        $columns = ['title' => 'title', 'excerpt' => 'excerpt', 'readingTime' => 'reading_time', 'accessLevel' => 'access_level', 'content' => 'content'];
+        $columns = ['title' => 'title', 'excerpt' => 'excerpt', 'readingTime' => 'reading_time', 'accessLevel' => 'access_level', 'position' => 'position', 'content' => 'content'];
         $count = 0;
-        $this->db->transactional(function (Connection $db) use ($changes, $columns, &$count): void {
+        $this->db->transactional(function (Connection $db) use ($changes, $modules, $columns, &$count): void {
+            foreach ($modules as $module) {
+                $db->update('document_category', ['position' => $module['to']], ['slug' => $module['slug']]);
+            }
             foreach ($changes as $change) {
                 if (($change['missing'] ?? false) || $change['fields'] === []) {
                     continue;
