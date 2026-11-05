@@ -1028,6 +1028,51 @@ select.input {
     margin: var(--space-6) 0;
 }
 
+/* Schéma à libellés HTML : le SVG ne dessine que les formes, le texte est du HTML posé par-dessus
+   (traduisible par le navigateur, lisible par les lecteurs d'écran). Les tailles en cqw suivent
+   l'échelle du dessin, conçu sur une largeur de 640 unités. */
+.prose .doc-diagram__canvas {
+    position: relative;
+    container-type: inline-size;
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(80% 90% at 100% 0%, var(--brand-soft), transparent 70%),
+        var(--surface);
+    overflow: hidden;
+}
+
+.prose .doc-diagram__canvas > .doc-figure {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+}
+
+.prose .doc-label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font: 500 max(10px, 1.95cqw) / 1.2 var(--font-sans);
+    color: #D9D3C3;
+    white-space: nowrap;
+}
+
+.prose .doc-label--start { transform: translate(0, -50%); }
+.prose .doc-label--end { transform: translate(-100%, -50%); }
+.prose .doc-label--sm { font-size: max(9.5px, 1.8cqw); }
+.prose .doc-label--lg { font-size: max(11px, 2.15cqw); }
+.prose .doc-label--xl { font-size: max(14px, 3.4cqw); }
+.prose .doc-label--xxl { font-size: max(18px, 5.2cqw); }
+.prose .doc-label--strong { font-weight: 700; }
+.prose .doc-label--caps { letter-spacing: 0.08em; }
+.prose .doc-label.is-positive { color: #7FD1B9; }
+.prose .doc-label.is-negative { color: #E89A90; }
+.prose .doc-label.is-accent { color: #E2CB91; }
+.prose .doc-label.is-muted { color: #A8B3AE; }
+.prose .doc-label--info { color: #B9C6E6; }
+.prose .doc-label--bright { color: #F5F1E6; }
+
 .prose figure .doc-figure { margin: 0; }
 
 .prose figcaption {
@@ -1168,7 +1213,8 @@ select.input {
     .prose td { min-width: 8.5rem; }
     /* Schéma : taille de texte lisible, défilement horizontal dans la figure si besoin. */
     .prose figure { overflow-x: auto; }
-    .prose figure > .doc-figure { min-width: 520px; }
+    .prose figure > .doc-figure,
+    .prose .doc-diagram__canvas { min-width: 520px; }
 }
 
 .prose td.ta-center,

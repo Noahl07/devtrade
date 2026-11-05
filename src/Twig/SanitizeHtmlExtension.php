@@ -17,6 +17,9 @@ use Twig\TwigFilter;
  * Styles en ligne : jamais conservés tels quels. Les couleurs et alignements des anciens articles
  * deviennent des classes du design system (is-positive, is-negative, is-accent, is-muted, ta-center, ta-right) ;
  * sur un schéma, seule la largeur maximale en px est gardée.
+ *
+ * Libellés de schéma traduisibles : un élément de classe « doc-label » garde une position
+ * « left: N%; top: N% » (nombres uniquement), pour poser du texte HTML par-dessus le dessin SVG.
  */
 class SanitizeHtmlExtension extends AbstractExtension
 {
@@ -59,6 +62,9 @@ class SanitizeHtmlExtension extends AbstractExtension
         'template', 'foreignobject', 'use', 'image', 'animate', 'animatetransform', 'animatemotion', 'set',
         'feimage', 'filter', 'mask', 'switch', 'textarea', 'select', 'input', 'button',
     ];
+
+    /** Seule position acceptée sur un libellé de schéma. */
+    private const LABEL_POSITION = '/^\s*left:\s*(-?\d{1,3}(?:\.\d{1,2})?)%;\s*top:\s*(-?\d{1,3}(?:\.\d{1,2})?)%;?\s*$/';
 
     public function getFilters(): array
     {
@@ -143,6 +149,11 @@ class SanitizeHtmlExtension extends AbstractExtension
                 if ($maxWidth !== null) {
                     $child->setAttribute('style', sprintf('max-width: %dpx', $maxWidth));
                 }
+            }
+
+            if (!$isSvg && preg_match(self::LABEL_POSITION, $style, $position)
+                && in_array('doc-label', preg_split('/\s+/', $child->getAttribute('class')) ?: [], true)) {
+                $child->setAttribute('style', sprintf('left: %s%%; top: %s%%', $position[1], $position[2]));
             }
 
             if ($classes !== []) {
