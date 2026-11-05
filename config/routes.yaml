@@ -221,6 +221,16 @@ app_admin_document_preview:
     controller: App\Controller\AdminController::documentPreview
     methods: [POST]
 
+app_admin_documentation_import:
+    path: /admin/documents/import
+    controller: App\Controller\AdminController::documentationImport
+    methods: [GET, POST]
+
+app_admin_documentation_import_confirm:
+    path: /admin/documents/import/confirmer
+    controller: App\Controller\AdminController::documentationImportConfirm
+    methods: [POST]
+
 app_admin_project_delete:
     path: /admin/projets/{id}/supprimer
     controller: App\Controller\AdminController::projectDelete

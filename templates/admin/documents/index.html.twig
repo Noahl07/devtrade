@@ -4,7 +4,7 @@
 
 {% block admin_title %}Articles{% endblock %}
 {% block admin_lead %}<p class="admin__lead">{{ total }} article{{ total > 1 ? 's' }}{% if filters|filter(v => v)|length %} correspondant{{ total > 1 ? 's' }} aux filtres{% endif %}.</p>{% endblock %}
-{% block admin_actions %}{{ ui.button('Nouvel article', path('app_admin_document_new'), 'primary', 'plus') }}{% endblock %}
+{% block admin_actions %}{{ ui.button('Importer un lot', path('app_admin_documentation_import'), 'secondary', 'upload') }} {{ ui.button('Nouvel article', path('app_admin_document_new'), 'primary', 'plus') }}{% endblock %}
 
 {% block admin_content %}
 <form method="get" class="admin-filters" role="search" aria-label="Filtrer les articles">

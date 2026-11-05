@@ -1,0 +1,83 @@
+{% extends 'admin/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block admin_title %}Importer un lot de documentation{% endblock %}
+{% block admin_lead %}<p class="admin__lead">Envoyez le fichier produit sur votre poste par <code>php bin/console app:documentation:files bundle</code>. Vous verrez exactement ce qui changera avant de confirmer. Rien n'est jamais supprimé.</p>{% endblock %}
+{% block admin_actions %}{{ ui.button('Retour aux articles', path('app_admin_documents'), 'secondary', 'arrow-left') }}{% endblock %}
+
+{% block admin_content %}
+{% if plan is null %}
+    <form method="post" enctype="multipart/form-data" class="admin-form">
+        <input type="hidden" name="_token" value="{{ csrf_token('doc-import') }}">
+        <div class="field">
+            <label class="field__label" for="bundle">Fichier du lot (.json.gz)</label>
+            <input class="input" id="bundle" name="bundle" type="file" accept=".gz,.json,application/gzip" required aria-describedby="bundle-help">
+            <p class="field__help" id="bundle-help">8 Mo maximum. Ce fichier contient les articles Premium : ne le partagez pas.</p>
+        </div>
+        <div class="admin-form__foot">
+            <button type="submit" class="button button--primary">Analyser le fichier{{ ui.icon('arrow-right') }}</button>
+        </div>
+    </form>
+{% else %}
+    {% set total = plan.modulesNew|length + plan.modulesMoved|length + plan.articlesNew|length + plan.articlesUpdated|length %}
+    {% if total == 0 %}
+        {{ ui.notice('La base est déjà à jour : ce lot ne changerait rien (' ~ plan.unchanged ~ ' articles identiques).', 'info') }}
+        <p><a class="button button--secondary" href="{{ path('app_admin_documentation_import') }}">Envoyer un autre fichier</a></p>
+    {% else %}
+        <div class="table-wrap">
+            <table class="data-table admin-table">
+                <caption class="visually-hidden">Résumé de l'import</caption>
+                <thead><tr><th scope="col">Changement</th><th scope="col" class="num">Nombre</th></tr></thead>
+                <tbody>
+                    <tr><th scope="row">Modules créés</th><td class="num">{{ plan.modulesNew|length }}</td></tr>
+                    <tr><th scope="row">Modules déplacés</th><td class="num">{{ plan.modulesMoved|length }}</td></tr>
+                    <tr><th scope="row">Articles créés</th><td class="num">{{ plan.articlesNew|length }}</td></tr>
+                    <tr><th scope="row">Articles mis à jour</th><td class="num">{{ plan.articlesUpdated|length }}</td></tr>
+                    <tr><th scope="row">Articles inchangés</th><td class="num">{{ plan.unchanged }}</td></tr>
+                    <tr><th scope="row">En ligne mais absents du lot (conservés tels quels)</th><td class="num">{{ plan.onlyInDatabase|length }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        {% set labels = {title: 'titre', excerpt: 'résumé', readingTime: 'temps de lecture', accessLevel: 'accès', position: 'position', module: 'module', content: 'contenu'} %}
+        {% if plan.articlesUpdated is not empty %}
+            <details class="admin-details">
+                <summary>Détail des {{ plan.articlesUpdated|length }} articles mis à jour</summary>
+                <ul class="admin-list">
+                    {% for u in plan.articlesUpdated %}
+                        <li><strong>{{ u.title }}</strong> <span class="mono small">{{ u.slug }}</span> : {% for field, values in u.fields %}{{ labels[field] ?? field }}{% if field == 'position' %} ({{ values[0] }} → {{ values[1] }}){% elseif field == 'content' %} ({{ values[0]|length }} → {{ values[1]|length }} caractères){% endif %}{{ not loop.last ? ', ' }}{% endfor %}</li>
+                    {% endfor %}
+                </ul>
+            </details>
+        {% endif %}
+        {% if plan.articlesNew is not empty %}
+            <details class="admin-details">
+                <summary>Détail des {{ plan.articlesNew|length }} articles créés</summary>
+                <ul class="admin-list">{% for a in plan.articlesNew %}<li><strong>{{ a.title }}</strong> <span class="mono small">{{ a.slug }}</span> ({{ a.accessLevel == 'premium' ? 'Premium' : 'gratuit' }})</li>{% endfor %}</ul>
+            </details>
+        {% endif %}
+        {% if plan.modulesNew is not empty or plan.modulesMoved is not empty %}
+            <details class="admin-details">
+                <summary>Détail des modules</summary>
+                <ul class="admin-list">
+                    {% for m in plan.modulesNew %}<li>Nouveau : <strong>{{ m.name }}</strong> (position {{ m.position }})</li>{% endfor %}
+                    {% for m in plan.modulesMoved %}<li>Déplacé : <strong>{{ m.name }}</strong> ({{ m.from }} → {{ m.to }})</li>{% endfor %}
+                </ul>
+            </details>
+        {% endif %}
+        {% if plan.onlyInDatabase is not empty %}
+            <details class="admin-details">
+                <summary>{{ plan.onlyInDatabase|length }} article(s) en ligne absents du lot (non modifiés)</summary>
+                <ul class="admin-list">{% for o in plan.onlyInDatabase %}<li>{{ o.title }} <span class="mono small">{{ o.slug }}</span></li>{% endfor %}</ul>
+            </details>
+        {% endif %}
+
+        <form method="post" action="{{ path('app_admin_documentation_import_confirm') }}" class="admin-form__foot" data-confirm="Appliquer ces {{ total }} changements à la documentation en ligne ?">
+            <input type="hidden" name="_token" value="{{ csrf_token('doc-import-confirm') }}">
+            <input type="hidden" name="token" value="{{ token }}">
+            <button type="submit" class="button button--primary">{{ ui.icon('check') }} Appliquer ces changements</button>
+            <a class="button button--secondary" href="{{ path('app_admin_documentation_import') }}">Annuler</a>
+        </form>
+    {% endif %}
+{% endif %}
+{% endblock %}

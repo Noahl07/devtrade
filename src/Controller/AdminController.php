@@ -7,13 +7,16 @@ namespace App\Controller;
 use App\Entity\Document;
 use App\Entity\DocumentCategory;
 use App\Entity\Project;
+use App\Entity\User;
 use App\Repository\DocumentCategoryRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use App\Repository\WaitlistEntryRepository;
 use App\Service\Admin\ContentEditor;
+use App\Service\Admin\DocumentationImport;
 use App\Service\Admin\WaitlistCsv;
+use App\Service\DocumentationBundle;
 use App\Twig\SanitizeHtmlExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -128,6 +131,53 @@ final class AdminController extends AbstractController
     }
 
     // ── Modules ─────────────────────────────────────────────────────────────
+
+    // ── Import du lot de documentation (produit en local par « app:documentation:files bundle ») ──
+
+    public function documentationImport(Request $request, DocumentationImport $import, DocumentationBundle $bundles): Response
+    {
+        $plan = null;
+        $token = null;
+        if ($request->isMethod('POST')) {
+            $this->requireCsrf('doc-import', $request->request->get('_token'));
+            try {
+                $stored = $import->store($request->files->get('bundle'));
+                $token = $stored['token'];
+                $plan = $bundles->plan($stored['bundle']);
+                $request->getSession()->set('doc_import_token', $token);
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('danger', $e->getMessage());
+            }
+        }
+
+        return $this->render('admin/documents/import.html.twig', ['plan' => $plan, 'token' => $token]);
+    }
+
+    public function documentationImportConfirm(Request $request, DocumentationImport $import, DocumentationBundle $bundles): Response
+    {
+        $this->requireCsrf('doc-import-confirm', $request->request->get('_token'));
+        $token = (string) $request->request->get('token');
+        // Seul l'envoi fait dans cette session peut être confirmé.
+        if ($token === '' || $request->getSession()->get('doc_import_token') !== $token) {
+            $this->addFlash('danger', 'Envoi inconnu ou expiré. Renvoyez le fichier.');
+
+            return $this->redirectToRoute('app_admin_documentation_import');
+        }
+        try {
+            $user = $this->getUser();
+            $plan = $bundles->apply($import->load($token), $user instanceof User ? $user : null);
+        } catch (\InvalidArgumentException $e) {
+            $this->addFlash('danger', $e->getMessage());
+
+            return $this->redirectToRoute('app_admin_documentation_import');
+        }
+        $import->forget($token);
+        $request->getSession()->remove('doc_import_token');
+        $this->addFlash('success', sprintf('Import terminé : %d article(s) créé(s), %d mis à jour, %d module(s) créé(s), %d déplacé(s). Rien n\'a été supprimé.',
+            count($plan['articlesNew']), count($plan['articlesUpdated']), count($plan['modulesNew']), count($plan['modulesMoved'])));
+
+        return $this->redirectToRoute('app_admin_documents');
+    }
 
     public function categories(DocumentCategoryRepository $categories, DocumentRepository $documents): Response
     {

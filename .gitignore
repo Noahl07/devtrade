@@ -25,3 +25,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> devtrade : articles Premium (dépôt public) ###
+/content/premium/
+###< devtrade ###
