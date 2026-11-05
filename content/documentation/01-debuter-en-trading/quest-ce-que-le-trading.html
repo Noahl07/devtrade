@@ -2,61 +2,135 @@
 {
     "slug": "quest-ce-que-le-trading",
     "title": "Qu'est-ce que le trading ?",
-    "excerpt": "Introduction complète au trading — définition, marchés financiers, différence entre investissement et spéculation.",
-    "readingTime": 8,
+    "excerpt": "Définition, achat et vente à découvert, différence avec l'investissement, styles de trading, ce que disent vraiment les chiffres sur les particuliers, et le parcours de cette documentation.",
+    "readingTime": 7,
     "accessLevel": "free",
     "position": 1,
     "module": "debuter-en-trading"
 }
 -->
-<h2>Définition du trading</h2>
-<p>Le trading consiste à <strong>acheter et vendre des actifs financiers</strong> dans le but de réaliser un profit sur la différence de prix. Contrairement à l'investissement long terme, le trader cherche à profiter des mouvements de prix à court ou moyen terme — quelques secondes pour le scalping, quelques jours pour le swing trading.</p>
-
-<p>Le trading existe sur pratiquement tous les marchés financiers : actions, devises (Forex), indices boursiers, matières premières, obligations, et depuis quelques années les cryptomonnaies.</p>
-
-<h2>Trading vs Investissement — quelle différence ?</h2>
-<p>La confusion entre trading et investissement est fréquente. Voici les différences fondamentales :</p>
-
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>L'investisseur</strong> achète un actif et le conserve pendant des mois ou des années, pariant sur la croissance à long terme de l'entreprise ou de l'actif. Warren Buffett est l'archétype de l'investisseur.</li>
-<li><strong>Le trader</strong> profite des fluctuations de prix à court terme, dans les deux directions (hausse ET baisse). Un trader peut gagner de l'argent quand les marchés baissent en vendant à découvert.</li>
+<li>Trader, c'est <strong>acheter et vendre un actif pour profiter de la variation de son prix</strong>, à la hausse comme à la baisse.</li>
+<li>Le trader vise des mouvements de quelques minutes à quelques semaines ; l'investisseur vise la croissance d'un actif sur des années.</li>
+<li>Les régulateurs européens ont constaté qu'une <strong>large majorité des particuliers perdent de l'argent</strong> sur les CFD. Le trading s'apprend, mais il n'est pas un revenu garanti.</li>
+<li>Avant toute stratégie, trois choses décident de votre survie : la taille de vos positions, vos coûts et votre discipline.</li>
+</ul>
+</div>
+
+<h2>Une définition simple</h2>
+<p>Le trading consiste à <strong>ouvrir une position</strong> sur un actif financier (une devise, un indice, une action, une matière première…) puis à la <strong>fermer</strong> plus tard. Le résultat dépend de l'écart entre le prix d'entrée et le prix de sortie, moins les frais.</p>
+<p>Deux sens sont possibles :</p>
+<ul>
+<li><strong>Acheter</strong> (position longue, ou <em>long</em>) : vous gagnez si le prix monte.</li>
+<li><strong>Vendre à découvert</strong> (position courte, ou <em>short</em>) : vous vendez un actif que vous ne possédez pas, pour le racheter plus tard. Vous gagnez si le prix baisse.</li>
 </ul>
 
-<blockquote>Le trading n'est pas meilleur ou moins bon que l'investissement — ce sont deux approches différentes avec des profils de risque, de rendement et de temps consacrés radicalement différents.</blockquote>
+<figure>
+<svg viewBox="0 0 640 230" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Position longue et position courte</title>
+  <text x="160" y="24" text-anchor="middle" fill="#7FD1B9" font-size="13" font-family="sans-serif" font-weight="bold">ACHAT (LONG)</text>
+  <text x="480" y="24" text-anchor="middle" fill="#E89A90" font-size="13" font-family="sans-serif" font-weight="bold">VENTE À DÉCOUVERT (SHORT)</text>
+  <line x1="320" y1="40" x2="320" y2="200" stroke="rgba(245,241,230,0.12)"/>
+  <polyline points="40,160 80,150 110,165 150,130 190,120 230,95 270,70" fill="none" stroke="#4FB38F" stroke-width="2.5"/>
+  <circle cx="80" cy="150" r="5" fill="#E2CB91"/>
+  <text x="80" y="178" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif">entrée 100</text>
+  <circle cx="270" cy="70" r="5" fill="#E2CB91"/>
+  <text x="270" y="58" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif">sortie 110</text>
+  <text x="160" y="210" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Le prix monte de 10 : gain de 10 (hors frais)</text>
+  <polyline points="360,70 400,80 430,65 470,100 510,115 550,135 590,160" fill="none" stroke="#D2655A" stroke-width="2.5"/>
+  <circle cx="400" cy="80" r="5" fill="#E2CB91"/>
+  <text x="400" y="62" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif">vente 110</text>
+  <circle cx="590" cy="160" r="5" fill="#E2CB91"/>
+  <text x="590" y="182" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif">rachat 100</text>
+  <text x="480" y="210" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Le prix baisse de 10 : gain de 10 (hors frais)</text>
+</svg>
+<figcaption>Dans les deux cas, le gain vient de l'écart entre l'ouverture et la fermeture. Si le prix va dans l'autre sens, la perte est symétrique.</figcaption>
+</figure>
 
-<h2>Les principaux marchés financiers</h2>
+<h2>Trader ou investir : deux métiers différents</h2>
+<p>Les deux achètent et vendent des actifs, mais ne cherchent pas la même chose.</p>
+<table>
+<thead><tr><th></th><th>Investisseur</th><th>Trader</th></tr></thead>
+<tbody>
+<tr><td>Horizon</td><td>Des années</td><td>De quelques minutes à quelques semaines</td></tr>
+<tr><td>Source du gain</td><td>Croissance de l'entreprise ou de l'économie, dividendes, intérêts</td><td>Variations de prix, dans les deux sens</td></tr>
+<tr><td>Temps consacré</td><td>Quelques heures par an peuvent suffire</td><td>Un suivi régulier, souvent quotidien</td></tr>
+<tr><td>Levier</td><td>En général aucun</td><td>Fréquent (CFD, futures), ce qui amplifie gains et pertes</td></tr>
+<tr><td>Poids des frais</td><td>Faible : peu d'opérations</td><td>Élevé : chaque opération paie un écart de prix et parfois une commission</td></tr>
+</tbody>
+</table>
+<p>Aucune approche n'est « meilleure » : elles répondent à des objectifs, des tempéraments et des emplois du temps différents. Le module <em>Investissement et finance personnelle</em> traite la seconde en détail.</p>
 
-<h3>Le Forex (Foreign Exchange)</h3>
-<p>Le marché des changes est le plus grand marché financier au monde avec <em>7 000 milliards de dollars</em> échangés chaque jour. On y négocie des paires de devises : EUR/USD, GBP/USD, USD/JPY... Le Forex est ouvert 24h/24, 5 jours sur 7, et accessible aux particuliers via des brokers.</p>
+<h2>Les grands styles de trading</h2>
+<p>On classe les traders selon la durée de leurs positions. Le style choisi détermine le temps d'écran, l'unité de temps des graphiques et le poids des frais.</p>
+<table>
+<thead><tr><th>Style</th><th class="ta-center">Durée d'une position</th><th class="ta-center">Graphiques</th><th>Ce qu'il faut savoir</th></tr></thead>
+<tbody>
+<tr><td>Scalping</td><td class="ta-center">Secondes à minutes</td><td class="ta-center">1 à 5 min</td><td>Beaucoup de trades, gains unitaires petits : les frais pèsent très lourd</td></tr>
+<tr><td>Day trading</td><td class="ta-center">Minutes à heures</td><td class="ta-center">5 min à 1 h</td><td>Positions fermées le soir : pas de frais de financement de nuit</td></tr>
+<tr><td>Swing trading</td><td class="ta-center">Jours à semaines</td><td class="ta-center">1 h à 1 jour</td><td>Compatible avec un emploi ; exposé aux écarts d'ouverture du lundi</td></tr>
+<tr><td>Position trading</td><td class="ta-center">Semaines à mois</td><td class="ta-center">Jour, semaine</td><td>Proche de l'investissement, sensible aux grandes tendances économiques</td></tr>
+</tbody>
+</table>
 
-<h3>Les Indices boursiers</h3>
-<p>Un indice représente un panier d'actions. Les plus tradés sont le <strong>NAS100</strong> (100 plus grandes entreprises tech américaines), le <strong>SP500</strong> (500 plus grandes entreprises US) et le <strong>DAX40</strong> (40 plus grandes entreprises allemandes). Les indices sont extrêmement liquides et suivent de près la macroéconomie.</p>
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">Conseil</strong>
+<p>Choisissez votre style d'après votre emploi du temps, pas d'après ce qui semble le plus excitant. Si vous travaillez de 9 h à 18 h, le scalping de l'ouverture américaine (15 h 30) sera hors de portée. Le swing trading, avec une analyse le soir, sera réaliste.</p>
+</aside>
 
-<h3>Les Actions (Stocks)</h3>
-<p>Le trading d'actions consiste à acheter/vendre des parts d'entreprises cotées en bourse. Apple, Tesla, LVMH... Les mouvements sont souvent liés aux résultats trimestriels, aux annonces et aux tendances sectorielles.</p>
+<h2>Sur quoi peut-on trader ?</h2>
+<p>Presque tout ce qui a un prix coté : les <strong>devises</strong> (forex, par exemple EUR/USD), les <strong>indices boursiers</strong> (CAC 40, DAX, S&amp;P 500, Nasdaq 100), les <strong>actions</strong>, les <strong>matières premières</strong> (or, pétrole), les <strong>obligations</strong> et les <strong>cryptomonnaies</strong>. Chacun a ses horaires, ses coûts et sa volatilité. Le module <em>Marchés financiers expliqués</em> les présente un par un.</p>
+<p>Les particuliers y accèdent le plus souvent par un <strong>broker</strong> (courtier), soit en achetant l'actif lui-même, soit par des produits dérivés comme les <strong>CFD</strong> (contrats sur différence) : vous ne possédez pas l'actif, vous échangez seulement la variation de son prix, souvent avec un effet de levier.</p>
 
-<h3>Les Matières premières (Commodities)</h3>
-<p>Or, pétrole, gaz naturel, blé, cuivre... Les matières premières sont influencées par l'offre/demande mondiale, les tensions géopolitiques et les données macroéconomiques.</p>
+<h2>Ce que disent vraiment les chiffres</h2>
+<p>En 2018, l'Autorité européenne des marchés financiers (ESMA) a analysé les comptes de particuliers chez des brokers européens : <strong>entre 74 % et 89 % de ces comptes perdaient de l'argent</strong> sur les CFD. C'est pour cette raison que le levier a été plafonné en Europe et que chaque broker doit afficher, sur son site, la part de ses clients particuliers qui perdent de l'argent.</p>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">À savoir avant de commencer</strong>
+<p>Le trading de CFD et de forex comporte un risque élevé de perte en capital. N'y placez que de l'argent dont la perte totale ne changerait pas votre vie. Méfiez-vous de toute personne qui vous promet un revenu régulier ou un pourcentage mensuel : c'est le signe le plus fréquent d'une arnaque.</p>
+</aside>
+<p>Pourquoi tant de pertes ? Les causes reviennent toujours : positions trop grosses par rapport au compte, absence de stop, frais sous-estimés, trades pris sous le coup de l'émotion. Ce sont précisément les sujets de ce premier module.</p>
 
-<h3>Les Cryptomonnaies</h3>
-<p>Bitcoin, Ethereum et les altcoins ont créé un nouveau marché actif 24h/24, 7j/7. Extrêmement volatils, ils appliquent les mêmes principes techniques que les marchés traditionnels, avec des spécificités liées à la liquidité et aux manipulations de marché.</p>
+<h2>Contre qui tradez-vous ?</h2>
+<p>Sur un marché, chaque acheteur a un vendeur en face. Une bonne partie des acteurs ne cherche pas à « deviner » la direction : une entreprise qui couvre ses ventes en dollars, une banque centrale qui gère ses réserves, un fonds qui rééquilibre son portefeuille. D'autres sont des professionnels équipés d'outils, de données et d'une exécution bien supérieurs à ceux d'un particulier : banques, fonds spéculatifs, teneurs de marché, algorithmes à haute fréquence.</p>
+<p>Le particulier n'a pas l'avantage de la vitesse ni de l'information. Il a d'autres atouts : il n'est pas obligé de trader, il peut attendre les situations claires, et ses petites tailles de position passent sans faire bouger le prix.</p>
 
-<h2>Comment fonctionne l'achat et la vente ?</h2>
-<p>Pour trader, vous passez des ordres via un <strong>broker</strong> (courtier) qui exécute vos transactions sur le marché. Lorsque vous achetez (position longue), vous pariez sur la hausse du prix. Lorsque vous vendez à découvert (position courte), vous pariez sur la baisse.</p>
+<h2>De quoi avez-vous besoin pour commencer ?</h2>
+<ol class="doc-steps">
+<li><strong>Des bases solides</strong> : ce module, puis l'analyse technique et la gestion du risque.</li>
+<li><strong>Un compte de démonstration</strong> pour apprendre la plateforme et les ordres sans enjeu.</li>
+<li><strong>Un plan écrit</strong> : quels marchés, à quelles heures, quel risque par trade, quelles conditions d'entrée et de sortie.</li>
+<li><strong>Un journal de trading</strong> pour noter chaque décision et mesurer ce qui marche vraiment.</li>
+<li><strong>Un petit capital réel</strong>, seulement ensuite, pour vous habituer à la pression de l'argent réel.</li>
+</ol>
 
-<p>La différence entre le prix d'achat et le prix de vente s'appelle le <strong>spread</strong> — c'est la principale source de revenus du broker sur les instruments sans commission.</p>
+<h2>Le parcours de cette documentation</h2>
+<p>Les modules sont classés dans l'ordre où nous conseillons de les lire :</p>
+<ol>
+<li><strong>Débuter en trading</strong> et <strong>Marchés financiers expliqués</strong> : le vocabulaire, les coûts, le levier, les marchés.</li>
+<li><strong>Analyse technique classique</strong> : lire un graphique, tendances, niveaux, indicateurs.</li>
+<li><strong>Gestion du risque</strong> et <strong>Psychologie</strong> : ce qui fait tenir un compte dans la durée, à étudier avant toute méthode.</li>
+<li><strong>Price action et Wyckoff</strong>, <strong>ICT</strong>, <strong>Orderflow</strong> : des méthodes de lecture du marché, de la plus générale à la plus technique.</li>
+<li><strong>Macroéconomie</strong>, <strong>Stratégies complètes</strong>, <strong>Quantitatif</strong> et <strong>Trading algorithmique</strong> : pour construire, tester et automatiser.</li>
+<li><strong>Investissement</strong> : l'approche long terme, à part du trading.</li>
+</ol>
 
-<h2>Qui trade réellement sur les marchés ?</h2>
-<p>Les marchés financiers sont dominés par plusieurs catégories de participants :</p>
-<ul>
-<li><strong>Les banques centrales</strong> : interventions monétaires, gestion des réserves</li>
-<li><strong>Les banques d'investissement</strong> : Goldman Sachs, JPMorgan — trading pour compte propre et clients</li>
-<li><strong>Les hedge funds</strong> : fonds spéculatifs qui utilisent des stratégies algorithmiques et discrétionnaires</li>
-<li><strong>Les market makers</strong> : fournissent la liquidité, profitent du spread</li>
-<li><strong>Les traders retail</strong> : particuliers comme vous — représentent moins de 5% du volume total</li>
-</ul>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Le trading est un métier de gestion du risque avant d'être un métier de prévision. Personne ne sait où ira le prix ; la différence se fait sur la taille des pertes quand on se trompe, et sur la discipline quand on a raison.</p>
+</aside>
 
-<blockquote>Comprendre que vous tradez contre des algorithmes et des institutions avec des ressources infiniment supérieures est la première leçon d'humilité du trader débutant. Ce n'est pas pour décourager — c'est pour trader intelligemment.</blockquote>
-
-<h2>Conclusion</h2>
-<p>Le trading est une activité sérieuse qui demande formation, discipline et capital. Il ne s'agit pas d'un moyen de s'enrichir rapidement — 90% des traders retail perdent de l'argent, principalement par manque de formation et de gestion du risque. Les modules suivants vous donneront les outils pour faire partie des 10% restants.</p>
+<h2>Testez-vous</h2>
+<details>
+<summary>Vous vendez à découvert à 110 et rachetez à 104. Gagnez-vous ou perdez-vous, hors frais ?</summary>
+<p>Vous gagnez 6 : vous avez vendu plus cher que vous n'avez racheté. Si le prix était monté à 116, vous auriez perdu 6.</p>
+</details>
+<details>
+<summary>Pourquoi les frais pèsent-ils plus lourd pour un scalpeur que pour un swing trader ?</summary>
+<p>Le scalpeur prend beaucoup de trades pour de petits gains unitaires : le même écart de prix payé à chaque entrée représente une part bien plus grande de chaque gain.</p>
+</details>
+<details>
+<summary>Que doit afficher un broker européen qui propose des CFD aux particuliers ?</summary>
+<p>Un avertissement sur le risque, avec le pourcentage de comptes de particuliers qui perdent de l'argent chez lui. Vérifiez ce chiffre avant d'ouvrir un compte.</p>
+</details>

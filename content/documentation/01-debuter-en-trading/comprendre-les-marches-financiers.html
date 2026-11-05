@@ -2,70 +2,127 @@
 {
     "slug": "comprendre-les-marches-financiers",
     "title": "Comprendre les marchés financiers",
-    "excerpt": "Structure des marchés, participants, heures de trading et sessions mondiales.",
-    "readingTime": 10,
+    "excerpt": "Comment se forme un prix : le carnet d'ordres, le bid et l'ask, la liquidité, la différence entre bourse et gré à gré, qui sont les participants et pourquoi le prix réagit aux surprises plutôt qu'aux nouvelles.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 2,
     "module": "debuter-en-trading"
 }
 -->
-<h2>Structure d'un marché financier</h2>
-<p>Un marché financier est un lieu (physique ou électronique) où acheteurs et vendeurs échangent des actifs financiers. Aujourd'hui, la quasi-totalité des transactions se font de façon électronique via des <strong>bourses</strong> (NYSE, Nasdaq, Euronext) ou sur des marchés de gré à gré (<strong>OTC — Over The Counter</strong>) comme le Forex.</p>
-
-<h3>Marchés centralisés vs OTC</h3>
-<p>Les bourses centralisées (NYSE, CME pour les futures) ont un carnet d'ordres centralisé — toutes les transactions passent par la même plateforme, garantissant transparence et liquidité. Le Forex et les CFD sont des marchés OTC : les transactions se font directement entre contreparties, sans place de marché centrale.</p>
-
-<h2>Les sessions de trading mondiales</h2>
-<p>Le marché Forex est ouvert 24h/24 du lundi au vendredi, mais toutes les heures ne se valent pas. Le volume et la volatilité varient selon les sessions actives :</p>
-
-<h3>Session Asiatique (Tokyo)</h3>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Horaires</strong> : 00h00 — 09h00 (heure Paris)</li>
-<li><strong>Caractéristiques</strong> : faible volatilité, range serré, création de l'Asian Range</li>
-<li><strong>Paires actives</strong> : JPY, AUD, NZD</li>
-<li><strong>Utilité ICT</strong> : définit la zone de liquidité qui sera souvent chassée à l'ouverture européenne</li>
+<li>Un prix n'est que <strong>le dernier échange</strong> conclu entre un acheteur et un vendeur.</li>
+<li>Le <strong>carnet d'ordres</strong> liste les offres en attente. Le prix bouge quand des ordres au marché consomment ces offres.</li>
+<li>Actions et futures s'échangent sur des <strong>bourses centralisées</strong> ; le forex et les CFD, <strong>de gré à gré</strong>, sans carnet unique.</li>
+<li>Les marchés réagissent à <strong>l'écart entre ce qui était attendu et ce qui arrive</strong>, pas à la nouvelle elle-même.</li>
+</ul>
+</div>
+
+<h2>Un marché, c'est une rencontre d'ordres</h2>
+<p>Un marché financier réunit des personnes qui veulent acheter et d'autres qui veulent vendre. Aujourd'hui, presque tout passe par des systèmes électroniques. Le « prix » affiché sur votre graphique est simplement le prix de la <strong>dernière transaction</strong> : il change chaque fois qu'un acheteur et un vendeur se mettent d'accord à un autre niveau.</p>
+
+<h2>Le carnet d'ordres : la file d'attente du marché</h2>
+<p>Tous ceux qui ne veulent pas échanger tout de suite laissent un <strong>ordre à cours limité</strong> : « j'achète à 99 au maximum », « je vends à 101 au minimum ». Ces ordres forment le carnet :</p>
+<ul>
+<li>le <strong>bid</strong> est le meilleur prix d'achat proposé : c'est le prix auquel vous pouvez vendre tout de suite ;</li>
+<li>l'<strong>ask</strong> (ou <em>offer</em>) est le meilleur prix de vente proposé : c'est le prix auquel vous pouvez acheter tout de suite ;</li>
+<li>l'écart entre les deux est le <strong>spread</strong>, le premier coût de chaque trade.</li>
 </ul>
 
-<h3>Session Européenne (Londres)</h3>
+<figure>
+<svg viewBox="0 0 640 260" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Un carnet d'ordres simplifié</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">CARNET D'ORDRES (QUANTITÉS EN ATTENTE)</text>
+  <g font-family="sans-serif" font-size="12.5">
+    <text x="210" y="56" text-anchor="end" fill="#E89A90">101,03</text><rect x="220" y="44" width="150" height="16" rx="3" fill="rgba(210,101,90,0.35)"/><text x="380" y="56" fill="#A8B3AE">300</text>
+    <text x="210" y="80" text-anchor="end" fill="#E89A90">101,02</text><rect x="220" y="68" width="90" height="16" rx="3" fill="rgba(210,101,90,0.35)"/><text x="320" y="80" fill="#A8B3AE">180</text>
+    <text x="210" y="104" text-anchor="end" fill="#E89A90" font-weight="bold">101,01</text><rect x="220" y="92" width="50" height="16" rx="3" fill="rgba(210,101,90,0.6)"/><text x="280" y="104" fill="#E2CB91">100 ← meilleur ask</text>
+    <text x="210" y="134" text-anchor="end" fill="#7FD1B9" font-weight="bold">101,00</text><rect x="220" y="122" width="70" height="16" rx="3" fill="rgba(79,179,143,0.6)"/><text x="300" y="134" fill="#E2CB91">140 ← meilleur bid</text>
+    <text x="210" y="158" text-anchor="end" fill="#7FD1B9">100,99</text><rect x="220" y="146" width="110" height="16" rx="3" fill="rgba(79,179,143,0.35)"/><text x="340" y="158" fill="#A8B3AE">220</text>
+    <text x="210" y="182" text-anchor="end" fill="#7FD1B9">100,98</text><rect x="220" y="170" width="170" height="16" rx="3" fill="rgba(79,179,143,0.35)"/><text x="400" y="182" fill="#A8B3AE">340</text>
+  </g>
+  <line x1="140" y1="114" x2="560" y2="114" stroke="#C8A45C" stroke-dasharray="4 4"/>
+  <text x="560" y="110" text-anchor="end" fill="#E2CB91" font-size="12" font-family="sans-serif">spread : 0,01</text>
+  <text x="40" y="70" fill="#E89A90" font-size="12" font-family="sans-serif">vendeurs</text>
+  <text x="40" y="164" fill="#7FD1B9" font-size="12" font-family="sans-serif">acheteurs</text>
+  <text x="320" y="222" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Un achat au marché de 250 prend les 100 à 101,01, puis 150 des 180 à 101,02.</text>
+  <text x="320" y="242" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Le dernier prix passe à 101,02 : c'est ainsi que le prix monte.</text>
+</svg>
+<figcaption>Les vendeurs en attente (en haut) et les acheteurs en attente (en bas). Le prix bouge quand un ordre au marché « consomme » un niveau entier.</figcaption>
+</figure>
+
+<p>Ce mécanisme explique deux notions que vous retrouverez partout :</p>
 <ul>
-<li><strong>Horaires</strong> : 08h00 — 17h00 (heure Paris)</li>
-<li><strong>Caractéristiques</strong> : forte volatilité, London Open Kill Zone (08h-11h), mouvement directionnel majeur</li>
-<li><strong>Paires actives</strong> : EUR, GBP, CHF</li>
-<li><strong>Volume</strong> : représente ~35% du volume Forex mondial</li>
+<li>la <strong>liquidité</strong> : la quantité disponible près du prix. Plus elle est grande, plus on peut échanger gros sans déplacer le prix ;</li>
+<li>le <strong>glissement</strong> (<em>slippage</em>) : quand votre ordre au marché est exécuté à un prix moins bon que celui affiché, parce que le premier niveau ne suffisait pas ou que le prix a bougé entre-temps.</li>
 </ul>
 
-<h3>Session Américaine (New York)</h3>
+<h2>Bourse centralisée ou gré à gré</h2>
+<table>
+<thead><tr><th></th><th>Bourse centralisée</th><th>Gré à gré (OTC)</th></tr></thead>
+<tbody>
+<tr><td>Exemples</td><td>Actions (Euronext, Nasdaq), futures (CME, Eurex)</td><td>Forex, CFD, une grande partie des obligations</td></tr>
+<tr><td>Carnet d'ordres</td><td>Un carnet unique, visible</td><td>Pas de carnet unique : chaque banque ou broker cote ses propres prix</td></tr>
+<tr><td>Volume</td><td>Volume réel publié</td><td>Volume global inconnu ; le « volume » affiché est souvent un nombre de variations de prix</td></tr>
+<tr><td>Contrepartie</td><td>La chambre de compensation garantit l'échange</td><td>Votre contrepartie est le broker ou la banque</td></tr>
+</tbody>
+</table>
+<p>Un CFD sur le DAX n'est donc pas une action du DAX : c'est un contrat passé avec votre broker, dont le prix suit le DAX. Votre risque dépend aussi de la solidité de ce broker, d'où l'importance de sa régulation (voir <em>Choisir son broker et sa plateforme</em>).</p>
+
+<h2>Qui sont les participants ?</h2>
+<table>
+<thead><tr><th>Acteur</th><th>Pourquoi il intervient</th></tr></thead>
+<tbody>
+<tr><td>Banques centrales</td><td>Politique monétaire, gestion des réserves, parfois interventions sur leur devise</td></tr>
+<tr><td>Entreprises</td><td>Couverture : un exportateur vend les dollars qu'il recevra dans trois mois pour figer son taux de change</td></tr>
+<tr><td>Gérants d'actifs, fonds de pension</td><td>Placer l'épargne, rééquilibrer des portefeuilles, souvent sur de longues durées</td></tr>
+<tr><td>Fonds spéculatifs</td><td>Chercher un profit, avec des stratégies variées (tendance, arbitrage, macro)</td></tr>
+<tr><td>Teneurs de marché</td><td>Afficher en permanence un prix d'achat et de vente, et gagner le spread</td></tr>
+<tr><td>Algorithmes à haute fréquence</td><td>Exploiter de très petits écarts en quelques millisecondes</td></tr>
+<tr><td>Particuliers</td><td>Investir ou spéculer, avec des tailles bien plus petites</td></tr>
+</tbody>
+</table>
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">Pourquoi c'est important</strong>
+<p>Beaucoup de gros ordres ne sont pas des « paris » sur la direction : ce sont des couvertures, des rééquilibrages, des fixings de fin de mois. Ils peuvent faire bouger le prix contre toute logique apparente. Un mouvement qui vous semble absurde n'a pas forcément d'explication que vous pouvez connaître.</p>
+</aside>
+
+<h2>Liquidité et volatilité : deux mots à ne pas confondre</h2>
 <ul>
-<li><strong>Horaires</strong> : 14h00 — 23h00 (heure Paris)</li>
-<li><strong>Caractéristiques</strong> : overlap avec Londres (14h-17h) = maximum de volatilité</li>
-<li><strong>Paires actives</strong> : USD, CAD, paires majeures</li>
-<li><strong>Événements</strong> : données macro US (NFP, CPI, FOMC) — déclencheurs de mouvements violents</li>
+<li><strong>Liquidité</strong> : la facilité à acheter ou vendre sans faire bouger le prix. L'EUR/USD ou le S&amp;P 500 sont très liquides ; une petite action ou une cryptomonnaie peu connue ne l'est pas.</li>
+<li><strong>Volatilité</strong> : l'amplitude des variations de prix. Un marché peut être liquide et calme, ou peu liquide et très agité.</li>
 </ul>
+<p>Le cas le plus dangereux pour un débutant combine <strong>forte volatilité et faible liquidité</strong> : spreads qui s'élargissent, stops exécutés loin du niveau prévu. C'est typiquement ce qui se passe juste après une annonce économique ou à l'ouverture du dimanche soir.</p>
 
-<blockquote>La Kill Zone de New York (13h30-16h00 Paris) est l'une des fenêtres les plus exploitées par les traders ICT. Le marché chasse souvent la liquidité asiatique et européenne avant de partir dans la vraie direction.</blockquote>
+<h2>Pourquoi les prix bougent : la surprise, pas la nouvelle</h2>
+<p>Les marchés anticipent. Avant une statistique, les économistes publient une prévision moyenne, le <strong>consensus</strong>, et les prix l'intègrent déjà en grande partie. Ce qui fait bouger le prix au moment de la publication, c'est l'<strong>écart</strong> entre le chiffre réel et ce consensus.</p>
 
-<h2>Les données macroéconomiques qui bougent les marchés</h2>
-<p>Certains événements économiques déclenchent des mouvements violents et imprévisibles. Il est <strong>impératif</strong> de les connaître et de ne pas trader pendant leur publication si vous n'êtes pas expérimenté :</p>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Le consensus attend une inflation américaine à 3,0 % sur un an. Si le chiffre publié est 3,0 %, le dollar peut à peine bouger : c'était prévu. S'il sort à 3,4 %, les investisseurs anticipent des taux plus élevés et le dollar peut monter fortement en quelques secondes. Une « bonne » nouvelle déjà attendue peut même faire baisser un prix : c'est le fameux « acheter la rumeur, vendre la nouvelle ».</p>
+</aside>
 
-<ul>
-<li><strong>NFP (Non-Farm Payrolls)</strong> : emplois créés aux USA, premier vendredi du mois — mouvement de 50-150 pips sur EUR/USD</li>
-<li><strong>CPI (Consumer Price Index)</strong> : inflation américaine — impact majeur sur le dollar et les indices</li>
-<li><strong>FOMC</strong> : décisions de taux de la Fed, 8 fois par an — mouvements souvent violents et retournements</li>
-<li><strong>PIB (GDP)</strong> : croissance économique trimestrielle</li>
-<li><strong>PMI</strong> : activité manufacturière et des services</li>
-</ul>
+<p>Les publications les plus suivies (emploi américain, inflation, décisions de la Fed et de la BCE) sont détaillées dans le module <em>Macroéconomie</em>. Consultez un calendrier économique chaque matin, avant de regarder vos graphiques.</p>
 
-<p>Utilisez <strong>Investing.com/economic-calendar</strong> ou <strong>ForexFactory.com</strong> pour anticiper ces événements.</p>
+<h2>Le marché ne fonctionne pas pareil à toute heure</h2>
+<p>La liquidité dépend des places financières ouvertes : elle est faible la nuit en Europe sur la plupart des marchés, maximale l'après-midi quand Londres et New York sont ouvertes ensemble. C'est l'objet de l'article suivant, <em>Les sessions de marché</em>.</p>
 
-<h2>La liquidité — le moteur caché des marchés</h2>
-<p>La <strong>liquidité</strong> est la facilité avec laquelle on peut acheter ou vendre un actif sans impacter significativement son prix. Un marché liquide (EUR/USD, SP500) permet d'entrer et sortir rapidement avec peu de slippage. Un marché illiquide (altcoin obscur, action penny) peut bouger violemment sur un simple ordre.</p>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Le prix n'est pas une valeur « juste » qui flotte au-dessus du marché : il résulte d'ordres réels qui se rencontrent. Comprendre le carnet, le spread et la liquidité vous évitera d'être surpris par vos exécutions.</p>
+</aside>
 
-<p>Les institutions ont besoin de liquidité pour placer leurs ordres massifs. C'est pourquoi elles vont chercher les zones où se concentrent les stop-loss des traders retail — c'est le concept fondamental de la chasse aux stops que nous approfondirons dans le module ICT.</p>
-
-<h2>Les heures à éviter absolument</h2>
-<ul>
-<li>Les 30 minutes avant et après une news majeure (NFP, FOMC)</li>
-<li>L'ouverture du dimanche soir (gaps fréquents)</li>
-<li>La session asiatique sur les paires non-JPY (faible liquidité, faux signaux)</li>
-<li>Les périodes de vacances (Noël, Pâques) — liquidité réduite, mouvements erratiques</li>
-</ul>
+<h2>Testez-vous</h2>
+<details>
+<summary>Le bid est à 1,0850 et l'ask à 1,0852. À quel prix achetez-vous au marché, et quel est le spread ?</summary>
+<p>Vous achetez à l'ask, 1,0852. Le spread est de 0,0002, soit 2 pips sur une paire comme l'EUR/USD.</p>
+</details>
+<details>
+<summary>Pourquoi le « volume » affiché sur un graphique forex n'est-il pas le volume réel du marché ?</summary>
+<p>Le forex se traite de gré à gré, sans carnet unique : personne ne connaît le volume total. Le chiffre affiché par la plupart des plateformes est un nombre de variations de prix chez votre broker (le « tick volume »).</p>
+</details>
+<details>
+<summary>Une statistique sort exactement au niveau du consensus. Faut-il s'attendre à un gros mouvement ?</summary>
+<p>Pas nécessairement : l'information était déjà dans les prix. Les mouvements les plus violents suivent les écarts importants par rapport au consensus, ou des révisions surprises des chiffres précédents.</p>
+</details>
