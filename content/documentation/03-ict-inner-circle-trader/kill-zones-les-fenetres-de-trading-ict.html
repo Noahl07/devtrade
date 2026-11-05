@@ -2,89 +2,175 @@
 {
     "slug": "kill-zones-les-fenetres-de-trading-ict",
     "title": "Kill Zones — les fenêtres de trading ICT",
-    "excerpt": "Asian Range, London et New York Kill Zones — les horaires institutionnels.",
-    "readingTime": 9,
+    "excerpt": "Les fenêtres horaires de la méthode ICT (Asie, Londres, New York, Silver Bullet), converties en heure de Paris, avec les pièges du changement d'heure et une méthode pour les vérifier sur vos propres données.",
+    "readingTime": 12,
     "accessLevel": "free",
     "module": "ict-inner-circle-trader"
 }
 -->
-<h2>Pourquoi les Kill Zones ?</h2>
-<p>Le marché n'est pas également actif toutes les heures. ICT a identifié des <strong>fenêtres temporelles précises</strong> où la probabilité de setups à haute probabilité est maximale — les Kill Zones.</p>
- 
-<svg width="100%" viewBox="0 0 580 130" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:580px;margin:1.5rem auto">
-  <!-- Base bar -->
-  <rect x="20" y="50" width="540" height="35" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
- 
-  <!-- Asian session -->
-  <rect x="20" y="50" width="90" height="35" rx="4" fill="rgba(80,110,170,0.2)" stroke="rgba(100,140,210,0.4)" stroke-width="1"/>
-  <text x="65" y="64" text-anchor="middle" fill="rgba(140,170,230,0.9)" font-size="10" font-family="sans-serif" font-weight="bold">ASIE</text>
-  <text x="65" y="77" text-anchor="middle" fill="rgba(140,170,230,0.6)" font-size="9" font-family="sans-serif">00h–07h</text>
- 
-  <!-- London Kill Zone -->
-  <rect x="110" y="44" width="110" height="47" rx="4" fill="rgba(62,180,137,0.2)" stroke="#3EB489" stroke-width="1.5"/>
-  <text x="165" y="62" text-anchor="middle" fill="#3EB489" font-size="10" font-family="sans-serif" font-weight="bold">LONDON KZ</text>
-  <text x="165" y="75" text-anchor="middle" fill="rgba(62,180,137,0.8)" font-size="9" font-family="sans-serif">08h–11h Paris</text>
-  <text x="165" y="86" text-anchor="middle" fill="rgba(62,180,137,0.6)" font-size="8" font-family="sans-serif">02h–05h EST</text>
- 
-  <!-- London continuation -->
-  <rect x="220" y="50" width="100" height="35" rx="0" fill="rgba(62,180,137,0.07)" stroke="none"/>
- 
-  <!-- NY Kill Zone -->
-  <rect x="320" y="44" width="120" height="47" rx="4" fill="rgba(212,169,75,0.2)" stroke="#D4A94B" stroke-width="1.5"/>
-  <text x="380" y="62" text-anchor="middle" fill="#D4A94B" font-size="10" font-family="sans-serif" font-weight="bold">NEW YORK KZ</text>
-  <text x="380" y="75" text-anchor="middle" fill="rgba(212,169,75,0.8)" font-size="9" font-family="sans-serif">13h–16h Paris</text>
-  <text x="380" y="86" text-anchor="middle" fill="rgba(212,169,75,0.6)" font-size="8" font-family="sans-serif">07h–10h EST</text>
- 
-  <!-- NY continuation -->
-  <rect x="440" y="50" width="120" height="35" rx="0" fill="rgba(212,169,75,0.05)" stroke="none"/>
- 
-  <!-- Silver Bullet -->
-  <rect x="440" y="44" width="65" height="47" rx="3" fill="rgba(224,85,85,0.15)" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="472" y="63" text-anchor="middle" fill="#e05555" font-size="9" font-family="sans-serif" font-weight="bold">Silver</text>
-  <text x="472" y="75" text-anchor="middle" fill="#e05555" font-size="9" font-family="sans-serif" font-weight="bold">Bullet</text>
-  <text x="472" y="86" text-anchor="middle" fill="rgba(224,85,85,0.7)" font-size="8" font-family="sans-serif">16h–17h</text>
- 
-  <!-- Hour labels -->
-  <text x="20" y="108" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">00h</text>
-  <text x="110" y="108" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">08h</text>
-  <text x="220" y="108" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">11h</text>
-  <text x="320" y="108" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">13h</text>
-  <text x="440" y="108" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">16h</text>
-  <text x="540" y="108" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">23h</text>
-  <text x="290" y="125" text-anchor="middle" fill="rgba(232,234,240,0.2)" font-size="9" font-family="sans-serif">Heure de Paris (CET/CEST)</text>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Une <strong>Kill Zone</strong> est une fenêtre horaire où, selon la méthode ICT, le marché est le plus actif et les mouvements les plus exploitables.</li>
+<li>Les horaires de référence sont donnés en <strong>heure de New York</strong>. À Paris, il faut en général ajouter 6 heures… mais seulement 5 heures quelques semaines par an.</li>
+<li>Trois fenêtres comptent surtout : <strong>Londres</strong> (8 h – 11 h à Paris), <strong>New York</strong> (13 h – 16 h) et la <strong>Silver Bullet</strong> du matin new-yorkais (16 h – 17 h).</li>
+<li>Ce sont des repères de méthode, pas des garanties : vérifiez-les sur votre propre historique avant de vous y fier.</li>
+</ul>
+</div>
+
+<h2>Pourquoi le marché n'est pas actif à toute heure</h2>
+<p>Le marché des changes fonctionne 24 heures sur 24, cinq jours sur sept, mais l'activité suit le soleil : elle dépend des grandes places financières ouvertes à un instant donné. Quand Tokyo est seule, les volumes sont faibles et les prix évoluent souvent dans une fourchette étroite. Quand Londres ouvre, puis quand New York la rejoint, les volumes et la volatilité augmentent nettement.</p>
+<p>La méthode ICT (<em>Inner Circle Trader</em>, popularisée par Michael J. Huddleston) en tire une règle simple : concentrer son attention sur quelques <strong>fenêtres horaires précises</strong>, les Kill Zones, et rester à l'écart le reste du temps. L'idée n'est pas que le prix « obéit » à une horloge, mais que les grands flux d'ordres arrivent à des moments prévisibles : ouvertures de session, publications économiques, fixings.</p>
+
+<figure>
+<svg viewBox="0 0 640 210" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Les Kill Zones sur 24 heures, en heure de Paris</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">HEURE DE PARIS (HORS SEMAINES DE DÉCALAGE)</text>
+  <rect x="20" y="70" width="600" height="44" rx="6" fill="rgba(245,241,230,0.04)" stroke="rgba(245,241,230,0.12)"/>
+  <rect x="70" y="70" width="100" height="44" rx="6" fill="rgba(120,140,190,0.18)" stroke="rgba(150,170,220,0.55)"/>
+  <text x="120" y="89" text-anchor="middle" fill="#B9C6E6" font-size="12.5" font-family="sans-serif" font-weight="bold">ASIE</text>
+  <text x="120" y="104" text-anchor="middle" fill="#B9C6E6" font-size="12" font-family="sans-serif">2 h – 6 h</text>
+  <rect x="220" y="62" width="75" height="60" rx="6" fill="rgba(46,139,115,0.25)" stroke="#2E8B73" stroke-width="1.5"/>
+  <text x="257" y="86" text-anchor="middle" fill="#7FD1B9" font-size="12.5" font-family="sans-serif" font-weight="bold">LONDRES</text>
+  <text x="257" y="101" text-anchor="middle" fill="#7FD1B9" font-size="12" font-family="sans-serif">8 h – 11 h</text>
+  <rect x="345" y="62" width="75" height="60" rx="6" fill="rgba(200,164,92,0.22)" stroke="#C8A45C" stroke-width="1.5"/>
+  <text x="382" y="86" text-anchor="middle" fill="#E2CB91" font-size="12.5" font-family="sans-serif" font-weight="bold">NEW YORK</text>
+  <text x="382" y="101" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif">13 h – 16 h</text>
+  <rect x="420" y="70" width="50" height="44" rx="6" fill="rgba(245,241,230,0.06)" stroke="rgba(245,241,230,0.3)" stroke-dasharray="3 3"/>
+  <text x="445" y="89" text-anchor="middle" fill="#D9D3C3" font-size="10.5" font-family="sans-serif" font-weight="bold">CLÔTURE</text>
+  <text x="445" y="103" text-anchor="middle" fill="#D9D3C3" font-size="10.5" font-family="sans-serif">LONDRES</text>
+  <rect x="245" y="132" width="25" height="10" rx="3" fill="#C8A45C"/>
+  <rect x="420" y="132" width="25" height="10" rx="3" fill="#C8A45C"/>
+  <rect x="520" y="132" width="25" height="10" rx="3" fill="#C8A45C"/>
+  <text x="20" y="141" fill="#A8B3AE" font-size="12" font-family="sans-serif">Silver Bullet</text>
+  <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="middle">
+    <text x="20" y="168">0 h</text><text x="120" y="168">4 h</text><text x="220" y="168">8 h</text><text x="320" y="168">12 h</text>
+    <text x="420" y="168">16 h</text><text x="520" y="168">20 h</text><text x="620" y="168">24 h</text>
+  </g>
+  <g stroke="rgba(245,241,230,0.15)">
+    <line x1="20" y1="150" x2="20" y2="156"/><line x1="120" y1="150" x2="120" y2="156"/><line x1="220" y1="150" x2="220" y2="156"/>
+    <line x1="320" y1="150" x2="320" y2="156"/><line x1="420" y1="150" x2="420" y2="156"/><line x1="520" y1="150" x2="520" y2="156"/><line x1="620" y1="150" x2="620" y2="156"/>
+  </g>
+  <text x="320" y="196" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Échelle : 25 px par heure. Les fenêtres dorées en bas sont les trois Silver Bullet.</text>
 </svg>
- 
-<h2>Asian Range — définir le terrain de jeu</h2>
-<p>La session asiatique (00h-07h Paris) crée un range à faible volatilité. Ce range devient une référence cruciale :</p>
+<figcaption>Les Kill Zones de la méthode ICT, placées sur une journée en heure de Paris (écart habituel de 6 heures avec New York).</figcaption>
+</figure>
+
+<h2>Les horaires de référence</h2>
+<p>ICT donne ses horaires en heure de New York. Le tableau les convertit pour Paris dans le cas le plus courant (écart de 6 heures).</p>
+<table>
+<thead><tr><th>Fenêtre</th><th class="ta-center">New York</th><th class="ta-center">Paris</th><th>Ce que la méthode y cherche</th></tr></thead>
+<tbody>
+<tr><td>Asie</td><td class="ta-center">20 h – 0 h</td><td class="ta-center">2 h – 6 h</td><td>Le « range asiatique » : une fourchette qui servira de référence</td></tr>
+<tr><td>Londres</td><td class="ta-center">2 h – 5 h</td><td class="ta-center is-positive">8 h – 11 h</td><td>La chasse d'une borne du range asiatique, puis le vrai mouvement du jour</td></tr>
+<tr><td>New York</td><td class="ta-center">7 h – 10 h</td><td class="ta-center is-accent">13 h – 16 h</td><td>Les publications américaines et la poursuite (ou le retournement) du mouvement londonien</td></tr>
+<tr><td>Clôture de Londres</td><td class="ta-center">10 h – 12 h</td><td class="ta-center">16 h – 18 h</td><td>Prises de bénéfices, retours vers la moyenne</td></tr>
+</tbody>
+</table>
+
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Attention au changement d'heure</strong>
+<p>Les États-Unis et l'Europe ne changent pas d'heure le même jour. Pendant ces périodes, l'écart Paris – New York n'est plus de 6 heures mais de <strong>5 heures</strong>, et toutes les fenêtres arrivent une heure plus tôt à Paris :</p>
 <ul>
-<li>Les bornes haute et basse créent des zones de liquidité (BSL au-dessus, SSL en dessous)</li>
-<li>L'une de ces bornes sera souvent chassée lors de l'ouverture londonienne (Judas Swing)</li>
-<li>La vraie direction de la session est souvent opposée au Judas Swing initial</li>
+<li>du deuxième dimanche de mars au dernier dimanche de mars (en 2026 : du 8 au 29 mars) ;</li>
+<li>du dernier dimanche d'octobre au premier dimanche de novembre (en 2026 : du 25 octobre au 1er novembre).</li>
 </ul>
- 
-<h2>London Kill Zone (08h-11h Paris)</h2>
+<p>Les statistiques américaines publiées à 8 h 30 à New York tombent alors à 13 h 30 à Paris, et non à 14 h 30.</p>
+</aside>
+
+<h2>Le range asiatique : définir le terrain de jeu</h2>
+<p>Pendant la session asiatique, les paires européennes et le dollar bougent peu. Le plus haut et le plus bas de cette période dessinent une fourchette que la méthode ICT utilise comme carte de la journée :</p>
 <ul>
-<li>Le plus gros volume institutionnel européen entre sur le marché</li>
-<li>Les algorithmes londoniens ciblent souvent la liquidité asiatique en premier</li>
-<li>Le vrai mouvement directionnel de la journée se met en place pendant cette fenêtre</li>
-<li>Paires les plus actives : EUR/USD, GBP/USD</li>
+<li>au-dessus du plus haut s'accumulent des ordres d'achat (stops des vendeurs, entrées sur cassure) : c'est la <strong>liquidité acheteuse</strong> (BSL) ;</li>
+<li>sous le plus bas s'accumulent des ordres de vente : la <strong>liquidité vendeuse</strong> (SSL) ;</li>
+<li>à l'ouverture de Londres, le prix va fréquemment chercher l'une de ces bornes avant de partir dans l'autre sens. ICT appelle ce faux départ le <em>Judas Swing</em>.</li>
 </ul>
- 
-<h2>New York Kill Zone (13h-16h Paris)</h2>
+<p>Le range asiatique ne dit pas dans quel sens le marché partira. Il indique où se trouvent les ordres que le marché a des chances d'aller chercher.</p>
+
+<h2>La Kill Zone de Londres (8 h – 11 h à Paris)</h2>
+<p>C'est souvent la fenêtre la plus active pour l'EUR/USD, le GBP/USD et l'EUR/GBP : les banques européennes arrivent, les volumes montent brutalement et le mouvement directionnel de la journée se met fréquemment en place.</p>
 <ul>
-<li>Overlap London/New York (13h-17h) = maximum de liquidité et volatilité</li>
-<li>Les données macro US sortent généralement à 14h30 Paris</li>
-<li>Indices US (NAS100, SP500) les plus actifs</li>
+<li>Le scénario recherché : une chasse rapide d'une borne du range asiatique, un signe de rejet (mèche, changement de structure sur une petite unité de temps), puis un départ dans la direction opposée.</li>
+<li>La première heure est la plus nerveuse : les écarts de prix (spreads) se resserrent seulement après l'ouverture.</li>
 </ul>
- 
-<h2>Silver Bullet Window (16h-17h Paris)</h2>
-<p>Fenêtre de 1 heure identifiée par ICT : le marché crée souvent un retrace qui remplit le FVG du mouvement matinal. Particulièrement efficace sur NAS100 et SPX.</p>
- 
-<h2>Heures à ne pas trader</h2>
+
+<h2>La Kill Zone de New York (13 h – 16 h à Paris)</h2>
 <ul>
-<li>Session asiatique sur paires non-JPY — faible liquidité, faux signaux</li>
-<li>Dimanche soir — gaps, spread élevé</li>
-<li>30 min avant/après news majeure (NFP, FOMC)</li>
-<li>Vendredi après 18h — manipulation sur faible liquidité</li>
+<li>Londres et New York sont ouvertes en même temps jusqu'en fin d'après-midi : c'est le moment le plus liquide de la journée sur le forex.</li>
+<li>Les statistiques américaines (emploi, inflation, ventes au détail) sortent pour la plupart à 14 h 30, heure de Paris, et peuvent prolonger ou inverser le mouvement du matin.</li>
+<li>Les indices américains (Nasdaq 100, S&amp;P 500) ouvrent à 15 h 30 à Paris : la volatilité y est maximale dans la première heure.</li>
 </ul>
-<blockquote>Un trader ICT discipliné ne trade que pendant les Kill Zones. Environ 4-6 heures sur 24 — mais ces heures concentrent 80%+ des opportunités de qualité.</blockquote>
+
+<h2>Les fenêtres Silver Bullet</h2>
+<p>ICT décrit trois fenêtres d'une heure, pendant lesquelles il cherche un déséquilibre de prix (<em>Fair Value Gap</em>) à combler dans le sens de la tendance du moment :</p>
+<table>
+<thead><tr><th>Fenêtre</th><th class="ta-center">New York</th><th class="ta-center">Paris</th></tr></thead>
+<tbody>
+<tr><td>Silver Bullet de Londres</td><td class="ta-center">3 h – 4 h</td><td class="ta-center">9 h – 10 h</td></tr>
+<tr><td>Silver Bullet du matin</td><td class="ta-center">10 h – 11 h</td><td class="ta-center is-accent">16 h – 17 h</td></tr>
+<tr><td>Silver Bullet de l'après-midi</td><td class="ta-center">14 h – 15 h</td><td class="ta-center">20 h – 21 h</td></tr>
+</tbody>
+</table>
+<p>Celle du matin new-yorkais est la plus utilisée, en particulier sur les indices américains. Le détail du setup fait l'objet d'un article du module avancé.</p>
+
+<h2>Les heures à éviter</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Plutôt à privilégier</h4>
+<ul>
+<li>Les trois fenêtres principales, sur les marchés qui y sont actifs</li>
+<li>La session asiatique pour les paires en yen, seulement si vous les connaissez</li>
+<li>Des horaires fixes, notés dans votre plan de trading</li>
+</ul>
+</div>
+<div class="doc-compare__dont">
+<h4>Plutôt à éviter</h4>
+<ul>
+<li>La session asiatique sur les paires sans yen : peu de volume, faux signaux</li>
+<li>Le dimanche soir : écarts d'ouverture et spreads élevés</li>
+<li>Les 30 minutes autour d'une annonce majeure (emploi américain, décision de la Fed)</li>
+<li>Le vendredi soir : liquidité qui se retire avant le week-end</li>
+</ul>
+</div>
+</div>
+
+<h2>Construire sa routine autour des Kill Zones</h2>
+<ol class="doc-steps">
+<li><strong>Avant 8 h :</strong> notez le plus haut et le plus bas de la session asiatique, et consultez le calendrier économique du jour.</li>
+<li><strong>Choisissez une seule fenêtre</strong> au départ, celle qui correspond à votre emploi du temps et aux marchés que vous suivez.</li>
+<li><strong>Décidez à l'avance</strong> de ce que vous attendez (une chasse de liquidité, un comblement de déséquilibre) et de ce qui annule le scénario.</li>
+<li><strong>Fermez l'écran à la fin de la fenêtre</strong>, même sans trade : ne pas trader fait partie de la méthode.</li>
+<li><strong>Notez chaque séance</strong> dans votre journal : l'heure, le scénario, ce qui s'est réellement passé.</li>
+</ol>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Sur l'EUR/USD, la session asiatique se cantonne entre 1,0820 et 1,0845. À 8 h 20, le prix passe sous 1,0820, descend jusqu'à 1,0812, puis remonte au-dessus de 1,0820 en quelques minutes. Pour un trader ICT, c'est la chasse de la liquidité vendeuse qu'il attendait : il cherche alors un achat, avec un stop sous 1,0812 et un objectif vers le haut du range, puis au-delà. Si le prix était resté sous 1,0812, le scénario aurait été invalidé.</p>
+</aside>
+
+<h2>Vérifier par soi-même</h2>
+<p>Les Kill Zones sont une hypothèse de travail, pas une loi du marché, et il n'existe pas d'étude publique qui chiffre leur avantage. Le plus sûr est de les tester sur vos propres données :</p>
+<ul>
+<li>dans votre journal, ajoutez une colonne « heure d'entrée » et regroupez vos résultats par tranche horaire après 50 à 100 trades ;</li>
+<li>sur un historique de prix, mesurez l'amplitude moyenne de chaque heure pour le marché que vous tradez : vous verrez où se concentre réellement le mouvement ;</li>
+<li>comparez ce que vous obtenez pendant et en dehors des fenêtres avant d'en faire une règle.</li>
+</ul>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Les Kill Zones aident surtout à <strong>trader moins et mieux</strong> : trois heures de concentration, avec un scénario préparé, valent mieux qu'une journée entière devant l'écran. Leur valeur dépend du marché, de la période et de votre exécution : mesurez-la.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Il est 14 h 30 à Paris le 10 mars 2026. La statistique américaine de 8 h 30 (New York) est-elle déjà sortie ?</summary>
+<p>Oui. Le 10 mars 2026, les États-Unis sont passés à l'heure d'été mais pas l'Europe : l'écart n'est que de 5 heures, et la publication a eu lieu à 13 h 30, heure de Paris.</p>
+</details>
+<details>
+<summary>Le range asiatique indique-t-il la direction de la journée ?</summary>
+<p>Non. Il indique où se trouvent les ordres en attente (au-dessus du plus haut, sous le plus bas). La direction se lit plutôt dans la réaction du prix après la chasse de l'une de ces bornes.</p>
+</details>
+<details>
+<summary>Quelle est la Silver Bullet la plus utilisée, et à quelle heure tombe-t-elle à Paris ?</summary>
+<p>Celle du matin new-yorkais, de 10 h à 11 h à New York, soit 16 h à 17 h à Paris (15 h à 16 h pendant les semaines de décalage).</p>
+</details>
