@@ -61,24 +61,29 @@
 
 <h2>Comprendre les contrats à terme : contango et déport</h2>
 <p>Une matière première s'achète rarement « au comptant ». Les professionnels échangent des contrats pour une livraison à une date donnée : un contrat pour le mois prochain, un autre pour le suivant, et ainsi de suite. La courbe qui relie leurs prix peut avoir deux formes :</p>
-<figure>
-<svg viewBox="0 0 640 230" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>Contango et déport sur la courbe des contrats à terme</title>
-  <text x="160" y="24" text-anchor="middle" fill="#E89A90" font-size="13" font-family="sans-serif" font-weight="bold">CONTANGO</text>
-  <text x="480" y="24" text-anchor="middle" fill="#7FD1B9" font-size="13" font-family="sans-serif" font-weight="bold">DÉPORT (BACKWARDATION)</text>
-  <line x1="320" y1="40" x2="320" y2="190" stroke="rgba(245,241,230,0.12)"/>
-  <polyline points="50,150 110,128 170,112 230,100 290,92" fill="none" stroke="#D2655A" stroke-width="2.5"/>
-  <g fill="#D2655A"><circle cx="50" cy="150" r="4"/><circle cx="110" cy="128" r="4"/><circle cx="170" cy="112" r="4"/><circle cx="230" cy="100" r="4"/><circle cx="290" cy="92" r="4"/></g>
-  <polyline points="370,80 430,102 490,118 550,128 610,134" fill="none" stroke="#4FB38F" stroke-width="2.5"/>
-  <g fill="#4FB38F"><circle cx="370" cy="80" r="4"/><circle cx="430" cy="102" r="4"/><circle cx="490" cy="118" r="4"/><circle cx="550" cy="128" r="4"/><circle cx="610" cy="134" r="4"/></g>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" aria-hidden="true">
+  <line x1="320" y1="40" x2="320" y2="190" stroke="rgba(245,241,230,0.12)" />
+  <polyline points="50,150 110,128 170,112 230,100 290,92" fill="none" stroke="#D2655A" stroke-width="2.5" />
+  <g fill="#D2655A"><circle cx="50" cy="150" r="4" /><circle cx="110" cy="128" r="4" /><circle cx="170" cy="112" r="4" /><circle cx="230" cy="100" r="4" /><circle cx="290" cy="92" r="4" /></g>
+  <polyline points="370,80 430,102 490,118 550,128 610,134" fill="none" stroke="#4FB38F" stroke-width="2.5" />
+  <g fill="#4FB38F"><circle cx="370" cy="80" r="4" /><circle cx="430" cy="102" r="4" /><circle cx="490" cy="118" r="4" /><circle cx="550" cy="128" r="4" /><circle cx="610" cy="134" r="4" /></g>
   <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="middle">
-    <text x="50" y="176">M+1</text><text x="170" y="176">M+3</text><text x="290" y="176">M+5</text>
-    <text x="370" y="176">M+1</text><text x="490" y="176">M+3</text><text x="610" y="176">M+5</text>
-  </g>
-  <text x="160" y="202" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">les échéances lointaines coûtent plus cher</text>
-  <text x="480" y="202" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">les échéances proches coûtent plus cher</text>
-  <text x="320" y="224" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Prix de chaque contrat selon son mois de livraison (illustratif).</text>
-</svg>
+    </g>
+  </svg>
+<span class="doc-label doc-label--lg doc-label--strong is-negative" style="left:25%;top:8.46%">CONTANGO</span>
+<span class="doc-label doc-label--lg doc-label--strong is-positive" style="left:75%;top:8.46%">DÉPORT (BACKWARDATION)</span>
+<span class="doc-label is-muted" style="left:7.81%;top:74.7%">M+1</span>
+<span class="doc-label is-muted" style="left:26.56%;top:74.7%">M+3</span>
+<span class="doc-label is-muted" style="left:45.31%;top:74.7%">M+5</span>
+<span class="doc-label is-muted" style="left:57.81%;top:74.7%">M+1</span>
+<span class="doc-label is-muted" style="left:76.56%;top:74.7%">M+3</span>
+<span class="doc-label is-muted" style="left:95.31%;top:74.7%">M+5</span>
+<span class="doc-label" style="left:25%;top:86%">les échéances lointaines coûtent plus cher</span>
+<span class="doc-label" style="left:75%;top:86%">les échéances proches coûtent plus cher</span>
+<span class="doc-label is-muted" style="left:50%;top:95.57%">Prix de chaque contrat selon son mois de livraison (illustratif).</span>
+</div>
 <figcaption>En contango, rouler une position acheteuse coûte de l'argent à chaque échéance ; en déport, elle en rapporte.</figcaption>
 </figure>
 <ul>

@@ -33,30 +33,31 @@
 
 <h2>Le revenge trading : vouloir se refaire tout de suite</h2>
 <p>Après une perte, surtout une perte vécue comme injuste, l'envie de récupérer l'argent immédiatement prend le dessus. On reprend position aussitôt, souvent plus gros, sans setup. Si ce trade perd aussi, la spirale s'emballe.</p>
-<figure>
-<svg viewBox="0 0 640 250" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>La spirale du revenge trading</title>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
   <defs>
-    <marker id="fl" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#C8A45C"/></marker>
+    <marker id="fl" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#C8A45C" /></marker>
   </defs>
-  <rect x="245" y="20" width="150" height="44" rx="8" fill="rgba(210,101,90,0.16)" stroke="#D2655A"/>
-  <text x="320" y="47" text-anchor="middle" fill="#E89A90" font-size="13" font-family="sans-serif" font-weight="bold">Une perte</text>
-  <rect x="440" y="102" width="170" height="44" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C"/>
-  <text x="525" y="121" text-anchor="middle" fill="#E2CB91" font-size="12.5" font-family="sans-serif" font-weight="bold">Frustration</text>
-  <text x="525" y="137" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">« je dois la récupérer »</text>
-  <rect x="245" y="182" width="150" height="44" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C"/>
-  <text x="320" y="201" text-anchor="middle" fill="#E2CB91" font-size="12.5" font-family="sans-serif" font-weight="bold">Trade impulsif</text>
-  <text x="320" y="217" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">sans setup, plus gros</text>
-  <rect x="30" y="102" width="170" height="44" rx="8" fill="rgba(210,101,90,0.16)" stroke="#D2655A"/>
-  <text x="115" y="121" text-anchor="middle" fill="#E89A90" font-size="12.5" font-family="sans-serif" font-weight="bold">Perte plus grande</text>
-  <text x="115" y="137" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">et frustration accrue</text>
-  <path d="M395,42 Q500,50 520,98" fill="none" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#fl)"/>
-  <path d="M520,148 Q500,200 399,204" fill="none" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#fl)"/>
-  <path d="M245,204 Q140,200 120,150" fill="none" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#fl)"/>
-  <path d="M120,100 Q140,50 241,42" fill="none" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#fl)"/>
-  <text x="320" y="128" text-anchor="middle" fill="#7FD1B9" font-size="12.5" font-family="sans-serif" font-weight="bold">Point de sortie :</text>
-  <text x="320" y="146" text-anchor="middle" fill="#7FD1B9" font-size="12" font-family="sans-serif">une pause obligatoire après la perte</text>
-</svg>
+  <rect x="245" y="20" width="150" height="44" rx="8" fill="rgba(210,101,90,0.16)" stroke="#D2655A" />
+  <rect x="440" y="102" width="170" height="44" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
+  <rect x="245" y="182" width="150" height="44" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
+  <rect x="30" y="102" width="170" height="44" rx="8" fill="rgba(210,101,90,0.16)" stroke="#D2655A" />
+  <path d="M395,42 Q500,50 520,98" fill="none" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#fl)" />
+  <path d="M520,148 Q500,200 399,204" fill="none" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#fl)" />
+  <path d="M245,204 Q140,200 120,150" fill="none" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#fl)" />
+  <path d="M120,100 Q140,50 241,42" fill="none" stroke="#C8A45C" stroke-width="1.5" marker-end="url(#fl)" />
+  </svg>
+<span class="doc-label doc-label--lg doc-label--strong is-negative" style="left:50%;top:16.98%">Une perte</span>
+<span class="doc-label doc-label--strong is-accent" style="left:82.03%;top:46.65%">Frustration</span>
+<span class="doc-label" style="left:82.03%;top:53.12%">« je dois la récupérer »</span>
+<span class="doc-label doc-label--strong is-accent" style="left:50%;top:78.65%">Trade impulsif</span>
+<span class="doc-label" style="left:50%;top:85.12%">sans setup, plus gros</span>
+<span class="doc-label doc-label--strong is-negative" style="left:17.97%;top:46.65%">Perte plus grande</span>
+<span class="doc-label" style="left:17.97%;top:53.12%">et frustration accrue</span>
+<span class="doc-label doc-label--strong is-positive" style="left:50%;top:49.45%">Point de sortie :</span>
+<span class="doc-label is-positive" style="left:50%;top:56.72%">une pause obligatoire après la perte</span>
+</div>
 <figcaption>Chaque tour de la spirale augmente la taille et diminue la qualité des décisions. Il faut la couper au premier maillon.</figcaption>
 </figure>
 <p>La parade est mécanique : <strong>une pause obligatoire après chaque perte</strong> (au moins 15 à 30 minutes, loin de l'écran), et une <strong>limite de perte journalière</strong> qui ferme la journée quand elle est atteinte.</p>

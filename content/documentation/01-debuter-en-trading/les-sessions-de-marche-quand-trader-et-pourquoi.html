@@ -23,31 +23,37 @@
 <p>Le marché des changes n'a pas de bâtiment ni d'horaire officiel : il passe de banque en banque autour du globe. On le découpe en <strong>sessions</strong>, qui correspondent aux heures de bureau des grandes places financières. Quand une place ouvre, ses banques, ses entreprises et ses fonds envoient leurs ordres : la liquidité augmente, les spreads se resserrent, le prix bouge davantage.</p>
 <p>Savoir quelle session est ouverte permet de répondre à trois questions pratiques : <em>ce marché va-t-il bouger maintenant ?</em>, <em>mes frais seront-ils normaux ?</em>, <em>une annonce importante peut-elle tomber ?</em></p>
 
-<figure>
-<svg viewBox="0 0 640 250" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>Les sessions du forex sur 24 heures, en heure de Paris</title>
-  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">HEURE DE PARIS (ÉCART HABITUEL DE 6 H AVEC NEW YORK)</text>
-  <rect x="370" y="40" width="100" height="134" rx="4" fill="rgba(200,164,92,0.08)" stroke="rgba(200,164,92,0.45)" stroke-dasharray="3 3"/>
-  <text x="420" y="190" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif" font-weight="bold">chevauchement</text>
-  <rect x="20" y="48" width="200" height="24" rx="4" fill="rgba(245,241,230,0.06)" stroke="rgba(245,241,230,0.3)"/>
-  <rect x="595" y="48" width="25" height="24" rx="4" fill="rgba(245,241,230,0.06)" stroke="rgba(245,241,230,0.3)"/>
-  <text x="120" y="64" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">Sydney · fin de soirée – 8 h</text>
-  <rect x="45" y="80" width="225" height="24" rx="4" fill="rgba(120,140,190,0.18)" stroke="rgba(150,170,220,0.55)"/>
-  <text x="157" y="96" text-anchor="middle" fill="#B9C6E6" font-size="12" font-family="sans-serif" font-weight="bold">Tokyo · 1 h – 10 h</text>
-  <rect x="245" y="112" width="225" height="24" rx="4" fill="rgba(79,179,143,0.22)" stroke="#4FB38F"/>
-  <text x="357" y="128" text-anchor="middle" fill="#7FD1B9" font-size="12" font-family="sans-serif" font-weight="bold">Londres · 9 h – 18 h</text>
-  <rect x="370" y="144" width="225" height="24" rx="4" fill="rgba(200,164,92,0.2)" stroke="#C8A45C"/>
-  <text x="482" y="160" text-anchor="middle" fill="#E2CB91" font-size="12" font-family="sans-serif" font-weight="bold">New York · 14 h – 23 h</text>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
+  <rect x="370" y="40" width="100" height="134" rx="4" fill="rgba(200,164,92,0.08)" stroke="rgba(200,164,92,0.45)" stroke-dasharray="3 3" />
+  <rect x="20" y="48" width="200" height="24" rx="4" fill="rgba(245,241,230,0.06)" stroke="rgba(245,241,230,0.3)" />
+  <rect x="595" y="48" width="25" height="24" rx="4" fill="rgba(245,241,230,0.06)" stroke="rgba(245,241,230,0.3)" />
+  <rect x="45" y="80" width="225" height="24" rx="4" fill="rgba(120,140,190,0.18)" stroke="rgba(150,170,220,0.55)" />
+  <rect x="245" y="112" width="225" height="24" rx="4" fill="rgba(79,179,143,0.22)" stroke="#4FB38F" />
+  <rect x="370" y="144" width="225" height="24" rx="4" fill="rgba(200,164,92,0.2)" stroke="#C8A45C" />
   <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="middle">
-    <text x="20" y="216">0 h</text><text x="120" y="216">4 h</text><text x="220" y="216">8 h</text><text x="320" y="216">12 h</text>
-    <text x="420" y="216">16 h</text><text x="520" y="216">20 h</text><text x="620" y="216">24 h</text>
-  </g>
+    </g>
   <g stroke="rgba(245,241,230,0.15)">
-    <line x1="20" y1="198" x2="20" y2="204"/><line x1="120" y1="198" x2="120" y2="204"/><line x1="220" y1="198" x2="220" y2="204"/>
-    <line x1="320" y1="198" x2="320" y2="204"/><line x1="420" y1="198" x2="420" y2="204"/><line x1="520" y1="198" x2="520" y2="204"/><line x1="620" y1="198" x2="620" y2="204"/>
+    <line x1="20" y1="198" x2="20" y2="204" /><line x1="120" y1="198" x2="120" y2="204" /><line x1="220" y1="198" x2="220" y2="204" />
+    <line x1="320" y1="198" x2="320" y2="204" /><line x1="420" y1="198" x2="420" y2="204" /><line x1="520" y1="198" x2="520" y2="204" /><line x1="620" y1="198" x2="620" y2="204" />
   </g>
-  <text x="320" y="240" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Échelle : 25 px par heure. Horaires conventionnels, qui varient légèrement selon les sources.</text>
-</svg>
+  </svg>
+<span class="doc-label doc-label--start doc-label--caps is-muted" style="left:3.12%;top:7.05%">HEURE DE PARIS (ÉCART HABITUEL DE 6 H AVEC NEW YORK)</span>
+<span class="doc-label doc-label--strong is-accent" style="left:65.62%;top:74.32%">chevauchement</span>
+<span class="doc-label" style="left:18.75%;top:23.92%">Sydney · fin de soirée – 8 h</span>
+<span class="doc-label doc-label--strong doc-label--info" style="left:24.53%;top:36.72%">Tokyo · 1 h – 10 h</span>
+<span class="doc-label doc-label--strong is-positive" style="left:55.78%;top:49.52%">Londres · 9 h – 18 h</span>
+<span class="doc-label doc-label--strong is-accent" style="left:75.31%;top:62.32%">New York · 14 h – 23 h</span>
+<span class="doc-label is-muted" style="left:3.12%;top:84.72%">0 h</span>
+<span class="doc-label is-muted" style="left:18.75%;top:84.72%">4 h</span>
+<span class="doc-label is-muted" style="left:34.38%;top:84.72%">8 h</span>
+<span class="doc-label is-muted" style="left:50%;top:84.72%">12 h</span>
+<span class="doc-label is-muted" style="left:65.62%;top:84.72%">16 h</span>
+<span class="doc-label is-muted" style="left:81.25%;top:84.72%">20 h</span>
+<span class="doc-label is-muted" style="left:96.88%;top:84.72%">24 h</span>
+<span class="doc-label is-muted" style="left:50%;top:94.32%">Échelle : 25 px par heure. Horaires conventionnels, qui varient légèrement selon les sources.</span>
+</div>
 <figcaption>Les quatre sessions du forex. La zone en pointillés dorés est le chevauchement Londres – New York, le moment le plus liquide de la journée.</figcaption>
 </figure>
 

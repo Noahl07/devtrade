@@ -33,30 +33,39 @@
 
 <h2>Prix et taux varient en sens inverse</h2>
 <p>Entre l'émission et l'échéance, l'obligation s'échange sur le marché. Si les taux montent à 4 % juste après l'achat, les nouvelles obligations rapportent 40 € par an. Personne ne paiera 1 000 € pour un titre qui ne rapporte que 30 € : son prix baisse jusqu'à ce que son rendement rejoigne celui du marché.</p>
-<figure>
-<svg viewBox="0 0 640 250" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>Prix d'une obligation à coupon de 3 % selon le taux du marché</title>
-  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">PRIX (POUR 100 DE NOMINAL) D'UNE OBLIGATION À COUPON DE 3 %</text>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
   <g stroke="rgba(245,241,230,0.1)">
-    <line x1="100" y1="54" x2="540" y2="54"/><line x1="100" y1="96" x2="540" y2="96"/><line x1="100" y1="134" x2="540" y2="134"/><line x1="100" y1="169" x2="540" y2="169"/>
+    <line x1="100" y1="54" x2="540" y2="54" /><line x1="100" y1="96" x2="540" y2="96" /><line x1="100" y1="134" x2="540" y2="134" /><line x1="100" y1="169" x2="540" y2="169" />
   </g>
   <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="end">
-    <text x="92" y="58">109</text><text x="92" y="100">100</text><text x="92" y="138">92</text><text x="92" y="173">85</text>
-  </g>
-  <polyline points="100,87.2 247,96.25 393,105.1 540,113.7" fill="none" stroke="rgba(150,170,220,0.9)" stroke-width="2.5"/>
-  <polyline points="100,54.2 247,96.25 393,134.3 540,168.6" fill="none" stroke="#C8A45C" stroke-width="2.5"/>
-  <g fill="#C8A45C"><circle cx="100" cy="54.2" r="4"/><circle cx="247" cy="96.25" r="4"/><circle cx="393" cy="134.3" r="4"/><circle cx="540" cy="168.6" r="4"/></g>
+    </g>
+  <polyline points="100,87.2 247,96.25 393,105.1 540,113.7" fill="none" stroke="rgba(150,170,220,0.9)" stroke-width="2.5" />
+  <polyline points="100,54.2 247,96.25 393,134.3 540,168.6" fill="none" stroke="#C8A45C" stroke-width="2.5" />
+  <g fill="#C8A45C"><circle cx="100" cy="54.2" r="4" /><circle cx="247" cy="96.25" r="4" /><circle cx="393" cy="134.3" r="4" /><circle cx="540" cy="168.6" r="4" /></g>
   <g fill="#E2CB91" font-size="12" font-family="sans-serif">
-    <text x="108" y="48">108,98</text><text x="401" y="150">91,89</text><text x="548" y="172">84,56</text>
-  </g>
-  <text x="548" y="112" fill="#B9C6E6" font-size="12" font-family="sans-serif">96,28</text>
+    </g>
   <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="middle">
-    <text x="100" y="200">2 %</text><text x="247" y="200">3 %</text><text x="393" y="200">4 %</text><text x="540" y="200">5 %</text>
-  </g>
-  <text x="320" y="218" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">taux de rendement du marché</text>
-  <rect x="150" y="230" width="14" height="4" fill="#C8A45C"/><text x="170" y="236" fill="#E2CB91" font-size="12" font-family="sans-serif">échéance 10 ans</text>
-  <rect x="330" y="230" width="14" height="4" fill="rgba(150,170,220,0.9)"/><text x="350" y="236" fill="#B9C6E6" font-size="12" font-family="sans-serif">échéance 2 ans</text>
-</svg>
+    </g>
+  <rect x="150" y="230" width="14" height="4" fill="#C8A45C" /><rect x="330" y="230" width="14" height="4" fill="rgba(150,170,220,0.9)" /></svg>
+<span class="doc-label doc-label--start doc-label--caps is-muted" style="left:3.12%;top:7.05%">PRIX (POUR 100 DE NOMINAL) D'UNE OBLIGATION À COUPON DE 3 %</span>
+<span class="doc-label doc-label--end is-muted" style="left:14.37%;top:21.52%">109</span>
+<span class="doc-label doc-label--end is-muted" style="left:14.37%;top:38.32%">100</span>
+<span class="doc-label doc-label--end is-muted" style="left:14.37%;top:53.52%">92</span>
+<span class="doc-label doc-label--end is-muted" style="left:14.37%;top:67.52%">85</span>
+<span class="doc-label doc-label--start is-accent" style="left:16.88%;top:17.52%">108,98</span>
+<span class="doc-label doc-label--start is-accent" style="left:62.66%;top:58.32%">91,89</span>
+<span class="doc-label doc-label--start is-accent" style="left:85.62%;top:67.12%">84,56</span>
+<span class="doc-label doc-label--start doc-label--info" style="left:85.62%;top:43.12%">96,28</span>
+<span class="doc-label is-muted" style="left:15.62%;top:78.32%">2 %</span>
+<span class="doc-label is-muted" style="left:38.59%;top:78.32%">3 %</span>
+<span class="doc-label is-muted" style="left:61.41%;top:78.32%">4 %</span>
+<span class="doc-label is-muted" style="left:84.38%;top:78.32%">5 %</span>
+<span class="doc-label is-muted" style="left:50%;top:85.52%">taux de rendement du marché</span>
+<span class="doc-label doc-label--start is-accent" style="left:26.56%;top:92.72%">échéance 10 ans</span>
+<span class="doc-label doc-label--start doc-label--info" style="left:54.69%;top:92.72%">échéance 2 ans</span>
+</div>
 <figcaption>Quand le taux du marché passe de 3 % à 4 %, l'obligation à 10 ans perd environ 8 % de sa valeur, celle à 2 ans moins de 2 %.</figcaption>
 </figure>
 

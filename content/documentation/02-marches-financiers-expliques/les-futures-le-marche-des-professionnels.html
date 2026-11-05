@@ -55,18 +55,19 @@
 
 <h2>Échéances et roulement</h2>
 <p>Les contrats sur indices expirent chaque trimestre, le troisième vendredi de mars, juin, septembre et décembre. On les désigne par une lettre : H (mars), M (juin), U (septembre), Z (décembre), suivie de l'année. Quelques jours avant l'échéance, le volume bascule vers le contrat suivant : c'est le <strong>roulement</strong>.</p>
-<figure>
-<svg viewBox="0 0 640 220" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>Bascule du volume d'une échéance à la suivante</title>
-  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">VOLUME ÉCHANGÉ, ÉCHÉANCE DE MARS PUIS DE JUIN</text>
-  <path d="M40,60 L300,60 C340,60 360,170 400,170 L600,170" fill="none" stroke="#C8A45C" stroke-width="2.5"/>
-  <path d="M40,170 L300,170 C340,170 360,60 400,60 L600,60" fill="none" stroke="#4FB38F" stroke-width="2.5"/>
-  <line x1="350" y1="40" x2="350" y2="185" stroke="rgba(245,241,230,0.35)" stroke-dasharray="4 4"/>
-  <text x="350" y="200" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">date de roulement</text>
-  <text x="120" y="52" fill="#E2CB91" font-size="12.5" font-family="sans-serif" font-weight="bold">contrat de mars</text>
-  <text x="440" y="52" fill="#7FD1B9" font-size="12.5" font-family="sans-serif" font-weight="bold">contrat de juin</text>
-  <text x="595" y="200" text-anchor="end" fill="#A8B3AE" font-size="12" font-family="sans-serif">échéance de mars →</text>
-</svg>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" aria-hidden="true">
+  <path d="M40,60 L300,60 C340,60 360,170 400,170 L600,170" fill="none" stroke="#C8A45C" stroke-width="2.5" />
+  <path d="M40,170 L300,170 C340,170 360,60 400,60 L600,60" fill="none" stroke="#4FB38F" stroke-width="2.5" />
+  <line x1="350" y1="40" x2="350" y2="185" stroke="rgba(245,241,230,0.35)" stroke-dasharray="4 4" />
+  </svg>
+<span class="doc-label doc-label--start doc-label--caps is-muted" style="left:3.12%;top:8.01%">VOLUME ÉCHANGÉ, ÉCHÉANCE DE MARS PUIS DE JUIN</span>
+<span class="doc-label" style="left:54.69%;top:89%">date de roulement</span>
+<span class="doc-label doc-label--start doc-label--strong is-accent" style="left:18.75%;top:21.65%">contrat de mars</span>
+<span class="doc-label doc-label--start doc-label--strong is-positive" style="left:68.75%;top:21.65%">contrat de juin</span>
+<span class="doc-label doc-label--end is-muted" style="left:92.97%;top:89%">échéance de mars →</span>
+</div>
 <figcaption>Les traders passent au contrat suivant environ une semaine avant l'échéance : c'est lui qu'il faut suivre ensuite.</figcaption>
 </figure>
 <p>Les deux contrats n'ont pas le même prix : l'écart reflète les taux d'intérêt et les dividendes attendus d'ici l'échéance. Un graphique « continu » doit être ajusté pour ne pas afficher de faux écart de prix au moment du roulement. Vérifiez le réglage de votre plateforme avant de tracer des niveaux sur plusieurs mois.</p>

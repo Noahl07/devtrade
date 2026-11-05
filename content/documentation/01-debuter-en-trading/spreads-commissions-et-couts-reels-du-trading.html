@@ -68,18 +68,23 @@
 
 <h2>Le point clé : le coût rapporté à votre stop</h2>
 <p>Prenons un coût total d'<strong>1 pip</strong> par trade sur l'EUR/USD (spread, commission et un peu de glissement). Son poids dépend entièrement de la distance de votre stop :</p>
-<figure>
-<svg viewBox="0 0 640 230" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
-  <title>Part du risque consommée par 1 pip de frais selon la distance du stop</title>
-  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">1 PIP DE FRAIS, EN % DU RISQUE PRIS</text>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" aria-hidden="true">
   <g font-family="sans-serif" font-size="12.5">
-    <text x="130" y="60" text-anchor="end" fill="#D9D3C3">stop de 5 pips</text><rect x="140" y="46" width="400" height="20" rx="4" fill="rgba(210,101,90,0.55)"/><text x="550" y="61" fill="#E89A90" font-weight="bold">20 %</text>
-    <text x="130" y="100" text-anchor="end" fill="#D9D3C3">stop de 10 pips</text><rect x="140" y="86" width="200" height="20" rx="4" fill="rgba(200,164,92,0.5)"/><text x="350" y="101" fill="#E2CB91" font-weight="bold">10 %</text>
-    <text x="130" y="140" text-anchor="end" fill="#D9D3C3">stop de 25 pips</text><rect x="140" y="126" width="80" height="20" rx="4" fill="rgba(79,179,143,0.45)"/><text x="230" y="141" fill="#7FD1B9" font-weight="bold">4 %</text>
-    <text x="130" y="180" text-anchor="end" fill="#D9D3C3">stop de 50 pips</text><rect x="140" y="166" width="40" height="20" rx="4" fill="rgba(79,179,143,0.45)"/><text x="190" y="181" fill="#7FD1B9" font-weight="bold">2 %</text>
-  </g>
-  <text x="320" y="216" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">Même frais, même marché : seul l'horizon du trade change.</text>
-</svg>
+    <rect x="140" y="46" width="400" height="20" rx="4" fill="rgba(210,101,90,0.55)" /><rect x="140" y="86" width="200" height="20" rx="4" fill="rgba(200,164,92,0.5)" /><rect x="140" y="126" width="80" height="20" rx="4" fill="rgba(79,179,143,0.45)" /><rect x="140" y="166" width="40" height="20" rx="4" fill="rgba(79,179,143,0.45)" /></g>
+  </svg>
+<span class="doc-label doc-label--start doc-label--caps is-muted" style="left:3.12%;top:7.66%">1 PIP DE FRAIS, EN % DU RISQUE PRIS</span>
+<span class="doc-label doc-label--end" style="left:20.31%;top:24.18%">stop de 5 pips</span>
+<span class="doc-label doc-label--start doc-label--strong is-negative" style="left:85.94%;top:24.62%">20 %</span>
+<span class="doc-label doc-label--end" style="left:20.31%;top:41.58%">stop de 10 pips</span>
+<span class="doc-label doc-label--start doc-label--strong is-accent" style="left:54.69%;top:42.01%">10 %</span>
+<span class="doc-label doc-label--end" style="left:20.31%;top:58.97%">stop de 25 pips</span>
+<span class="doc-label doc-label--start doc-label--strong is-positive" style="left:35.94%;top:59.4%">4 %</span>
+<span class="doc-label doc-label--end" style="left:20.31%;top:76.36%">stop de 50 pips</span>
+<span class="doc-label doc-label--start doc-label--strong is-positive" style="left:29.69%;top:76.79%">2 %</span>
+<span class="doc-label is-muted" style="left:50%;top:92.09%">Même frais, même marché : seul l'horizon du trade change.</span>
+</div>
 <figcaption>Avec un stop de 5 pips, un cinquième de chaque perte potentielle est déjà payé en frais.</figcaption>
 </figure>
 
