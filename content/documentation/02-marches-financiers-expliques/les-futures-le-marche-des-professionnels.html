@@ -2,92 +2,116 @@
 {
     "slug": "les-futures-le-marche-des-professionnels",
     "title": "Les Futures — le marché des professionnels",
-    "excerpt": "Comprendre les contrats à terme — mécanismes, margin, rollover, différence entre futures et CFD, et pourquoi les futures sont l'outil préféré des traders institutionnels.",
-    "readingTime": 23,
+    "excerpt": "Ce qu'est un contrat à terme, comment se calculent sa valeur et ses gains (ES, NQ, DAX et leurs versions micro), la marge et le règlement quotidien, les échéances et le roulement, et les différences concrètes avec les CFD.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 5,
     "module": "marches-financiers-expliques"
 }
 -->
-<h2>Qu'est-ce qu'un contrat Future ?</h2>
-<p>Un <strong>contrat future</strong> (contrat à terme) est un accord standardisé pour acheter ou vendre un actif à un <strong>prix défini aujourd'hui</strong>, pour une <strong>livraison à une date future spécifique</strong>. Les futures ont été créés à l'origine pour permettre aux agriculteurs de fixer le prix de leur récolte avant la moisson — se protéger contre la baisse des prix.</p>
- 
-<p>Aujourd'hui, les futures couvrent :</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Indices boursiers</strong> : ES (S&P 500), NQ (Nasdaq 100), YM (Dow Jones), DAX, CAC 40</li>
-<li><strong>Devises</strong> : EUR/USD futures, GBP/USD futures...</li>
-<li><strong>Matières premières</strong> : CL (pétrole brut WTI), GC (or), SI (argent), ZC (maïs), ZW (blé)</li>
-<li><strong>Taux d'intérêt</strong> : ZB (T-Bonds 30 ans), ZN (T-Notes 10 ans)</li>
-<li><strong>Crypto</strong> : BTC futures sur CME</li>
+<li>Un contrat à terme engage à acheter ou vendre un actif à un <strong>prix fixé aujourd'hui</strong>, pour une <strong>date future</strong>. Il est standardisé et s'échange en bourse.</li>
+<li>Chaque contrat a un <strong>multiplicateur</strong> : 1 point de S&amp;P 500 vaut 50 $ sur l'ES, 5 $ sur le micro (MES).</li>
+<li>Les gains et pertes sont réglés <strong>chaque jour</strong> ; une marge de garantie doit être maintenue sur le compte.</li>
+<li>Les contrats <strong>expirent</strong> : il faut les rouler vers l'échéance suivante, en général une semaine avant.</li>
 </ul>
- 
-<h2>La différence fondamentale futures vs CFD</h2>
-<p>La plupart des traders retail en Europe tradent des <strong>CFD (Contracts for Difference)</strong> plutôt que de vrais futures. Comprendre la différence est crucial :</p>
- 
-<table style="width:100%;border-collapse:collapse;font-size:13px;margin:1.5rem 0">
-<thead>
-<tr style="border-bottom:1px solid rgba(255,255,255,0.1)">
-<th style="text-align:left;padding:8px;color:rgba(232,234,240,0.5)">Caractéristique</th>
-<th style="text-align:center;padding:8px;color:#3EB489">Futures (CME)</th>
-<th style="text-align:center;padding:8px;color:#D4A94B">CFD (Broker retail)</th>
-</tr>
-</thead>
+</div>
+
+<h2>D'où viennent les contrats à terme</h2>
+<p>À l'origine, un agriculteur et un meunier voulaient se protéger : l'un contre une baisse du prix du blé avant la récolte, l'autre contre une hausse. Ils fixaient un prix à l'avance pour une livraison future. Les bourses ont ensuite standardisé ces accords (quantité, qualité, date) et garanti leur exécution via une <strong>chambre de compensation</strong>, qui s'interpose entre acheteur et vendeur.</p>
+<p>Aujourd'hui, l'essentiel des contrats à terme ne donne lieu à aucune livraison : les positions sont fermées ou réglées en argent avant l'échéance. Ils servent à se couvrir, à spéculer et à s'exposer rapidement à un marché entier.</p>
+
+<h2>Les contrats les plus suivis</h2>
+<table>
+<thead><tr><th>Contrat</th><th>Bourse</th><th class="ta-center">Valeur d'un point</th><th class="ta-center">Version micro</th></tr></thead>
 <tbody>
-<tr style="border-bottom:0.5px solid rgba(255,255,255,0.05)">
-<td style="padding:8px;color:rgba(232,234,240,0.7)">Marché</td>
-<td style="text-align:center;padding:8px;color:#3EB489">Centralisé (CME)</td>
-<td style="text-align:center;padding:8px;color:#D4A94B">OTC (chez le broker)</td>
-</tr>
-<tr style="border-bottom:0.5px solid rgba(255,255,255,0.05)">
-<td style="padding:8px;color:rgba(232,234,240,0.7)">Carnet d'ordres</td>
-<td style="text-align:center;padding:8px;color:#3EB489">Transparent, réel</td>
-<td style="text-align:center;padding:8px;color:#D4A94B">Simulé par le broker</td>
-</tr>
-<tr style="border-bottom:0.5px solid rgba(255,255,255,0.05)">
-<td style="padding:8px;color:rgba(232,234,240,0.7)">Régulation</td>
-<td style="text-align:center;padding:8px;color:#3EB489">CFTC (très stricte)</td>
-<td style="text-align:center;padding:8px;color:#D4A94B">Variable selon pays</td>
-</tr>
-<tr style="border-bottom:0.5px solid rgba(255,255,255,0.05)">
-<td style="padding:8px;color:rgba(232,234,240,0.7)">Expiration</td>
-<td style="text-align:center;padding:8px;color:#3EB489">Oui (trimestrielle)</td>
-<td style="text-align:center;padding:8px;color:#D4A94B">Non (rollover auto)</td>
-</tr>
-<tr style="border-bottom:0.5px solid rgba(255,255,255,0.05)">
-<td style="padding:8px;color:rgba(232,234,240,0.7)">Capital minimum</td>
-<td style="text-align:center;padding:8px;color:#e05555">~5 000$ minimum</td>
-<td style="text-align:center;padding:8px;color:#3EB489">Dès 100€</td>
-</tr>
-<tr>
-<td style="padding:8px;color:rgba(232,234,240,0.7)">Orderflow</td>
-<td style="text-align:center;padding:8px;color:#3EB489">Données réelles (Bookmap)</td>
-<td style="text-align:center;padding:8px;color:#e05555">Non disponible</td>
-</tr>
+<tr><td>E-mini S&amp;P 500 (ES)</td><td>CME</td><td class="ta-center">50 $</td><td class="ta-center">MES : 5 $</td></tr>
+<tr><td>E-mini Nasdaq 100 (NQ)</td><td>CME</td><td class="ta-center">20 $</td><td class="ta-center">MNQ : 2 $</td></tr>
+<tr><td>DAX (FDAX)</td><td>Eurex</td><td class="ta-center">25 €</td><td class="ta-center">Mini 5 €, micro 1 €</td></tr>
+<tr><td>Euro Stoxx 50 (FESX)</td><td>Eurex</td><td class="ta-center">10 €</td><td class="ta-center">—</td></tr>
+<tr><td>Or (GC)</td><td>COMEX</td><td class="ta-center">100 $ par dollar de variation</td><td class="ta-center">MGC : 10 $</td></tr>
+<tr><td>Pétrole WTI (CL)</td><td>NYMEX</td><td class="ta-center">1 000 $ par dollar de variation</td><td class="ta-center">MCL : 100 $</td></tr>
+<tr><td>T-Note 10 ans (ZN)</td><td>CBOT</td><td class="ta-center">1 000 $ par point</td><td class="ta-center">—</td></tr>
 </tbody>
 </table>
- 
-<h2>La marge et le mark-to-market</h2>
-<p>Les futures nécessitent le dépôt d'une <strong>marge initiale</strong> (Initial Margin) pour ouvrir une position. Ce n'est pas un paiement — c'est un dépôt de garantie.</p>
- 
-<p>Exemple sur le contrat ES (S&P 500 futures) :</p>
+<p>Les micro-contrats, lancés à partir de 2019 sur les indices américains, ont rendu les futures accessibles à des comptes plus modestes, avec un dixième de la taille du contrat standard.</p>
+
+<h2>Calculer la taille réelle d'un contrat</h2>
+<p>Valeur notionnelle = niveau de l'indice × valeur du point.</p>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Le S&amp;P 500 est à 6 500 points. Un contrat ES représente 6 500 × 50 $ = <strong>325 000 $</strong> d'exposition ; un MES, 32 500 $. Si l'indice monte de 20 points, l'ES gagne 1 000 $ et le MES 100 $. Pour un compte de 10 000 $, un seul ES représente un levier de 32,5 : c'est pourquoi les comptes modestes commencent par les micros.</p>
+</aside>
+
+<h2>Marge et règlement quotidien</h2>
 <ul>
-<li>1 contrat ES = 50 × valeur du S&P 500. Si SP500 = 5000, 1 contrat ES vaut 250 000$</li>
-<li>Initial Margin : ~12 000$ (fixé par CME)</li>
-<li>Levier implicite : 250 000 / 12 000 = ~20x</li>
-<li>1 point de SP500 = 50$ sur le P&L</li>
+<li><strong>Marge initiale</strong> : le dépôt exigé pour ouvrir une position. Elle est fixée par la bourse (et souvent relevée par le broker), en général quelques pour cent de la valeur du contrat, et elle change avec la volatilité.</li>
+<li><strong>Marge de maintien</strong> : le minimum à conserver. En dessous, le broker exige un complément ou ferme la position.</li>
+<li><strong>Règlement quotidien</strong> (<em>mark-to-market</em>) : chaque soir, les gains et pertes de la journée sont réellement crédités ou débités sur le compte.</li>
 </ul>
- 
-<p>Le <strong>mark-to-market</strong> : chaque jour à la clôture, les gains et pertes sont crédités ou débités de votre compte. Si votre compte tombe sous la <strong>Maintenance Margin</strong> (~9 000$), vous recevez un <strong>Margin Call</strong> et devez renflouer ou fermer la position.</p>
- 
-<h2>Le Rollover — gestion des expirations</h2>
-<p>Les futures expirent trimestriellement (mars, juin, septembre, décembre pour les indices). La semaine avant l'expiration, le volume migre vers le contrat du trimestre suivant — c'est le <strong>rollover</strong>. Les traders doivent "rouler" leur position vers le nouveau contrat.</p>
- 
-<p>La période de rollover peut créer des mouvements inhabituels et de la confusion sur les graphiques — un niveau à connaître pour éviter des erreurs d'analyse.</p>
- 
-<h2>Le contrat Micro — accessible aux traders retail</h2>
-<p>En 2019, le CME a lancé les <strong>Micro E-mini futures</strong> — 1/10ème de la taille des E-mini standards :</p>
-<ul>
-<li><strong>MES</strong> (Micro E-mini S&P 500) : marge ~1 200$, 1 point = 5$</li>
-<li><strong>MNQ</strong> (Micro E-mini Nasdaq) : marge ~2 000$, 1 point = 2$</li>
-</ul>
-<p>Ces contrats permettent aux traders avec des comptes plus modestes d'accéder aux vrais marchés futures avec toutes leurs données d'orderflow.</p>
+<p>Certains brokers proposent des marges réduites pour les positions ouvertes et fermées dans la journée. C'est un levier supplémentaire, pas une baisse du risque.</p>
+
+<h2>Échéances et roulement</h2>
+<p>Les contrats sur indices expirent chaque trimestre, le troisième vendredi de mars, juin, septembre et décembre. On les désigne par une lettre : H (mars), M (juin), U (septembre), Z (décembre), suivie de l'année. Quelques jours avant l'échéance, le volume bascule vers le contrat suivant : c'est le <strong>roulement</strong>.</p>
+<figure>
+<svg viewBox="0 0 640 220" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Bascule du volume d'une échéance à la suivante</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">VOLUME ÉCHANGÉ, ÉCHÉANCE DE MARS PUIS DE JUIN</text>
+  <path d="M40,60 L300,60 C340,60 360,170 400,170 L600,170" fill="none" stroke="#C8A45C" stroke-width="2.5"/>
+  <path d="M40,170 L300,170 C340,170 360,60 400,60 L600,60" fill="none" stroke="#4FB38F" stroke-width="2.5"/>
+  <line x1="350" y1="40" x2="350" y2="185" stroke="rgba(245,241,230,0.35)" stroke-dasharray="4 4"/>
+  <text x="350" y="200" text-anchor="middle" fill="#D9D3C3" font-size="12" font-family="sans-serif">date de roulement</text>
+  <text x="120" y="52" fill="#E2CB91" font-size="12.5" font-family="sans-serif" font-weight="bold">contrat de mars</text>
+  <text x="440" y="52" fill="#7FD1B9" font-size="12.5" font-family="sans-serif" font-weight="bold">contrat de juin</text>
+  <text x="595" y="200" text-anchor="end" fill="#A8B3AE" font-size="12" font-family="sans-serif">échéance de mars →</text>
+</svg>
+<figcaption>Les traders passent au contrat suivant environ une semaine avant l'échéance : c'est lui qu'il faut suivre ensuite.</figcaption>
+</figure>
+<p>Les deux contrats n'ont pas le même prix : l'écart reflète les taux d'intérêt et les dividendes attendus d'ici l'échéance. Un graphique « continu » doit être ajusté pour ne pas afficher de faux écart de prix au moment du roulement. Vérifiez le réglage de votre plateforme avant de tracer des niveaux sur plusieurs mois.</p>
+
+<h2>Contrats à terme ou CFD ?</h2>
+<table>
+<thead><tr><th></th><th>Contrats à terme</th><th>CFD</th></tr></thead>
+<tbody>
+<tr><td>Où</td><td>En bourse, avec chambre de compensation</td><td>De gré à gré, avec le broker pour contrepartie</td></tr>
+<tr><td>Carnet et volume</td><td>Publics : orderflow exploitable</td><td>Pas de carnet public ; volume propre au broker</td></tr>
+<tr><td>Taille minimale</td><td>Un micro-contrat (par exemple 32 500 $ d'exposition sur le MES dans l'exemple)</td><td>Très petites tailles possibles</td></tr>
+<tr><td>Coût de détention</td><td>Intégré dans le prix du contrat, pas de frais de nuit séparés</td><td>Frais de financement chaque nuit</td></tr>
+<tr><td>Échéance</td><td>Oui, roulement à gérer</td><td>Souvent aucune : le broker gère</td></tr>
+<tr><td>Protections des particuliers européens</td><td>Pas de plafond de levier ESMA ni de protection contre le solde négatif</td><td>Levier plafonné, protection contre le solde négatif</td></tr>
+</tbody>
+</table>
+
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">On peut perdre plus que son dépôt</strong>
+<p>Sur les contrats à terme, aucune protection ne limite la perte au montant déposé. Un écart de prix violent peut laisser un solde négatif que vous devrez combler. Taille de position et stops sont encore plus importants qu'avec les CFD.</p>
+</aside>
+
+<h2>Bien démarrer sur les futures</h2>
+<ol class="doc-steps">
+<li><strong>Commencez par un micro-contrat</strong> et calculez sa valeur notionnelle par rapport à votre compte.</li>
+<li><strong>Notez les horaires</strong> : les futures américains cotent presque 24 heures sur 24 en semaine, avec une courte pause quotidienne, mais la liquidité se concentre pendant la séance de Wall Street.</li>
+<li><strong>Repérez la date de roulement</strong> de chaque trimestre dans votre agenda.</li>
+<li><strong>Prévoyez le coût des données</strong> de marché en temps réel, souvent facturées à part.</li>
+</ol>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Les contrats à terme offrent un marché transparent et un volume réel, au prix d'une taille minimale élevée et de protections moindres. Les micro-contrats sont la porte d'entrée raisonnable, à condition de raisonner en valeur notionnelle et non en marge.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Vous achetez 2 MNQ et le Nasdaq 100 monte de 35 points. Quel est votre gain, avant frais ?</summary>
+<p>35 points × 2 $ × 2 contrats = 140 $.</p>
+</details>
+<details>
+<summary>Que signifie le code ESZ6 ?</summary>
+<p>Le contrat E-mini S&amp;P 500 d'échéance décembre (Z) 2026.</p>
+</details>
+<details>
+<summary>Pourquoi votre graphique affiche-t-il un écart de prix brutal un jeudi de mars, sans nouvelle particulière ?</summary>
+<p>C'est probablement le passage d'un contrat à l'autre sur un graphique continu non ajusté : les deux échéances ne cotent pas au même prix.</p>
+</details>

@@ -2,51 +2,130 @@
 {
     "slug": "les-obligations-comprendre-le-marche-de-la-dette",
     "title": "Les obligations — comprendre le marché de la dette",
-    "excerpt": "Obligations d'État, obligations corporate, duration, rendements, spreads de crédit — comprendre le marché obligataire qui influence tous les autres marchés financiers.",
-    "readingTime": 19,
+    "excerpt": "Coupon, échéance, rendement : comment fonctionne une obligation, pourquoi son prix baisse quand les taux montent (exemples chiffrés), ce que mesurent la duration, les notations et la courbe des taux, et pourquoi tout trader doit surveiller le marché obligataire.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 3,
     "module": "marches-financiers-expliques"
 }
 -->
-<h2>Qu'est-ce qu'une obligation ?</h2>
-<p>Une <strong>obligation</strong> est un titre de dette. Quand un gouvernement ou une entreprise émet une obligation, il emprunte de l'argent à des investisseurs en s'engageant à :</p>
-<ol>
-<li>Payer des <strong>coupons</strong> (intérêts) périodiques</li>
-<li>Rembourser le <strong>capital principal</strong> à l'échéance (maturité)</li>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Une obligation est un <strong>prêt</strong> : l'émetteur verse des intérêts (le coupon) puis rembourse le capital à l'échéance.</li>
+<li><strong>Quand les taux montent, le prix des obligations existantes baisse</strong>, et d'autant plus que l'échéance est lointaine.</li>
+<li>Le rendement des emprunts d'État, notamment le <strong>10 ans américain</strong>, sert de référence à presque tous les autres actifs.</li>
+<li>La courbe des taux et les écarts de crédit renseignent sur l'état d'esprit des investisseurs, sans être des prévisions infaillibles.</li>
+</ul>
+</div>
+
+<h2>Le principe : prêter contre des intérêts</h2>
+<p>Quand un État ou une entreprise émet une obligation, il emprunte auprès des investisseurs. L'obligation précise :</p>
+<ul>
+<li>la <strong>valeur nominale</strong> remboursée à l'échéance (souvent 100 ou 1 000) ;</li>
+<li>le <strong>coupon</strong>, l'intérêt versé chaque année (ou chaque semestre) ;</li>
+<li>l'<strong>échéance</strong>, la date de remboursement.</li>
+</ul>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>L'État émet une obligation à 10 ans, de nominal 1 000 €, avec un coupon de 3 %. L'acheteur prête 1 000 €, reçoit 30 € par an pendant 10 ans, puis récupère ses 1 000 €. S'il la garde jusqu'au bout et que l'État honore sa dette, il connaît son rendement dès le départ : 3 % par an.</p>
+</aside>
+
+<h2>Prix et taux varient en sens inverse</h2>
+<p>Entre l'émission et l'échéance, l'obligation s'échange sur le marché. Si les taux montent à 4 % juste après l'achat, les nouvelles obligations rapportent 40 € par an. Personne ne paiera 1 000 € pour un titre qui ne rapporte que 30 € : son prix baisse jusqu'à ce que son rendement rejoigne celui du marché.</p>
+<figure>
+<svg viewBox="0 0 640 250" width="100%" style="max-width:640px" xmlns="http://www.w3.org/2000/svg">
+  <title>Prix d'une obligation à coupon de 3 % selon le taux du marché</title>
+  <text x="20" y="22" fill="#A8B3AE" font-size="12.5" font-family="sans-serif" letter-spacing="1">PRIX (POUR 100 DE NOMINAL) D'UNE OBLIGATION À COUPON DE 3 %</text>
+  <g stroke="rgba(245,241,230,0.1)">
+    <line x1="100" y1="54" x2="540" y2="54"/><line x1="100" y1="96" x2="540" y2="96"/><line x1="100" y1="134" x2="540" y2="134"/><line x1="100" y1="169" x2="540" y2="169"/>
+  </g>
+  <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="end">
+    <text x="92" y="58">109</text><text x="92" y="100">100</text><text x="92" y="138">92</text><text x="92" y="173">85</text>
+  </g>
+  <polyline points="100,87.2 247,96.25 393,105.1 540,113.7" fill="none" stroke="rgba(150,170,220,0.9)" stroke-width="2.5"/>
+  <polyline points="100,54.2 247,96.25 393,134.3 540,168.6" fill="none" stroke="#C8A45C" stroke-width="2.5"/>
+  <g fill="#C8A45C"><circle cx="100" cy="54.2" r="4"/><circle cx="247" cy="96.25" r="4"/><circle cx="393" cy="134.3" r="4"/><circle cx="540" cy="168.6" r="4"/></g>
+  <g fill="#E2CB91" font-size="12" font-family="sans-serif">
+    <text x="108" y="48">108,98</text><text x="401" y="150">91,89</text><text x="548" y="172">84,56</text>
+  </g>
+  <text x="548" y="112" fill="#B9C6E6" font-size="12" font-family="sans-serif">96,28</text>
+  <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="middle">
+    <text x="100" y="200">2 %</text><text x="247" y="200">3 %</text><text x="393" y="200">4 %</text><text x="540" y="200">5 %</text>
+  </g>
+  <text x="320" y="218" text-anchor="middle" fill="#A8B3AE" font-size="12" font-family="sans-serif">taux de rendement du marché</text>
+  <rect x="150" y="230" width="14" height="4" fill="#C8A45C"/><text x="170" y="236" fill="#E2CB91" font-size="12" font-family="sans-serif">échéance 10 ans</text>
+  <rect x="330" y="230" width="14" height="4" fill="rgba(150,170,220,0.9)"/><text x="350" y="236" fill="#B9C6E6" font-size="12" font-family="sans-serif">échéance 2 ans</text>
+</svg>
+<figcaption>Quand le taux du marché passe de 3 % à 4 %, l'obligation à 10 ans perd environ 8 % de sa valeur, celle à 2 ans moins de 2 %.</figcaption>
+</figure>
+
+<table>
+<thead><tr><th>Taux du marché</th><th class="ta-center">Prix, échéance 2 ans</th><th class="ta-center">Prix, échéance 10 ans</th></tr></thead>
+<tbody>
+<tr><td>2 %</td><td class="ta-center is-positive">101,94</td><td class="ta-center is-positive">108,98</td></tr>
+<tr><td>3 % (égal au coupon)</td><td class="ta-center">100,00</td><td class="ta-center">100,00</td></tr>
+<tr><td>4 %</td><td class="ta-center is-negative">98,11</td><td class="ta-center is-negative">91,89</td></tr>
+<tr><td>5 %</td><td class="ta-center is-negative">96,28</td><td class="ta-center is-negative">84,56</td></tr>
+</tbody>
+</table>
+<p>Calcul : prix = somme des coupons et du remboursement, chacun actualisé au taux du marché. Coupon annuel de 3, nominal de 100.</p>
+
+<h2>La duration : la sensibilité aux taux</h2>
+<p>La <strong>duration</strong> résume cette sensibilité. Une duration de 8 signifie qu'une hausse de 1 point des taux fait baisser le prix d'environ 8 %. Plus l'échéance est lointaine et le coupon faible, plus la duration est élevée. C'est ce qui explique les fortes pertes des obligations longues en 2022, quand les banques centrales ont relevé leurs taux très vite.</p>
+
+<h2>Les grandes familles d'obligations</h2>
+<table>
+<thead><tr><th>Famille</th><th>Exemples</th><th>Risque principal</th></tr></thead>
+<tbody>
+<tr><td>États « cœur »</td><td>Treasuries américains, Bund allemand, OAT française</td><td>Le risque de taux, bien plus que le risque de défaut</td></tr>
+<tr><td>États émergents</td><td>Brésil, Turquie, Afrique du Sud</td><td>Défaut, inflation, chute de la devise</td></tr>
+<tr><td>Entreprises « investment grade »</td><td>Notation BBB− ou mieux</td><td>Risque de crédit modéré</td></tr>
+<tr><td>Entreprises « high yield »</td><td>Notation BB+ ou moins</td><td>Risque de défaut élevé, surtout en récession</td></tr>
+<tr><td>Obligations indexées sur l'inflation</td><td>TIPS américains, OATi</td><td>Le capital suit l'inflation ; elles permettent de mesurer le taux « réel »</td></tr>
+</tbody>
+</table>
+<p>Aux États-Unis, on distingue les <em>T-bills</em> (moins d'un an), les <em>T-notes</em> (2 à 10 ans) et les <em>T-bonds</em> (20 et 30 ans).</p>
+
+<h2>L'écart de crédit</h2>
+<p>L'écart (ou <em>spread</em>) de crédit est la différence de rendement entre une obligation d'entreprise et un emprunt d'État de même échéance. C'est la prime que les investisseurs exigent pour le risque de défaut. Quand l'inquiétude monte, ces écarts s'élargissent, en particulier sur le high yield : c'est un bon thermomètre du stress financier.</p>
+<p>Le même raisonnement vaut entre États : l'écart entre le taux français et le taux allemand à 10 ans mesure la prime de risque que les marchés attachent à la dette française.</p>
+
+<h2>La courbe des taux</h2>
+<p>La courbe relie les rendements d'un même émetteur selon l'échéance. Normalement, prêter longtemps rapporte plus : la courbe monte. Quand les taux courts dépassent les taux longs, on parle de <strong>courbe inversée</strong> : le marché anticipe des baisses de taux, souvent parce qu'il craint un ralentissement.</p>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Un signal, pas une prévision</strong>
+<p>L'inversion de la courbe américaine (écart 10 ans – 2 ans) a précédé la plupart des récessions américaines des dernières décennies, avec un délai très variable. Mais la longue inversion de 2022 à 2024 n'a pas été suivie d'une récession dans les deux années suivantes. Utilisez la courbe comme un indicateur du climat, jamais comme un calendrier.</p>
+</aside>
+
+<h2>Pourquoi un trader doit regarder les obligations</h2>
+<ol class="doc-steps">
+<li><strong>Les devises</strong> suivent les écarts de taux entre pays : l'écart de rendement à 2 ans entre les États-Unis et l'Allemagne pèse sur l'EUR/USD.</li>
+<li><strong>Les actions de croissance</strong>, dont les bénéfices sont attendus loin dans le futur, souffrent quand les taux longs montent vite.</li>
+<li><strong>L'or</strong>, qui ne rapporte rien, est sensible aux taux réels (taux nominal moins inflation attendue).</li>
+<li><strong>Les publications</strong> d'inflation et d'emploi font d'abord bouger les taux, qui entraînent ensuite les autres marchés.</li>
 </ol>
- 
-<p>Exemple : La France émet une OAT (Obligation Assimilable du Trésor) à 10 ans avec un coupon de 3% et une valeur nominale de 1 000€. Vous prêtez 1 000€ à la France, recevez 30€/an pendant 10 ans, puis récupérez vos 1 000€.</p>
- 
-<h2>La relation prix/rendement — contre-intuitive mais fondamentale</h2>
-<p>La relation la plus importante à comprendre sur les obligations : <strong>prix et rendement évoluent en sens inverse</strong>.</p>
- 
-<p>Si vous achetez une obligation à 1 000€ avec un coupon de 3% (30€/an) et que les taux de marché montent à 5%, les nouvelles obligations émises paient 50€/an. Votre obligation à 30€/an devient moins attractive → son prix de marché chute pour que son rendement effectif soit compétitif avec les nouvelles. Inversement, si les taux baissent, votre obligation monte en prix.</p>
- 
-<h2>Les types d'obligations</h2>
- 
-<h3>Obligations d'État (Government Bonds)</h3>
-<ul>
-<li><strong>US Treasuries</strong> : T-Bills (< 1 an), T-Notes (2-10 ans), T-Bonds (20-30 ans). Considérées "sans risque" (le gouvernement américain peut théoriquement toujours imprimer des dollars)</li>
-<li><strong>OAT françaises</strong>, <strong>Bunds allemands</strong>, <strong>JGBs japonais</strong>...</li>
-<li><strong>Obligations émergentes</strong> : Brésil, Turquie, Argentine — risque plus élevé, rendements plus élevés</li>
-</ul>
- 
-<h3>Obligations Corporate (d'entreprises)</h3>
-<ul>
-<li><strong>Investment Grade (IG)</strong> : notation BBB- ou mieux (S&P) — entreprises solides. Apple, Microsoft émettent régulièrement des obligations IG</li>
-<li><strong>High Yield (HY) ou "Junk Bonds"</strong> : notation BB+ ou moins — entreprises plus fragiles, rendements plus élevés pour compenser le risque de défaut</li>
-</ul>
- 
-<h2>Le spread de crédit — mesurer le risque</h2>
-<p>Le <strong>spread de crédit</strong> est la différence de rendement entre une obligation corporate et une obligation d'État de même maturité. Il représente la prime de risque que les investisseurs demandent pour accepter le risque de défaut de l'entreprise.</p>
- 
-<p>En période de stress économique, les spreads s'élargissent (les investisseurs fuient vers la sécurité des emprunts d'État). Un élargissement massif des spreads HY est souvent un signal précurseur de récession.</p>
- 
-<h2>Pourquoi le trader doit surveiller les obligations</h2>
-<ul>
-<li>Le <strong>rendement du T-Note 10 ans américain</strong> (10Y Treasury Yield) est la référence de taux mondiale. Sa hausse fait chuter les actions de croissance.</li>
-<li>La <strong>courbe des taux</strong> (2Y10Y spread) prédit les récessions avec 12-18 mois d'avance</li>
-<li>Les spreads HY sont un excellent indicateur du sentiment de risque des institutionnels</li>
-<li>Quand les rendements obligataires montent vite → les marchés actions souffrent</li>
-</ul>
+
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">Le réflexe à prendre</strong>
+<p>Ajoutez le rendement du 10 ans américain à votre liste de surveillance. Quand un indice ou une devise bouge fortement, regardez d'abord s'il a bougé lui aussi : cela vous dira souvent si le mouvement vient des anticipations de taux.</p>
+</aside>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Le marché obligataire fixe le prix de l'argent. Tous les autres actifs se comparent à ce que rapporte un prêt à l'État : quand ce rendement change, tout le reste se réajuste.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Vous détenez une obligation à 10 ans, coupon 3 %, achetée au pair. Les taux du marché passent à 4 %. Que devient son prix ?</summary>
+<p>Il baisse, vers 91,89 pour 100 de nominal : environ −8 %. Si vous la gardez jusqu'à l'échéance, vous serez tout de même remboursé à 100.</p>
+</details>
+<details>
+<summary>Pourquoi une obligation à 2 ans réagit-elle moins qu'une obligation à 10 ans à la même hausse des taux ?</summary>
+<p>Sa duration est plus courte : il reste moins d'années pendant lesquelles son coupon sera inférieur à celui du marché.</p>
+</details>
+<details>
+<summary>Les écarts de crédit high yield s'élargissent brutalement. Qu'est-ce que cela indique ?</summary>
+<p>Les investisseurs exigent une prime plus forte pour prêter aux entreprises fragiles : la crainte de défauts augmente, souvent avec une aversion au risque plus générale.</p>
+</details>
