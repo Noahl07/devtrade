@@ -49,9 +49,11 @@
 
     {% include 'components/_header.html.twig' %}
 
-    {% if app.flashes|length > 0 %}
+    {# app.flashes vide la file à la lecture : on la lit une seule fois. #}
+    {% set flashes = app.flashes %}
+    {% if flashes|length > 0 %}
         <div class="flash-stack" role="status">
-            {% for type, messages in app.flashes %}
+            {% for type, messages in flashes %}
                 {% for message in messages %}
                     <div class="flash flash--{{ type }}">
                         <span>{{ message }}</span>
