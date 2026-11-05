@@ -81,4 +81,21 @@ final class SanitizeHtmlExtensionTest extends TestCase
         self::assertStringContainsString('<td class="is-accent">x</td>', $out);
         self::assertStringContainsString('<td class="is-muted">y</td>', $out);
     }
+
+    /** Libellés de schéma en HTML (traduisibles) : seule une position en % est conservée, et seulement sur .doc-label. */
+    public function testDiagramLabelsKeepOnlyAPercentagePosition(): void
+    {
+        $out = $this->sanitizer->sanitize(
+            '<span class="doc-label is-accent" style="left:12.5%;top:40%">Londres</span>'
+            . '<span class="doc-label" style="left:10%;top:5%;background:url(https://x.test/a.png)">A</span>'
+            . '<span class="doc-label" style="left:calc(1px);top:2%">B</span>'
+            . '<span class="autre" style="left:10%;top:5%">C</span>'
+        );
+
+        self::assertStringContainsString('<span class="doc-label is-accent" style="left: 12.5%; top: 40%">Londres</span>', $out);
+        self::assertStringContainsString('<span class="doc-label">A</span>', $out);
+        self::assertStringContainsString('<span class="doc-label">B</span>', $out);
+        self::assertStringContainsString('<span class="autre">C</span>', $out);
+        self::assertStringNotContainsString('url(', $out);
+    }
 }
