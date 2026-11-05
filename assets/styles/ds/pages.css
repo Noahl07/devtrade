@@ -979,3 +979,183 @@ select.input {
 .account .auth-form {
     margin-top: 0;
 }
+
+/* ── Composants éditoriaux des articles (classes autorisées par |sanitize_html) ── */
+.prose .is-accent { color: var(--accent-strong); }
+.prose .is-muted { color: var(--text-2); }
+.prose .ta-center { text-align: center; }
+.prose .ta-right { text-align: right; }
+
+/* Tableaux : défilement horizontal sur petit écran plutôt qu'un débordement */
+.prose table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.prose thead th {
+    font: 500 0.72rem var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    background: var(--bg-raised);
+}
+
+.prose tbody tr:last-child td { border-bottom: 0; }
+
+/* Schémas SVG */
+.prose .doc-figure {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: var(--space-6) auto;
+    padding: var(--space-4);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(80% 90% at 100% 0%, var(--brand-soft), transparent 70%),
+        var(--surface);
+}
+
+.prose figure {
+    margin: var(--space-6) 0;
+}
+
+.prose figure .doc-figure { margin: 0; }
+
+.prose figcaption {
+    margin-top: var(--space-3);
+    font-size: var(--step--1);
+    color: var(--text-2);
+    text-align: center;
+}
+
+/* Encadrés : <aside class="doc-callout doc-callout--key"><strong class="doc-callout__title">À retenir</strong>…</aside> */
+.prose .doc-callout {
+    margin: var(--space-6) 0;
+    padding: var(--space-4) var(--space-5);
+    border: var(--hairline) solid var(--border-strong);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-md);
+    background: var(--bg-raised);
+}
+
+.prose .doc-callout > :last-child { margin-bottom: 0; }
+
+.prose .doc-callout__title {
+    display: block;
+    margin-bottom: var(--space-2);
+    font: 500 0.75rem var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+}
+
+.prose .doc-callout--warn { border-left-color: var(--negative); }
+.prose .doc-callout--warn .doc-callout__title { color: var(--negative); }
+.prose .doc-callout--tip { border-left-color: var(--positive); }
+.prose .doc-callout--tip .doc-callout__title { color: var(--positive); }
+.prose .doc-callout--example { border-left-color: var(--text-2); }
+.prose .doc-callout--example .doc-callout__title { color: var(--text-2); }
+
+/* L'essentiel en tête d'article */
+.prose .doc-keypoints {
+    margin: 0 0 var(--space-7);
+    padding: var(--space-5) var(--space-6);
+    border: var(--hairline) solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--accent-soft), transparent 60%), var(--surface);
+}
+
+.prose .doc-keypoints ul { margin: 0; padding: 0; list-style: none; }
+
+.prose .doc-keypoints li {
+    position: relative;
+    padding-left: var(--space-5);
+}
+
+.prose .doc-keypoints li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+/* Étapes numérotées : <ol class="doc-steps"> */
+.prose .doc-steps {
+    counter-reset: step;
+    padding: 0;
+    list-style: none;
+}
+
+.prose .doc-steps > li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 var(--space-4) var(--space-7);
+    border-left: var(--hairline) solid var(--border);
+    margin-left: 0.9rem;
+}
+
+.prose .doc-steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: -0.9rem;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border: var(--hairline) solid var(--accent);
+    border-radius: 50%;
+    background: var(--bg);
+    font: 500 0.8rem var(--font-mono);
+    color: var(--accent-strong);
+}
+
+.prose .doc-steps > li:last-child { border-left-color: transparent; }
+
+/* Comparaison deux colonnes : <div class="doc-compare"><div class="doc-compare__do">…</div><div class="doc-compare__dont">…</div></div> */
+.prose .doc-compare {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0;
+}
+
+.prose .doc-compare > div {
+    padding: var(--space-4) var(--space-5);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+}
+
+.prose .doc-compare__do { border-top: 2px solid var(--positive) !important; }
+.prose .doc-compare__dont { border-top: 2px solid var(--negative) !important; }
+.prose .doc-compare h4 { margin: 0 0 var(--space-2); font-size: var(--step-0); }
+
+/* Questions repliables (auto-évaluation, FAQ) */
+.prose details {
+    margin: var(--space-3) 0;
+    padding: var(--space-3) var(--space-4);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+}
+
+.prose summary {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.prose details[open] summary { margin-bottom: var(--space-2); color: var(--accent-strong); }
+
+@media (max-width: 640px) {
+    .prose .doc-compare { grid-template-columns: 1fr; }
+    .prose .doc-figure { padding: var(--space-2); }
+}
