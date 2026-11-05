@@ -1,0 +1,109 @@
+<!--meta
+{
+    "slug": "volume-spread-analysis-vsa-decoder-le-volume-institutionnel",
+    "title": "Volume Spread Analysis (VSA) — décoder le volume institutionnel",
+    "excerpt": "La VSA de Tom Williams — lire derrière le volume pour identifier ce que font vraiment les institutions sur chaque bougie.",
+    "readingTime": 21,
+    "accessLevel": "free",
+    "module": "price-action-wyckoff"
+}
+-->
+<h2>Qu'est-ce que la VSA ?</h2>
+<p>La <strong>Volume Spread Analysis (VSA)</strong> est une méthode d'analyse développée par Tom Williams dans les années 1990, basée sur les travaux originaux de Richard Wyckoff. La VSA postule que la <strong>combinaison de trois éléments</strong> sur chaque bougie révèle l'activité des "mains fortes" (institutions) :</p>
+<ol>
+<li>Le <strong>volume</strong> — l'effort</li>
+<li>L'<strong>étendue de la bougie</strong> (spread) — le résultat</li>
+<li>La <strong>clôture</strong> par rapport au range de la bougie — la conviction</li>
+</ol>
+ 
+<p>La VSA va bien au-delà de "volume élevé = signal fort". Elle analyse la <em>qualité</em> du volume — est-il professionnel (accumulation/distribution institutionnelle) ou amateur (retail panicking) ?</p>
+ 
+<h2>Les 8 patterns VSA fondamentaux</h2>
+ 
+<h3>1. Stopping Volume</h3>
+<p>Grand volume sur une bougie baissière avec une clôture <em>dans le haut</em> de son range. Après une tendance baissière prolongée, cela signale que des acheteurs professionnels ont absorbé massivement les vendeurs. Le prix a voulu continuer à baisser mais a été "stoppé" par une demande institutionnelle.</p>
+<p><strong>Signal :</strong> renversement haussier potentiel à court terme.</p>
+ 
+<h3>2. Selling Climax (SC)</h3>
+<p>Volume exceptionnel (le plus élevé depuis des mois) sur une bougie baissière avec une mèche basse significative et une clôture haute. La panique est maximale — tous les vendeurs retail sortent simultanément. Les institutions absorbent tout. C'est souvent le creux d'un bear market ou d'une correction majeure.</p>
+<p><strong>Signal :</strong> bottom majeur, renversement haussier imminent.</p>
+ 
+<h3>3. No Supply</h3>
+<p>Petite bougie baissière sur volume <em>très faible</em> (inférieur aux 2 bougies précédentes). Il n'y a plus de vendeurs — les mains faibles ont déjà vendu. Les quelques bougies baissières restantes ne trouvent aucune offre. C'est un signal haussier paradoxal : une bougie rouge sur faible volume dans un contexte de support = pas d'offre = probabilité de hausse élevée.</p>
+<p><strong>Signal :</strong> absence d'offre → probable hausse imminente.</p>
+ 
+<h3>4. No Demand</h3>
+<p>Petite bougie haussière sur volume très faible. Les acheteurs retail essaient de pousser le prix mais les institutions ne participent pas. Il n'y a pas de vraie demande professionnelle. Souvent vu lors des rallyes correctifs dans un downtrend.</p>
+<p><strong>Signal :</strong> absence de demande → probable baisse imminente.</p>
+ 
+<h3>5. Effort to Rise</h3>
+<p>Grande bougie haussière sur volume élevé — l'effort (volume) et le résultat (mouvement de prix) sont proportionnels. Les institutions poussent le prix dans un environnement sans résistance. Signal de continuation haussière forte.</p>
+<p><strong>Signal :</strong> continuation haussière, trend intact.</p>
+ 
+<h3>6. Effort to Fall</h3>
+<p>Grande bougie baissière sur volume élevé — effort et résultat alignés. Signal de continuation baissière forte.</p>
+ 
+<h3>7. Professional Buying (Absorption)</h3>
+<p>Grande bougie baissière sur volume très élevé avec clôture dans le <em>milieu ou le haut</em> de son range. Le prix a essayé de baisser significativement (grande mèche basse) mais a clôturé bien au-dessus du bas. Des acheteurs professionnels ont absorbé toute cette vente. Souvent vu sur des niveaux de support majeurs.</p>
+<p><strong>Signal :</strong> accumulation institutionnelle en cours, support tient.</p>
+ 
+<h3>8. Professional Selling</h3>
+<p>Grande bougie haussière sur volume très élevé avec clôture dans le <em>bas</em> de son range. Le prix a monté fort (acheteurs retail) mais les vendeurs institutionnels ont distribué massivement, ramenant le prix vers le bas de la bougie. Souvent vu sur des résistances majeures ou après un long uptrend.</p>
+<p><strong>Signal :</strong> distribution institutionnelle, résistance tient.</p>
+ 
+<h2>VSA et la position de clôture — la règle des tiers</h2>
+ 
+<svg width="100%" viewBox="0 0 500 180" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:500px;margin:1.5rem auto">
+  <!-- Four candles showing close position -->
+ 
+  <!-- Candle 1: Close high = bullish -->
+  <rect x="40" y="60" width="30" height="80" rx="2" fill="rgba(62,180,137,0.2)" stroke="#3EB489" stroke-width="1"/>
+  <!-- Close line at top third -->
+  <line x1="35" y1="73" x2="75" y2="73" stroke="#3EB489" stroke-width="2"/>
+  <text x="55" y="155" text-anchor="middle" fill="#3EB489" font-size="10" font-family="sans-serif">Clôture haute</text>
+  <text x="55" y="168" text-anchor="middle" fill="rgba(62,180,137,0.6)" font-size="9" font-family="sans-serif">Haussier</text>
+ 
+  <!-- Candle 2: Close mid-high = slightly bullish -->
+  <rect x="140" y="60" width="30" height="80" rx="2" fill="rgba(212,169,75,0.15)" stroke="#D4A94B" stroke-width="1"/>
+  <line x1="135" y1="93" x2="175" y2="93" stroke="#D4A94B" stroke-width="2"/>
+  <text x="155" y="155" text-anchor="middle" fill="#D4A94B" font-size="10" font-family="sans-serif">Mi-haute</text>
+  <text x="155" y="168" text-anchor="middle" fill="rgba(212,169,75,0.6)" font-size="9" font-family="sans-serif">Légèrement ↑</text>
+ 
+  <!-- Candle 3: Close mid-low = slightly bearish -->
+  <rect x="240" y="60" width="30" height="80" rx="2" fill="rgba(212,169,75,0.15)" stroke="#D4A94B" stroke-width="1"/>
+  <line x1="235" y1="107" x2="275" y2="107" stroke="#D4A94B" stroke-width="2"/>
+  <text x="255" y="155" text-anchor="middle" fill="#D4A94B" font-size="10" font-family="sans-serif">Mi-basse</text>
+  <text x="255" y="168" text-anchor="middle" fill="rgba(212,169,75,0.6)" font-size="9" font-family="sans-serif">Légèrement ↓</text>
+ 
+  <!-- Candle 4: Close low = bearish -->
+  <rect x="340" y="60" width="30" height="80" rx="2" fill="rgba(224,85,85,0.15)" stroke="#e05555" stroke-width="1"/>
+  <line x1="335" y1="127" x2="375" y2="127" stroke="#e05555" stroke-width="2"/>
+  <text x="355" y="155" text-anchor="middle" fill="#e05555" font-size="10" font-family="sans-serif">Clôture basse</text>
+  <text x="355" y="168" text-anchor="middle" fill="rgba(224,85,85,0.6)" font-size="9" font-family="sans-serif">Baissier</text>
+ 
+  <!-- Tiers dividers -->
+  <line x1="35" y1="87" x2="75" y2="87" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+  <line x1="35" y1="113" x2="75" y2="113" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+  <text x="20" y="71" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="8" font-family="sans-serif">1/3 H</text>
+  <text x="20" y="100" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="8" font-family="sans-serif">1/3 M</text>
+  <text x="20" y="130" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="8" font-family="sans-serif">1/3 B</text>
+</svg>
+ 
+<p>En VSA, la position de clôture se lit dans les <strong>tiers de la bougie</strong> :</p>
+<ul>
+<li>Clôture dans le <strong>tiers supérieur</strong> : demande forte, signal haussier quel que soit la couleur de la bougie</li>
+<li>Clôture dans le <strong>tiers inférieur</strong> : offre forte, signal baissier quel que soit la couleur de la bougie</li>
+<li>Clôture dans le <strong>tiers médian</strong> : indécision — contexte et volume nécessaires pour interpréter</li>
+</ul>
+ 
+<p>Une bougie rouge (baissière) avec clôture dans le tiers supérieur est un signal <strong>haussier</strong> en VSA — les acheteurs ont repris le contrôle avant la clôture. Plus contre-intuitif encore : une bougie verte (haussière) avec clôture dans le tiers inférieur est un signal <strong>baissier</strong> — les vendeurs ont effacé la majorité du gain.</p>
+ 
+<h2>VSA multi-bougie — lire l'histoire complète</h2>
+<p>La VSA prend toute sa dimension quand on lit les bougies en séquences. Exemple d'une séquence d'accumulation VSA :</p>
+<ol>
+<li>Grande bougie baissière sur volume très élevé, clôture haute → Stopping Volume / Professional Buying</li>
+<li>Bougie haussière modeste sur volume faible → No Supply, le vendeur est épuisé</li>
+<li>Petite bougie baissière sur volume très faible → No Supply confirmé</li>
+<li>Grande bougie haussière sur volume élevé, clôture haute → Effort to Rise, la hausse commence</li>
+</ol>
+<p>Cette séquence complète raconte : "Les institutions ont absorbé la vente panic, les vendeurs sont épuisés, la demande reprend." C'est une accumulation confirmée par la VSA.</p>

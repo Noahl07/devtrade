@@ -1,0 +1,82 @@
+<!--meta
+{
+    "slug": "liquidite-la-ressource-que-chassent-les-institutions",
+    "title": "Liquidité — la ressource que chassent les institutions",
+    "excerpt": "Buy/sell-side liquidity, equal highs/lows, stop hunts et Judas Swing.",
+    "readingTime": 13,
+    "accessLevel": "free",
+    "module": "ict-inner-circle-trader"
+}
+-->
+<h2>La liquidité en ICT</h2>
+<p>En ICT, la liquidité désigne les <strong>ordres stop-loss regroupés à des niveaux prévisibles</strong> — des réservoirs d'ordres que les institutions vont chercher pour exécuter leurs propres positions massives.</p>
+<p>Pour placer une position de plusieurs milliards, les institutions ont besoin de contreparties. Ces contreparties se trouvent dans les stop-loss des traders retail — regroupés de façon prévisible sous les supports et au-dessus des résistances.</p>
+ 
+<h2>Buy-side et Sell-side Liquidity</h2>
+ 
+<svg width="100%" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:560px;margin:1.5rem auto">
+  <!-- Main range box -->
+  <rect x="30" y="60" width="500" height="100" rx="4" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+ 
+  <!-- BSL zone (above) -->
+  <rect x="30" y="30" width="500" height="32" rx="4" fill="rgba(62,180,137,0.1)" stroke="#3EB489" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="280" y="50" text-anchor="middle" fill="#3EB489" font-size="12" font-family="sans-serif" font-weight="bold">BUY-SIDE LIQUIDITY (BSL)</text>
+  <text x="13" y="50" text-anchor="end" fill="#3EB489" font-size="10" font-family="sans-serif">↑</text>
+ 
+  <!-- Equal highs line -->
+  <line x1="30" y1="60" x2="530" y2="60" stroke="#3EB489" stroke-width="0.8" opacity="0.3"/>
+  <circle cx="100" cy="60" r="4" fill="#3EB489" opacity="0.6"/>
+  <circle cx="200" cy="60" r="4" fill="#3EB489" opacity="0.6"/>
+  <circle cx="310" cy="60" r="4" fill="#3EB489" opacity="0.6"/>
+  <circle cx="420" cy="60" r="4" fill="#3EB489" opacity="0.6"/>
+  <text x="280" y="76" text-anchor="middle" fill="rgba(62,180,137,0.5)" font-size="10" font-family="sans-serif">Equal Highs (EQH)</text>
+ 
+  <!-- Price oscillation -->
+  <polyline points="30,130 80,90 130,135 180,88 230,132 280,90 330,128 380,85 430,125 480,88 530,120" fill="none" stroke="rgba(232,234,240,0.35)" stroke-width="1.5"/>
+ 
+  <!-- Equal lows line -->
+  <line x1="30" y1="158" x2="530" y2="158" stroke="#e05555" stroke-width="0.8" opacity="0.3"/>
+  <circle cx="100" cy="158" r="4" fill="#e05555" opacity="0.6"/>
+  <circle cx="200" cy="158" r="4" fill="#e05555" opacity="0.6"/>
+  <circle cx="310" cy="158" r="4" fill="#e05555" opacity="0.6"/>
+  <circle cx="420" cy="158" r="4" fill="#e05555" opacity="0.6"/>
+  <text x="280" y="150" text-anchor="middle" fill="rgba(224,85,85,0.5)" font-size="10" font-family="sans-serif">Equal Lows (EQL)</text>
+ 
+  <!-- SSL zone (below) -->
+  <rect x="30" y="160" width="500" height="30" rx="4" fill="rgba(224,85,85,0.1)" stroke="#e05555" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="280" y="180" text-anchor="middle" fill="#e05555" font-size="12" font-family="sans-serif" font-weight="bold">SELL-SIDE LIQUIDITY (SSL)</text>
+  <text x="13" y="180" text-anchor="end" fill="#e05555" font-size="10" font-family="sans-serif">↓</text>
+</svg>
+ 
+<ul>
+<li><strong>Buy-Side Liquidity (BSL)</strong> : au-dessus des sommets significatifs et equal highs. Stop-loss des vendeurs + buy-stops des breakout traders. Pour <em>vendre</em> massivement, les institutions font d'abord monter le prix jusqu'aux BSL.</li>
+<li><strong>Sell-Side Liquidity (SSL)</strong> : sous les creux significatifs et equal lows. Stop-loss des acheteurs. Pour <em>acheter</em> massivement, les institutions font d'abord baisser le prix sous les SSL.</li>
+</ul>
+ 
+<h2>Equal Highs et Equal Lows — les pièges évidents</h2>
+<p>Les EQH et EQL sont les cibles de liquidité les plus visibles et les plus chassées. Tout le monde les voit, tout le monde place ses stops au-delà, les institutions les ciblent précisément. Après le sweep, le vrai mouvement part dans la direction opposée.</p>
+ 
+<h2>Le Stop Hunt — anatomie</h2>
+<ol>
+<li>Accumulation sous un niveau d'EQH</li>
+<li>Mouvement rapide qui casse les EQH (souvent une grande mèche)</li>
+<li>La bougie <em>clôture en dessous</em> du niveau cassé — pas de vrai breakout</li>
+<li>Retournement immédiat dans la direction opposée</li>
+</ol>
+<blockquote>Quand vous voyez une cassure violente d'un niveau évident suivie d'un rejet rapide, ne paniquez pas — c'est presque certainement un stop hunt. Attendez la confirmation et tradez dans la direction du rejet.</blockquote>
+ 
+<h2>Le Judas Swing</h2>
+<p>Le <strong>Judas Swing</strong> est le faux mouvement du début de session :</p>
+<ul>
+<li>À l'ouverture londonienne, le prix fait d'abord un mouvement dans une direction (souvent en cassant l'Asian Range)</li>
+<li>Ce mouvement piège les traders qui entrent dans cette direction</li>
+<li>Ensuite, le prix se retourne violemment dans la vraie direction de la session</li>
+</ul>
+ 
+<h2>Utiliser la liquidité dans son analyse</h2>
+<ul>
+<li>Identifier les zones de BSL et SSL avant de trader</li>
+<li>Ne jamais placer son stop-loss sur un niveau évident (EQH/EQL) — le prix y ira</li>
+<li>Utiliser les sweeps de liquidité comme signal d'entrée dans la direction opposée</li>
+<li>Après un sweep + rejet, chercher l'OB ou FVG de l'impulsion pour entrer</li>
+</ul>

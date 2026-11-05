@@ -1,0 +1,74 @@
+<!--meta
+{
+    "slug": "spreads-commissions-et-couts-reels-du-trading",
+    "title": "Spreads, commissions et coûts réels du trading",
+    "excerpt": "Spread, commission, swap, slippage — comprendre tous les coûts réels du trading est indispensable pour calculer votre vraie rentabilité et choisir le bon broker.",
+    "readingTime": 15,
+    "accessLevel": "free",
+    "module": "debuter-en-trading"
+}
+-->
+<h2>Le coût invisible qui détruit la plupart des traders débutants</h2>
+<p>On vous apprend à analyser les marchés, à placer des ordres, à gérer votre risque. Mais rarement on vous explique <strong>combien vous coûte réellement chaque trade</strong>. Pourtant, les coûts de trading sont l'un des facteurs les plus déterminants dans la rentabilité à long terme. Un système gagnant sur le papier peut devenir perdant en réel si les coûts ne sont pas maîtrisés.</p>
+ 
+<h2>Le spread — le coût le plus visible</h2>
+<p>Le spread est la différence entre le <strong>prix Ask</strong> (prix auquel vous achetez) et le <strong>prix Bid</strong> (prix auquel vous vendez). C'est la première barrière que vous franchissez à chaque trade — vous êtes immédiatement en négatif dès l'ouverture.</p>
+ 
+<svg viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
+  <text x="300" y="18" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Bid / Ask — le spread en action</text>
+  <line x1="80" y1="70" x2="520" y2="70" stroke="#2d3748" stroke-width="1"/>
+  <!-- Bid -->
+  <line x1="190" y1="50" x2="190" y2="100" stroke="#3EB489" stroke-width="2"/>
+  <text x="190" y="42" fill="#3EB489" font-size="12" font-family="monospace" text-anchor="middle">BID</text>
+  <text x="190" y="115" fill="#3EB489" font-size="11" font-family="monospace" text-anchor="middle">1.08450</text>
+  <text x="190" y="127" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Vous vendez ici</text>
+  <!-- Ask -->
+  <line x1="390" y1="50" x2="390" y2="100" stroke="#e05555" stroke-width="2"/>
+  <text x="390" y="42" fill="#e05555" font-size="12" font-family="monospace" text-anchor="middle">ASK</text>
+  <text x="390" y="115" fill="#e05555" font-size="11" font-family="monospace" text-anchor="middle">1.08453</text>
+  <text x="390" y="127" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Vous achetez ici</text>
+  <!-- Spread zone -->
+  <rect x="190" y="57" width="200" height="22" rx="2" fill="rgba(212,169,75,0.15)" stroke="#D4A94B" stroke-width="0.5"/>
+  <text x="290" y="72" fill="#D4A94B" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">SPREAD = 0.3 pip</text>
+</svg>
+ 
+<p>Le spread est exprimé en <strong>pips</strong> (Forex) ou en points (indices/matières premières). Exemples typiques :</p>
+<ul>
+<li><strong>EUR/USD :</strong> 0.1 à 0.5 pip (très liquide)</li>
+<li><strong>GBP/USD :</strong> 0.5 à 1 pip</li>
+<li><strong>XAU/USD (Gold) :</strong> 20 à 50 points</li>
+<li><strong>NAS100 :</strong> 0.5 à 2 points selon broker</li>
+<li><strong>Paires exotiques :</strong> 5 à 50 pips — le piège des débutants</li>
+</ul>
+ 
+<h2>Les deux modèles de tarification broker</h2>
+<p><strong>1. Compte Market Maker (sans commission)</strong><br>
+Le broker se rémunère uniquement via le spread — plus large qu'en ECN. Convient aux petits comptes.</p>
+ 
+<p><strong>2. Compte ECN/Raw Spread (avec commission)</strong><br>
+Le spread est quasi-nul (0.0 à 0.1 pip) mais vous payez une commission fixe par lot. Exemple typique : <strong>3.5€ aller + 3.5€ retour = 7€ total pour 1 lot d'EUR/USD</strong>.</p>
+ 
+<h2>Le swap — le coût des positions overnight</h2>
+<p>Le swap est un intérêt crédité ou débité sur vos positions maintenues ouvertes au-delà de <strong>17h00 ET</strong>. Il reflète le différentiel de taux d'intérêt entre les deux devises.</p>
+<ul>
+<li>Certaines positions génèrent un <strong>swap positif</strong> (vous gagnez des intérêts)</li>
+<li>D'autres génèrent un <strong>swap négatif</strong> (vous payez) — le cas le plus fréquent</li>
+<li>Le mercredi, le swap est <strong>triplé</strong> pour compenser le week-end</li>
+</ul>
+ 
+<h2>Le slippage — le coût imprévisible</h2>
+<p>Le slippage est la différence entre le prix voulu et le prix d'exécution réel. Il se produit en période de forte volatilité (news, ouverture de session). Exemple : vous visez 1.08450, votre ordre s'exécute à 1.08458 — vous avez perdu 0.8 pip sans le vouloir.</p>
+<p>Pour limiter le slippage : préférer les <strong>ordres limites</strong> aux ordres au marché, et éviter d'entrer sur les news majeures.</p>
+ 
+<h2>Calculer votre breakeven réel</h2>
+<blockquote>Breakeven = Spread + Commission (en pips) + Slippage moyen</blockquote>
+<p>Sur EUR/USD ECN (0.1 pip spread + 0.7 pip commission + 0.1 pip slippage) : <strong>Breakeven = 0.9 pip</strong>. Chaque trade doit faire au minimum 0.9 pip dans votre direction avant d'être profitable.</p>
+ 
+<h2>Comment choisir son broker selon les coûts</h2>
+<ul>
+<li><strong>Scalping/Day trading :</strong> Broker ECN avec commissions basses (Pepperstone, IC Markets)</li>
+<li><strong>Swing trading :</strong> Le spread importe moins, privilégier la régulation et le swap</li>
+<li><strong>Débutant :</strong> Commencer sur démo pour mesurer les vrais coûts avant le réel</li>
+<li><strong>Toujours vérifier :</strong> Les brokers régulés (FCA, ASIC, CySEC) affichent leurs conditions clairement</li>
+</ul>
+<p>Réduire vos frais de 0.2 pip par trade peut représenter plusieurs centaines d'euros de gain annuel sur un compte actif. Un bon trader surveille ses coûts comme un chef d'entreprise surveille ses charges fixes.</p>

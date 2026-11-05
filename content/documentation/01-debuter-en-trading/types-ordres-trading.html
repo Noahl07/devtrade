@@ -1,0 +1,74 @@
+<!--meta
+{
+    "slug": "types-ordres-trading",
+    "title": "Les types d'ordres de trading",
+    "excerpt": "Market order, limit order, stop order — comprendre chaque type d'ordre et quand les utiliser.",
+    "readingTime": 9,
+    "accessLevel": "free",
+    "module": "debuter-en-trading"
+}
+-->
+<h2>Pourquoi maîtriser les types d'ordres ?</h2>
+<p>Un trade mal exécuté peut transformer un bon setup en perte. La maîtrise des types d'ordres est fondamentale — elle détermine votre prix d'entrée, votre sortie et donc directement votre profitabilité. Un trader qui utilise uniquement des ordres au marché paie systématiquement le spread et subit du slippage. Un trader qui utilise intelligemment les ordres limite améliore significativement ses prix d'exécution.</p>
+
+<h2>L'ordre au marché (Market Order)</h2>
+<p>L'ordre au marché est le plus simple : vous achetez ou vendez <strong>immédiatement au meilleur prix disponible</strong>. L'exécution est garantie mais le prix ne l'est pas — en marché volatile, vous pouvez subir du slippage (exécution à un prix moins favorable que prévu).</p>
+
+<p><strong>Quand l'utiliser :</strong> pour les actifs très liquides (EUR/USD, SP500) où le spread est minimal, ou quand vous devez absolument entrer ou sortir immédiatement (fermeture d'urgence d'une position).</p>
+
+<p><strong>Attention :</strong> sur un actif peu liquide ou pendant une news, l'ordre au marché peut s'exécuter plusieurs pips/points au-delà du prix affiché.</p>
+
+<h2>L'ordre limite (Limit Order)</h2>
+<p>L'ordre limite permet d'acheter en dessous du prix actuel ou de vendre au-dessus. Vous définissez le prix exact auquel vous voulez entrer — votre ordre ne s'exécutera que si le marché atteint ce niveau.</p>
+
+<ul>
+<li><strong>Buy Limit</strong> : ordre d'achat à un prix inférieur au marché actuel (vous attendez que le prix baisse jusqu'à votre niveau)</li>
+<li><strong>Sell Limit</strong> : ordre de vente à un prix supérieur au marché actuel (vous attendez que le prix monte jusqu'à votre niveau)</li>
+</ul>
+
+<p><strong>Avantages :</strong> pas de slippage, exécution au prix exact, idéal pour trader les retours sur Order Blocks et FVG.</p>
+<p><strong>Inconvénient :</strong> le prix peut ne jamais atteindre votre niveau — vous ratez le trade.</p>
+
+<blockquote>En ICT, la majorité des entrées se font via des ordres limite placés sur les Order Blocks, Fair Value Gaps et zones de liquidité — pas au marché. C'est ce qui distingue une entrée professionnelle d'une entrée émotionnelle.</blockquote>
+
+<h2>L'ordre stop (Stop Order)</h2>
+<p>Contrairement à l'ordre limite, l'ordre stop s'exécute quand le prix <strong>franchit</strong> un niveau dans la direction de votre trade :</p>
+
+<ul>
+<li><strong>Buy Stop</strong> : achat au-dessus du prix actuel (confirmation de cassure haussière)</li>
+<li><strong>Sell Stop</strong> : vente en dessous du prix actuel (confirmation de cassure baissière)</li>
+</ul>
+
+<p>Une fois le niveau atteint, l'ordre stop devient un ordre au marché. Il peut donc subir du slippage dans les marchés volatils.</p>
+
+<h2>Le Stop-Loss (SL)</h2>
+<p>Le stop-loss est l'ordre le plus important de votre arsenal. Il définit le <strong>niveau de prix auquel vous acceptez de prendre votre perte</strong> si le trade va contre vous. Sans stop-loss, une position perdante peut théoriquement effacer tout votre capital.</p>
+
+<p>Un stop-loss professionnel se place :</p>
+<ul>
+<li>Au-delà d'un niveau structural (sous un swing low pour un achat)</li>
+<li>Derrière un Order Block qui invalide le setup</li>
+<li>À une distance calculée en fonction de votre risk management (pas un multiple fixe)</li>
+</ul>
+
+<p><strong>Ne jamais :</strong> déplacer son stop-loss dans la mauvaise direction pour "éviter" d'être stoppé. C'est la première cause de ruine des traders débutants.</p>
+
+<h2>Le Take-Profit (TP)</h2>
+<p>L'ordre take-profit ferme automatiquement votre position en profit quand le prix atteint votre objectif. Vous définissez votre cible à l'avance, avant d'entrer dans le trade. En ICT, les take-profits se placent typiquement :</p>
+<ul>
+<li>Sur la prochaine zone de liquidité (equal highs/lows)</li>
+<li>Sur le prochain Order Block adverse</li>
+<li>À un ratio Risk/Reward prédéfini (1:2, 1:3...)</li>
+</ul>
+
+<h2>L'ordre OCO (One Cancels the Other)</h2>
+<p>Deux ordres liés — quand l'un s'exécute, l'autre est automatiquement annulé. Utile pour placer simultanément un stop-loss et un take-profit sur une position ouverte. La plupart des plateformes modernes (TradingView, MT4/5) le gèrent automatiquement.</p>
+
+<h2>Résumé pratique</h2>
+<ul>
+<li>Entrée sur momentum/cassure → <strong>Buy/Sell Stop</strong></li>
+<li>Entrée sur retour sur zone (OB, FVG, support) → <strong>Buy/Sell Limit</strong></li>
+<li>Protection de capital → <strong>Stop-Loss obligatoire</strong></li>
+<li>Sortie planifiée → <strong>Take-Profit</strong></li>
+<li>Entrée d'urgence ou sortie rapide → <strong>Market Order</strong></li>
+</ul>
