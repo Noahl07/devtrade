@@ -161,6 +161,36 @@ final class SecondaryPagesTest extends WebTestCase
         self::assertStringNotContainsString('<script>alert(1)</script>', (string) $client->getResponse()->getContent());
     }
 
+    /** La liste des articles du module suit l'ordre pédagogique (position), pas l'ordre alphabétique. */
+    public function testModuleSidebarFollowsArticlePositions(): void
+    {
+        $client = static::createClient();
+        /** @var EntityManagerInterface $em */
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $suffix = bin2hex(random_bytes(4));
+
+        $user = (new User())->setEmail("ordre-$suffix@exemple.fr")->setFirstName('Ordre')->setLastName('Test')
+            ->setPassword('inutilise')->setCreatedAt(new \DateTimeImmutable());
+        $category = (new DocumentCategory())->setName("Ordre $suffix")->setSlug("ordre-$suffix");
+        $em->persist($user);
+        $em->persist($category);
+        foreach (['Alpha' => 3, 'Zèbre' => 1, 'Milieu' => 2] as $title => $position) {
+            $em->persist((new Document())->setTitle("$title $suffix")->setSlug(strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $title)) . "-$suffix")
+                ->setContent('<p>x</p>')->setIsPublished(true)->setPosition($position)->setCreatedAt(new \DateTimeImmutable())->setCategory($category));
+        }
+        $em->flush();
+        $em->clear();
+
+        $client->loginUser($user);
+        $crawler = $client->request('GET', "/documentation/article/free/alpha-$suffix");
+
+        self::assertResponseIsSuccessful();
+        self::assertSame(
+            ["Zèbre $suffix", "Milieu $suffix", "Alpha $suffix"],
+            $crawler->filter('nav[aria-label="Articles du module"] li a')->each(static fn ($a): string => trim($a->text())),
+        );
+    }
+
     /** @param array<string, string> $fields */
     private function postContact(KernelBrowser $client, array $fields): void
     {
