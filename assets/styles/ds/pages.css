@@ -309,7 +309,8 @@
 
 @media (max-width: 1000px) {
     .reading {
-        grid-template-columns: 1fr;
+        /* minmax(0, …) : un tableau ou un schéma large défile dans son cadre au lieu d'élargir la page */
+        grid-template-columns: minmax(0, 1fr);
         gap: var(--space-5);
     }
 
@@ -1159,3 +1160,7 @@ select.input {
     .prose .doc-compare { grid-template-columns: 1fr; }
     .prose .doc-figure { padding: var(--space-2); }
 }
+
+.prose td.ta-center,
+.prose th.ta-center,
+.prose td.ta-right { white-space: nowrap; }
