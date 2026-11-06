@@ -2,113 +2,124 @@
 {
     "slug": "fair-value-gaps-imbalances-de-prix",
     "title": "Fair Value Gaps — imbalances de prix",
-    "excerpt": "Identifier et trader les FVG — les inefficiences que le marché revient combler.",
-    "readingTime": 14,
+    "excerpt": "Ce qu'est vraiment un FVG (et ce qu'il n'est pas), pourquoi il se forme, BISI et SIBI, le milieu du gap, les FVG inversés, les zones équilibrées, les gaps d'ouverture, quels FVG comptent, et un résultat de simulation qui change tout : sur un marché aléatoire, 83 % des FVG sont revisités.",
+    "readingTime": 6,
     "accessLevel": "free",
     "position": 6,
     "module": "ict-inner-circle-trader"
 }
 -->
-<h2>Qu'est-ce qu'un Fair Value Gap ?</h2>
-<p>Un <strong>Fair Value Gap (FVG)</strong> est une zone d'inefficience de prix créée quand le marché se déplace si rapidement qu'aucune transaction n'a eu lieu à certains niveaux. Il se forme sur un pattern de <strong>3 bougies</strong> spécifique et représente un déséquilibre que le marché cherche naturellement à combler.</p>
- 
-<h2>Identification — le pattern 3 bougies</h2>
- 
-<svg width="100%" viewBox="0 0 520 230" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:520px;margin:1.5rem auto">
- 
-  <!-- FVG BULLISH (gauche) -->
-  <text x="120" y="20" text-anchor="middle" fill="#3EB489" font-size="12" font-family="sans-serif" font-weight="bold">FVG Bullish</text>
- 
-  <!-- Bougie 1 -->
-  <rect x="40" y="145" width="30" height="55" rx="2" fill="#e05555" opacity="0.7"/>
-  <line x1="55" y1="132" x2="55" y2="145" stroke="#e05555" stroke-width="1.5" opacity="0.7"/>
-  <line x1="55" y1="200" x2="55" y2="212" stroke="#e05555" stroke-width="1.5" opacity="0.7"/>
-  <text x="55" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C1</text>
-  <!-- High C1 marker -->
-  <line x1="35" y1="132" x2="75" y2="132" stroke="rgba(232,234,240,0.3)" stroke-width="0.8"/>
-  <text x="30" y="136" text-anchor="end" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">H(C1)</text>
- 
-  <!-- Bougie 2 impulsive -->
-  <rect x="85" y="80" width="30" height="80" rx="2" fill="#3EB489"/>
-  <line x1="100" y1="65" x2="100" y2="80" stroke="#3EB489" stroke-width="2"/>
-  <line x1="100" y1="160" x2="100" y2="170" stroke="#3EB489" stroke-width="2"/>
-  <text x="100" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C2</text>
- 
-  <!-- Bougie 3 -->
-  <rect x="130" y="65" width="30" height="50" rx="2" fill="#3EB489" opacity="0.8"/>
-  <line x1="145" y1="52" x2="145" y2="65" stroke="#3EB489" stroke-width="1.5"/>
-  <line x1="145" y1="115" x2="145" y2="128" stroke="#3EB489" stroke-width="1.5"/>
-  <text x="145" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C3</text>
-  <!-- Low C3 marker -->
-  <line x1="125" y1="115" x2="165" y2="115" stroke="rgba(232,234,240,0.3)" stroke-width="0.8"/>
-  <text x="170" y="119" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">L(C3)</text>
- 
-  <!-- FVG zone (entre H(C1) et L(C3)) -->
-  <rect x="35" y="115" width="130" height="17" rx="2" fill="rgba(62,180,137,0.2)" stroke="#3EB489" stroke-width="1.2"/>
-  <text x="100" y="127" text-anchor="middle" fill="#3EB489" font-size="10" font-family="sans-serif" font-weight="bold">FVG</text>
- 
-  <!-- CE line -->
-  <line x1="35" y1="124" x2="165" y2="124" stroke="#D4A94B" stroke-width="1" stroke-dasharray="3,3"/>
-  <text x="170" y="128" fill="#D4A94B" font-size="9" font-family="sans-serif">CE 50%</text>
- 
-  <!-- Separator -->
-  <line x1="270" y1="10" x2="270" y2="210" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
- 
-  <!-- FVG BEARISH (droite) -->
-  <text x="395" y="20" text-anchor="middle" fill="#e05555" font-size="12" font-family="sans-serif" font-weight="bold">FVG Bearish</text>
- 
-  <!-- Bougie 1 haussière -->
-  <rect x="295" y="80" width="30" height="50" rx="2" fill="#3EB489" opacity="0.7"/>
-  <line x1="310" y1="68" x2="310" y2="80" stroke="#3EB489" stroke-width="1.5" opacity="0.7"/>
-  <line x1="310" y1="130" x2="310" y2="142" stroke="#3EB489" stroke-width="1.5" opacity="0.7"/>
-  <text x="310" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C1</text>
-  <!-- Low C1 marker -->
-  <line x1="290" y1="130" x2="330" y2="130" stroke="rgba(232,234,240,0.3)" stroke-width="0.8"/>
-  <text x="285" y="134" text-anchor="end" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">L(C1)</text>
- 
-  <!-- Bougie 2 impulsive baissière -->
-  <rect x="340" y="100" width="30" height="85" rx="2" fill="#e05555"/>
-  <line x1="355" y1="86" x2="355" y2="100" stroke="#e05555" stroke-width="2"/>
-  <line x1="355" y1="185" x2="355" y2="198" stroke="#e05555" stroke-width="2"/>
-  <text x="355" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C2</text>
- 
-  <!-- Bougie 3 baissière -->
-  <rect x="385" y="115" width="30" height="65" rx="2" fill="#e05555" opacity="0.8"/>
-  <line x1="400" y1="100" x2="400" y2="115" stroke="#e05555" stroke-width="1.5"/>
-  <line x1="400" y1="180" x2="400" y2="192" stroke="#e05555" stroke-width="1.5"/>
-  <text x="400" y="222" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">C3</text>
-  <!-- High C3 marker -->
-  <line x1="380" y1="100" x2="420" y2="100" stroke="rgba(232,234,240,0.3)" stroke-width="0.8"/>
-  <text x="425" y="104" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">H(C3)</text>
- 
-  <!-- FVG zone bearish (entre L(C1) et H(C3)) -->
-  <rect x="290" y="100" width="130" height="30" rx="2" fill="rgba(224,85,85,0.2)" stroke="#e05555" stroke-width="1.2"/>
-  <text x="355" y="119" text-anchor="middle" fill="#e05555" font-size="10" font-family="sans-serif" font-weight="bold">FVG</text>
- 
-  <!-- CE bearish -->
-  <line x1="290" y1="115" x2="420" y2="115" stroke="#D4A94B" stroke-width="1" stroke-dasharray="3,3"/>
-  <text x="425" y="119" fill="#D4A94B" font-size="9" font-family="sans-serif">CE 50%</text>
-</svg>
- 
-<p><strong>FVG Bullish</strong> : le <em>High de C1</em> est inférieur au <em>Low de C3</em> → espace vide entre ces deux niveaux.</p>
-<p><strong>FVG Bearish</strong> : le <em>Low de C1</em> est supérieur au <em>High de C3</em> → espace vide entre ces deux niveaux.</p>
- 
-<h2>Le Consequent Encroachment (CE)</h2>
-<p>Le <strong>CE</strong> est le niveau médian du FVG (50%). C'est la zone de réaction la plus fréquente quand le prix revient dans le FVG. En ICT, le CE est utilisé comme zone d'entrée précise et comme premier objectif de take-profit.</p>
-<blockquote>Le prix ne comble pas toujours le FVG en entier. Une réaction au CE (50% du FVG) est très fréquente et souvent plus fiable qu'attendre le remplissage complet.</blockquote>
- 
-<h2>FVG vs Order Block</h2>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li>L'<strong>OB</strong> est basé sur une bougie spécifique (la dernière à contre-sens)</li>
-<li>Le <strong>FVG</strong> est basé sur un espace entre 3 bougies (déséquilibre)</li>
-<li>Les deux peuvent coexister — une zone OB + FVG est une confluence puissante</li>
+<li>Un FVG est, sur trois bougies, l'<strong>espace entre la mèche de la première et celle de la troisième</strong>, que seule la bougie du milieu a traversé. Des échanges y ont eu lieu, mais très vite et dans un seul sens.</li>
+<li>ICT y voit une zone que le prix revient <strong>rééquilibrer</strong>, et où il peut réagir.</li>
+<li>Attention : dans notre simulation d'un marché purement aléatoire, <strong>83 % des FVG sont revisités</strong> dans les vingt bougies suivantes. Le retour dans un FVG n'a donc rien d'exceptionnel ; ce qui compte, c'est la <strong>réaction</strong> qu'on y observe.</li>
+<li>Les FVG qui méritent l'attention sont ceux laissés par un <strong>déplacement</strong>, après une prise de liquidité, dans le sens de la structure.</li>
 </ul>
- 
-<h2>Trading pratique des FVG</h2>
-<ol>
-<li>Identifier un FVG créé lors d'un mouvement impulsif (BOS ou CHoCH)</li>
-<li>Attendre le retour du prix dans le FVG</li>
-<li>Entrer au CE (50%) ou à la limite haute/basse du FVG</li>
-<li>Stop-Loss au-delà du FVG complet (invalidation)</li>
-<li>Take-Profit sur le prochain niveau de liquidité ou OB adverse</li>
+</div>
+
+<h2>Anatomie d'un FVG</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" aria-hidden="true">
+  <rect x="180" y="95" width="300" height="45" fill="rgba(200,164,92,0.18)" stroke="rgba(200,164,92,0.7)" stroke-dasharray="4 3" />
+  <line x1="180" y1="117" x2="480" y2="117" stroke="rgba(200,164,92,0.6)" stroke-dasharray="2 3" />
+  <line x1="220" y1="140" x2="220" y2="215" stroke="#4FB38F" stroke-width="2" /><rect x="205" y="165" width="30" height="40" rx="2" fill="#4FB38F" />
+  <line x1="300" y1="55" x2="300" y2="205" stroke="#4FB38F" stroke-width="2" /><rect x="282" y="65" width="36" height="128" rx="2" fill="#4FB38F" />
+  <line x1="380" y1="40" x2="380" y2="95" stroke="#4FB38F" stroke-width="2" /><rect x="365" y="48" width="30" height="35" rx="2" fill="#4FB38F" />
+  </svg>
+<span class="doc-label doc-label--strong" style="left:34.38%;top:89.09%">bougie 1</span>
+<span class="doc-label doc-label--strong" style="left:46.88%;top:89.09%">bougie 2</span>
+<span class="doc-label doc-label--strong" style="left:59.38%;top:89.09%">bougie 3</span>
+<span class="doc-label doc-label--start is-accent" style="left:76.56%;top:33%">bas de la bougie 3</span>
+<span class="doc-label doc-label--start is-accent" style="left:76.56%;top:44.92%">milieu (CE)</span>
+<span class="doc-label doc-label--start is-accent" style="left:76.56%;top:56.85%">haut de la bougie 1</span>
+<span class="doc-label doc-label--strong is-accent" style="left:12.5%;top:45.24%">FVG haussier</span>
+</div>
+<figcaption>Un FVG haussier : le plus haut de la bougie 1 reste sous le plus bas de la bougie 3. L'espace entre les deux n'a été traversé que par la grande bougie 2.</figcaption>
+</figure>
+<ul>
+<li><strong>FVG haussier</strong> (appelé BISI par ICT) : le plus haut de la bougie 1 est <strong>sous</strong> le plus bas de la bougie 3.</li>
+<li><strong>FVG baissier</strong> (SIBI) : le plus bas de la bougie 1 est <strong>au-dessus</strong> du plus haut de la bougie 3.</li>
+</ul>
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">Une idée reçue à corriger</strong>
+<p>On lit souvent qu'« aucune transaction n'a eu lieu » dans un FVG. C'est faux : la bougie 2 a traversé ces prix, donc des échanges s'y sont produits. Ce qui caractérise le FVG, c'est que ces prix n'ont été visités que pendant un mouvement très rapide et à sens unique : un seul camp y a été servi, l'autre n'a pas eu le temps d'y participer. C'est ce déséquilibre qu'ICT appelle une « inefficience ».</p>
+</aside>
+
+<h2>Pourquoi un FVG se forme</h2>
+<p>Quand des ordres importants arrivent d'un seul côté (une nouvelle, l'ouverture d'une séance, le déclenchement d'une réserve de stops), le prix doit monter très vite pour trouver des vendeurs. Il traverse alors des prix où il n'y avait presque pas d'offre. Le FVG est la trace de ce passage : un <strong>déplacement</strong>. C'est pourquoi les FVG apparaissent surtout pendant les Kill Zones et autour des statistiques.</p>
+
+<h2>Ce que montre une simulation</h2>
+<p>Nous avons généré un marché purement aléatoire, regroupé en bougies, et relevé plus de 10 000 FVG haussiers. Dans les vingt bougies suivantes :</p>
+<table>
+<thead><tr><th>Événement</th><th class="ta-center">Fréquence (marché aléatoire)</th></tr></thead>
+<tbody>
+<tr><td>Le prix revient dans le FVG</td><td class="ta-center">82,9 %</td></tr>
+<tr><td>Le prix atteint le milieu (CE)</td><td class="ta-center">77,3 %</td></tr>
+<tr><td>Le FVG est entièrement comblé</td><td class="ta-center">72,3 %</td></tr>
+</tbody>
+</table>
+<p>Ces chiffres ne viennent d'aucun comportement institutionnel : c'est simplement ce que fait un prix qui fluctue au hasard près d'une zone qu'il vient de quitter. Conclusion : <strong>« le prix revient dans le FVG » ne prouve rien</strong>. Un FVG ne devient utile que si, une fois revisité, il produit une <strong>réaction dans le sens attendu</strong> plus souvent et plus fortement que le hasard. C'est cela qu'il faut mesurer dans vos tests.</p>
+
+<h2>Le milieu du gap (CE)</h2>
+<p>Le <em>consequent encroachment</em> est le milieu du FVG. ICT l'utilise de deux façons :</p>
+<ul>
+<li>comme <strong>niveau d'entrée</strong> : un ordre limite au CE offre un meilleur prix que le bord du FVG, au risque de ne pas être exécuté ;</li>
+<li>comme <strong>test de validité</strong> : un FVG haussier que le prix clôture largement sous son milieu perd de sa crédibilité.</li>
+</ul>
+
+<h2>Variantes à connaître</h2>
+<table>
+<thead><tr><th>Variante</th><th>Définition</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td>FVG inversé (IFVG)</td><td>FVG traversé puis clôturé de l'autre côté</td><td>Sert ensuite de zone dans le sens inverse (un FVG haussier cassé devient résistance)</td></tr>
+<tr><td>Zone équilibrée (BPR)</td><td>Superposition d'un FVG haussier et d'un FVG baissier</td><td>Zone très « rééquilibrée », souvent réactive</td></tr>
+<tr><td>Déséquilibre de corps (<em>volume imbalance</em>)</td><td>Écart entre les corps de deux bougies, sans écart entre les mèches</td><td>Petite zone de référence en intraday</td></tr>
+<tr><td>Gaps d'ouverture (NWOG, NDOG)</td><td>Écart entre la clôture du vendredi et l'ouverture du dimanche (ou entre deux séances)</td><td>Repères suivis pendant plusieurs jours ; leur milieu sert de niveau</td></tr>
+<tr><td>Vide de liquidité</td><td>Grande zone traversée en un seul mouvement</td><td>Le prix peut la retraverser rapidement dans l'autre sens</td></tr>
+</tbody>
+</table>
+
+<h2>Quels FVG retenir</h2>
+<ol class="doc-steps">
+<li><strong>Créé par un déplacement</strong> : bougie 2 nettement plus large que la normale (par exemple plus de 1,5 ATR).</li>
+<li><strong>Après une prise de liquidité</strong> : le déplacement suit un balayage d'un sommet ou d'un creux évident.</li>
+<li><strong>Avec changement de structure</strong> : le déplacement casse un sommet ou un creux (MSS).</li>
+<li><strong>Dans la bonne moitié du range</strong> : FVG haussier en discount, baissier en premium (voir <em>Premium, discount et OTE</em>).</li>
+<li><strong>Encore « frais »</strong> : pas encore revisité.</li>
 </ol>
+
+<h2>Trader un FVG</h2>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Le Nasdaq 100 balaie le plus bas de la veille à 18 120 à l'ouverture de New York, puis monte de 90 points en trois bougies de 5 minutes, cassant le dernier sommet à 18 175. Le déplacement laisse un FVG entre 18 150 et 18 166 (milieu 18 158). Achat limite à 18 158, stop sous le creux du balayage avec marge, à 18 112 (46 points), objectif sur le plus haut de la veille à 18 260 (102 points) : environ 2,2 fois le risque.</p>
+</aside>
+<ul>
+<li><strong>Entrée</strong> : au bord du FVG, à son milieu, ou sur une confirmation en unité de temps inférieure à l'intérieur du FVG.</li>
+<li><strong>Stop</strong> : au-delà de l'extrême qui a précédé le déplacement (le creux du balayage), pas seulement au-delà du FVG, souvent trop proche.</li>
+<li><strong>Objectif</strong> : la prochaine réserve de liquidité externe.</li>
+</ul>
+
+<h2>Mesurer vos FVG</h2>
+<p>Pour savoir si vos FVG valent mieux que le hasard, relevez sur 100 cas : la part revisitée, et surtout, une fois revisités, la part qui part <strong>d'au moins 1R</strong> dans le sens attendu avant de toucher le stop. Comparez avec des zones prises au hasard de même taille, ou avec les chiffres de la simulation ci-dessus.</p>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Un FVG est la trace d'un déplacement rapide. Que le prix y revienne est banal, même par hasard ; ce qui compte, c'est le contexte (liquidité prise, structure cassée, bonne moitié du range) et la réaction quand il y revient.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Bougie 1 : plus haut 1,0850. Bougie 2 : de 1,0848 à 1,0885. Bougie 3 : plus bas 1,0862. Y a-t-il un FVG ? Où ?</summary>
+<p>Oui, un FVG haussier entre 1,0850 (plus haut de la bougie 1) et 1,0862 (plus bas de la bougie 3). Son milieu est à 1,0856.</p>
+</details>
+<details>
+<summary>Est-il exact de dire qu'aucune transaction n'a eu lieu dans un FVG ?</summary>
+<p>Non : la bougie du milieu a traversé ces prix. Le FVG marque un passage rapide et à sens unique, pas une absence d'échanges.</p>
+</details>
+<details>
+<summary>Votre FVG a été revisité. Est-ce une preuve que la méthode fonctionne ?</summary>
+<p>Non : même sur un marché aléatoire, plus de 80 % des FVG sont revisités. Il faut mesurer la réaction après le retour, comparée au hasard.</p>
+</details>

@@ -1,0 +1,158 @@
+<!--meta
+{
+    "slug": "le-modele-de-trade-ict-assembler-tous-les-concepts",
+    "title": "Le modèle de trade ICT — assembler tous les concepts",
+    "excerpt": "La séquence complète d'un trade ICT, du biais du matin à la sortie : fenêtre horaire, prise de liquidité, déplacement et changement de structure, entrée dans un FVG en zone de discount, stop, objectifs et gestion. Avec une checklist, un exemple chiffré de bout en bout, les causes d'échec et un plan de test.",
+    "readingTime": 6,
+    "accessLevel": "free",
+    "position": 11,
+    "module": "ict-inner-circle-trader"
+}
+-->
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Les concepts ICT prennent leur sens <strong>dans un ordre précis</strong> : biais, moment, liquidité, déplacement, zone, entrée, objectif.</li>
+<li>Le modèle de base, popularisé par le mentorat 2022 d'ICT : <strong>prise de liquidité → déplacement avec changement de structure → entrée dans le FVG créé → objectif sur la liquidité opposée</strong>.</li>
+<li>Chaque étape filtre : si l'une manque, il n'y a pas de trade. C'est ce qui distingue un modèle d'une collection d'outils.</li>
+<li>Le modèle doit être <strong>écrit, testé et mesuré</strong> comme n'importe quelle stratégie.</li>
+</ul>
+</div>
+
+<h2>La séquence complète</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" aria-hidden="true">
+  <defs><marker id="md" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#C8A45C" /></marker></defs>
+  <g font-family="sans-serif" text-anchor="middle">
+    <rect x="20" y="20" width="185" height="58" rx="8" fill="rgba(120,140,190,0.16)" stroke="rgba(150,170,220,0.7)" />
+    <rect x="228" y="20" width="185" height="58" rx="8" fill="rgba(120,140,190,0.16)" stroke="rgba(150,170,220,0.7)" />
+    <rect x="436" y="20" width="185" height="58" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
+    <rect x="436" y="120" width="185" height="58" rx="8" fill="rgba(210,101,90,0.14)" stroke="#D2655A" />
+    <rect x="228" y="120" width="185" height="58" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
+    <rect x="20" y="120" width="185" height="58" rx="8" fill="rgba(79,179,143,0.16)" stroke="#4FB38F" />
+    </g>
+  <g stroke="#C8A45C" stroke-width="1.5" fill="none">
+    <line x1="205" y1="49" x2="224" y2="49" marker-end="url(#md)" />
+    <line x1="413" y1="49" x2="432" y2="49" marker-end="url(#md)" />
+    <line x1="528" y1="78" x2="528" y2="116" marker-end="url(#md)" />
+    <line x1="436" y1="149" x2="417" y2="149" marker-end="url(#md)" />
+    <line x1="228" y1="149" x2="209" y2="149" marker-end="url(#md)" />
+  </g>
+  </svg>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:17.5%;top:13.15%">1. Biais et cible</span>
+<span class="doc-label" style="left:17.5%;top:19.27%">unité haute, veille</span>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:50%;top:13.15%">2. Fenêtre horaire</span>
+<span class="doc-label" style="left:50%;top:19.27%">Kill Zone, Silver Bullet</span>
+<span class="doc-label doc-label--lg doc-label--strong is-accent" style="left:82.5%;top:13.15%">3. Prise de liquidité</span>
+<span class="doc-label" style="left:82.5%;top:19.27%">contre le biais</span>
+<span class="doc-label doc-label--lg doc-label--strong is-negative" style="left:82.5%;top:46.48%">4. Déplacement + MSS</span>
+<span class="doc-label" style="left:82.5%;top:52.6%">dans le sens du biais</span>
+<span class="doc-label doc-label--lg doc-label--strong is-accent" style="left:50%;top:46.48%">5. Entrée</span>
+<span class="doc-label" style="left:50%;top:52.6%">FVG en zone favorable</span>
+<span class="doc-label doc-label--lg doc-label--strong is-positive" style="left:17.5%;top:46.48%">6. Objectif</span>
+<span class="doc-label" style="left:17.5%;top:52.6%">liquidité opposée</span>
+<span class="doc-label" style="left:50%;top:73.54%">Si une étape manque, pas de trade.</span>
+<span class="doc-label is-muted" style="left:50%;top:81.27%">Stop : au-delà de l'extrême de la prise de liquidité.</span>
+</div>
+<figcaption>Les six étapes du modèle de base : chacune filtre la suivante.</figcaption>
+</figure>
+
+<h2>Étape par étape</h2>
+<h3>1. Biais et cible</h3>
+<p>Avant la séance : direction de l'unité de temps supérieure, comportement de la veille, et cible de liquidité (voir <em>Le biais quotidien</em>). Exemple : « biais haussier, cible le plus haut de la veille ».</p>
+
+<h3>2. Fenêtre horaire</h3>
+<p>Le setup n'est recherché que dans les fenêtres prévues (Kill Zone de Londres ou de New York, fenêtre Silver Bullet). Hors fenêtre, pas de trade. Ce filtre élimine une grande partie des signaux de mauvaise qualité.</p>
+
+<h3>3. Prise de liquidité contre le biais</h3>
+<p>Le prix va d'abord chercher la liquidité <strong>dans le sens opposé au biais</strong> : sous un creux évident un jour haussier (le bas du range asiatique, le plus bas de la veille, des creux égaux). C'est le faux départ qui fournit la contrepartie du vrai mouvement.</p>
+
+<h3>4. Déplacement et changement de structure</h3>
+<p>Après la prise de liquidité, un mouvement rapide dans le sens du biais casse le dernier sommet interne : MSS. Sans ce déplacement, la prise de liquidité peut n'être que le début d'une vraie baisse.</p>
+
+<h3>5. Entrée</h3>
+<p>Le déplacement laisse un FVG. On entre quand le prix y revient, à son bord ou à son milieu, de préférence s'il se trouve sous l'équilibre du mouvement (en discount) pour un achat.</p>
+
+<h3>6. Stop et objectifs</h3>
+<ul>
+<li><strong>Stop</strong> : au-delà de l'extrême de la prise de liquidité, avec une marge.</li>
+<li><strong>Premier objectif</strong> : la liquidité interne la plus proche, ou un sommet récent.</li>
+<li><strong>Objectif principal</strong> : la cible du biais (liquidité externe).</li>
+<li><strong>Gestion</strong> : sortie partielle au premier objectif, stop ramené sous le dernier creux formé.</li>
+</ul>
+
+<h2>La checklist avant d'entrer</h2>
+<table>
+<thead><tr><th>Question</th><th class="ta-center">Oui / non</th></tr></thead>
+<tbody>
+<tr><td>Le biais du jour est-il écrit, avec une cible et une invalidation ?</td><td class="ta-center">□</td></tr>
+<tr><td>Sommes-nous dans une fenêtre horaire prévue, sans annonce majeure dans les 30 minutes ?</td><td class="ta-center">□</td></tr>
+<tr><td>Une liquidité évidente a-t-elle été prise contre le biais ?</td><td class="ta-center">□</td></tr>
+<tr><td>Un déplacement mesurable a-t-il cassé la structure dans le sens du biais ?</td><td class="ta-center">□</td></tr>
+<tr><td>Le FVG d'entrée est-il dans la bonne moitié du mouvement ?</td><td class="ta-center">□</td></tr>
+<tr><td>Le rapport gain/risque jusqu'à la cible est-il d'au moins 2 ?</td><td class="ta-center">□</td></tr>
+<tr><td>La taille est-elle calculée pour risquer mon pourcentage habituel ?</td><td class="ta-center">□</td></tr>
+</tbody>
+</table>
+<p>Une seule case vide, et le trade n'est pas pris. Notez-le quand même dans le journal comme « setup incomplet » : vous saurez plus tard si ces cas valaient le coup.</p>
+
+<h2>Un exemple de bout en bout</h2>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">GBP/USD, une journée haussière (illustratif)</strong>
+<ol>
+<li><strong>Biais</strong> : en journalier, structure haussière ; la veille a clôturé au-dessus du plus haut de l'avant-veille. Cible : sommets égaux à 1,2760. Invalidation : clôture en 1 heure sous 1,2655.</li>
+<li><strong>Fenêtre</strong> : Kill Zone de Londres, 8 h – 11 h à Paris.</li>
+<li><strong>Prise de liquidité</strong> : à 8 h 25, le prix passe sous le bas du range asiatique (1,2688) jusqu'à 1,2679, puis remonte.</li>
+<li><strong>Déplacement</strong> : trois bougies de 5 minutes larges cassent le dernier sommet interne à 1,2702 ; elles laissent un FVG entre 1,2690 et 1,2697.</li>
+<li><strong>Entrée</strong> : achat limite à 1,2693, au milieu du FVG, sous l'équilibre du mouvement (milieu de 1,2679 – 1,2712, soit environ 1,2696).</li>
+<li><strong>Stop</strong> : 1,2674, sous le plus bas de la prise de liquidité avec marge (19 pips).</li>
+<li><strong>Objectifs</strong> : moitié au plus haut de la veille à 1,2730 (37 pips), reste sur la cible à 1,2760 (67 pips), stop remonté sous le dernier creux après le premier objectif.</li>
+</ol>
+<p>Résultat si les deux objectifs sont atteints : (37 + 67) ÷ 2 = 52 pips en moyenne pour 19 pips de risque, soit environ 2,7R.</p>
+</aside>
+
+<h2>Pourquoi ce modèle échoue parfois</h2>
+<table>
+<thead><tr><th>Cause</th><th>Signe</th><th>Parade</th></tr></thead>
+<tbody>
+<tr><td>Biais faux</td><td>La prise de liquidité continue au lieu de revenir</td><td>Stop au-delà du balayage ; invalidation écrite</td></tr>
+<tr><td>Déplacement trop faible</td><td>MSS obtenu en bougies hésitantes</td><td>Critère de déplacement chiffré</td></tr>
+<tr><td>FVG traversé</td><td>Le prix clôture au-delà du FVG sans réagir</td><td>Sortir ou ne pas entrer ; ne pas déplacer le stop</td></tr>
+<tr><td>Annonce économique</td><td>Mouvement violent qui ignore la structure</td><td>Pas d'entrée dans les 30 minutes autour</td></tr>
+<tr><td>Cible trop lointaine</td><td>Le prix stagne à mi-chemin et revient</td><td>Sortie partielle au premier objectif</td></tr>
+</tbody>
+</table>
+
+<h2>Tester le modèle</h2>
+<ol class="doc-steps">
+<li><strong>Écrivez chaque étape</strong> avec des critères mesurables (taille du déplacement, définition du FVG, fenêtres horaires).</li>
+<li><strong>Rejouez 60 à 100 journées</strong> en mode « replay », bougie par bougie, en notant le biais <em>avant</em> de voir la journée.</li>
+<li><strong>Notez chaque setup</strong>, pris ou incomplet, avec son résultat en R, sa MAE et sa MFE.</li>
+<li><strong>Comparez</strong> : setups complets contre incomplets, Londres contre New York, biais juste contre biais faux.</li>
+<li><strong>Calculez l'espérance</strong> et le nombre de trades nécessaire pour la confirmer (voir <em>Construire sa stratégie price action</em>).</li>
+</ol>
+
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">Et ensuite ?</strong>
+<p>Le module <em>ICT avancé</em> présente les variantes de ce modèle : le Power of Three (lecture d'une journée ou d'une semaine entière), l'OTE, le Silver Bullet (fenêtres d'une heure), l'Unicorn (breaker et FVG), ainsi que les notions d'IPDA et de flux d'ordres institutionnel.</p>
+</aside>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Un modèle ICT est une suite d'étapes qui se filtrent : biais, moment, liquidité, déplacement, entrée, objectif. Sa force est la clarté de chaque décision et de chaque invalidation ; sa valeur réelle, seuls vos tests et votre journal peuvent la mesurer.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Un jour de biais haussier, le prix balaie le plus bas de la veille puis continue de baisser sans déplacement haussier. Que faites-vous ?</summary>
+<p>Rien : l'étape 4 (déplacement avec changement de structure) manque. Si la baisse continue jusqu'à l'invalidation écrite, le biais est abandonné pour la journée.</p>
+</details>
+<details>
+<summary>Où se place le stop dans le modèle de base ?</summary>
+<p>Au-delà de l'extrême de la prise de liquidité (sous le plus bas du balayage pour un achat), avec une marge.</p>
+</details>
+<details>
+<summary>Dans l'exemple, pourquoi l'entrée se fait-elle au milieu du FVG et non à son bord haut ?</summary>
+<p>Pour obtenir un meilleur prix, donc un stop plus court et un meilleur rapport gain/risque, au risque que l'ordre ne soit pas exécuté si le prix ne descend pas jusque-là.</p>
+</details>

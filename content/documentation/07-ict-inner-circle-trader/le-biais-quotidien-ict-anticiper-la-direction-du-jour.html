@@ -1,0 +1,118 @@
+<!--meta
+{
+    "slug": "le-biais-quotidien-ict-anticiper-la-direction-du-jour",
+    "title": "Le biais quotidien ICT — anticiper la direction du jour",
+    "excerpt": "Comment ICT construit chaque matin une hypothèse de direction : cible de liquidité de l'unité de temps supérieure, plus haut et plus bas de la veille, profil de la bougie journalière, ouverture de minuit, actifs corrélés. Une procédure écrite, les journées sans biais, et comment mesurer la justesse de vos biais.",
+    "readingTime": 6,
+    "accessLevel": "free",
+    "position": 9,
+    "module": "ict-inner-circle-trader"
+}
+-->
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Le <strong>biais quotidien</strong> est une hypothèse : « aujourd'hui, le prix a plus de chances d'aller chercher telle liquidité au-dessus (ou en dessous) ».</li>
+<li>Il se construit de haut en bas : <strong>cible de l'unité de temps supérieure</strong>, réaction aux repères de la veille, position par rapport à l'<strong>ouverture de minuit</strong>.</li>
+<li>Un biais s'écrit avec son <strong>invalidation</strong> : ce qui doit se produire pour qu'il soit faux.</li>
+<li>Certains jours n'ont pas de biais clair : le meilleur trade est alors de ne pas trader. Et la justesse de vos biais se <strong>mesure</strong> dans votre journal.</li>
+</ul>
+</div>
+
+<h2>Pourquoi un biais</h2>
+<p>Sans hypothèse de direction, chaque balayage, chaque FVG, chaque order block peut justifier un achat ou une vente. Le biais réduit le champ : il dit dans quel sens chercher les setups ce jour-là. Pour ICT, c'est la décision la plus importante de la journée, et celle qu'il faut prendre <strong>avant</strong> l'ouverture, à froid.</p>
+
+<h2>Les ingrédients</h2>
+<h3>1. La cible de l'unité de temps supérieure</h3>
+<p>En graphique journalier et hebdomadaire, où se trouve la prochaine réserve de liquidité non touchée (sommet, creux, sommets égaux) ou le prochain déséquilibre non comblé ? Le marché est-il en train de s'en approcher ou de s'en éloigner ? C'est le <em>draw on liquidity</em> de fond.</p>
+
+<h3>2. Le comportement par rapport à la veille</h3>
+<table>
+<thead><tr><th>Situation à la clôture de la veille</th><th>Lecture courante</th></tr></thead>
+<tbody>
+<tr><td>Clôture au-dessus du plus haut de l'avant-veille</td><td>Les acheteurs ont accepté des prix plus hauts : biais haussier vers la liquidité suivante au-dessus</td></tr>
+<tr><td>Dépassement du plus haut de l'avant-veille, mais clôture en dessous</td><td>Balayage de la liquidité acheteuse sans acceptation : alerte baissière</td></tr>
+<tr><td>Bougie incluse dans celle de la veille</td><td>Pas d'information directionnelle : journée souvent sans biais clair</td></tr>
+<tr><td>Réaction nette sur un FVG ou un order block journalier</td><td>Biais dans le sens de la réaction</td></tr>
+</tbody>
+</table>
+
+<h3>3. Le profil de la bougie journalière</h3>
+<p>ICT décrit une bougie journalière haussière en trois temps (le <em>Power of Three</em>, détaillé dans le module avancé) : une ouverture, un faux départ sous l'ouverture qui forme le plus bas du jour (souvent pendant Londres), puis l'expansion vers le haut (souvent pendant New York). D'où une règle pratique : <strong>un jour de biais haussier, on cherche à acheter sous le prix d'ouverture</strong>, et inversement.</p>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
+  <line x1="40" y1="140" x2="600" y2="140" stroke="rgba(200,164,92,0.7)" stroke-dasharray="5 4" />
+  <line x1="40" y1="45" x2="600" y2="45" stroke="rgba(79,179,143,0.6)" stroke-dasharray="4 4" />
+  <polyline points="60,140 110,130 150,150 190,185 215,200 240,175 280,165 320,150 360,120 410,95 460,70 510,50 560,60" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+  <circle cx="215" cy="200" r="5" fill="#D2655A" />
+  <g fill="#A8B3AE" font-size="12" font-family="sans-serif" text-anchor="middle">
+    </g>
+  </svg>
+<span class="doc-label is-muted" style="left:9.38%;top:91.12%">minuit</span>
+<span class="doc-label is-muted" style="left:31.25%;top:91.12%">Londres</span>
+<span class="doc-label is-muted" style="left:62.5%;top:91.12%">New York</span>
+<span class="doc-label is-muted" style="left:87.5%;top:91.12%">fin de journée</span>
+<span class="doc-label doc-label--end is-accent" style="left:93.75%;top:51.92%">ouverture de minuit</span>
+<span class="doc-label doc-label--end is-positive" style="left:93.75%;top:13.52%">cible : plus haut de la veille</span>
+<span class="doc-label is-negative" style="left:33.59%;top:85.52%">faux départ sous l'ouverture</span>
+<span class="doc-label is-positive" style="left:53.12%;top:78.32%">zone d'achat : sous l'ouverture</span>
+</div>
+<figcaption>Profil type d'une journée haussière selon ICT : faux départ sous l'ouverture de minuit pendant Londres, puis expansion vers la cible pendant New York (illustration, heures de New York).</figcaption>
+</figure>
+
+<h3>4. L'ouverture de minuit</h3>
+<p>ICT utilise le prix de minuit (heure de New York, soit 6 h à Paris la plupart de l'année) comme repère de la « vraie » ouverture de la journée. Sous ce prix, on est en discount pour la journée ; au-dessus, en premium. Un jour de biais haussier, les achats se cherchent sous l'ouverture de minuit.</p>
+
+<h3>5. Les actifs corrélés</h3>
+<p>Pour l'EUR/USD, l'indice du dollar (DXY) donne une confirmation : un biais haussier sur l'EUR/USD est plus cohérent si le dollar est en biais baissier. Une <strong>divergence SMT</strong> (l'EUR/USD fait un nouveau creux mais le GBP/USD non, par exemple) peut signaler qu'un balayage est en cours plutôt qu'une vraie baisse.</p>
+
+<h2>La procédure du matin</h2>
+<ol class="doc-steps">
+<li><strong>Hebdomadaire et journalier</strong> : notez la cible de liquidité de fond et la structure.</li>
+<li><strong>Veille</strong> : comment la bougie a-t-elle clôturé par rapport à l'avant-veille ? Y a-t-il eu un balayage ?</li>
+<li><strong>Calendrier</strong> : quelles statistiques aujourd'hui, à quelle heure ? Un jour de décision de banque centrale modifie tout.</li>
+<li><strong>Écrivez le biais</strong> en une phrase : « biais haussier, cible le plus haut de la veille à 1,0950 ; j'achète sous l'ouverture de minuit ; invalidation : clôture en 1 heure sous 1,0880 ».</li>
+<li><strong>Ou écrivez « pas de biais »</strong>, et ne tradez pas, ou seulement en taille réduite.</li>
+</ol>
+
+<h2>Les journées sans biais</h2>
+<ul>
+<li>Veille incluse dans l'avant-veille, structure confuse.</li>
+<li>Prix au milieu du range hebdomadaire, sans cible proche.</li>
+<li>Journée dominée par une annonce majeure (décision de la Fed, emploi américain) : le mouvement d'avant l'annonce dit peu.</li>
+<li>Veilles de jours fériés, fins d'année.</li>
+</ul>
+<p>Savoir dire « pas de biais aujourd'hui » est une compétence en soi : ces journées produisent souvent les pertes les plus évitables.</p>
+
+<h2>Mesurer la justesse de vos biais</h2>
+<p>Ajoutez trois colonnes à votre journal : <strong>le biais du matin</strong> (haussier, baissier, aucun), <strong>la cible</strong>, et le <strong>résultat</strong> (cible atteinte ou non, sens de la journée). Après 40 à 60 jours :</p>
+<ul>
+<li>si votre biais est juste nettement plus souvent qu'une fois sur deux, il apporte de l'information ;</li>
+<li>s'il est juste une fois sur deux, il n'en apporte pas, quelle que soit la sophistication de l'analyse ;</li>
+<li>regardez aussi vos résultats de trading selon que le biais était juste ou faux : c'est souvent là que se cache l'essentiel des pertes.</li>
+</ul>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Lundi, le Nasdaq 100 a clôturé au-dessus du plus haut de vendredi. En journalier, le prochain sommet non touché est à 18 600. Mardi matin, le biais est haussier, cible 18 600. L'ouverture de minuit est à 18 420. Pendant Londres, l'indice descend à 18 370, sous l'ouverture, balaie le plus bas de lundi après-midi, puis casse un petit sommet en 15 minutes. Le trader achète dans le FVG laissé par ce mouvement, stop sous 18 370, cible 18 600. Invalidation écrite le matin : clôture en 1 heure sous 18 350.</p>
+</aside>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Le biais quotidien est une hypothèse écrite, construite de haut en bas, avec une cible et une invalidation. Il oriente la recherche de setups, autorise à ne rien faire les jours confus, et se juge dans votre journal, pas dans votre mémoire.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>La veille a dépassé le plus haut de l'avant-veille puis clôturé en dessous. Quel biais cela suggère-t-il ?</summary>
+<p>Plutôt une alerte baissière : la liquidité au-dessus a été balayée sans que les prix plus hauts soient acceptés.</p>
+</details>
+<details>
+<summary>Un jour de biais haussier, où ICT cherche-t-il à acheter par rapport à l'ouverture de minuit ?</summary>
+<p>Sous l'ouverture de minuit, c'est-à-dire en discount par rapport à la journée.</p>
+</details>
+<details>
+<summary>Votre biais du matin s'est révélé juste 26 fois sur 50 jours. Qu'en concluez-vous ?</summary>
+<p>Qu'il n'apporte pratiquement pas d'information (52 %, proche d'une chance sur deux). Il faut revoir la méthode de construction du biais, ou réserver le trading aux jours où il est le plus clair.</p>
+</details>

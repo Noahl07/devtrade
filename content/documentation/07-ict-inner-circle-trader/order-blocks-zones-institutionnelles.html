@@ -2,122 +2,131 @@
 {
     "slug": "order-blocks-zones-institutionnelles",
     "title": "Order Blocks — zones institutionnelles",
-    "excerpt": "Définition, identification et trading des Order Blocks bullish et bearish.",
-    "readingTime": 15,
+    "excerpt": "Ce qu'est un order block selon ICT, l'hypothèse qui le justifie, comment le tracer (corps, mèche, seuil moyen), les critères qui le rendent crédible, les breakers et mitigation blocks (définitions précises), les rejection blocks, et comment l'utiliser avec un FVG.",
+    "readingTime": 5,
     "accessLevel": "free",
-    "position": 5,
+    "position": 7,
     "module": "ict-inner-circle-trader"
 }
 -->
-<h2>Qu'est-ce qu'un Order Block ?</h2>
-<p>Un <strong>Order Block (OB)</strong> est la dernière bougie allant à contre-sens juste avant un mouvement impulsif institutionnel. C'est la zone où les institutions ont placé leurs ordres massifs — et vers laquelle le prix revient souvent pour "remplir" les ordres restants.</p>
-<p>En termes simples : JPMorgan doit acheter 10 milliards d'EUR/USD. Ils achètent progressivement pendant que le prix baisse (bougies baissières) jusqu'à avoir accumulé leur position, puis laissent le prix monter. La zone de ces dernières bougies baissières avant la montée = l'Order Block bullish.</p>
- 
-<h2>Order Block Bullish</h2>
-<p>Dernière bougie <strong>baissière</strong> avant une impulsion haussière qui casse la structure (BOS).</p>
- 
-<svg width="100%" viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:480px;margin:1.5rem auto">
-  <!-- Bougies baissières avant OB -->
-  <rect x="30" y="140" width="20" height="45" rx="2" fill="#e05555" opacity="0.5"/>
-  <line x1="40" y1="132" x2="40" y2="140" stroke="#e05555" stroke-width="1.5" opacity="0.5"/>
-  <line x1="40" y1="185" x2="40" y2="195" stroke="#e05555" stroke-width="1.5" opacity="0.5"/>
- 
-  <rect x="58" y="152" width="20" height="42" rx="2" fill="#e05555" opacity="0.5"/>
-  <line x1="68" y1="145" x2="68" y2="152" stroke="#e05555" stroke-width="1.5" opacity="0.5"/>
-  <line x1="68" y1="194" x2="68" y2="202" stroke="#e05555" stroke-width="1.5" opacity="0.5"/>
- 
-  <!-- OB candle -->
-  <rect x="86" y="160" width="22" height="44" rx="2" fill="#e05555"/>
-  <line x1="97" y1="150" x2="97" y2="160" stroke="#e05555" stroke-width="2"/>
-  <line x1="97" y1="204" x2="97" y2="215" stroke="#e05555" stroke-width="2"/>
- 
-  <!-- OB zone -->
-  <rect x="84" y="148" width="26" height="69" rx="3" fill="rgba(62,180,137,0.12)" stroke="#3EB489" stroke-width="1.5"/>
-  <text x="97" y="232" text-anchor="middle" fill="#3EB489" font-size="11" font-family="sans-serif" font-weight="bold">OB</text>
- 
-  <!-- Impulsion haussière -->
-  <rect x="116" y="115" width="20" height="50" rx="2" fill="#3EB489" opacity="0.9"/>
-  <line x1="126" y1="106" x2="126" y2="115" stroke="#3EB489" stroke-width="1.5"/>
-  <rect x="142" y="85" width="20" height="45" rx="2" fill="#3EB489"/>
-  <line x1="152" y1="76" x2="152" y2="85" stroke="#3EB489" stroke-width="1.5"/>
-  <rect x="168" y="60" width="20" height="40" rx="2" fill="#3EB489"/>
-  <line x1="178" y1="52" x2="178" y2="60" stroke="#3EB489" stroke-width="1.5"/>
- 
-  <!-- BOS label -->
-  <rect x="155" y="42" width="40" height="18" rx="3" fill="rgba(62,180,137,0.2)" stroke="#3EB489" stroke-width="1"/>
-  <text x="175" y="55" text-anchor="middle" fill="#3EB489" font-size="10" font-family="sans-serif" font-weight="bold">BOS ↑</text>
- 
-  <!-- Retour sur OB -->
-  <rect x="198" y="130" width="18" height="38" rx="2" fill="#e05555" opacity="0.6"/>
-  <rect x="222" y="148" width="18" height="38" rx="2" fill="#e05555" opacity="0.6"/>
-  <rect x="246" y="158" width="18" height="44" rx="2" fill="#e05555" opacity="0.6"/>
- 
-  <!-- OB zone lines extended -->
-  <line x1="84" y1="160" x2="420" y2="160" stroke="#3EB489" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.4"/>
-  <line x1="84" y1="204" x2="420" y2="204" stroke="#3EB489" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.4"/>
- 
-  <!-- Retour arrow -->
-  <path d="M255,180 Q275,210 200,205" stroke="#D4A94B" stroke-width="1.5" fill="none" stroke-dasharray="3,3"/>
-  <text x="270" y="215" text-anchor="middle" fill="#D4A94B" font-size="10" font-family="sans-serif">Retour OB → entrée</text>
- 
-  <!-- Reaction -->
-  <rect x="270" y="140" width="18" height="42" rx="2" fill="#3EB489" opacity="0.8"/>
-  <rect x="294" y="115" width="18" height="38" rx="2" fill="#3EB489" opacity="0.8"/>
-  <rect x="318" y="90" width="18" height="38" rx="2" fill="#3EB489" opacity="0.8"/>
-</svg>
- 
-<h2>Order Block Bearish</h2>
-<p>Dernière bougie <strong>haussière</strong> avant une impulsion baissière qui casse la structure (BOS).</p>
- 
-<svg width="100%" viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:480px;margin:1.5rem auto">
-  <!-- Bougies haussières avant OB -->
-  <rect x="30" y="90" width="20" height="45" rx="2" fill="#3EB489" opacity="0.5"/>
-  <rect x="58" y="78" width="20" height="42" rx="2" fill="#3EB489" opacity="0.5"/>
- 
-  <!-- OB candle -->
-  <rect x="86" y="65" width="22" height="42" rx="2" fill="#3EB489"/>
-  <line x1="97" y1="55" x2="97" y2="65" stroke="#3EB489" stroke-width="2"/>
-  <line x1="97" y1="107" x2="97" y2="118" stroke="#3EB489" stroke-width="2"/>
- 
-  <!-- OB zone -->
-  <rect x="84" y="53" width="26" height="67" rx="3" fill="rgba(224,85,85,0.12)" stroke="#e05555" stroke-width="1.5"/>
-  <text x="97" y="135" text-anchor="middle" fill="#e05555" font-size="11" font-family="sans-serif" font-weight="bold">OB</text>
- 
-  <!-- Impulsion baissière -->
-  <rect x="116" y="108" width="20" height="50" rx="2" fill="#e05555" opacity="0.9"/>
-  <rect x="142" y="140" width="20" height="52" rx="2" fill="#e05555"/>
-  <rect x="168" y="168" width="20" height="48" rx="2" fill="#e05555"/>
- 
-  <!-- BOS label -->
-  <rect x="152" y="198" width="40" height="18" rx="3" fill="rgba(224,85,85,0.2)" stroke="#e05555" stroke-width="1"/>
-  <text x="172" y="211" text-anchor="middle" fill="#e05555" font-size="10" font-family="sans-serif" font-weight="bold">BOS ↓</text>
- 
-  <!-- Retour sur OB (haussier) -->
-  <rect x="198" y="100" width="18" height="38" rx="2" fill="#3EB489" opacity="0.6"/>
-  <rect x="222" y="80" width="18" height="36" rx="2" fill="#3EB489" opacity="0.6"/>
-  <rect x="246" y="62" width="18" height="40" rx="2" fill="#3EB489" opacity="0.6"/>
- 
-  <!-- OB zone lines -->
-  <line x1="84" y1="65" x2="420" y2="65" stroke="#e05555" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.4"/>
-  <line x1="84" y1="107" x2="420" y2="107" stroke="#e05555" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.4"/>
- 
-  <!-- Return arrow -->
-  <text x="270" y="50" text-anchor="middle" fill="#D4A94B" font-size="10" font-family="sans-serif">Retour OB → vente</text>
- 
-  <!-- Reaction baissière -->
-  <rect x="270" y="90" width="18" height="45" rx="2" fill="#e05555" opacity="0.8"/>
-  <rect x="294" y="118" width="18" height="48" rx="2" fill="#e05555" opacity="0.8"/>
-  <rect x="318" y="145" width="18" height="48" rx="2" fill="#e05555" opacity="0.8"/>
-</svg>
- 
-<h2>Critères de validation d'un Order Block</h2>
-<ol>
-<li><strong>Présence d'un BOS ou CHoCH</strong> après l'OB — sans mouvement impulsif qui casse la structure, ce n'est pas un OB institutionnel</li>
-<li><strong>Liquidity sweep idéalement avant le départ</strong> — l'OB est plus valide si un stop hunt a précédé</li>
-<li><strong>Fair Value Gap créé lors de l'impulsion</strong> — confirme que le mouvement était réellement institutionnel</li>
-<li><strong>L'OB n'a pas encore été mitigé</strong> — une fois le prix revenu sur l'OB et reparti, il perd de sa valeur</li>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Un <strong>order block</strong> haussier est la dernière bougie baissière (ou le dernier groupe) avant un <strong>déplacement</strong> haussier qui casse la structure ; l'inverse pour un order block baissier.</li>
+<li>L'hypothèse : de gros ordres ont été exécutés là, et une partie reste à servir. Quand le prix y revient, il peut réagir. C'est une <strong>hypothèse de travail</strong>, pas un fait observable.</li>
+<li>Un order block n'est crédible que s'il est suivi d'un <strong>déplacement</strong>, d'un <strong>changement de structure</strong> et, idéalement, d'un <strong>FVG</strong>.</li>
+<li>Un <strong>breaker</strong> est une zone d'ordres qui a échoué après une prise de liquidité et sert ensuite dans l'autre sens.</li>
+</ul>
+</div>
+
+<h2>La définition</h2>
+<ul>
+<li><strong>Order block haussier</strong> : la dernière bougie qui clôture en baisse avant un mouvement haussier rapide qui casse un sommet.</li>
+<li><strong>Order block baissier</strong> : la dernière bougie qui clôture en hausse avant un mouvement baissier rapide qui casse un creux.</li>
+</ul>
+<p>Quand plusieurs bougies de même sens se suivent juste avant le déplacement, on les regroupe en une seule zone.</p>
+
+<h2>L'hypothèse derrière l'order block</h2>
+<p>Imaginez un grand acheteur qui doit acquérir une position énorme. Il achète progressivement pendant une petite baisse, en absorbant les vendeurs, puis le prix lui échappe et monte violemment : il n'a pas pu acheter tout ce qu'il voulait. Selon ICT, il défendra cette zone si le prix y revient, pour compléter sa position ou au moins sortir à l'équilibre. D'où l'idée que le prix réagit souvent en revenant sur la dernière bougie baissière avant la hausse.</p>
+<p>Cette histoire est plausible, mais invérifiable de l'extérieur : on ne voit pas les ordres. Il faut donc juger les order blocks comme toute autre zone : sur leurs résultats mesurés.</p>
+
+<h2>Tracer un order block</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
+  <rect x="150" y="135" width="380" height="40" fill="rgba(79,179,143,0.14)" stroke="rgba(79,179,143,0.6)" stroke-dasharray="4 3" />
+  <line x1="150" y1="155" x2="530" y2="155" stroke="rgba(79,179,143,0.6)" stroke-dasharray="2 3" />
+  <line x1="80" y1="100" x2="80" y2="140" stroke="#D2655A" stroke-width="2" /><rect x="68" y="108" width="24" height="25" rx="2" fill="#D2655A" />
+  <line x1="120" y1="118" x2="120" y2="165" stroke="#D2655A" stroke-width="2" /><rect x="108" y="125" width="24" height="30" rx="2" fill="#D2655A" />
+  <line x1="165" y1="128" x2="165" y2="185" stroke="#D2655A" stroke-width="2" /><rect x="153" y="135" width="24" height="40" rx="2" fill="#D2655A" />
+  <line x1="210" y1="60" x2="210" y2="178" stroke="#4FB38F" stroke-width="2" /><rect x="197" y="70" width="26" height="102" rx="2" fill="#4FB38F" />
+  <line x1="255" y1="30" x2="255" y2="85" stroke="#4FB38F" stroke-width="2" /><rect x="243" y="38" width="24" height="40" rx="2" fill="#4FB38F" />
+  <line x1="30" y1="95" x2="300" y2="95" stroke="rgba(200,164,92,0.6)" stroke-dasharray="4 4" />
+  <polyline points="270,40 330,70 380,100 430,140 470,120 520,70 570,50" fill="none" stroke="#D9D3C3" stroke-width="2" />
+  <circle cx="430" cy="140" r="5" fill="#4FB38F" />
+  </svg>
+<span class="doc-label doc-label--strong is-positive" style="left:25.78%;top:80.25%">order block</span>
+<span class="doc-label doc-label--start is-accent" style="left:5.31%;top:33.5%">sommet cassé</span>
+<span class="doc-label doc-label--start is-positive" style="left:84.38%;top:62.32%">seuil moyen</span>
+<span class="doc-label" style="left:67.19%;top:78.32%">retour sur l'order block</span>
+</div>
+<figcaption>Un order block haussier : la dernière bougie baissière avant le déplacement qui casse le sommet. Le prix y revient plus tard (illustration).</figcaption>
+</figure>
+<table>
+<thead><tr><th>Élément</th><th>Usage courant</th></tr></thead>
+<tbody>
+<tr><td>Zone du corps (ouverture à clôture)</td><td>Zone principale d'entrée, plus étroite</td></tr>
+<tr><td>Zone complète (plus haut à plus bas)</td><td>Zone plus large ; le stop se place souvent au-delà</td></tr>
+<tr><td>Seuil moyen (<em>mean threshold</em>)</td><td>Milieu du corps. Une clôture au-delà affaiblit fortement l'order block selon ICT</td></tr>
+</tbody>
+</table>
+
+<h2>Les critères qui le rendent crédible</h2>
+<ol class="doc-steps">
+<li><strong>Déplacement</strong> : le mouvement qui suit est rapide et large, pas une montée hésitante.</li>
+<li><strong>Changement de structure</strong> : ce mouvement casse un sommet (BOS ou MSS).</li>
+<li><strong>FVG</strong> : le déplacement laisse un déséquilibre, preuve qu'un seul camp a été servi.</li>
+<li><strong>Prise de liquidité préalable</strong> : l'order block s'est formé juste après le balayage d'un creux évident.</li>
+<li><strong>Fraîcheur</strong> : le prix n'y est pas encore revenu (on dit qu'il n'est pas encore « mitigé »).</li>
+<li><strong>Emplacement</strong> : dans la moitié discount du range pour un order block haussier.</li>
 </ol>
- 
-<h2>Le Breaker Block</h2>
-<p>Un <strong>Breaker Block</strong> est un OB qui a échoué — le prix est passé à travers. Un OB bullish cassé devient un Breaker Block bearish (résistance). Un OB bearish cassé devient un Breaker Block bullish (support).</p>
-<blockquote>Les traders qui avaient acheté sur l'OB bullish sont maintenant en perte. Quand le prix revient sur ce niveau, ils veulent sortir au breakeven — créant une pression vendeuse qui transforme l'ancien support en résistance.</blockquote>
+
+<h2>Le breaker</h2>
+<p>Le breaker est l'une des notions ICT les plus utiles, et les plus mal définies sur internet. La séquence pour un <strong>breaker haussier</strong> :</p>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" aria-hidden="true">
+  <polyline points="30,120 80,160 130,90 180,175 230,195 280,110 310,70 345,108 380,80 430,55 520,35" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+  <rect x="115" y="85" width="420" height="30" fill="rgba(79,179,143,0.14)" stroke="rgba(79,179,143,0.6)" stroke-dasharray="4 3" />
+  <line x1="60" y1="160" x2="260" y2="160" stroke="rgba(210,101,90,0.6)" stroke-dasharray="4 4" />
+  <g fill="#E2CB91"><circle cx="80" cy="160" r="4" /><circle cx="130" cy="90" r="4" /><circle cx="230" cy="195" r="4" /><circle cx="345" cy="108" r="4" /></g>
+  </svg>
+<span class="doc-label is-accent" style="left:12.5%;top:74.08%">1. creux</span>
+<span class="doc-label is-accent" style="left:20.31%;top:29.92%">2. sommet</span>
+<span class="doc-label is-negative" style="left:35.94%;top:88.25%">3. creux plus bas (balayage)</span>
+<span class="doc-label is-positive" style="left:46.88%;top:22.42%">4. cassure du sommet 2</span>
+<span class="doc-label doc-label--start is-positive" style="left:61.72%;top:56.58%">5. retour sur le breaker</span>
+</div>
+<figcaption>Breaker haussier : le prix balaie le creux 1, puis casse le sommet 2. La zone de la dernière bougie haussière avant la descente (au sommet 2) devient support (illustration).</figcaption>
+</figure>
+<ol class="doc-steps">
+<li><strong>Un creux</strong>, puis <strong>un sommet</strong>.</li>
+<li><strong>Un nouveau creux plus bas</strong>, qui balaie la liquidité sous le premier creux.</li>
+<li><strong>Un déplacement haussier</strong> qui casse le sommet : c'est un MSS.</li>
+<li><strong>La zone d'origine de la descente</strong> (la dernière bougie haussière au sommet, un order block baissier qui a échoué) devient support : c'est le breaker.</li>
+<li><strong>Entrée</strong> au retour sur cette zone, stop sous le creux du balayage.</li>
+</ol>
+<p>La logique : ceux qui ont vendu sur cette zone se retrouvent piégés par la hausse, et beaucoup voudront racheter pour sortir à l'équilibre quand le prix y reviendra.</p>
+<p>Le <strong>mitigation block</strong> suit la même idée, mais <strong>sans</strong> nouveau creux plus bas : le prix échoue à faire un nouvel extrême avant de casser le sommet. Il est en général considéré comme moins fort que le breaker.</p>
+
+<h2>Autres zones d'ordres</h2>
+<table>
+<thead><tr><th>Zone</th><th>Définition</th></tr></thead>
+<tbody>
+<tr><td>Rejection block</td><td>Zone formée par les longues mèches d'un sommet ou d'un creux ; on vise souvent la zone entre le corps et l'extrême de la mèche</td></tr>
+<tr><td>Propulsion block</td><td>Bougie qui réagit sur un order block et « propulse » le prix ; zone de continuation</td></tr>
+<tr><td>Zone d'offre et de demande</td><td>Notion proche, venue de l'analyse classique : la base d'où est parti un mouvement fort</td></tr>
+</tbody>
+</table>
+
+<h2>Order block et FVG ensemble</h2>
+<p>Un déplacement laisse souvent un order block à son origine et un FVG juste au-dessus. ICT privilégie souvent le FVG pour entrer (plus proche du prix) et l'order block comme zone de défense (le stop au-delà). Quand les deux se chevauchent, la zone gagne en lisibilité. Le module avancé détaille le cas particulier où un breaker et un FVG se superposent (le modèle « Unicorn »).</p>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Un order block n'est pas n'importe quelle bougie inverse : c'est l'origine d'un déplacement qui a cassé la structure. Le breaker est l'order block qui a échoué après une prise de liquidité. Les deux sont des hypothèses sur des ordres invisibles : définissez-les précisément et mesurez leurs réactions.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Une bougie baissière est suivie d'une montée lente de petites bougies qui ne casse aucun sommet. Est-ce un order block ?</summary>
+<p>Non au sens d'ICT : il manque le déplacement et le changement de structure qui le rendent significatif.</p>
+</details>
+<details>
+<summary>Quelle différence entre un breaker et un mitigation block ?</summary>
+<p>Le breaker se forme après un nouvel extrême qui balaie la liquidité, puis un changement de structure ; le mitigation block se forme sans ce nouvel extrême.</p>
+</details>
+<details>
+<summary>Le prix clôture sous le seuil moyen d'un order block haussier. Que conclure ?</summary>
+<p>Selon ICT, l'order block est fortement affaibli : les acheteurs censés le défendre ne l'ont pas fait. Beaucoup de traders l'abandonnent à ce stade.</p>
+</details>
