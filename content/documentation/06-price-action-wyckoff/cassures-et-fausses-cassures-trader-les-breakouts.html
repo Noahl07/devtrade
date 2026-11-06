@@ -1,0 +1,121 @@
+<!--meta
+{
+    "slug": "cassures-et-fausses-cassures-trader-les-breakouts",
+    "title": "Cassures et fausses cassures — trader les breakouts",
+    "excerpt": "Ce qui alimente une cassure, pourquoi la plupart échouent (même un marché aléatoire en fait échouer 70 % dans notre simulation), les conditions qui favorisent une vraie cassure, trois façons d'entrer, comment trader la fausse cassure, et comment mesurer tout cela sur vos propres données.",
+    "readingTime": 6,
+    "accessLevel": "free",
+    "position": 4,
+    "module": "price-action-wyckoff"
+}
+-->
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Une cassure est alimentée par les <strong>ordres accumulés au-delà du niveau</strong> : stops des uns, entrées sur cassure des autres.</li>
+<li>Repasser sous un niveau qu'on vient de casser est <strong>normal</strong> : dans notre simulation d'un marché purement aléatoire, près de 70 % des cassures le font dans les dix bougies suivantes. Une cassure ratée n'est pas forcément une « manipulation ».</li>
+<li>Les cassures qui tiennent ont souvent des points communs : <strong>compression préalable</strong>, sens de la tendance de fond, séance active, <strong>suite immédiate</strong> après la cassure.</li>
+<li>La <strong>fausse cassure</strong> est elle-même un setup : quand le prix réintègre vite la zone, ceux qui ont acheté la cassure sont piégés.</li>
+</ul>
+</div>
+
+<h2>Ce qui alimente une cassure</h2>
+<p>Au-dessus d'une résistance évidente attendent deux sortes d'ordres d'achat : les <strong>stops des vendeurs</strong> (qui doivent racheter pour sortir) et les <strong>entrées sur cassure</strong> des acheteurs. Quand le prix franchit le niveau, ces ordres se déclenchent ensemble et ajoutent une pression acheteuse soudaine. C'est le carburant de la cassure.</p>
+<p>Mais ce carburant se consomme vite. Une fois ces ordres exécutés, il faut de <strong>nouveaux acheteurs</strong>, prêts à payer plus cher, pour que le mouvement continue. S'ils ne viennent pas, le prix retombe : la cassure échoue, et ceux qui l'ont achetée deviennent vendeurs à leur tour.</p>
+
+<h2>Le point de comparaison : le hasard</h2>
+<p>Nous avons simulé un marché qui monte ou baisse au hasard, sans aucune tendance, et relevé plus de 14 000 cassures du plus haut des 20 dernières bougies. Dans <strong>69,5 % des cas</strong>, le prix est repassé sous le niveau cassé dans les dix bougies suivantes. C'est logique : juste après la cassure, le prix est tout près du niveau, et le moindre mouvement de retour le fait repasser dessous.</p>
+<aside class="doc-callout doc-callout--tip">
+<strong class="doc-callout__title">Ce que cela change</strong>
+<p>Un taux d'échec élevé n'a rien d'anormal. La question n'est pas « cette cassure va-t-elle échouer ? », mais « mes cassures, dans mes conditions, font-elles <strong>mieux que le hasard</strong> ? ». Et une méthode qui achète toutes les cassures a toutes les chances de payer surtout des frais.</p>
+</aside>
+
+<h2>Trois issues possibles</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
+  <g stroke="#C8A45C" stroke-width="1.5" stroke-dasharray="5 4">
+    <line x1="20" y1="120" x2="210" y2="120" /><line x1="225" y1="120" x2="415" y2="120" /><line x1="430" y1="120" x2="620" y2="120" />
+  </g>
+  <polyline points="30,170 60,128 80,160 100,125 120,150 140,100 165,75 200,45" fill="none" stroke="#4FB38F" stroke-width="2.2" />
+  <polyline points="235,170 265,128 285,160 305,125 325,100 345,122 370,90 405,55" fill="none" stroke="rgba(150,170,220,0.95)" stroke-width="2.2" />
+  <polyline points="440,170 470,128 490,160 510,125 530,100 545,112 565,150 605,190" fill="none" stroke="#D2655A" stroke-width="2.2" />
+  </svg>
+<span class="doc-label doc-label--lg doc-label--strong is-positive" style="left:17.97%;top:9.38%">Cassure directe</span>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:50%;top:9.38%">Cassure + retour</span>
+<span class="doc-label doc-label--lg doc-label--strong is-negative" style="left:82.03%;top:9.38%">Fausse cassure</span>
+<span class="doc-label" style="left:17.97%;top:80.32%">pas de seconde chance</span>
+<span class="doc-label" style="left:50%;top:80.32%">entrée sur le retour</span>
+<span class="doc-label" style="left:82.03%;top:80.32%">acheteurs piégés</span>
+<span class="doc-label is-muted" style="left:50%;top:94.32%">Pointillés : le niveau cassé.</span>
+</div>
+<figcaption>Après une cassure, le prix part directement, revient tester le niveau avant de repartir, ou réintègre la zone (illustration).</figcaption>
+</figure>
+
+<h2>Ce qui favorise une vraie cassure</h2>
+<table>
+<thead><tr><th>Condition</th><th>Pourquoi elle compte</th></tr></thead>
+<tbody>
+<tr><td>Compression avant la cassure</td><td>La volatilité forme des grappes : après une longue période calme, une expansion devient plus probable (voir <em>Les régimes de marché</em>)</td></tr>
+<tr><td>Sens de la tendance de l'unité de temps supérieure</td><td>Les cassures dans le sens de la tendance ont des acheteurs « naturels » derrière elles</td></tr>
+<tr><td>Séance active</td><td>Une cassure à 3 h du matin sur l'EUR/USD a peu de liquidité pour la soutenir</td></tr>
+<tr><td>Clôture franche au-delà du niveau</td><td>Une mèche qui dépasse puis revient montre au contraire un refus</td></tr>
+<tr><td>Suite immédiate</td><td>La bougie qui suit la cassure prolonge le mouvement : de nouveaux acheteurs arrivent</td></tr>
+<tr><td>Volume réel en hausse (actions, futures)</td><td>Signe d'une participation large</td></tr>
+<tr><td>Espace jusqu'au prochain obstacle</td><td>Une cassure qui bute aussitôt sur un niveau majeur a peu de chemin à parcourir</td></tr>
+</tbody>
+</table>
+
+<h2>Trois façons d'entrer</h2>
+<table>
+<thead><tr><th>Méthode</th><th>Avantages</th><th>Inconvénients</th></tr></thead>
+<tbody>
+<tr><td>Ordre stop au-delà du niveau (anticipation)</td><td>On ne rate jamais le départ</td><td>On achète aussi toutes les fausses cassures ; glissement fréquent</td></tr>
+<tr><td>Entrée sur clôture au-delà</td><td>Filtre les simples mèches</td><td>Prix d'entrée souvent éloigné du niveau, donc stop plus long</td></tr>
+<tr><td>Entrée sur le retour vers le niveau cassé</td><td>Stop court, meilleur rapport gain/risque, confirmation de la polarité</td><td>Les cassures les plus fortes ne reviennent pas : on les rate</td></tr>
+</tbody>
+</table>
+<p>Aucune n'est meilleure dans l'absolu. Beaucoup de traders combinent : une petite position sur la clôture, complétée sur le retour s'il se produit.</p>
+
+<h2>Trader la fausse cassure</h2>
+<p>Quand le prix franchit un niveau évident puis réintègre rapidement la zone, deux groupes sont piégés : ceux qui ont acheté la cassure (désormais en perte) et ceux dont le stop a été déclenché (sortis au plus mauvais prix). Les premiers vont devoir vendre pour sortir, ce qui alimente le mouvement inverse.</p>
+<ol class="doc-steps">
+<li><strong>Contexte</strong> : de préférence en range, ou contre un niveau majeur de l'unité de temps supérieure.</li>
+<li><strong>Signal</strong> : le prix clôture à nouveau à l'intérieur de la zone, de préférence dans la bougie qui suit le dépassement.</li>
+<li><strong>Entrée</strong> : à la clôture de réintégration, ou sur la cassure du petit creux qui suit.</li>
+<li><strong>Stop</strong> : au-delà de l'extrême de la fausse cassure, avec une marge.</li>
+<li><strong>Objectif</strong> : le milieu du range, puis la borne opposée.</li>
+</ol>
+<p>C'est la logique que la méthode Wyckoff appelle <em>spring</em> et <em>upthrust</em>, et que la méthode ICT décrit comme une prise de liquidité (voir les articles suivants).</p>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>L'or évolue depuis trois jours entre 2 320 $ et 2 345 $. À l'ouverture de Londres, il monte à 2 351 $, puis la bougie de 15 minutes suivante clôture à 2 341 $, de nouveau dans le range. Vente à 2 341 $, stop à 2 355 $ (14 $ de risque), premier objectif au milieu du range à 2 332 $, second à 2 322 $ : jusqu'à 19 $ de gain potentiel, soit environ 1,4 fois le risque sur la seconde cible.</p>
+</aside>
+
+<h2>Mesurer vos cassures</h2>
+<ol class="doc-steps">
+<li><strong>Définissez précisément</strong> une cassure (par exemple : clôture au-delà du plus haut des 20 dernières bougies) et une fausse cassure (retour sous le niveau dans les N bougies suivantes).</li>
+<li><strong>Relevez 100 cas</strong> sur votre marché et votre unité de temps, avec leurs conditions (compression ou non, tendance de fond, heure).</li>
+<li><strong>Comparez au hasard</strong> : si vos cassures échouent dans 70 % des cas, vous ne faites pas mieux qu'une marche aléatoire.</li>
+<li><strong>Isolez les conditions</strong> qui font baisser nettement le taux d'échec : c'est là que se trouve votre avantage, s'il existe.</li>
+</ol>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Une cassure consomme les ordres accumulés derrière un niveau ; elle ne continue que si de nouveaux participants prennent le relais. Échouer est la norme, même par hasard : tradez les cassures seulement dans les conditions qui font mieux que le hasard, et considérez la fausse cassure comme un setup à part entière.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Le prix casse une résistance à 3 h du matin, sur une paire européenne, puis stagne. Quelles conditions manquent ?</summary>
+<p>La séance active (peu de liquidité à cette heure) et la suite immédiate (le prix stagne au lieu de prolonger). Les chances d'échec sont élevées.</p>
+</details>
+<details>
+<summary>Pourquoi une fausse cassure peut-elle provoquer un mouvement rapide dans l'autre sens ?</summary>
+<p>Parce que ceux qui ont acheté la cassure se retrouvent en perte et doivent vendre pour sortir, ce qui s'ajoute aux vendeurs qui attendaient sous la résistance.</p>
+</details>
+<details>
+<summary>Vos cassures échouent dans 68 % des cas sur 100 trades. Avez-vous un avantage ?</summary>
+<p>Probablement pas : c'est proche du taux observé sur un marché aléatoire. Il faut chercher des conditions qui réduisent nettement ce taux, ou améliorer le rapport entre gains et pertes, avant de trader cette méthode.</p>
+</details>

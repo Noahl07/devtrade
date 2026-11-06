@@ -2,145 +2,118 @@
 {
     "slug": "le-spring-et-l-upthrust-les-pieges-institutionnels-de-wyckoff",
     "title": "Le Spring et l'Upthrust — les pièges institutionnels de Wyckoff",
-    "excerpt": "Les deux événements les plus importants du cycle Wyckoff — comment les identifier, les confirmer et les trader avec précision.",
-    "readingTime": 20,
+    "excerpt": "La mécanique du spring et de l'upthrust (fausses cassures d'un range), leurs variantes, le test qui les confirme, trois façons d'entrer avec stop et objectifs, comment reconnaître un spring raté, et le lien avec la notion de liquidité.",
+    "readingTime": 6,
     "accessLevel": "free",
-    "position": 5,
+    "position": 7,
     "module": "price-action-wyckoff"
 }
 -->
-<h2>Le Spring et l'Upthrust — les moments de vérité</h2>
-<p>Parmi tous les événements du cycle Wyckoff, le <strong>Spring</strong> et l'<strong>Upthrust</strong> sont les deux moments les plus tradables et les plus significatifs. Ils représentent le <em>dernier piège</em> du Composite Man avant de lancer le vrai mouvement — et donc l'opportunité d'entrée idéale pour le trader informé.</p>
- 
-<p>Ces deux concepts sont directement liés à ce qu'ICT appelle les "liquidity sweeps" — la terminologie a changé, mais la mécanique est identique. Wyckoff les a décrits 80 ans avant ICT.</p>
- 
-<h2>Le Spring — le piège baissier en accumulation</h2>
-<p>Le Spring se produit dans un range d'accumulation. Après plusieurs semaines de consolidation, le prix descend brusquement sous le bas du range — "cassant le support" selon l'analyse technique classique. Cette cassure déclenche :</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li>Les stop-loss des traders qui avaient acheté dans le range</li>
-<li>Les entrées vendeurs des traders en cassure de support</li>
-<li>La panique psychologique des acheteurs restants</li>
+<li>Le <strong>spring</strong> est une fausse cassure du bas d'un range d'accumulation ; l'<strong>upthrust</strong>, une fausse cassure du haut d'un range de distribution.</li>
+<li>Ils fonctionnent parce qu'ils déclenchent les <strong>stops et les entrées sur cassure</strong> des autres, qui fournissent la contrepartie dont les grands acteurs ont besoin.</li>
+<li>Le spring n'est pas un signal en soi : il se <strong>confirme</strong> par un retour rapide dans le range, puis par un test qui tient.</li>
+<li>Un spring qui ne remonte pas n'est pas un spring : c'est une <strong>vraie cassure</strong>. Le stop sous son plus bas protège de ce cas.</li>
 </ul>
- 
-<p>Mais immédiatement après, le prix se retourne et remonte dans le range. Le Composite Man a utilisé ces ordres de vente comme <strong>liquidité pour acheter massivement</strong> à des prix encore meilleurs.</p>
- 
-<svg width="100%" viewBox="0 0 540 240" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:540px;margin:1.5rem auto">
-  <defs>
-    <marker id="spG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-      <path d="M1 2L9 5L1 8" fill="none" stroke="#3EB489" stroke-width="1.5"/>
-    </marker>
-  </defs>
- 
-  <!-- Range boundaries -->
-  <line x1="20" y1="80" x2="420" y2="80" stroke="rgba(62,180,137,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
-  <line x1="20" y1="165" x2="420" y2="165" stroke="rgba(232,234,240,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="10" y="84" text-anchor="end" fill="rgba(62,180,137,0.5)" font-size="9" font-family="sans-serif">Haut</text>
-  <text x="10" y="169" text-anchor="end" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">Support</text>
- 
-  <!-- Range label -->
-  <text x="60" y="55" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">RANGE D'ACCUMULATION</text>
- 
-  <!-- Price action in range -->
-  <polyline points="30,120 60,100 85,118 115,95 140,112 168,92 190,108 215,88 235,102" fill="none" stroke="rgba(232,234,240,0.4)" stroke-width="1.5"/>
- 
-  <!-- Spring event -->
-  <polyline points="235,102 248,115 258,130 268,148 275,165 280,182 283,195" fill="none" stroke="#e05555" stroke-width="2"/>
-  <circle cx="283" cy="195" r="5" fill="#e05555"/>
- 
-  <!-- Spring label -->
-  <rect x="288" y="185" width="55" height="18" rx="3" fill="rgba(224,85,85,0.15)" stroke="#e05555" stroke-width="1"/>
-  <text x="315" y="198" text-anchor="middle" fill="#e05555" font-size="10" font-family="sans-serif" font-weight="bold">SPRING</text>
- 
-  <!-- Stop hunts labels -->
-  <text x="283" y="215" text-anchor="middle" fill="rgba(224,85,85,0.6)" font-size="9" font-family="sans-serif">Stops activés</text>
-  <text x="283" y="227" text-anchor="middle" fill="rgba(224,85,85,0.5)" font-size="8" font-family="sans-serif">+ vendeurs en cassure</text>
- 
-  <!-- Recovery and markup -->
-  <polyline points="283,195 290,178 298,162 308,148 320,132 335,115 352,98 372,80 390,65 415,50 440,38" fill="none" stroke="#3EB489" stroke-width="2.5" marker-end="url(#spG)"/>
- 
-  <!-- Entry zone -->
-  <rect x="285" y="155" width="55" height="20" rx="3" fill="rgba(62,180,137,0.15)" stroke="#3EB489" stroke-width="1"/>
-  <text x="312" y="169" text-anchor="middle" fill="#3EB489" font-size="9" font-family="sans-serif">Entrée LPS</text>
- 
-  <!-- BOS confirmation -->
-  <line x1="20" y1="80" x2="470" y2="80" stroke="#3EB489" stroke-width="0.8" stroke-dasharray="2,3" opacity="0.4"/>
-  <circle cx="372" cy="80" r="4" fill="#3EB489"/>
-  <text x="380" y="73" fill="#3EB489" font-size="9" font-family="sans-serif">SOS (BOS)</text>
-</svg>
- 
-<h3>Les trois types de Spring</h3>
-<p>Wyckoff identifiait trois variantes selon la profondeur de la cassure :</p>
+</div>
+
+<h2>La mécanique</h2>
+<p>Pendant un range d'accumulation, beaucoup de participants ont placé des stops sous le bas du range, et d'autres attendent sa cassure pour vendre. Pour un grand acheteur, c'est une aubaine : en laissant (ou en poussant) le prix passer sous le range, il déclenche ces ordres de vente et peut acheter de grandes quantités sans faire monter le prix. Une fois cette offre absorbée, il n'y a plus de vendeurs : le prix remonte rapidement dans le range.</p>
+<p>C'est exactement la logique de la fausse cassure (voir <em>Cassures et fausses cassures</em>), dans un contexte précis : la fin d'une accumulation.</p>
+
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" aria-hidden="true">
+  <line x1="30" y1="80" x2="600" y2="80" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
+  <line x1="30" y1="170" x2="600" y2="170" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
+  <rect x="30" y="172" width="290" height="16" fill="rgba(210,101,90,0.15)" />
+  <polyline points="40,90 80,165 120,95 160,160 200,100 240,150 280,205 300,160 340,120 380,155 420,110 460,75 490,100 540,50 600,30" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+  <g fill="#E2CB91"><circle cx="280" cy="205" r="5" /><circle cx="380" cy="155" r="5" /><circle cx="490" cy="100" r="5" /></g>
+  </svg>
+<span class="doc-label doc-label--strong is-accent" style="left:43.75%;top:85.24%">spring</span>
+<span class="doc-label doc-label--strong is-accent" style="left:59.38%;top:66.01%">test</span>
+<span class="doc-label doc-label--strong is-accent" style="left:76.56%;top:45.24%">LPS</span>
+<span class="doc-label is-positive" style="left:71.88%;top:23%">SOS</span>
+<span class="doc-label is-negative" style="left:27.34%;top:75.31%">stops sous le range</span>
+<span class="doc-label is-muted" style="left:50%;top:94.54%">Trois entrées possibles : au test, à la sortie du range, sur le LPS.</span>
+</div>
+<figcaption>Un spring : cassure brève sous le range, retour rapide, test qui tient au-dessus du plus bas, puis sortie du range (illustration).</figcaption>
+</figure>
+
+<h2>Les variantes du spring</h2>
+<p>Les enseignants de la méthode Wyckoff distinguent souvent trois cas, selon la profondeur de la cassure et le volume :</p>
+<table>
+<thead><tr><th>Variante</th><th>Description</th><th>Approche habituelle</th></tr></thead>
+<tbody>
+<tr><td>Spring profond, gros volume</td><td>Cassure nette du range, beaucoup d'offre</td><td>Attendre un test sur volume plus faible avant d'acheter : il reste peut-être de l'offre</td></tr>
+<tr><td>Spring modéré</td><td>Cassure moyenne, volume moyen</td><td>Attendre le retour dans le range et un test</td></tr>
+<tr><td>Spring léger, faible volume</td><td>Simple dépassement du bas, presque sans volume</td><td>Signe que l'offre est épuisée ; entrée possible plus tôt</td></tr>
+</tbody>
+</table>
+<p>Il existe aussi des accumulations sans spring visible : le bas du range est simplement testé une dernière fois sur un volume faible. Ne forcez pas l'étiquette.</p>
+
+<h2>La confirmation</h2>
+<ol class="doc-steps">
+<li><strong>Retour rapide</strong> dans le range, idéalement en une à trois bougies, avec une clôture au-dessus de la borne.</li>
+<li><strong>Test</strong> : un repli ultérieur qui s'arrête au-dessus du plus bas du spring, sur un volume plus faible que celui du spring.</li>
+<li><strong>Signe de force</strong> : une montée vers le haut du range, puis sa cassure, avec une hausse de volume.</li>
+<li><strong>LPS</strong> : le repli suivant tient au-dessus de l'ancien haut du range ou d'un creux récent.</li>
+</ol>
+
+<h2>Trois façons d'entrer</h2>
+<table>
+<thead><tr><th>Entrée</th><th>Stop</th><th>Avantage</th><th>Inconvénient</th></tr></thead>
+<tbody>
+<tr><td>Sur le test du spring</td><td>Sous le plus bas du spring</td><td>Meilleur prix, stop court</td><td>Moins de confirmation</td></tr>
+<tr><td>À la sortie du range (SOS)</td><td>Sous le test ou sous le milieu du range</td><td>La force est démontrée</td><td>Prix plus élevé, stop plus long</td></tr>
+<tr><td>Sur le LPS</td><td>Sous le LPS</td><td>Confirmation maximale, bon rapport gain/risque</td><td>Le LPS peut ne pas se former si le départ est violent</td></tr>
+</tbody>
+</table>
+<p>Objectifs : le haut du range, puis un objectif de prix plus lointain (comptage en point et figure, niveau majeur supérieur). Une sortie partielle au haut du range permet de sécuriser une partie du gain.</p>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Une action évolue entre 48 € et 54 € depuis deux mois, après une forte baisse. Elle passe à 46,80 € sur un volume élevé, puis clôture le lendemain à 48,60 €, de nouveau dans le range. Une semaine plus tard, elle replie à 47,90 € sur un volume nettement plus faible, et repart : c'est le test. Achat à 48,40 €, stop à 46,60 € (1,80 € de risque), premier objectif au haut du range à 54 € (5,60 € de gain potentiel, environ 3 fois le risque).</p>
+</aside>
+
+<h2>Reconnaître un spring raté</h2>
+<p>Tout passage sous un range n'est pas un spring. Les signes d'une vraie cassure :</p>
 <ul>
-<li><strong>Spring Type 1</strong> : cassure significative sous le support, fort volume, rebond rapide. Le plus visible et le plus fiable.</li>
-<li><strong>Spring Type 2</strong> : cassure modérée sur volume moyen. Moins dramatique mais tout aussi valide.</li>
-<li><strong>Spring Type 3</strong> : simple test du support sans cassure, sur faible volume (No Supply). Le plus subtil — indique que les vendeurs sont épuisés même sans vrai Spring.</li>
+<li>le prix <strong>ne revient pas</strong> dans le range dans les bougies qui suivent ;</li>
+<li>les bougies sous le range clôturent <strong>près de leurs plus bas</strong> ;</li>
+<li>le volume reste élevé à la baisse, et les rebonds se font sur volume faible ;</li>
+<li>le retour vers le bas du range est rejeté : l'ancien support devient résistance.</li>
 </ul>
- 
-<h3>Confirmation du Spring — ne pas entrer prématurément</h3>
-<p>L'erreur classique est d'entrer dès que le Spring se produit. La confirmation vient de :</p>
+<p>Dans ce cas, le range était une redistribution, pas une accumulation. C'est pour cela que le stop sous le plus bas du spring est indispensable : il transforme une erreur d'interprétation en perte limitée.</p>
+
+<h2>L'upthrust et l'UTAD</h2>
+<p>En distribution, la même mécanique joue vers le haut. Le prix passe au-dessus du range, déclenche les stops des vendeurs et les achats sur cassure, puis retombe dans le range. L'<strong>UTAD</strong> (<em>upthrust after distribution</em>) est l'upthrust de la phase C, souvent le dernier piège avant la baisse.</p>
 <ul>
-<li>Rebond rapide dans le range sur volume supérieur à la descente du Spring</li>
-<li>Formation d'un LPS (Higher Low par rapport au Spring) — premier signe de structure haussière</li>
-<li>Volume décroissant sur les pullbacks post-Spring — No Supply</li>
-<li>SOS (Sign of Strength) : premier break au-dessus du range sur gros volume</li>
+<li><strong>Confirmation</strong> : retour rapide sous la borne haute, puis un rebond faible (le LPSY) qui échoue sous l'upthrust.</li>
+<li><strong>Entrée</strong> : vente sur le LPSY ou sur la cassure du bas du range (SOW).</li>
+<li><strong>Stop</strong> : au-dessus du plus haut de l'upthrust.</li>
 </ul>
- 
-<h2>L'Upthrust — le piège haussier en distribution</h2>
-<p>L'Upthrust est le symétrique exact du Spring mais dans un range de distribution. Après une phase d'accumulation et de markup, la distribution crée un range latéral au sommet. L'Upthrust est la cassure <em>fausse</em> au-dessus du range.</p>
- 
-<svg width="100%" viewBox="0 0 540 230" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:540px;margin:1.5rem auto">
-  <defs>
-    <marker id="utR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-      <path d="M1 2L9 5L1 8" fill="none" stroke="#e05555" stroke-width="1.5"/>
-    </marker>
-  </defs>
- 
-  <!-- Range boundaries -->
-  <line x1="20" y1="70" x2="420" y2="70" stroke="rgba(232,234,240,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
-  <line x1="20" y1="150" x2="420" y2="150" stroke="rgba(224,85,85,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="10" y="74" text-anchor="end" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">Résist.</text>
-  <text x="10" y="154" text-anchor="end" fill="rgba(224,85,85,0.4)" font-size="9" font-family="sans-serif">Bas</text>
- 
-  <!-- Range label -->
-  <text x="60" y="185" fill="rgba(232,234,240,0.4)" font-size="10" font-family="sans-serif">RANGE DE DISTRIBUTION</text>
- 
-  <!-- Price action in range -->
-  <polyline points="30,108 60,88 85,105 115,82 140,98 168,78 190,92 220,75 238,88" fill="none" stroke="rgba(232,234,240,0.4)" stroke-width="1.5"/>
- 
-  <!-- Upthrust event -->
-  <polyline points="238,88 248,75 255,62 262,50 268,38 273,30" fill="none" stroke="#e05555" stroke-width="2"/>
-  <circle cx="273" cy="30" r="5" fill="#e05555"/>
- 
-  <!-- Upthrust label -->
-  <rect x="278" y="22" width="55" height="18" rx="3" fill="rgba(224,85,85,0.15)" stroke="#e05555" stroke-width="1"/>
-  <text x="305" y="35" text-anchor="middle" fill="#e05555" font-size="10" font-family="sans-serif" font-weight="bold">UPTHRUST</text>
-  <text x="273" y="50" text-anchor="middle" fill="rgba(224,85,85,0.6)" font-size="8" font-family="sans-serif">BSL sweep</text>
- 
-  <!-- Recovery back into range then markdown -->
-  <polyline points="273,30 280,45 288,60 296,72 305,85 315,100 328,115 342,130 358,148 368,150 378,162 395,178 415,195 435,208" fill="none" stroke="#e05555" stroke-width="2.5" marker-end="url(#utR)"/>
- 
-  <!-- Entry zone -->
-  <rect x="295" y="80" width="55" height="20" rx="3" fill="rgba(224,85,85,0.15)" stroke="#e05555" stroke-width="1"/>
-  <text x="322" y="94" text-anchor="middle" fill="#e05555" font-size="9" font-family="sans-serif">Entrée LPSY</text>
- 
-  <!-- SOW confirmation -->
-  <line x1="20" y1="150" x2="470" y2="150" stroke="#e05555" stroke-width="0.8" stroke-dasharray="2,3" opacity="0.4"/>
-  <circle cx="358" cy="150" r="4" fill="#e05555"/>
-  <text x="366" y="163" fill="#e05555" font-size="9" font-family="sans-serif">SOW (BOS ↓)</text>
-</svg>
- 
-<h3>LPSY — Last Point of Supply</h3>
-<p>L'équivalent du LPS pour la distribution. Après l'Upthrust et le retour dans le range, le prix fait un <em>rallye anémique</em> sur faible volume — le dernier LH avant le markdown. C'est la zone d'entrée short idéale.</p>
- 
-<h2>Spring/Upthrust vs ICT Stop Hunt — les similitudes</h2>
-<p>La correspondance est parfaite entre les concepts Wyckoff et ICT :</p>
-<ul>
-<li>Spring = SSL Sweep (sell-side liquidity grab) + retournement haussier</li>
-<li>Upthrust = BSL Sweep (buy-side liquidity grab) + retournement baissier</li>
-<li>LPS = premier HL après CHoCH haussier (ICT)</li>
-<li>LPSY = premier LH après CHoCH baissier (ICT)</li>
-<li>SOS = BOS haussier après Spring (ICT)</li>
-<li>SOW = BOS baissier après Upthrust (ICT)</li>
-</ul>
- 
-<p>ICT n'a pas inventé ces concepts — il les a reformulés avec un vocabulaire moderne et les a intégrés dans un framework cohérent. Comprendre Wyckoff vous donne la profondeur historique et analytique que le vocabulaire ICT seul ne peut pas fournir.</p>
+
+<h2>Wyckoff et la notion de liquidité</h2>
+<p>Les méthodes plus récentes, comme l'approche ICT présentée dans un module suivant, décrivent le même phénomène en d'autres termes : une « prise de liquidité » sous un creux ou au-dessus d'un sommet, suivie d'un retournement. Les mots changent ; l'idée de fond, que les grands ordres ont besoin de contreparties et vont les chercher là où elles se trouvent, est la même. Connaître Wyckoff aide à comprendre ces méthodes, et à ne pas prendre leur vocabulaire pour une découverte.</p>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Le spring et l'upthrust sont des fausses cassures en fin de range. Ils offrent les entrées les mieux définies de la méthode Wyckoff, à condition d'attendre leur confirmation et de placer le stop au-delà de leur extrême : un spring qui ne remonte pas est une vraie cassure.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Le prix passe sous un range d'accumulation sur un très gros volume, puis remonte. Faut-il acheter tout de suite ?</summary>
+<p>Plutôt attendre un test sur volume plus faible : un spring profond et très volumineux peut signifier qu'il reste de l'offre à absorber.</p>
+</details>
+<details>
+<summary>Où placer le stop d'un achat pris sur le test d'un spring ?</summary>
+<p>Sous le plus bas du spring : si le prix y retourne, ce n'était pas un spring mais une vraie cassure.</p>
+</details>
+<details>
+<summary>Quelle est la différence entre un upthrust et un UTAD ?</summary>
+<p>L'upthrust désigne une fausse cassure du haut d'un range de distribution, à n'importe quel moment ; l'UTAD est celle qui survient en phase C, en fin de distribution, souvent juste avant la baisse.</p>
+</details>
