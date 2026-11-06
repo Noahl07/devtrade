@@ -7,6 +7,7 @@ namespace App\Service;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Mime\Email;
 
 /**
@@ -56,7 +57,8 @@ final class ContactMessenger
 
         try {
             $this->mailer->send($mail);
-        } catch (TransportExceptionInterface $e) {
+        } catch (TransportExceptionInterface|HandlerFailedException $e) {
+            // HandlerFailedException : envoi passé par Messenger (transport synchrone) qui a échoué.
             // Journalisé sans le contenu du message (données personnelles).
             $this->logger->error('Échec d\'envoi du formulaire de contact', ['exception' => $e::class]);
 
