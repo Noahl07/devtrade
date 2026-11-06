@@ -2,58 +2,115 @@
 {
     "slug": "les-taux-d-interet-comment-ils-dirigent-tous-les-marches",
     "title": "Les taux d'intérêt — comment ils dirigent tous les marchés",
-    "excerpt": "La relation fondamentale entre taux d'intérêt, prix des actifs et valeur des devises — pourquoi \"Don't fight the Fed\" est la règle d'or du trading macro.",
-    "readingTime": 20,
+    "excerpt": "Le prix de l'argent et sa transmission à toute l'économie : taux directeurs et taux de marché, taux nominal et réel, courbe des taux et ses formes, lien entre taux et prix des obligations (duration), effet des taux sur la valeur des actions, sur les devises et sur l'or, avec des calculs simples pour chaque mécanisme.",
+    "readingTime": 5,
     "accessLevel": "free",
-    "position": 3,
+    "position": 5,
     "module": "macroeconomie-marches-financiers"
 }
 -->
-<h2>Le taux d'intérêt — le prix de l'argent</h2>
-<p>Le taux d'intérêt est fondamentalement le <strong>prix de l'argent dans le temps</strong>. Si vous empruntez 1 000€ aujourd'hui à 5%, vous remboursez 1 050€ dans un an — les 50€ sont le prix que vous payez pour avoir accès à cet argent maintenant plutôt que dans un an.</p>
- 
-<p>Les taux directeurs des banques centrales sont les taux d'intérêt les plus importants de l'économie car ils influencent tous les autres taux : taux hypothécaires, taux des crédits auto, taux des obligations d'État, taux des dépôts bancaires. Tout est lié.</p>
- 
-<h2>La courbe des taux — lire l'économie dans les obligations</h2>
-<p>La <strong>courbe des taux</strong> (yield curve) représente graphiquement les taux d'intérêt des obligations d'État américaines (Treasuries) pour différentes maturités — de 3 mois à 30 ans.</p>
- 
-<h3>Courbe normale (pente positive)</h3>
-<p>Les taux longs > taux courts. Normal économiquement : prêter sur 10 ans est plus risqué que sur 3 mois, donc demande plus de rémunération. Signale une économie saine avec des perspectives de croissance.</p>
- 
-<h3>Courbe inversée (pente négative)</h3>
-<p>Les taux courts > taux longs. <strong>Signal de récession historiquement fiable.</strong> L'inversion du spread 2 ans / 10 ans (2Y10Y) a précédé chacune des 8 récessions américaines des 50 dernières années, avec un délai de 12-18 mois. En 2022-2023, le 2Y10Y était massivement inversé (jusqu'à -100 points de base) — le plus inversé depuis 1981.</p>
- 
-<h3>Courbe plate</h3>
-<p>Taux courts ≈ taux longs. Période de transition, souvent lors d'un cycle de hausse de taux. Signal d'incertitude économique.</p>
- 
-<h2>La relation taux-devises — le carry trade</h2>
-<p>Les différentiels de taux entre pays créent des opportunités de <strong>carry trade</strong> : emprunter dans une devise à faible taux et investir dans une devise à taux élevé.</p>
- 
-<p>Exemple classique :</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li>Japon : taux à 0% (politique ultra-accommodante historique)</li>
-<li>États-Unis : taux à 5.5% en 2024</li>
-<li>Carry trade : emprunter en Yen à 0%, convertir en dollars, placer en bons du Trésor américain à 5.5% → profit de 5.5% sans risque de marché (mais avec risque de change)</li>
+<li>Le taux d'intérêt est le <strong>prix de l'argent dans le temps</strong>. Les banques centrales fixent les taux très courts ; le marché fixe les autres, selon ses anticipations.</li>
+<li>Ce qui compte pour l'économie est le <strong>taux réel</strong> : taux nominal moins inflation attendue.</li>
+<li>Quand les taux montent, le prix des obligations existantes <strong>baisse</strong>, d'autant plus que leur échéance est longue (duration).</li>
+<li>Des taux plus élevés réduisent la valeur actuelle des bénéfices futurs : ils pèsent sur les actions, surtout celles dont les bénéfices sont lointains, et soutiennent en général la devise.</li>
 </ul>
- 
-<p>Ce carry trade massif sur le Yen a créé l'un des plus grands dénouements de l'histoire financière en août 2024, quand la Banque du Japon a remonté ses taux, forçant le débouclage de centaines de milliards de carry trades — générant un crash de 12% sur le Nikkei en une seule journée.</p>
- 
-<h2>La relation taux-actions — le modèle DCF</h2>
-<p>La valeur théorique d'une action est la <strong>valeur actualisée de ses cash flows futurs</strong>. Plus le taux d'actualisation (lié aux taux d'intérêt) est élevé, plus les cash flows futurs valent peu aujourd'hui.</p>
- 
-<pre><code>Valeur = CF1/(1+r) + CF2/(1+r)² + CF3/(1+r)³ + ...
- 
-Où r = taux d'actualisation (≈ taux sans risque + prime de risque)</code></pre>
- 
-<p>Conséquence directe : les actions de <strong>croissance</strong> (tech, biotech) dont la valeur est concentrée dans des cash flows éloignés dans le futur sont <em>beaucoup plus sensibles</em> aux hausses de taux que les actions de valeur (dividendes proches). C'est pourquoi le NAS100 (dominé par la tech) a chuté de -33% en 2022 quand la Fed a monté les taux de 0% à 5.5%.</p>
- 
-<h2>"Don't fight the Fed" — la règle d'or</h2>
-<p>Cette phrase résume la leçon la plus importante du trading macro : <strong>ne pas trader contre la politique monétaire de la Fed</strong>.</p>
- 
+</div>
+
+<h2>Taux directeurs et taux de marché</h2>
+<p>La banque centrale fixe le taux auquel les banques se prêtent au jour le jour (fourchette des Fed Funds aux États-Unis, taux de dépôt dans la zone euro). Tous les autres taux sont fixés par le marché : un taux à 2 ans reflète surtout les taux directeurs attendus sur deux ans ; un taux à 10 ans y ajoute une <strong>prime de terme</strong> (compensation pour le risque de détenir longtemps une obligation) qui dépend de l'inflation attendue, de l'endettement public et de l'incertitude.</p>
+<p>La transmission : taux directeur → taux du marché monétaire → taux des crédits immobiliers et aux entreprises → dépenses et investissement → activité et inflation. Elle prend du temps : on estime souvent que l'effet complet d'une hausse de taux sur l'économie se fait sentir sur un à deux ans.</p>
+
+<h2>Nominal et réel</h2>
+<p>Relation de Fisher (approximation) : <strong>taux réel ≈ taux nominal − inflation attendue</strong>. Un taux de 4 % avec 3 % d'inflation attendue est un taux réel de 1 %. C'est le taux réel qui freine ou stimule : en 2021, les taux nominaux étaient bas et l'inflation forte, donc les taux réels très négatifs, ce qui était très stimulant. Aux États-Unis, les obligations indexées sur l'inflation (TIPS) donnent une mesure de marché des taux réels.</p>
+
+<h2>La courbe des taux</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320" aria-hidden="true">
+  <line x1="60" y1="280" x2="610" y2="280" stroke="rgba(168,179,174,0.4)" />
+  <polyline points="80,249 150,230 220,211 330,186 450,161 590,142" fill="none" stroke="#4FB38F" stroke-width="2.5" />
+  <polyline points="80,98 150,110 220,129 330,161 450,173 590,161" fill="none" stroke="#D2655A" stroke-width="2.5" />
+  <g fill="#4FB38F"><circle cx="80" cy="249" r="3" /><circle cx="220" cy="211" r="3" /><circle cx="450" cy="161" r="3" /><circle cx="590" cy="142" r="3" /></g>
+  <g fill="#D2655A"><circle cx="80" cy="98" r="3" /><circle cx="220" cy="129" r="3" /><circle cx="450" cy="173" r="3" /><circle cx="590" cy="161" r="3" /></g>
+  <g font-family="sans-serif" font-size="12">
+    </g>
+</svg>
+<span class="doc-label doc-label--start doc-label--strong is-negative" style="left:14.06%;top:26.19%">courbe inversée : taux courts au-dessus</span>
+<span class="doc-label doc-label--end doc-label--strong is-positive" style="left:93.12%;top:38.69%">courbe normale</span>
+<span class="doc-label is-muted" style="left:12.5%;top:92.44%">3 mois</span>
+<span class="doc-label is-muted" style="left:23.44%;top:92.44%">1 an</span>
+<span class="doc-label is-muted" style="left:34.38%;top:92.44%">2 ans</span>
+<span class="doc-label is-muted" style="left:51.56%;top:92.44%">5 ans</span>
+<span class="doc-label is-muted" style="left:70.31%;top:92.44%">10 ans</span>
+<span class="doc-label is-muted" style="left:92.19%;top:92.44%">30 ans</span>
+</div>
+<figcaption>Deux formes de courbe des taux d'État (illustration) : normale, les taux longs dépassent les taux courts ; inversée, le marché anticipe des baisses de taux directeurs.</figcaption>
+</figure>
+<table>
+<thead><tr><th>Forme</th><th>Situation typique</th></tr></thead>
+<tbody>
+<tr><td>Normale (pentue)</td><td>Expansion, taux directeurs bas ou en voie de normalisation</td></tr>
+<tr><td>Plate</td><td>Fin de cycle de hausse de taux, incertitude</td></tr>
+<tr><td>Inversée</td><td>Taux directeurs élevés, marché anticipant des baisses (souvent un ralentissement)</td></tr>
+<tr><td>Pentification par le bas</td><td>Baisse rapide des taux courts (début de baisses de taux, souvent dans un ralentissement)</td></tr>
+<tr><td>Pentification par le haut</td><td>Hausse des taux longs (inflation, dette, prime de terme)</td></tr>
+</tbody>
+</table>
+
+<h2>Taux et prix des obligations</h2>
+<p>Une obligation verse des coupons fixes. Si les taux du marché montent, une obligation existante qui rapporte moins devient moins attractive : son prix baisse jusqu'à ce que son rendement rejoigne celui du marché. La sensibilité se mesure par la <strong>duration</strong> : variation de prix ≈ − duration × variation de taux.</p>
+<table>
+<thead><tr><th>Obligation</th><th class="ta-center">Duration approximative</th><th class="ta-center">Effet d'une hausse de taux de 1 point</th></tr></thead>
+<tbody>
+<tr><td>État à 2 ans</td><td class="ta-center">1,9</td><td class="ta-center">−1,9 %</td></tr>
+<tr><td>État à 10 ans</td><td class="ta-center">8,5</td><td class="ta-center">−8,5 %</td></tr>
+<tr><td>État à 30 ans</td><td class="ta-center">17</td><td class="ta-center">−17 %</td></tr>
+</tbody>
+</table>
+<p>En 2022, les taux longs américains ont monté de plus de 2 points : les obligations longues ont perdu des dizaines de pourcents, une baisse comparable à celle d'un marché d'actions baissier (voir <em>Les obligations</em>).</p>
+
+<h2>Taux et actions</h2>
+<p>La valeur d'une action est, en théorie, la valeur actuelle de ses bénéfices futurs. Avec un modèle simple (bénéfice distribué de 5, croissance de 3 % par an, taux d'actualisation r) : valeur = 5 / (r − 0,03).</p>
+<table>
+<thead><tr><th>Taux d'actualisation</th><th class="ta-center">Valeur</th><th class="ta-center">Variation</th></tr></thead>
+<tbody>
+<tr><td>8 %</td><td class="ta-center">100</td><td class="ta-center">—</td></tr>
+<tr><td>9 %</td><td class="ta-center">83,3</td><td class="ta-center is-negative">−17 %</td></tr>
+<tr><td>7 %</td><td class="ta-center">125</td><td class="ta-center is-positive">+25 %</td></tr>
+</tbody>
+</table>
+<p>Un point de taux en plus peut retirer une part importante de la valeur, surtout pour les entreprises dont la croissance attendue est forte (le dénominateur r − g est petit). C'est pourquoi la technologie est la plus sensible aux taux.</p>
+
+<h2>Taux, devises et or</h2>
 <ul>
-<li>Fed en mode de <strong>baisse des taux</strong> (cycle d'assouplissement) → biais long sur les actions, biais baissier sur le dollar</li>
-<li>Fed en mode de <strong>hausse des taux</strong> (cycle de resserrement) → biais short/neutre sur les actions, biais haussier sur le dollar</li>
-<li>Fed en <strong>pause</strong> → analyser les signaux pour anticiper la prochaine direction</li>
+<li><strong>Devises</strong> : une devise dont les taux montent par rapport aux autres attire les capitaux et tend à s'apprécier ; c'est l'écart de taux attendu qui compte (voir le module <em>ICT avancé</em>, article sur les différentiels de rendement).</li>
+<li><strong>Carry trade</strong> : emprunter dans une devise à taux bas pour placer dans une devise à taux élevé. Rentable en période calme, il n'est jamais sans risque : un mouvement de change peut effacer en quelques jours des mois d'écart de taux, comme sur le yen en août 2024.</li>
+<li><strong>Or</strong> : il ne rapporte rien ; quand les taux réels montent, le détenir coûte plus cher en rendement perdu, ce qui pèse souvent sur son prix (relation forte avant 2022, plus lâche depuis, avec les achats massifs des banques centrales).</li>
 </ul>
- 
-<p>Les traders qui ont résisté au cycle de hausse de 2022 (en maintenant des positions longues actions malgré la Fed agressive) ont subi des pertes catastrophiques. Ceux qui ont suivi la Fed ont shortté NAS100 tout au long de l'année et réalisé des performances exceptionnelles.</p>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Après un discours plus ferme que prévu de la Fed, le rendement à 2 ans américain monte de 0,20 point et celui à 10 ans de 0,10 point : la courbe s'aplatit. Le dollar gagne 0,6 % face à l'euro, le Nasdaq perd 1,5 %, l'or recule de 1 %. Chaque mouvement découle de la même cause : des taux attendus plus hauts.</p>
+</aside>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Les banques centrales fixent les taux courts ; le marché fixe les autres selon ses anticipations. Le taux réel freine ou stimule l'économie. Taux en hausse : obligations en baisse (selon la duration), actions de croissance sous pression, devise plutôt soutenue, or souvent pénalisé.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Taux nominal à 5 %, inflation attendue à 3 %. Quel est le taux réel ?</summary>
+<p>Environ 2 %.</p>
+</details>
+<details>
+<summary>Une obligation de duration 7 : quelle variation de prix si les taux baissent de 0,5 point ?</summary>
+<p>Environ +3,5 % (−7 × −0,5).</p>
+</details>
+<details>
+<summary>Pourquoi les actions à forte croissance sont-elles plus sensibles aux taux ?</summary>
+<p>Parce que leur valeur repose sur des bénéfices lointains : dans la formule bénéfice / (r − g), un g élevé rend le dénominateur petit, et une hausse de r a un effet proportionnellement plus fort.</p>
+</details>
