@@ -2,164 +2,176 @@
 {
     "slug": "la-price-action-pure-trader-sans-indicateurs",
     "title": "La Price Action pure — trader sans indicateurs",
-    "excerpt": "Maîtriser la lecture du prix brut — structure, momentum, contexte et décision. Tout ce dont vous avez besoin est déjà sur le graphique.",
-    "readingTime": 22,
+    "excerpt": "Ce qu'il y a derrière une bougie (une enchère entre acheteurs et vendeurs), les quatre piliers de la lecture du prix (structure, élan, emplacement, réaction), la lecture bougie par bougie et en séquences, les replis en deux temps, et une méthode de décision complète, en tendance comme en range.",
+    "readingTime": 9,
     "accessLevel": "free",
     "position": 1,
     "module": "price-action-wyckoff"
 }
 -->
-<h2>Pourquoi trader sans indicateurs ?</h2>
-<p>Les indicateurs techniques sont des <strong>dérivés du prix</strong> — ils ne font que transformer et retarder l'information qui est déjà présente dans les bougies brutes. Le RSI calcule la vitesse des mouvements récents. La MACD compare deux moyennes mobiles. Le Stochastique mesure la position relative du prix dans son range. Tout cela est visible directement sur le graphique pour un œil entraîné.</p>
-
-<p>Un trader de price action pure a plusieurs avantages :</p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Réactivité</strong> : le prix brut réagit instantanément. Un indicateur réagit avec un délai, parfois de plusieurs bougies.</li>
-<li><strong>Clarté mentale</strong> : un graphique sans indicateurs force à lire le contexte plutôt que d'attendre un signal mécanique.</li>
-<li><strong>Adaptabilité</strong> : la price action fonctionne identiquement sur tous les marchés, tous les timeframes et en toutes conditions de marché.</li>
-<li><strong>Compréhension profonde</strong> : comprendre pourquoi le marché bouge, pas seulement quand.</li>
+<li>La price action consiste à décider à partir du <strong>prix lui-même</strong> : structure des sommets et creux, taille et forme des bougies, réaction aux niveaux. Les indicateurs n'en sont que des transformations, avec retard.</li>
+<li>Derrière chaque bougie, il y a une <strong>enchère</strong> : le prix monte pour trouver des vendeurs et baisse pour trouver des acheteurs. Lire la price action, c'est lire où cette enchère trouve, ou ne trouve pas, de contrepartie.</li>
+<li>Une décision solide combine quatre éléments : la <strong>structure</strong>, l'<strong>élan</strong>, l'<strong>emplacement</strong> et la <strong>réaction</strong> du prix à cet emplacement.</li>
+<li>La price action est un savoir-faire de lecture, donc subjective : elle doit être <strong>codifiée</strong> en règles et vérifiée sur un historique, sinon on ne fait que raconter des histoires après coup.</li>
+</ul>
+</div>
+
+<h2>Ce qu'il y a derrière une bougie</h2>
+<p>Un marché est une enchère permanente. Quand les acheteurs pressés sont plus nombreux que les vendeurs disponibles, leurs ordres au marché « consomment » les offres du carnet et le prix monte, jusqu'à trouver assez de vendeurs pour les servir. L'inverse fait baisser le prix. Chaque bougie résume une période de cette enchère :</p>
+<ul>
+<li>un <strong>grand corps</strong> indique que l'enchère a dû se déplacer loin pour trouver des contreparties : un camp était pressé, l'autre rare ;</li>
+<li>une <strong>longue mèche</strong> indique que le prix est allé chercher des contreparties d'un côté, les a trouvées en abondance, et est revenu : ce prix a été refusé ;</li>
+<li>une <strong>petite bougie</strong> indique un équilibre : à ce prix, acheteurs et vendeurs se satisfont mutuellement.</li>
+</ul>
+<p>Cette lecture explique pourquoi les mêmes formes reviennent sur tous les marchés et toutes les unités de temps : elles décrivent des situations d'enchère, pas des propriétés magiques d'un actif.</p>
+
+<h2>Pourquoi se passer des indicateurs</h2>
+<p>Le RSI, le MACD ou le stochastique sont des calculs faits à partir des mêmes ouvertures, plus hauts, plus bas et clôtures que vous voyez sur le graphique. Ils n'ajoutent aucune information ; ils la résument et la retardent. Un trader qui sait lire le prix voit directement :</p>
+<ul>
+<li>l'accélération ou l'essoufflement d'un mouvement, par la taille des bougies et des replis ;</li>
+<li>l'équilibre ou le déséquilibre, par les mèches et les chevauchements ;</li>
+<li>l'emplacement, par la position du prix par rapport aux niveaux qui ont compté.</li>
+</ul>
+<p>Cela ne rend pas les indicateurs inutiles : la moyenne mobile longue comme filtre de tendance, l'ATR pour mesurer la volatilité, le VWAP en intraday ou le volume réel apportent un cadre. Mais en price action, ils <strong>servent le contexte</strong>, ils ne déclenchent pas les trades.</p>
+
+<h2>Les quatre piliers de la lecture</h2>
+<h3>1. La structure : qui contrôle ?</h3>
+<p>La succession des sommets et des creux (voir <em>Tendances, supports et résistances</em>) dit quel camp gagne la bataille sur l'unité de temps considérée. Elle est <strong>fractale</strong> : un creux plus haut en graphique journalier peut contenir toute une petite tendance baissière en graphique de 15 minutes. On lit donc toujours la structure de l'unité de temps supérieure avant celle de l'unité d'exécution.</p>
+
+<h3>2. L'élan : avec quelle force ?</h3>
+<table>
+<thead><tr><th>Observation</th><th>Élan fort</th><th>Élan qui faiblit</th></tr></thead>
+<tbody>
+<tr><td>Taille des bougies dans le sens de la tendance</td><td>Grandes, en augmentation</td><td>De plus en plus petites</td></tr>
+<tr><td>Position des clôtures</td><td>Près des extrêmes, dans le sens du mouvement</td><td>Au milieu ou à l'opposé</td></tr>
+<tr><td>Replis</td><td>Courts, lents, avec de petites bougies</td><td>Profonds, rapides, avec de grandes bougies</td></tr>
+<tr><td>Chevauchement entre bougies</td><td>Faible : chaque bougie avance</td><td>Important : le prix piétine</td></tr>
+<tr><td>Nouveaux extrêmes</td><td>Franchement dépassés</td><td>Dépassés de peu, puis rejetés</td></tr>
+</tbody>
+</table>
+
+<h3>3. L'emplacement : où sommes-nous ?</h3>
+<p>Un même signal n'a pas la même valeur selon l'endroit où il apparaît. Les emplacements qui comptent : les sommets et creux importants, les zones où le prix a déjà réagi, les bornes d'un range, les niveaux ronds, les extrêmes de la séance précédente. Au milieu d'un range ou loin de tout repère, le prix réagit au hasard ; aux bornes, l'enchère a déjà montré ce qu'elle y trouvait.</p>
+
+<h3>4. La réaction : que fait le prix à cet endroit ?</h3>
+<p>C'est l'élément décisif. Le prix arrive sur une zone préparée : est-il rejeté (longue mèche, bougie inverse, cassure d'une petite structure dans l'autre sens), ou la traverse-t-il sans difficulté (grandes bougies, clôtures au-delà) ? La réaction transforme une hypothèse (« ce niveau peut tenir ») en signal (« il tient, maintenant »).</p>
+
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" aria-hidden="true">
+  <rect x="20" y="60" width="140" height="90" rx="10" fill="rgba(120,140,190,0.14)" stroke="rgba(150,170,220,0.7)" />
+  <rect x="175" y="60" width="140" height="90" rx="10" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
+  <rect x="330" y="60" width="140" height="90" rx="10" fill="rgba(245,241,230,0.06)" stroke="rgba(245,241,230,0.35)" />
+  <rect x="485" y="60" width="140" height="90" rx="10" fill="rgba(79,179,143,0.16)" stroke="#4FB38F" />
+  </svg>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:14.06%;top:36.58%">Structure</span>
+<span class="doc-label" style="left:14.06%;top:44.72%">qui contrôle ?</span>
+<span class="doc-label doc-label--lg doc-label--strong is-accent" style="left:38.28%;top:36.58%">Élan</span>
+<span class="doc-label" style="left:38.28%;top:44.72%">avec quelle force ?</span>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--bright" style="left:62.5%;top:36.58%">Emplacement</span>
+<span class="doc-label" style="left:62.5%;top:44.72%">où sommes-nous ?</span>
+<span class="doc-label doc-label--lg doc-label--strong is-positive" style="left:86.72%;top:36.58%">Réaction</span>
+<span class="doc-label" style="left:86.72%;top:44.72%">que fait le prix ici ?</span>
+<span class="doc-label is-muted" style="left:50%;top:13.52%">Contexte (les trois premiers) avant signal (le dernier)</span>
+<span class="doc-label" style="left:50%;top:74.25%">Un trade naît quand les quatre vont dans le même sens,</span>
+<span class="doc-label" style="left:50%;top:82.25%">avec un point d'invalidation clair.</span>
+</div>
+<figcaption>Les quatre piliers de la lecture du prix, dans l'ordre où on les examine.</figcaption>
+</figure>
+
+<h2>Lire une bougie dans son contexte</h2>
+<p>Au-delà des noms de figures, quelques lectures simples et robustes :</p>
+<ul>
+<li><strong>Position de la clôture</strong> : divisez la bougie en trois. Une clôture dans le tiers supérieur signale que les acheteurs ont gardé la main jusqu'au bout, même si la bougie est rouge. Une clôture dans le tiers inférieur d'une bougie verte montre que les vendeurs ont repris l'essentiel du terrain.</li>
+<li><strong>Taille relative</strong> : comparez à la moyenne des dix ou vingt bougies précédentes (ou à l'ATR). Une bougie deux fois plus grande que la normale marque l'arrivée d'une information ou d'ordres importants.</li>
+<li><strong>Bougie de tendance ou d'hésitation</strong> : une bougie dont le corps occupe la majeure partie du range est une bougie de tendance ; une bougie à petit corps est une bougie d'hésitation. Une succession de bougies d'hésitation annonce un équilibre, souvent suivi d'une sortie franche.</li>
 </ul>
 
-<p>Cela ne signifie pas que les indicateurs sont inutiles — le VWAP, les niveaux de volume et certains oscillateurs ont une vraie valeur ajoutée. Mais ils doivent être des outils de confirmation, jamais des déclencheurs de trade.</p>
+<h2>Lire en séquences</h2>
+<h3>L'essoufflement</h3>
+<p>Quatre ou cinq bougies dans le même sens, de plus en plus petites, avec des clôtures de moins en moins proches des extrêmes : l'enchère trouve de plus en plus facilement des contreparties. Ce n'est pas un signal de retournement à lui seul, mais une raison de ne plus entrer dans ce sens.</p>
+<h3>Compression puis expansion</h3>
+<p>Le marché alterne des phases de petites bougies qui se chevauchent (compression) et des phases de grandes bougies directionnelles (expansion). Une compression qui dure sur une zone importante prépare souvent une expansion : la question n'est pas de deviner sa direction, mais d'avoir un plan pour chacune (voir l'article <em>Cassures et fausses cassures</em>).</p>
+<h3>Le repli en deux temps</h3>
+<p>Dans une tendance, beaucoup de replis se font en deux jambes : une première baisse, un petit rebond qui échoue sous le sommet, une seconde baisse, puis la reprise. Le trader et auteur Al Brooks, qui a beaucoup écrit sur la lecture bougie par bougie, en a fait l'un des points d'entrée favoris de ses méthodes : la cassure du petit sommet qui suit la seconde jambe signale souvent la fin du repli.</p>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" aria-hidden="true">
+  <polyline points="30,200 120,80 170,125 200,105 245,150 300,95 360,70 440,45 560,30" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+  <line x1="200" y1="105" x2="330" y2="105" stroke="rgba(79,179,143,0.7)" stroke-dasharray="4 4" />
+  <circle cx="290" cy="105" r="5" fill="#4FB38F" />
+  </svg>
+<span class="doc-label" style="left:18.75%;top:27.74%">sommet de l'impulsion</span>
+<span class="doc-label is-negative" style="left:26.25%;top:62.52%">jambe 1</span>
+<span class="doc-label is-negative" style="left:39.06%;top:72.96%">jambe 2</span>
+<span class="doc-label doc-label--start is-positive" style="left:53.12%;top:51.22%">entrée : cassure du petit sommet</span>
+<span class="doc-label is-muted" style="left:50%;top:92.96%">Le stop se place sous le creux de la seconde jambe.</span>
+</div>
+<figcaption>Un repli en deux jambes dans une tendance haussière, avec l'entrée sur la reprise (illustration).</figcaption>
+</figure>
 
-<h2>Les 4 éléments fondamentaux de la Price Action</h2>
-
-<h3>1. La structure</h3>
-<p>La structure est la hiérarchie des sommets et creux sur votre timeframe de référence. Elle répond à la question : <em>"Qui contrôle le marché en ce moment ?"</em></p>
-<p>Une structure haussière (HH/HL) signifie que les acheteurs poussent le prix plus haut à chaque impulsion et que les vendeurs ne parviennent pas à récupérer les creux précédents. L'inverse pour une structure baissière.</p>
-<p>La structure est <strong>fractal</strong> — chaque timeframe a sa propre structure, et les structures s'emboîtent les unes dans les autres. Un HL sur le Daily peut être composé d'une structure LH/LL complète sur le M15.</p>
-
-<h3>2. Le momentum</h3>
-<p>Le momentum est la vitesse et l'amplitude des mouvements directionnels. En price action, il se lit à travers :</p>
+<h2>Tendance ou range : deux façons de trader</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>En tendance</h4>
 <ul>
-<li><strong>Taille des bougies</strong> : de grandes bougies dans une direction → fort momentum</li>
-<li><strong>Rapport bougies directionnelles/correctives</strong> : en uptrend fort, les bougies haussières sont 2-3x plus grandes que les baissières</li>
-<li><strong>Vitesse des impulsions vs corrections</strong> : une correction lente et hésitante dans un fort uptrend est un signe de santé — les vendeurs manquent de conviction</li>
-<li><strong>Clôtures par rapport aux hauts/bas de bougie</strong> : des clôtures répétées près des hauts en uptrend signalent un momentum soutenu</li>
+<li>Trader dans le sens de la structure de l'unité de temps supérieure</li>
+<li>Entrer sur les replis (zone, deux jambes, reprise), pas sur les extensions</li>
+<li>Stop sous le creux du repli</li>
+<li>Laisser courir une partie de la position</li>
 </ul>
-
-<h3>3. Le contexte</h3>
-<p>Le contexte est l'ensemble des éléments qui encadrent un signal de price action :</p>
+</div>
+<div class="doc-compare__dont">
+<h4>En range</h4>
 <ul>
-<li>Sur quel niveau de prix se produit le signal ? Support/résistance clé, OB, FVG ?</li>
-<li>Dans quelle tendance sommes-nous sur le timeframe supérieur ?</li>
-<li>Le signal est-il dans une Kill Zone ou hors session ?</li>
-<li>Y a-t-il une news importante imminente ?</li>
+<li>Trader les bornes, jamais le milieu</li>
+<li>Exiger un rejet net à la borne</li>
+<li>Viser la borne opposée, ou le milieu si le range est étroit</li>
+<li>Stop au-delà de la borne, avec une marge pour les dépassements brefs</li>
 </ul>
-<p>Un même pattern de bougie (un Hammer, par exemple) a une signification radicalement différente selon qu'il se forme sur un support majeur en tendance haussière ou au milieu d'un range sans contexte particulier.</p>
+</div>
+</div>
+<p>Savoir dans quel régime on se trouve est donc la première décision. L'article suivant, <em>Les régimes de marché</em>, donne des critères pour le déterminer objectivement.</p>
 
-<h3>4. La décision</h3>
-<p>La décision est l'intégration des trois premiers éléments en une action concrète. En price action pure, la décision se prend en trois temps :</p>
-<ol>
-<li><strong>Context first</strong> : est-ce que le contexte général supporte ce trade ?</li>
-<li><strong>Signal confirmation</strong> : est-ce que la price action confirme l'entrée (CHoCH, bougie de rejet, engulfing) ?</li>
-<li><strong>Invalidation level</strong> : quel niveau de prix invalide complètement mon analyse ?</li>
+<h2>La décision en quatre questions</h2>
+<ol class="doc-steps">
+<li><strong>Contexte</strong> : quelle est la structure de l'unité de temps supérieure, et dans quel régime sommes-nous ?</li>
+<li><strong>Emplacement</strong> : le prix est-il sur une zone préparée avant la séance ?</li>
+<li><strong>Réaction</strong> : la price action confirme-t-elle (rejet, cassure d'une petite structure, clôture forte) ?</li>
+<li><strong>Invalidation</strong> : où le scénario est-il faux, et le rapport gain/risque jusqu'au prochain obstacle est-il suffisant ?</li>
 </ol>
 
-<h2>Lire une bougie — bien au-delà du pattern</h2>
-<p>Un trader de price action avancé ne voit pas juste "un Doji" ou "un Hammer". Il lit une <strong>histoire</strong> dans chaque bougie.</p>
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Le DAX est en tendance haussière en graphique de 4 heures. Pendant la séance européenne, il replie en deux jambes vers une ancienne résistance devenue support, 120 points sous le dernier sommet. La seconde jambe se termine par une bougie de 15 minutes à longue mèche basse qui clôture dans son tiers supérieur. La bougie suivante casse le petit sommet du repli : achat, stop sous la mèche (25 points), objectif sur le dernier sommet (110 points plus haut). Les quatre piliers sont alignés.</p>
+</aside>
 
-<svg width="100%" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:560px;margin:1.5rem auto">
-  <!-- Candle 1: Strong bullish (conviction) -->
-  <rect x="40" y="60" width="28" height="90" rx="2" fill="#3EB489"/>
-  <line x1="54" y1="50" x2="54" y2="60" stroke="#3EB489" stroke-width="2"/>
-  <line x1="54" y1="150" x2="54" y2="158" stroke="#3EB489" stroke-width="2"/>
-  <text x="54" y="175" text-anchor="middle" fill="#3EB489" font-size="10" font-family="sans-serif" font-weight="bold">Fort</text>
-  <text x="54" y="188" text-anchor="middle" fill="rgba(62,180,137,0.6)" font-size="9" font-family="sans-serif">Conviction ↑</text>
-
-  <!-- Candle 2: Doji (indecision) -->
-  <rect x="120" y="103" width="28" height="4" rx="1" fill="rgba(232,234,240,0.6)"/>
-  <line x1="134" y1="60" x2="134" y2="103" stroke="rgba(232,234,240,0.5)" stroke-width="2"/>
-  <line x1="134" y1="107" x2="134" y2="150" stroke="rgba(232,234,240,0.5)" stroke-width="2"/>
-  <text x="134" y="175" text-anchor="middle" fill="rgba(232,234,240,0.6)" font-size="10" font-family="sans-serif" font-weight="bold">Doji</text>
-  <text x="134" y="188" text-anchor="middle" fill="rgba(232,234,240,0.4)" font-size="9" font-family="sans-serif">Indécision</text>
-
-  <!-- Candle 3: Hammer (rejection low) -->
-  <rect x="200" y="88" width="28" height="20" rx="2" fill="#3EB489" opacity="0.8"/>
-  <line x1="214" y1="78" x2="214" y2="88" stroke="#3EB489" stroke-width="1.5" opacity="0.8"/>
-  <line x1="214" y1="108" x2="214" y2="152" stroke="#3EB489" stroke-width="2.5"/>
-  <text x="214" y="175" text-anchor="middle" fill="#3EB489" font-size="10" font-family="sans-serif" font-weight="bold">Hammer</text>
-  <text x="214" y="188" text-anchor="middle" fill="rgba(62,180,137,0.6)" font-size="9" font-family="sans-serif">Rejet bas</text>
-
-  <!-- Candle 4: Shooting star (rejection high) -->
-  <rect x="280" y="100" width="28" height="20" rx="2" fill="#e05555" opacity="0.8"/>
-  <line x1="294" y1="55" x2="294" y2="100" stroke="#e05555" stroke-width="2.5"/>
-  <line x1="294" y1="120" x2="294" y2="132" stroke="#e05555" stroke-width="1.5" opacity="0.8"/>
-  <text x="294" y="175" text-anchor="middle" fill="#e05555" font-size="10" font-family="sans-serif" font-weight="bold">Shooting Star</text>
-  <text x="294" y="188" text-anchor="middle" fill="rgba(224,85,85,0.6)" font-size="9" font-family="sans-serif">Rejet haut</text>
-
-  <!-- Candle 5: Bearish engulfing -->
-  <rect x="355" y="75" width="24" height="30" rx="2" fill="#3EB489" opacity="0.5"/>
-  <rect x="350" y="65" width="34" height="55" rx="2" fill="#e05555"/>
-  <line x1="367" y1="55" x2="367" y2="65" stroke="#e05555" stroke-width="1.5"/>
-  <line x1="367" y1="120" x2="367" y2="132" stroke="#e05555" stroke-width="1.5"/>
-  <text x="367" y="175" text-anchor="middle" fill="#e05555" font-size="10" font-family="sans-serif" font-weight="bold">Engulfing ↓</text>
-  <text x="367" y="188" text-anchor="middle" fill="rgba(224,85,85,0.6)" font-size="9" font-family="sans-serif">Retournement</text>
-
-  <!-- Candle 6: Inside bar (compression) -->
-  <rect x="440" y="68" width="28" height="60" rx="2" fill="rgba(212,169,75,0.2)" stroke="#D4A94B" stroke-width="1"/>
-  <rect x="447" y="80" width="14" height="36" rx="2" fill="rgba(212,169,75,0.5)"/>
-  <text x="454" y="175" text-anchor="middle" fill="#D4A94B" font-size="10" font-family="sans-serif" font-weight="bold">Inside Bar</text>
-  <text x="454" y="188" text-anchor="middle" fill="rgba(212,169,75,0.6)" font-size="9" font-family="sans-serif">Compression</text>
-</svg>
-
-<h2>Le concept de "bodies vs wicks" — lecture avancée</h2>
-<p>Au-delà des patterns individuels, un trader de price action expérimenté lit les bougies collectivement :</p>
-
-<h3>Bougies à grand corps, petites mèches</h3>
-<p>Signalent une <strong>conviction forte</strong> dans la direction du corps. Les ordres d'un côté dominaient complètement. Ces bougies confirment les tendances, les cassures et les mouvements post-news.</p>
-
-<h3>Bougies à petit corps, grandes mèches</h3>
-<p>Signalent un <strong>combat indécis</strong> entre acheteurs et vendeurs. Les deux camps ont essayé de pousser le prix mais aucun n'a gagné définitivement. Ces bougies sur des niveaux clés sont des signaux d'alerte — une résolution approche.</p>
-
-<h3>Bougies baissières avec clôture haute (above midpoint)</h3>
-<p>Même si la bougie est rouge, si elle clôture dans la moitié supérieure de son range, les acheteurs ont résisté. Moins baissier qu'il n'y paraît.</p>
-
-<h3>Bougies haussières avec clôture basse (below midpoint)</h3>
-<p>La bougie est verte mais les vendeurs ont récupéré une grande partie du gain. Signal d'affaiblissement haussier, surtout en fin de tendance.</p>
-
-<h2>Les séquences de bougies — l'histoire sur plusieurs périodes</h2>
-<p>En price action avancée, on lit les bougies en groupes de 3 à 5 pour identifier :</p>
-
-<h3>Rétrécissement progressif des bougies</h3>
-<p>Quand les bougies deviennent progressivement plus petites dans une direction, le momentum s'épuise. C'est comme une balle qu'on lance — elle ralentit progressivement avant de s'arrêter. Une série de 4-5 bougies haussières dont les corps diminuent précède souvent un pullback ou un retournement.</p>
-
-<h3>Alternance compression/expansion</h3>
-<p>Les marchés alternent entre phases de compression (petites bougies, range serré) et phases d'expansion (grandes bougies directionnelles). Identifier une compression en cours est une anticipation d'expansion imminente — la question est la direction.</p>
-
-<h3>Clôtures successives au-dessus/en dessous d'un niveau</h3>
-<p>Trois clôtures consécutives au-dessus d'une résistance = cassure confirmée par la price action. Une seule clôture n'est souvent pas suffisante — les faux breakouts clôturent souvent juste au-dessus avant de se retourner.</p>
-
-<h2>Price Action en tendance vs en range</h2>
-
-<h3>En tendance — trader la continuation</h3>
+<h2>Le grand piège : la subjectivité</h2>
+<p>La price action est une compétence de lecture. C'est sa force (elle s'adapte à tous les marchés) et sa faiblesse : sans règles écrites, on « voit » après coup des signaux qui n'étaient pas lisibles en temps réel, et l'on interprète chaque trade différemment selon son humeur. La solution :</p>
 <ul>
-<li>Chercher les pullbacks vers des niveaux clés (38-50% du dernier swing)</li>
-<li>Attendre une bougie de rejet sur ce niveau (Hammer en uptrend, Shooting Star en downtrend)</li>
-<li>Confirmer avec la clôture de la bougie suivante</li>
-<li>SL sous le swing low du pullback (en uptrend)</li>
-<li>Éviter d'entrer sur une bougie d'extension (trop loin du dernier niveau)</li>
+<li>écrire des définitions précises (qu'est-ce qu'un « rejet » ? quelle taille de mèche, quelle clôture ?) ;</li>
+<li>tester ces définitions sur l'historique en avançant bougie par bougie, sans voir la suite ;</li>
+<li>mesurer les résultats sur un nombre suffisant de cas (voir <em>Construire sa stratégie price action</em>).</li>
 </ul>
 
-<h3>En range — trader les extrêmes</h3>
-<ul>
-<li>Identifier clairement le support et la résistance du range</li>
-<li>Attendre que le prix touche une borne avec un signal de rejet</li>
-<li>TP à la borne opposée du range</li>
-<li>SL légèrement au-delà de la borne (pour absorber les stop hunts)</li>
-<li>Réduire la taille de position car les ranges génèrent plus de faux signaux</li>
-<li>Sortir si le prix consolide au milieu du range trop longtemps (neutralisation)</li>
-</ul>
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>La price action, c'est lire une enchère : où le prix trouve des contreparties, et où il n'en trouve pas. Structure, élan, emplacement, puis réaction : dans cet ordre, avec des règles écrites et testées, elle devient une méthode et non une impression.</p>
+</aside>
 
-<h2>Les pièges classiques de la price action</h2>
-
-<h3>Le "beautiful setup" trap</h3>
-<p>Un setup qui semble parfait — Hammer sur support, à la bougie près, volume élevé — n'est pas plus fiable qu'un setup ordinaire si le contexte général est adverse. La beauté d'un pattern ne remplace pas la confluence de contexte.</p>
-
-<h3>La sur-analyse de chaque bougie</h3>
-<p>Certains traders analysent chaque bougie individuellement et entrent sur chaque signal. Résultat : sur-trading constant, petites pertes accumulées, capital érodé. En price action de qualité, on attend que <em>plusieurs</em> facteurs convergent avant d'agir.</p>
-
-<h3>Ignorer les timeframes supérieurs</h3>
-<p>Un pin bar parfait sur le M15 dans une zone de résistance majeure Weekly est un signal à contre-sens qui ne devrait pas être tradé — ou avec une taille réduite et des attentes moindres.</p>
-
-<blockquote>Les meilleurs traders de price action ne cherchent pas des patterns — ils lisent une conversation entre acheteurs et vendeurs. Chaque bougie est une phrase, chaque séquence est un paragraphe, chaque structure est un chapitre. Quand vous pouvez "lire" cette histoire couramment, les décisions de trading deviennent naturelles.</blockquote>
+<h2>Testez-vous</h2>
+<details>
+<summary>Une bougie rouge clôture dans le tiers supérieur de son range, sur un support. Comment la lire ?</summary>
+<p>Le prix a été poussé vers le bas, mais les acheteurs ont repris l'essentiel du terrain avant la clôture : malgré sa couleur, la bougie montre plutôt un rejet des prix bas à cet emplacement.</p>
+</details>
+<details>
+<summary>Dans une tendance haussière, les replis deviennent plus profonds et plus rapides, et les nouveaux sommets dépassent à peine les précédents. Que conclure ?</summary>
+<p>L'élan faiblit : on cesse d'acheter les replis avec la même confiance, et l'on guette une cassure de structure. Ce n'est pas encore un signal de vente.</p>
+</details>
+<details>
+<summary>Pourquoi la price action doit-elle être codifiée en règles ?</summary>
+<p>Parce qu'une lecture non définie ne peut pas être testée : on reconnaît les signaux après coup, mais on ne sait pas s'ils étaient lisibles et rentables en temps réel.</p>
+</details>

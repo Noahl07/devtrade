@@ -1,0 +1,135 @@
+<!--meta
+{
+    "slug": "les-regimes-de-marche-tendance-range-expansion-compression",
+    "title": "Les régimes de marché — tendance, range, expansion, compression",
+    "excerpt": "Reconnaître objectivement si le marché est en tendance ou en range, calme ou agité : structure, efficiency ratio de Kaufman (avec calcul), ADX, ATR relatif. Ce qui fonctionne dans chaque régime, comment se font les transitions, et une routine de classement avant chaque séance.",
+    "readingTime": 7,
+    "accessLevel": "free",
+    "position": 2,
+    "module": "price-action-wyckoff"
+}
+-->
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Un marché se décrit sur deux axes : la <strong>direction</strong> (tendance ou range) et la <strong>volatilité</strong> (calme ou agité). Cela donne quatre régimes.</li>
+<li>Une méthode qui gagne dans un régime perd souvent dans un autre : le <strong>décalage entre méthode et régime</strong> explique une grande partie des drawdowns.</li>
+<li>On peut mesurer le régime : structure des sommets et creux, <strong>efficiency ratio</strong> de Kaufman, ADX, ATR comparé à son propre historique.</li>
+<li>La volatilité forme des <strong>grappes</strong> : les périodes agitées suivent les périodes agitées, et les longues compressions précèdent souvent des expansions.</li>
+</ul>
+</div>
+
+<h2>Pourquoi parler de régimes</h2>
+<p>Un suivi de tendance gagne quand le marché part dans une direction et perd en série quand il oscille. Une méthode de retour à la moyenne fait l'inverse. Beaucoup de traders abandonnent une méthode correcte parce qu'elle traverse simplement un régime défavorable, ou persistent avec une méthode dans un régime où elle n'a aucune chance. Savoir dans quel régime on se trouve, c'est savoir <strong>quelle partie de sa boîte à outils utiliser</strong>, et quand réduire la voilure.</p>
+
+<h2>Les quatre régimes</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" aria-hidden="true">
+  <line x1="320" y1="30" x2="320" y2="250" stroke="rgba(245,241,230,0.25)" />
+  <line x1="40" y1="140" x2="600" y2="140" stroke="rgba(245,241,230,0.25)" />
+  <rect x="45" y="35" width="268" height="98" rx="8" fill="rgba(79,179,143,0.12)" />
+  <rect x="330" y="35" width="265" height="98" rx="8" fill="rgba(200,164,92,0.12)" />
+  <rect x="45" y="147" width="268" height="98" rx="8" fill="rgba(120,140,190,0.12)" />
+  <rect x="330" y="147" width="265" height="98" rx="8" fill="rgba(210,101,90,0.12)" />
+  <polyline points="70,120 100,110 120,114 150,95 170,99 200,80 220,84 250,62" fill="none" stroke="#4FB38F" stroke-width="2" />
+  <polyline points="360,122 380,87 395,114 415,72 435,102 460,57 475,92 505,50" fill="none" stroke="#C8A45C" stroke-width="2" />
+  <polyline points="70,200 90,192 110,200 130,193 150,200 170,193 190,200 210,194" fill="none" stroke="rgba(150,170,220,0.9)" stroke-width="2" />
+  <polyline points="360,200 375,165 390,225 405,170 420,220 435,160 450,228 465,175 480,215" fill="none" stroke="#D2655A" stroke-width="2" />
+  </svg>
+<span class="doc-label doc-label--lg doc-label--strong is-positive" style="left:40.94%;top:41.95%">Tendance calme</span>
+<span class="doc-label doc-label--lg doc-label--strong is-accent" style="left:87.5%;top:41.95%">Tendance agitée</span>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:40.94%;top:80.52%">Compression</span>
+<span class="doc-label doc-label--lg doc-label--strong is-negative" style="left:85.94%;top:80.52%">Range agité</span>
+<span class="doc-label is-muted" style="left:50%;top:94.93%">En haut : tendance ; en bas : range. À gauche : calme ; à droite : agité.</span>
+</div>
+<figcaption>Deux axes, quatre régimes : direction (tendance en haut, range en bas) et volatilité (calme à gauche, agitée à droite). Tracés illustratifs.</figcaption>
+</figure>
+<table>
+<thead><tr><th>Régime</th><th>Ce qu'on observe</th><th>Ce qui fonctionne souvent</th><th>Ce qui coûte cher</th></tr></thead>
+<tbody>
+<tr><td>Tendance calme</td><td>Sommets et creux réguliers, replis peu profonds</td><td>Acheter les replis, laisser courir, stop suiveur</td><td>Vendre les « sommets », viser trop court</td></tr>
+<tr><td>Tendance agitée</td><td>Direction nette mais replis violents</td><td>Taille réduite, stops plus larges, entrées sur zones éloignées</td><td>Stops serrés : touchés par le bruit</td></tr>
+<tr><td>Compression</td><td>Petites bougies, range étroit, volatilité au plus bas</td><td>Préparer les deux scénarios de sortie ; patience</td><td>Trader le milieu ; payer les frais pour rien</td></tr>
+<tr><td>Range agité</td><td>Grandes bougies dans les deux sens, cassures qui échouent</td><td>Bornes uniquement, taille réduite, ou ne pas trader</td><td>Suivre chaque cassure</td></tr>
+</tbody>
+</table>
+
+<h2>Mesurer la direction</h2>
+<h3>La structure</h3>
+<p>Le critère de base : des sommets et creux qui progressent dans un sens (tendance), ou qui se répètent à peu près aux mêmes niveaux (range). Simple, mais sujet à interprétation sur les cas limites.</p>
+
+<h3>L'efficiency ratio de Kaufman</h3>
+<p>Perry Kaufman a proposé une mesure très parlante : la part du chemin parcouru par le prix qui l'a réellement fait avancer.</p>
+<pre><code>Efficiency ratio = |clôture finale − clôture initiale| ÷ somme des |variations d'une clôture à l'autre|</code></pre>
+<table>
+<thead><tr><th>Série de 11 clôtures</th><th class="ta-center">Déplacement net</th><th class="ta-center">Chemin parcouru</th><th class="ta-center">Ratio</th></tr></thead>
+<tbody>
+<tr><td>100, 101, 102 … 110 (hausse régulière)</td><td class="ta-center">10</td><td class="ta-center">10</td><td class="ta-center is-positive">1,00</td></tr>
+<tr><td>100, 103, 99, 104, 98, 103, 100, 104, 99, 102, 101</td><td class="ta-center">1</td><td class="ta-center">36</td><td class="ta-center is-negative">0,03</td></tr>
+</tbody>
+</table>
+<p>Proche de 1, le prix avance en ligne droite : tendance efficace. Proche de 0, il fait beaucoup de chemin pour rien : range. Calculé sur 10 à 20 bougies de votre unité de temps de référence, il donne une mesure simple et comparable d'un jour à l'autre. Les seuils dépendent du marché : relevez-les sur votre historique.</p>
+
+<h3>L'ADX</h3>
+<p>L'ADX, publié par J. Welles Wilder en 1978, mesure la force d'une tendance, quel que soit son sens, sur une échelle de 0 à 100. Par convention, on considère souvent qu'un ADX au-dessus de 25 signale une tendance et qu'en dessous de 20 le marché est sans direction. Il réagit lentement : il confirme un régime plutôt qu'il ne l'annonce.</p>
+
+<h2>Mesurer la volatilité</h2>
+<p>Un ATR de 15 pips ne dit rien en soi ; ce qui compte, c'est de savoir s'il est élevé ou bas <strong>pour ce marché</strong>. Deux méthodes :</p>
+<ul>
+<li><strong>ATR relatif</strong> : comparez l'ATR actuel à sa moyenne sur, par exemple, 100 périodes. Au-dessus de 1,3 fois la moyenne, le marché est agité ; sous 0,7 fois, il est comprimé.</li>
+<li><strong>Rang centile</strong> : situez l'ATR actuel parmi ses valeurs de l'année écoulée. Un ATR dans les 10 % les plus bas de l'année signale une compression rare.</li>
+</ul>
+<p>La largeur des bandes de Bollinger (écart entre bande haute et bande basse, divisé par la moyenne) donne une information comparable.</p>
+
+<h2>La volatilité forme des grappes</h2>
+<p>Dès 1963, Benoît Mandelbrot remarquait que les grandes variations de prix tendent à être suivies de grandes variations, et les petites de petites. Ce regroupement de la volatilité est l'un des faits les mieux établis de la finance empirique, et des modèles entiers (la famille GARCH) ont été conçus pour le décrire. Conséquences pratiques :</p>
+<ul>
+<li>après un choc, attendez-vous à ce que l'agitation dure : ce n'est pas le moment de resserrer vos stops ;</li>
+<li>une volatilité très basse ne dure pas indéfiniment : les compressions prolongées précèdent souvent des mouvements plus amples, sans en indiquer la direction ;</li>
+<li>la volatilité d'hier est un meilleur guide de celle de demain que la direction d'hier ne l'est de la direction de demain.</li>
+</ul>
+
+<h2>Les transitions entre régimes</h2>
+<table>
+<thead><tr><th>Transition</th><th>Signes avant-coureurs</th></tr></thead>
+<tbody>
+<tr><td>Compression → expansion</td><td>Volatilité au plus bas depuis des semaines, bornes testées de plus en plus souvent, volume (réel) qui diminue puis bondit à la sortie</td></tr>
+<tr><td>Tendance → range</td><td>Élan qui faiblit, replis plus profonds, nouveau sommet à peine dépassé, efficiency ratio en baisse</td></tr>
+<tr><td>Range → tendance</td><td>Clôtures franches hors du range, retour sur la borne cassée qui tient, efficiency ratio en hausse</td></tr>
+<tr><td>Calme → agité</td><td>Annonce majeure, choc extérieur, grandes bougies inhabituelles</td></tr>
+</tbody>
+</table>
+
+<h2>La routine de classement</h2>
+<ol class="doc-steps">
+<li><strong>Chaque matin</strong>, sur votre unité de temps de référence, notez la direction (structure et efficiency ratio) et la volatilité (ATR relatif).</li>
+<li><strong>Classez</strong> le marché dans l'un des quatre régimes, en une ligne dans votre journal.</li>
+<li><strong>Appliquez</strong> les règles de ce régime : types de setups autorisés, taille, largeur des stops.</li>
+<li><strong>Ne changez pas</strong> de classement à chaque bougie : on le revoit une fois par jour, ou en cas de choc.</li>
+<li><strong>Après 50 trades</strong>, regroupez vos résultats par régime. Vous découvrirez où se trouve votre avantage, et où il disparaît.</li>
+</ol>
+
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Le classement est toujours en retard</strong>
+<p>Toutes ces mesures reposent sur le passé : elles confirment un régime quand il est déjà installé. Le but n'est pas de prédire les changements, mais d'éviter d'appliquer pendant des semaines une méthode dans un régime qui lui est contraire.</p>
+</aside>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Avant de chercher un setup, demandez-vous dans quel marché vous êtes. Direction et volatilité se mesurent ; chaque régime a ses règles ; et une bonne méthode appliquée dans le mauvais régime reste une mauvaise décision.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Sur 10 bougies, le prix a parcouru 50 points au total (en valeur absolue) pour un déplacement net de 5 points. Quel est l'efficiency ratio, et quel régime suggère-t-il ?</summary>
+<p>5 ÷ 50 = 0,10 : le prix fait beaucoup de chemin pour peu d'avance. Plutôt un range.</p>
+</details>
+<details>
+<summary>L'ATR actuel vaut la moitié de sa moyenne sur 100 périodes, et le prix évolue dans un range étroit. Comment vous préparez-vous ?</summary>
+<p>C'est une compression : on prépare un scénario pour chaque sortie du range, on évite le milieu, et l'on garde à l'esprit qu'une expansion devient plus probable, sans en connaître la direction.</p>
+</details>
+<details>
+<summary>Votre méthode de suivi de tendance enchaîne les pertes depuis trois semaines dans un marché qui oscille. Faut-il l'abandonner ?</summary>
+<p>Pas nécessairement : elle traverse un régime qui lui est défavorable. Vérifiez si ses pertes se concentrent dans ce régime ; si oui, réduisez la taille ou suspendez-la tant que le régime dure, plutôt que de la jeter.</p>
+</details>
