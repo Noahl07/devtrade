@@ -14,6 +14,7 @@
 {% set route = app.request.attributes.get('_route') %}
 {% set sections = [
     {route: 'app_admin', match: 'app_admin', label: 'Tableau de bord', icon: 'home'},
+    {route: 'app_admin_statistics', match: 'app_admin_statistics', label: 'Statistiques', icon: 'chart'},
     {route: 'app_admin_categories', match: 'app_admin_categor', label: 'Modules', icon: 'layers'},
     {route: 'app_admin_documents', match: 'app_admin_document', label: 'Articles', icon: 'book'},
     {route: 'app_admin_projects', match: 'app_admin_project', label: 'Réalisations', icon: 'grid'},

@@ -82,6 +82,11 @@ app_admin:
     controller: App\Controller\AdminController::index
     methods: [GET]
 
+app_admin_statistics:
+    path: /admin/statistiques
+    controller: App\Controller\AdminController::statistics
+    methods: [GET]
+
 app_admin_documents:
     path: /admin/documents
     controller: App\Controller\AdminController::documents
