@@ -16,6 +16,7 @@ use App\Repository\WaitlistEntryRepository;
 use App\Service\Admin\ContentEditor;
 use App\Service\Admin\DocumentationImport;
 use App\Service\Admin\WaitlistCsv;
+use App\Service\Analytics\AnalyticsReport;
 use App\Service\DocumentationBundle;
 use App\Twig\SanitizeHtmlExtension;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,6 +55,18 @@ final class AdminController extends AbstractController
             ],
             'latest_users' => $users->findBy([], ['createdAt' => 'DESC'], 5),
             'latest_waitlist' => $waitlist->findBy([], ['createdAt' => 'DESC'], 5),
+        ]);
+    }
+
+    // ── Statistiques ────────────────────────────────────────────────────────
+
+    public function statistics(Request $request, AnalyticsReport $report): Response
+    {
+        // Durée de conservation limitée : purge à chaque consultation (requête indexée, peu coûteuse).
+        $report->purgeExpired();
+
+        return $this->render('admin/statistics.html.twig', [
+            'report' => $report->build($request->query->getInt('jours', 30)),
         ]);
     }
 

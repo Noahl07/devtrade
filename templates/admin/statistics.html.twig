@@ -1,0 +1,95 @@
+{% extends 'admin/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block admin_title %}Statistiques{% endblock %}
+{% block admin_lead %}<p class="admin__lead">Mesure d'audience sans cookie, depuis le {{ report.since|date('d/m/Y') }}. Les administrateurs connectés, les robots et les visiteurs qui refusent le suivi ne sont pas comptés.</p>{% endblock %}
+{% block admin_actions %}
+    <nav class="admin-periods" aria-label="Période">
+        {% for p in report.periods %}
+            <a class="button {{ p == report.days ? 'button--primary' : 'button--ghost' }}" href="{{ path('app_admin_statistics', {jours: p}) }}"{% if p == report.days %} aria-current="page"{% endif %}>{{ p }} jours</a>
+        {% endfor %}
+    </nav>
+{% endblock %}
+
+{% macro share_list(rows, empty_label, null_label) %}
+    {% if rows is empty %}
+        <p class="admin-empty">{{ empty_label }}</p>
+    {% else %}
+        <ul class="admin-bars">
+            {% for row in rows %}
+                <li>
+                    <span class="admin-bars__label">{{ row.label ?? null_label }}</span>
+                    {# Barre en SVG (attributs, pas de style en ligne) : compatible avec la CSP stricte. #}
+                    <svg class="admin-bars__track" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><rect width="100" height="6" class="admin-bars__bg"/><rect width="{{ row.share }}" height="6" class="admin-bars__fill"/></svg>
+                    <span class="admin-bars__value num">{{ row.share|number_format(1, ',', ' ') }} %</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% block admin_content %}
+<ul class="admin-tiles">
+    <li><div class="admin-tile"><span class="admin-tile__icon">{{ ui.icon('eye') }}</span><span class="admin-tile__value num">{{ report.views|number_format(0, ',', ' ') }}</span><span class="admin-tile__label">Pages vues</span></div></li>
+    <li><div class="admin-tile"><span class="admin-tile__icon">{{ ui.icon('users') }}</span><span class="admin-tile__value num">{{ report.visitors|number_format(0, ',', ' ') }}</span><span class="admin-tile__label">Visiteurs (uniques par jour, cumulés)</span></div></li>
+    <li><div class="admin-tile"><span class="admin-tile__icon">{{ ui.icon('layers') }}</span><span class="admin-tile__value num">{{ report.pages_per_visitor|number_format(1, ',', ' ') }}</span><span class="admin-tile__label">Pages par visiteur et par jour</span></div></li>
+</ul>
+
+<section class="admin-panel admin-chart" aria-labelledby="stats-chart">
+    <header class="admin-panel__head">
+        <h2 id="stats-chart">Vues et visiteurs par jour</h2>
+        <span class="admin-chart__legend"><span class="admin-chart__key admin-chart__key--views"></span>vues <span class="admin-chart__key admin-chart__key--visitors"></span>visiteurs</span>
+    </header>
+    {% if report.views == 0 %}
+        <p class="admin-empty">Aucune page vue enregistrée sur la période.</p>
+    {% else %}
+        <svg class="admin-chart__svg" viewBox="0 0 {{ report.chart.width }} {{ report.chart.height }}" preserveAspectRatio="none" role="img" aria-label="Histogramme des vues par jour, maximum {{ report.chart.max }} vues">
+            {% for bar in report.chart.bars %}
+                <rect x="{{ bar.x }}" y="{{ bar.y }}" width="{{ bar.width }}" height="{{ bar.height }}" class="admin-chart__bar"><title>{{ bar.title }}</title></rect>
+            {% endfor %}
+            <polyline points="{{ report.chart.line }}" class="admin-chart__line"/>
+        </svg>
+        <p class="admin-chart__axis"><span>{{ report.chart.first|date('d/m') }}</span><span>maximum : {{ report.chart.max }} vues par jour</span><span>{{ report.chart.last|date('d/m') }}</span></p>
+    {% endif %}
+</section>
+
+<div class="admin-grid">
+    <section class="admin-panel" aria-labelledby="stats-pages">
+        <header class="admin-panel__head"><h2 id="stats-pages">Pages les plus vues</h2></header>
+        {% if report.pages is empty %}
+            <p class="admin-empty">Aucune page vue sur la période.</p>
+        {% else %}
+            <ul class="admin-rows">
+                {% for row in report.pages %}
+                    <li>
+                        <span><strong><a class="admin-table__title" href="{{ row.label }}" target="_blank" rel="noopener">{{ row.label }}</a></strong>
+                            {% if row.label starts with '/documentation/article/premium/' %}<small>Article Premium</small>{% elseif row.label starts with '/documentation/article/' %}<small>Article gratuit</small>{% endif %}</span>
+                        <span class="admin-rows__meta num">{{ row.views }} vues · {{ row.visitors }} visiteurs</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+
+    <section class="admin-panel" aria-labelledby="stats-referrers">
+        <header class="admin-panel__head"><h2 id="stats-referrers">Sources de trafic</h2></header>
+        {{ _self.share_list(report.referrers, 'Aucune visite sur la période.', 'Accès direct ou inconnu') }}
+    </section>
+
+    <section class="admin-panel" aria-labelledby="stats-devices">
+        <header class="admin-panel__head"><h2 id="stats-devices">Appareils</h2></header>
+        {{ _self.share_list(report.devices, 'Aucune visite sur la période.', 'Inconnu') }}
+    </section>
+
+    <section class="admin-panel" aria-labelledby="stats-browsers">
+        <header class="admin-panel__head"><h2 id="stats-browsers">Navigateurs</h2></header>
+        {{ _self.share_list(report.browsers, 'Aucune visite sur la période.', 'Inconnu') }}
+    </section>
+
+    <section class="admin-panel" aria-labelledby="stats-languages">
+        <header class="admin-panel__head"><h2 id="stats-languages">Langues des navigateurs</h2></header>
+        {{ _self.share_list(report.languages, 'Aucune visite sur la période.', 'Non précisée') }}
+    </section>
+</div>
+<p class="admin-note">Pourcentages calculés parmi les entrées affichées. Les données de plus de 13 mois sont supprimées automatiquement.</p>
+{% endblock %}

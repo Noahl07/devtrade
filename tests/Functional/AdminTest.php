@@ -42,7 +42,7 @@ final class AdminTest extends WebTestCase
     public static function adminPages(): iterable
     {
         foreach (['/admin', '/admin/categories', '/admin/categories/nouvelle', '/admin/documents', '/admin/documents/nouveau', '/admin/documents/import',
-            '/admin/projets', '/admin/projets/nouveau', '/admin/utilisateurs', '/admin/waitlist'] as $url) {
+            '/admin/projets', '/admin/projets/nouveau', '/admin/utilisateurs', '/admin/waitlist', '/admin/statistiques', '/admin/statistiques?jours=7'] as $url) {
             yield $url => [$url];
         }
     }

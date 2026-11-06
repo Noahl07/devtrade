@@ -709,3 +709,42 @@ kbd {
     font-size: 0.9rem;
     line-height: 1.6;
 }
+
+/* ── Statistiques ── */
+.admin-periods { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.admin-chart { margin-bottom: var(--space-5); }
+.admin-chart__svg { display: block; width: 100%; height: 14rem; }
+.admin-chart__bar { fill: color-mix(in srgb, var(--accent) 55%, transparent); }
+.admin-chart__bar:hover { fill: var(--accent); }
+.admin-chart__line { fill: none; stroke: var(--text); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.admin-chart__axis {
+    max-width: none;
+    display: flex;
+    justify-content: space-between;
+    margin: var(--space-2) 0 0;
+    font-size: 0.8rem;
+    color: var(--text-2);
+}
+.admin-chart__legend { display: flex; align-items: center; gap: var(--space-2); font-size: 0.8rem; color: var(--text-2); }
+.admin-chart__key { display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 2px; }
+.admin-chart__key--views { background: color-mix(in srgb, var(--accent) 55%, transparent); }
+.admin-chart__key--visitors { height: 2px; background: var(--text); }
+
+.admin-bars { margin: 0; padding: 0; list-style: none; }
+.admin-bars li {
+    display: grid;
+    grid-template-columns: minmax(0, 10rem) 1fr 4rem;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    border-top: var(--hairline) solid var(--border);
+    font-size: 0.9rem;
+}
+.admin-bars__label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-bars__track { display: block; width: 100%; height: 0.5rem; }
+.admin-bars__bg { fill: color-mix(in srgb, var(--text) 8%, transparent); }
+.admin-bars__fill { fill: var(--accent); }
+.admin-bars__value { text-align: right; color: var(--text-2); }
+
+.admin-note { margin-top: var(--space-4); font-size: 0.8rem; color: var(--text-2); }
