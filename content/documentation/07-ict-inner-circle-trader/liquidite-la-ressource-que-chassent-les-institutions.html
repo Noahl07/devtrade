@@ -2,82 +2,134 @@
 {
     "slug": "liquidite-la-ressource-que-chassent-les-institutions",
     "title": "Liquidité — la ressource que chassent les institutions",
-    "excerpt": "Buy/sell-side liquidity, equal highs/lows, stop hunts et Judas Swing.",
-    "readingTime": 13,
+    "excerpt": "Pourquoi les grands ordres ont besoin de contreparties, où se trouvent les réserves de liquidité (sommets égaux, plus haut et plus bas de la veille, range asiatique, lignes de tendance, chiffres ronds), la différence entre balayage et vraie cassure, la liquidité externe et interne, la cible du jour, et ce que cela change pour vos stops.",
+    "readingTime": 6,
     "accessLevel": "free",
-    "position": 4,
+    "position": 5,
     "module": "ict-inner-circle-trader"
 }
 -->
-<h2>La liquidité en ICT</h2>
-<p>En ICT, la liquidité désigne les <strong>ordres stop-loss regroupés à des niveaux prévisibles</strong> — des réservoirs d'ordres que les institutions vont chercher pour exécuter leurs propres positions massives.</p>
-<p>Pour placer une position de plusieurs milliards, les institutions ont besoin de contreparties. Ces contreparties se trouvent dans les stop-loss des traders retail — regroupés de façon prévisible sous les supports et au-dessus des résistances.</p>
- 
-<h2>Buy-side et Sell-side Liquidity</h2>
- 
-<svg width="100%" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:560px;margin:1.5rem auto">
-  <!-- Main range box -->
-  <rect x="30" y="60" width="500" height="100" rx="4" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
- 
-  <!-- BSL zone (above) -->
-  <rect x="30" y="30" width="500" height="32" rx="4" fill="rgba(62,180,137,0.1)" stroke="#3EB489" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="280" y="50" text-anchor="middle" fill="#3EB489" font-size="12" font-family="sans-serif" font-weight="bold">BUY-SIDE LIQUIDITY (BSL)</text>
-  <text x="13" y="50" text-anchor="end" fill="#3EB489" font-size="10" font-family="sans-serif">↑</text>
- 
-  <!-- Equal highs line -->
-  <line x1="30" y1="60" x2="530" y2="60" stroke="#3EB489" stroke-width="0.8" opacity="0.3"/>
-  <circle cx="100" cy="60" r="4" fill="#3EB489" opacity="0.6"/>
-  <circle cx="200" cy="60" r="4" fill="#3EB489" opacity="0.6"/>
-  <circle cx="310" cy="60" r="4" fill="#3EB489" opacity="0.6"/>
-  <circle cx="420" cy="60" r="4" fill="#3EB489" opacity="0.6"/>
-  <text x="280" y="76" text-anchor="middle" fill="rgba(62,180,137,0.5)" font-size="10" font-family="sans-serif">Equal Highs (EQH)</text>
- 
-  <!-- Price oscillation -->
-  <polyline points="30,130 80,90 130,135 180,88 230,132 280,90 330,128 380,85 430,125 480,88 530,120" fill="none" stroke="rgba(232,234,240,0.35)" stroke-width="1.5"/>
- 
-  <!-- Equal lows line -->
-  <line x1="30" y1="158" x2="530" y2="158" stroke="#e05555" stroke-width="0.8" opacity="0.3"/>
-  <circle cx="100" cy="158" r="4" fill="#e05555" opacity="0.6"/>
-  <circle cx="200" cy="158" r="4" fill="#e05555" opacity="0.6"/>
-  <circle cx="310" cy="158" r="4" fill="#e05555" opacity="0.6"/>
-  <circle cx="420" cy="158" r="4" fill="#e05555" opacity="0.6"/>
-  <text x="280" y="150" text-anchor="middle" fill="rgba(224,85,85,0.5)" font-size="10" font-family="sans-serif">Equal Lows (EQL)</text>
- 
-  <!-- SSL zone (below) -->
-  <rect x="30" y="160" width="500" height="30" rx="4" fill="rgba(224,85,85,0.1)" stroke="#e05555" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="280" y="180" text-anchor="middle" fill="#e05555" font-size="12" font-family="sans-serif" font-weight="bold">SELL-SIDE LIQUIDITY (SSL)</text>
-  <text x="13" y="180" text-anchor="end" fill="#e05555" font-size="10" font-family="sans-serif">↓</text>
-</svg>
- 
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li><strong>Buy-Side Liquidity (BSL)</strong> : au-dessus des sommets significatifs et equal highs. Stop-loss des vendeurs + buy-stops des breakout traders. Pour <em>vendre</em> massivement, les institutions font d'abord monter le prix jusqu'aux BSL.</li>
-<li><strong>Sell-Side Liquidity (SSL)</strong> : sous les creux significatifs et equal lows. Stop-loss des acheteurs. Pour <em>acheter</em> massivement, les institutions font d'abord baisser le prix sous les SSL.</li>
+<li>Pour acheter beaucoup sans faire monter le prix, il faut beaucoup de <strong>vendeurs</strong> au même moment. Les stops sous les creux évidents en fournissent : c'est la <strong>liquidité</strong> au sens d'ICT.</li>
+<li>Les réserves se trouvent au-delà des repères que tout le monde voit : <strong>sommets et creux égaux</strong>, plus haut et plus bas de la veille, range asiatique, lignes de tendance, chiffres ronds.</li>
+<li>Un <strong>balayage</strong> prend la liquidité et revient ; une <strong>vraie cassure</strong> la prend et continue. Seule la réaction qui suit permet de les distinguer.</li>
+<li>Le prix alterne souvent entre la <strong>liquidité externe</strong> (les extrêmes du range) et la <strong>liquidité interne</strong> (les déséquilibres à l'intérieur).</li>
 </ul>
- 
-<h2>Equal Highs et Equal Lows — les pièges évidents</h2>
-<p>Les EQH et EQL sont les cibles de liquidité les plus visibles et les plus chassées. Tout le monde les voit, tout le monde place ses stops au-delà, les institutions les ciblent précisément. Après le sweep, le vrai mouvement part dans la direction opposée.</p>
- 
-<h2>Le Stop Hunt — anatomie</h2>
-<ol>
-<li>Accumulation sous un niveau d'EQH</li>
-<li>Mouvement rapide qui casse les EQH (souvent une grande mèche)</li>
-<li>La bougie <em>clôture en dessous</em> du niveau cassé — pas de vrai breakout</li>
-<li>Retournement immédiat dans la direction opposée</li>
+</div>
+
+<h2>Pourquoi les grands acteurs ont besoin de liquidité</h2>
+<p>Imaginez un gérant qui doit acheter l'équivalent de 500 lots d'EUR/USD. S'il passe un ordre au marché, il consomme tout le carnet et fait monter le prix contre lui : il paie de plus en plus cher. Il a besoin, au même instant, de <strong>vendeurs nombreux</strong>. Où les trouver ? Juste sous un creux évident, où sont regroupés les stops des acheteurs (qui deviennent des ventes au marché quand ils sont touchés) et les ordres de vente des traders qui jouent la cassure.</p>
+<p>Le raisonnement d'ICT en découle : avant un mouvement haussier important, le prix va souvent chercher la liquidité vendeuse sous un creux ; avant une baisse, la liquidité acheteuse au-dessus d'un sommet. Les recherches d'Osler (2003) sur les ordres de change confirment que les stops se regroupent bien juste au-delà des niveaux ronds et évidents (voir <em>Support, résistance et zones de valeur avancées</em>).</p>
+
+<h2>Où se trouve la liquidité</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 270" aria-hidden="true">
+  <g stroke-dasharray="4 4">
+    <line x1="30" y1="40" x2="600" y2="40" stroke="rgba(79,179,143,0.7)" />
+    <line x1="230" y1="80" x2="600" y2="80" stroke="rgba(79,179,143,0.5)" />
+    <line x1="30" y1="200" x2="600" y2="200" stroke="rgba(210,101,90,0.6)" />
+    <line x1="30" y1="235" x2="600" y2="235" stroke="rgba(210,101,90,0.7)" />
+  </g>
+  <rect x="40" y="150" width="140" height="50" fill="rgba(120,140,190,0.08)" stroke="rgba(150,170,220,0.5)" />
+  <polyline points="40,170 60,160 80,190 100,155 130,195 160,165 180,175 210,120 240,82 260,110 285,81 310,140 340,120 380,160 420,130 470,175 520,150" fill="none" stroke="#D9D3C3" stroke-width="2" />
+  <line x1="310" y1="140" x2="470" y2="175" stroke="rgba(200,164,92,0.6)" />
+  <g font-family="sans-serif" font-size="12" text-anchor="end">
+    </g>
+  </svg>
+<span class="doc-label doc-label--end is-positive" style="left:97.5%;top:11.04%">plus haut de la veille (BSL)</span>
+<span class="doc-label doc-label--end is-positive" style="left:97.5%;top:25.85%">sommets égaux (BSL)</span>
+<span class="doc-label doc-label--end is-negative" style="left:97.5%;top:77.7%">bas du range asiatique (SSL)</span>
+<span class="doc-label doc-label--end is-negative" style="left:97.5%;top:91.78%">plus bas de la veille (SSL)</span>
+<span class="doc-label doc-label--info" style="left:17.19%;top:51.78%">range asiatique</span>
+<span class="doc-label is-accent" style="left:62.5%;top:66.96%">ligne de tendance</span>
+</div>
+<figcaption>Les principales réserves de liquidité d'une séance : au-dessus des sommets (BSL), sous les creux (SSL), le long des lignes de tendance (illustration).</figcaption>
+</figure>
+<table>
+<thead><tr><th>Réserve</th><th>Pourquoi des ordres s'y accumulent</th></tr></thead>
+<tbody>
+<tr><td>Sommets et creux égaux</td><td>Repères évidents : stops juste au-delà, entrées sur cassure</td></tr>
+<tr><td>Plus haut et plus bas de la veille, de la semaine</td><td>Regardés par tous les traders intraday</td></tr>
+<tr><td>Range asiatique</td><td>Bornes nettes formées pendant une séance calme, souvent visées à l'ouverture de Londres</td></tr>
+<tr><td>Lignes de tendance</td><td>Stops placés juste sous la ligne par ceux qui achètent ses rebonds</td></tr>
+<tr><td>Chiffres ronds</td><td>Prises de bénéfices dessus, stops juste derrière (Osler, 2003)</td></tr>
+<tr><td>Sommets et creux anciens non revisités</td><td>Stops jamais déclenchés, accumulés depuis longtemps</td></tr>
+</tbody>
+</table>
+
+<h2>Balayage ou vraie cassure ?</h2>
+<table>
+<thead><tr><th></th><th>Balayage (<em>sweep</em>)</th><th>Vraie cassure (<em>run</em>)</th></tr></thead>
+<tbody>
+<tr><td>Clôture</td><td>Revient de l'autre côté du niveau</td><td>Au-delà du niveau</td></tr>
+<tr><td>Suite</td><td>Déplacement dans le sens opposé, souvent avec MSS</td><td>Continuation, retours sur le niveau qui tiennent</td></tr>
+<tr><td>Lecture</td><td>La liquidité servait de contrepartie pour un mouvement inverse</td><td>La liquidité a alimenté un mouvement qui se poursuit</td></tr>
+</tbody>
+</table>
+<aside class="doc-callout doc-callout--warn">
+<strong class="doc-callout__title">Tout retour n'est pas une manipulation</strong>
+<p>Sur un marché simulé au hasard, près de 70 % des cassures repassent sous le niveau dans les dix bougies suivantes (voir <em>Cassures et fausses cassures</em>). Un dépassement suivi d'un retour est donc banal. Ce qui distingue un balayage exploitable, c'est ce qui suit : un <strong>déplacement</strong> net dans l'autre sens et un changement de structure.</p>
+</aside>
+
+<h2>Liquidité externe et interne</h2>
+<p>ICT distingue deux types de cibles :</p>
+<ul>
+<li>la <strong>liquidité externe</strong> (ERL) : les sommets et creux qui bornent le range de référence ;</li>
+<li>la <strong>liquidité interne</strong> (IRL) : les déséquilibres (FVG) à l'intérieur de ce range.</li>
+</ul>
+<p>Selon ICT, le prix alterne : après avoir pris une liquidité externe, il revient souvent rééquilibrer une zone interne ; après avoir comblé un FVG interne, il repart vers la liquidité externe suivante. Cette lecture donne une logique aux objectifs : <strong>on entre sur une zone interne pour viser une liquidité externe</strong>, et inversement.</p>
+
+<h2>La cible du jour (<em>draw on liquidity</em>)</h2>
+<p>La question qu'ICT pose chaque matin : <em>vers quelle réserve de liquidité le prix a-t-il le plus de chances de se diriger ?</em> Quelques principes :</p>
+<ol class="doc-steps">
+<li><strong>Partez de la structure</strong> de l'unité de temps haute : en tendance haussière, les cibles se trouvent plutôt au-dessus.</li>
+<li><strong>Listez les réserves non touchées</strong> les plus proches dans ce sens : plus haut de la veille, sommets égaux, plus haut de la semaine.</li>
+<li><strong>Repérez la liquidité opposée</strong> qui pourrait être balayée d'abord (le bas du range asiatique, par exemple).</li>
+<li><strong>Écrivez le scénario</strong> : « balayage de la liquidité vendeuse sous X, puis montée vers la liquidité acheteuse au-dessus de Y ».</li>
 </ol>
-<blockquote>Quand vous voyez une cassure violente d'un niveau évident suivie d'un rejet rapide, ne paniquez pas — c'est presque certainement un stop hunt. Attendez la confirmation et tradez dans la direction du rejet.</blockquote>
- 
-<h2>Le Judas Swing</h2>
-<p>Le <strong>Judas Swing</strong> est le faux mouvement du début de session :</p>
+<p>L'article <em>Le biais quotidien</em> développe cette démarche.</p>
+
+<h2>Le Judas swing</h2>
+<p>À l'ouverture d'une séance, en particulier celle de Londres, le prix part souvent d'abord dans le sens opposé au mouvement principal du jour, balaie une borne du range asiatique, puis se retourne. ICT appelle ce faux départ le <em>Judas swing</em>. Il n'est pas systématique ; il est plus probable quand une liquidité évidente se trouve juste à côté et que le biais de fond pointe dans l'autre sens.</p>
+
+<h2>Ce que cela change pour vos stops</h2>
+<div class="doc-compare">
+<div class="doc-compare__do">
+<h4>Bonnes pratiques</h4>
 <ul>
-<li>À l'ouverture londonienne, le prix fait d'abord un mouvement dans une direction (souvent en cassant l'Asian Range)</li>
-<li>Ce mouvement piège les traders qui entrent dans cette direction</li>
-<li>Ensuite, le prix se retourne violemment dans la vraie direction de la session</li>
+<li>Placer le stop au-delà de la réserve de liquidité, avec une marge, plutôt que juste derrière le repère évident</li>
+<li>Considérer qu'un niveau évident sera probablement visité un jour</li>
+<li>Utiliser les réserves non touchées comme objectifs</li>
 </ul>
- 
-<h2>Utiliser la liquidité dans son analyse</h2>
+</div>
+<div class="doc-compare__dont">
+<h4>Pièges</h4>
 <ul>
-<li>Identifier les zones de BSL et SSL avant de trader</li>
-<li>Ne jamais placer son stop-loss sur un niveau évident (EQH/EQL) — le prix y ira</li>
-<li>Utiliser les sweeps de liquidité comme signal d'entrée dans la direction opposée</li>
-<li>Après un sweep + rejet, chercher l'OB ou FVG de l'impulsion pour entrer</li>
+<li>Stop à 2 pips sous des creux égaux</li>
+<li>Acheter la cassure d'un sommet évident sans attendre la suite</li>
+<li>Voir de la « manipulation » derrière chaque mouvement qui vous stoppe</li>
 </ul>
+</div>
+</div>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>La liquidité, ce sont des ordres qui attendent au-delà des repères évidents. Elle sert de carburant aux mouvements et de cible aux objectifs. Repérez-la avant la séance, placez vos stops au-delà, et jugez chaque dépassement sur ce qui le suit.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Pourquoi un grand acheteur a-t-il intérêt à ce que le prix passe sous un creux évident ?</summary>
+<p>Parce que les stops des acheteurs et les ventes sur cassure se déclenchent à cet endroit : il y trouve, au même moment, les nombreux vendeurs dont il a besoin pour acheter gros sans faire monter le prix.</p>
+</details>
+<details>
+<summary>Le prix dépasse le plus haut de la veille, clôture au-dessus, puis les retours vers ce niveau tiennent. Balayage ou vraie cassure ?</summary>
+<p>Une vraie cassure : la clôture au-delà et les retours qui tiennent montrent que la liquidité a alimenté une continuation.</p>
+</details>
+<details>
+<summary>Que désignent liquidité externe et liquidité interne ?</summary>
+<p>L'externe : les sommets et creux qui bornent le range. L'interne : les déséquilibres (FVG) à l'intérieur. Selon ICT, le prix alterne souvent entre les deux.</p>
+</details>

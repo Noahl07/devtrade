@@ -2,76 +2,112 @@
 {
     "slug": "premium-and-discount-zones-d-interet-optimal",
     "title": "Premium & Discount — zones d'intérêt optimal",
-    "excerpt": "Equilibrium, zones premium/discount et leur application pour définir les entrées ICT.",
-    "readingTime": 10,
+    "excerpt": "Choisir le range de référence, situer le prix en premium ou en discount, la zone OTE (62 %, 70,5 %, 79 %) calculée à l'achat comme à la vente, les projections en écarts-types pour les objectifs, et les limites de l'approche en tendance forte.",
+    "readingTime": 5,
     "accessLevel": "free",
-    "position": 7,
+    "position": 8,
     "module": "ict-inner-circle-trader"
 }
 -->
-<h2>Le concept Premium &amp; Discount</h2>
-<p>En ICT, tout se résume à une règle simple : <strong>acheter dans les zones discount, vendre dans les zones premium</strong>. Ce concept est formalisé à travers les niveaux de Fibonacci appliqués à tout range identifiable.</p>
- 
-<h2>L'Equilibrium — le 50% du range</h2>
-<p>Pour tout range entre un swing low et un swing high, le niveau à <strong>50% (0.5 Fibonacci)</strong> est appelé l'Equilibrium — la valeur équitable de l'actif.</p>
- 
-<svg width="100%" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:500px;margin:1.5rem auto">
-  <!-- Main range -->
-  <rect x="80" y="30" width="360" height="200" rx="4" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
- 
-  <!-- Premium zone -->
-  <rect x="80" y="30" width="360" height="100" rx="4" fill="rgba(224,85,85,0.07)"/>
-  <text x="260" y="65" text-anchor="middle" fill="#e05555" font-size="13" font-family="sans-serif" font-weight="bold">ZONE PREMIUM</text>
-  <text x="260" y="83" text-anchor="middle" fill="rgba(224,85,85,0.7)" font-size="11" font-family="sans-serif">Vendre ici — chercher OB &amp; FVG bearish</text>
- 
-  <!-- OTE Sell zone -->
-  <rect x="80" y="88" width="360" height="42" rx="2" fill="rgba(224,85,85,0.12)" stroke="#e05555" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="450" y="112" text-anchor="start" fill="#e05555" font-size="10" font-family="sans-serif">OTE Sell</text>
-  <text x="450" y="124" text-anchor="start" fill="rgba(224,85,85,0.6)" font-size="9" font-family="sans-serif">62–79%</text>
- 
-  <!-- Equilibrium line -->
-  <line x1="80" y1="130" x2="440" y2="130" stroke="#D4A94B" stroke-width="2" stroke-dasharray="6,3"/>
-  <text x="450" y="134" fill="#D4A94B" font-size="11" font-family="sans-serif" font-weight="bold">EQ 50%</text>
- 
-  <!-- Discount zone -->
-  <rect x="80" y="130" width="360" height="100" rx="0" fill="rgba(62,180,137,0.07)"/>
-  <text x="260" y="165" text-anchor="middle" fill="#3EB489" font-size="13" font-family="sans-serif" font-weight="bold">ZONE DISCOUNT</text>
-  <text x="260" y="183" text-anchor="middle" fill="rgba(62,180,137,0.7)" font-size="11" font-family="sans-serif">Acheter ici — chercher OB &amp; FVG bullish</text>
- 
-  <!-- OTE Buy zone -->
-  <rect x="80" y="130" width="360" height="40" rx="2" fill="rgba(62,180,137,0.12)" stroke="#3EB489" stroke-width="1" stroke-dasharray="3,2"/>
-  <text x="450" y="152" text-anchor="start" fill="#3EB489" font-size="10" font-family="sans-serif">OTE Buy</text>
-  <text x="450" y="164" text-anchor="start" fill="rgba(62,180,137,0.6)" font-size="9" font-family="sans-serif">62–79%</text>
- 
-  <!-- Fib labels left -->
-  <text x="75" y="34" text-anchor="end" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">1.0</text>
-  <text x="75" y="92" text-anchor="end" fill="rgba(224,85,85,0.5)" font-size="9" font-family="sans-serif">0.62</text>
-  <text x="75" y="134" text-anchor="end" fill="#D4A94B" font-size="9" font-family="sans-serif">0.50</text>
-  <text x="75" y="170" text-anchor="end" fill="rgba(62,180,137,0.5)" font-size="9" font-family="sans-serif">0.38</text>
-  <text x="75" y="230" text-anchor="end" fill="rgba(232,234,240,0.3)" font-size="9" font-family="sans-serif">0.0</text>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
+<ul>
+<li>Dans un range de référence (<em>dealing range</em>), le milieu est l'<strong>équilibre</strong> ; au-dessus, le prix est en <strong>premium</strong> (cher) ; en dessous, en <strong>discount</strong> (bon marché).</li>
+<li>Règle d'ICT : chercher les achats en discount, les ventes en premium, dans le sens de la structure.</li>
+<li>L'<strong>OTE</strong> (<em>optimal trade entry</em>) est la zone entre 62 % et 79 % de repli du dernier mouvement, avec un point de référence à 70,5 %.</li>
+<li>En tendance très forte, le prix ne revient pas toujours en discount : la règle sert à éviter d'acheter cher, pas à garantir une entrée.</li>
+</ul>
+</div>
+
+<h2>Le range de référence</h2>
+<p>Tout raisonnement premium / discount commence par le choix d'un range : un sommet et un creux significatifs, sur l'unité de temps de travail. En général :</p>
+<ul>
+<li>le dernier mouvement qui a cassé la structure (du creux au sommet en tendance haussière) ;</li>
+<li>ou le range de la veille, de la semaine, d'une séance.</li>
+</ul>
+<p>Le choix du range change tout : le même prix peut être en premium sur le range de la journée et en discount sur celui de la semaine. Fixez une règle (par exemple : « le dernier mouvement qui a produit un MSS ») et tenez-vous-y.</p>
+
+<h2>Équilibre, premium, discount</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 270" aria-hidden="true">
+  <rect x="70" y="30" width="420" height="105" fill="rgba(210,101,90,0.10)" />
+  <rect x="70" y="135" width="420" height="105" fill="rgba(79,179,143,0.10)" />
+  <rect x="70" y="160" width="420" height="36" fill="rgba(200,164,92,0.22)" stroke="rgba(200,164,92,0.7)" stroke-dasharray="4 3" />
+  <line x1="70" y1="135" x2="490" y2="135" stroke="#C8A45C" stroke-width="1.6" />
+  <polyline points="80,240 160,140 190,170 260,30 300,90 340,150 360,178 390,140 430,80 480,40" fill="none" stroke="#D9D3C3" stroke-width="2" />
+  <circle cx="360" cy="178" r="5" fill="#C8A45C" />
+  <g font-family="sans-serif" font-size="12" text-anchor="start">
+    </g>
 </svg>
- 
-<h2>Règles d'application</h2>
+<span class="doc-label doc-label--start" style="left:78.12%;top:11.04%">1,1000 (100 %)</span>
+<span class="doc-label doc-label--start doc-label--strong is-negative" style="left:78.12%;top:31.78%">premium</span>
+<span class="doc-label doc-label--start doc-label--strong is-accent" style="left:78.12%;top:49.93%">équilibre 1,0900</span>
+<span class="doc-label doc-label--start is-accent" style="left:78.12%;top:60.67%">OTE 62 % · 1,0876</span>
+<span class="doc-label doc-label--start is-accent" style="left:78.12%;top:66.59%">70,5 % · 1,0859</span>
+<span class="doc-label doc-label--start is-accent" style="left:78.12%;top:72.52%">79 % · 1,0842</span>
+<span class="doc-label doc-label--start doc-label--strong is-positive" style="left:78.12%;top:82.15%">discount</span>
+<span class="doc-label doc-label--start" style="left:78.12%;top:88.81%">1,0800 (0 %)</span>
+</div>
+<figcaption>Range de 1,0800 à 1,1000 : l'équilibre est à 1,0900 ; la zone OTE d'achat se situe entre 1,0876 et 1,0842 (illustration).</figcaption>
+</figure>
+<p>La logique est celle d'un commerçant : dans une tendance haussière, on veut acheter quand le prix est revenu dans la moitié basse du mouvement, et non au sommet. Cela améliore mécaniquement le rapport gain/risque, puisque l'entrée est plus proche du creux qui sert d'invalidation.</p>
+
+<h2>L'OTE : calcul à l'achat et à la vente</h2>
+<p>ICT utilise les niveaux de Fibonacci 62 %, 70,5 % et 79 % du dernier mouvement. Sur l'exemple d'un mouvement entre 1,0800 et 1,1000 :</p>
+<table>
+<thead><tr><th>Niveau de repli</th><th class="ta-center">Achat (mouvement haussier de 1,0800 à 1,1000)</th><th class="ta-center">Vente (mouvement baissier de 1,1000 à 1,0800)</th></tr></thead>
+<tbody>
+<tr><td>62 %</td><td class="ta-center">1,0876</td><td class="ta-center">1,0924</td></tr>
+<tr><td>70,5 %</td><td class="ta-center is-accent">1,0859</td><td class="ta-center is-accent">1,0941</td></tr>
+<tr><td>79 %</td><td class="ta-center">1,0842</td><td class="ta-center">1,0958</td></tr>
+</tbody>
+</table>
 <ul>
-<li><strong>Prix au-dessus de l'EQ (zone premium)</strong> : contexte de vente. Cherchez les OB bearish, FVG bearish.</li>
-<li><strong>Prix en dessous de l'EQ (zone discount)</strong> : contexte d'achat. Cherchez les OB bullish, FVG bullish.</li>
+<li><strong>À l'achat</strong> : on mesure le repli depuis le sommet vers le bas. Calcul : sommet − amplitude × niveau.</li>
+<li><strong>À la vente</strong> : on mesure le rebond depuis le creux vers le haut. Calcul : creux + amplitude × niveau.</li>
 </ul>
- 
-<h2>L'OTE — Optimal Trade Entry</h2>
-<p>L'<strong>OTE</strong> est la zone de retracement idéale pour entrer. Elle correspond aux niveaux Fibonacci <strong>62%-79%</strong> d'un swing :</p>
-<ul>
-<li>En uptrend : OTE bullish au retracement 62%-79% d'un swing haussier — zone discount optimale</li>
-<li>En downtrend : OTE bearish au retracement 62%-79% d'un swing baissier — zone premium optimale</li>
-</ul>
-<p>L'OTE est d'autant plus puissant quand il coïncide avec un Order Block et/ou un Fair Value Gap.</p>
- 
-<h2>Application pratique</h2>
-<ol>
-<li>Identifiez le swing high et swing low les plus récents</li>
-<li>Tracez un Fibonacci retracement (0 au low, 1 au high)</li>
-<li>Le 0.5 = Equilibrium — votre frontière premium/discount</li>
-<li>Prix sous le 0.5 → chercher des achats dans la zone 0.62-0.79 (OTE discount)</li>
-<li>Prix au-dessus du 0.5 → chercher des ventes dans la zone 0.38-0.21 (OTE premium inversé)</li>
+<p>Dans les deux cas, la zone OTE se trouve dans la « bonne » moitié du range : discount pour acheter, premium pour vendre.</p>
+
+<h2>Les projections pour les objectifs</h2>
+<p>ICT projette aussi des objectifs à partir de la jambe de « manipulation » (le faux départ qui a précédé le vrai mouvement). On prolonge cette jambe de −1, −2, −2,5 fois sa longueur au-delà de son point de départ, ce qu'il appelle des écarts-types. Par exemple, une manipulation baissière de 30 pips sous un sommet donne des objectifs à 30, 60 et 75 pips au-dessus de ce sommet. Comme toutes les projections, ce sont des repères pour prendre des bénéfices, à croiser avec les réserves de liquidité réelles.</p>
+
+<h2>Utiliser premium et discount</h2>
+<ol class="doc-steps">
+<li><strong>Structure</strong> : déterminez la tendance sur l'unité haute.</li>
+<li><strong>Range</strong> : tracez le dernier mouvement qui a cassé la structure.</li>
+<li><strong>Moitié</strong> : en tendance haussière, attendez que le prix revienne sous l'équilibre.</li>
+<li><strong>Zone</strong> : cherchez un FVG ou un order block <strong>dans</strong> la zone OTE ; c'est cette coïncidence qui donne une entrée précise.</li>
+<li><strong>Invalidation</strong> : sous le creux du range (le 0 %).</li>
 </ol>
- 
-<blockquote>Le setup idéal ICT : prix en zone discount sur le Daily + retrace sur OTE H4 + OB bullish M15 dans la zone discount. Toutes les confluences alignées = haute probabilité.</blockquote>
+
+<aside class="doc-callout doc-callout--example">
+<strong class="doc-callout__title">Exemple (illustratif)</strong>
+<p>Après un MSS haussier, l'EUR/USD a monté de 1,0800 à 1,1000. Il replie, et un FVG laissé par le déplacement se trouve entre 1,0850 et 1,0868, en plein dans la zone OTE. Achat limite à 1,0859 (70,5 %), stop sous 1,0800 avec marge à 1,0792 (67 pips), objectif au-dessus du sommet à 1,1030 (171 pips), là où se trouvent les stops des vendeurs : environ 2,5 fois le risque.</p>
+</aside>
+
+<h2>Les limites</h2>
+<ul>
+<li><strong>Tendance forte</strong> : les replis peuvent s'arrêter à 30 ou 40 % sans jamais atteindre le discount. Ne pas entrer n'est pas une erreur, c'est le coût de la règle.</li>
+<li><strong>Choix du range</strong> : selon le sommet et le creux retenus, les niveaux bougent. Le risque est de choisir après coup le range qui « marche ».</li>
+<li><strong>Fibonacci</strong> : comme le rappelle l'article sur les retracements, plusieurs niveaux finissent toujours par coïncider avec un retournement si on regarde après coup. C'est la coïncidence avec une zone ICT (FVG, order block) et une réaction qui compte.</li>
+</ul>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Premium et discount répondent à une question simple : est-ce que j'achète cher ou bon marché dans ce mouvement ? Fixez votre range, attendez la bonne moitié, et cherchez une zone ICT à l'intérieur de l'OTE pour entrer.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Range de 18 000 à 18 400 points. Où se trouvent l'équilibre et le niveau OTE de 70,5 % pour un achat ?</summary>
+<p>Équilibre : 18 200. OTE 70,5 % : 18 400 − 400 × 0,705 = 18 118.</p>
+</details>
+<details>
+<summary>Le prix est en premium dans une tendance haussière. Faut-il vendre ?</summary>
+<p>Pas en soi : la tendance reste haussière. Le premium indique surtout qu'il ne faut pas acheter à ce prix ; on attend un retour en discount pour acheter.</p>
+</details>
+<details>
+<summary>Pourquoi le choix du range est-il délicat ?</summary>
+<p>Parce que les niveaux d'équilibre et d'OTE dépendent entièrement du sommet et du creux retenus. Il faut une règle fixe, sinon on choisit après coup le range qui semble avoir fonctionné.</p>
+</details>
