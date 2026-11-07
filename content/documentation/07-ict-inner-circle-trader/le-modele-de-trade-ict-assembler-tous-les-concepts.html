@@ -20,41 +20,50 @@
 </div>
 
 <h2>La séquence complète</h2>
-<figure class="doc-diagram">
+<figure class="doc-diagram doc-pas">
 <div class="doc-diagram__canvas">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" aria-hidden="true">
   <defs><marker id="md" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M 0 0 L 8 4 L 0 8 z" fill="#C8A45C" /></marker></defs>
   <g font-family="sans-serif" text-anchor="middle">
-    <rect x="20" y="20" width="185" height="58" rx="8" fill="rgba(120,140,190,0.16)" stroke="rgba(150,170,220,0.7)" />
-    <rect x="228" y="20" width="185" height="58" rx="8" fill="rgba(120,140,190,0.16)" stroke="rgba(150,170,220,0.7)" />
-    <rect x="436" y="20" width="185" height="58" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
-    <rect x="436" y="120" width="185" height="58" rx="8" fill="rgba(210,101,90,0.14)" stroke="#D2655A" />
-    <rect x="228" y="120" width="185" height="58" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
-    <rect x="20" y="120" width="185" height="58" rx="8" fill="rgba(79,179,143,0.16)" stroke="#4FB38F" />
+    <rect class="pas-1" x="20" y="20" width="185" height="58" rx="8" fill="rgba(120,140,190,0.16)" stroke="rgba(150,170,220,0.7)" />
+    <rect class="pas-2" x="228" y="20" width="185" height="58" rx="8" fill="rgba(120,140,190,0.16)" stroke="rgba(150,170,220,0.7)" />
+    <rect class="pas-3" x="436" y="20" width="185" height="58" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
+    <rect class="pas-4" x="436" y="120" width="185" height="58" rx="8" fill="rgba(210,101,90,0.14)" stroke="#D2655A" />
+    <rect class="pas-5" x="228" y="120" width="185" height="58" rx="8" fill="rgba(200,164,92,0.14)" stroke="#C8A45C" />
+    <rect class="pas-6" x="20" y="120" width="185" height="58" rx="8" fill="rgba(79,179,143,0.16)" stroke="#4FB38F" />
     </g>
   <g stroke="#C8A45C" stroke-width="1.5" fill="none">
-    <line x1="205" y1="49" x2="224" y2="49" marker-end="url(#md)" />
-    <line x1="413" y1="49" x2="432" y2="49" marker-end="url(#md)" />
-    <line x1="528" y1="78" x2="528" y2="116" marker-end="url(#md)" />
-    <line x1="436" y1="149" x2="417" y2="149" marker-end="url(#md)" />
-    <line x1="228" y1="149" x2="209" y2="149" marker-end="url(#md)" />
+    <line class="pas-2" x1="205" y1="49" x2="224" y2="49" marker-end="url(#md)" />
+    <line class="pas-3" x1="413" y1="49" x2="432" y2="49" marker-end="url(#md)" />
+    <line class="pas-4" x1="528" y1="78" x2="528" y2="116" marker-end="url(#md)" />
+    <line class="pas-5" x1="436" y1="149" x2="417" y2="149" marker-end="url(#md)" />
+    <line class="pas-6" x1="228" y1="149" x2="209" y2="149" marker-end="url(#md)" />
   </g>
   </svg>
-<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:17.5%;top:13.15%">1. Biais et cible</span>
-<span class="doc-label" style="left:17.5%;top:19.27%">unité haute, veille</span>
-<span class="doc-label doc-label--lg doc-label--strong doc-label--info" style="left:50%;top:13.15%">2. Fenêtre horaire</span>
-<span class="doc-label" style="left:50%;top:19.27%">Kill Zone, Silver Bullet</span>
-<span class="doc-label doc-label--lg doc-label--strong is-accent" style="left:82.5%;top:13.15%">3. Prise de liquidité</span>
-<span class="doc-label" style="left:82.5%;top:19.27%">contre le biais</span>
-<span class="doc-label doc-label--lg doc-label--strong is-negative" style="left:82.5%;top:46.48%">4. Déplacement + MSS</span>
-<span class="doc-label" style="left:82.5%;top:52.6%">dans le sens du biais</span>
-<span class="doc-label doc-label--lg doc-label--strong is-accent" style="left:50%;top:46.48%">5. Entrée</span>
-<span class="doc-label" style="left:50%;top:52.6%">FVG en zone favorable</span>
-<span class="doc-label doc-label--lg doc-label--strong is-positive" style="left:17.5%;top:46.48%">6. Objectif</span>
-<span class="doc-label" style="left:17.5%;top:52.6%">liquidité opposée</span>
-<span class="doc-label" style="left:50%;top:73.54%">Si une étape manque, pas de trade.</span>
-<span class="doc-label is-muted" style="left:50%;top:81.27%">Stop : au-delà de l'extrême de la prise de liquidité.</span>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info pas-1" style="left:17.5%;top:13.15%">1. Biais et cible</span>
+<span class="doc-label pas-1" style="left:17.5%;top:19.27%">unité haute, veille</span>
+<span class="doc-label doc-label--lg doc-label--strong doc-label--info pas-2" style="left:50%;top:13.15%">2. Fenêtre horaire</span>
+<span class="doc-label pas-2" style="left:50%;top:19.27%">Kill Zone, Silver Bullet</span>
+<span class="doc-label doc-label--lg doc-label--strong is-accent pas-3" style="left:82.5%;top:13.15%">3. Prise de liquidité</span>
+<span class="doc-label pas-3" style="left:82.5%;top:19.27%">contre le biais</span>
+<span class="doc-label doc-label--lg doc-label--strong is-negative pas-4" style="left:82.5%;top:46.48%">4. Déplacement + MSS</span>
+<span class="doc-label pas-4" style="left:82.5%;top:52.6%">dans le sens du biais</span>
+<span class="doc-label doc-label--lg doc-label--strong is-accent pas-5" style="left:50%;top:46.48%">5. Entrée</span>
+<span class="doc-label pas-5" style="left:50%;top:52.6%">FVG en zone favorable</span>
+<span class="doc-label doc-label--lg doc-label--strong is-positive pas-6" style="left:17.5%;top:46.48%">6. Objectif</span>
+<span class="doc-label pas-6" style="left:17.5%;top:52.6%">liquidité opposée</span>
+<span class="doc-label pas-7" style="left:50%;top:73.54%">Si une étape manque, pas de trade.</span>
+<span class="doc-label is-muted pas-7" style="left:50%;top:81.27%">Stop : au-delà de l'extrême de la prise de liquidité.</span>
 </div>
+<ol class="doc-pas-texte">
+<li>Le biais : sur l'unité de temps supérieure et la veille, on décide de la direction attendue et de la liquidité visée.</li>
+<li>La fenêtre horaire : on ne cherche un trade que pendant une Kill Zone ou une Silver Bullet, quand les institutions sont actives.</li>
+<li>La prise de liquidité : le prix balaie d'abord des stops contre le biais (sous un creux en biais haussier).</li>
+<li>Le déplacement et la cassure de structure : une impulsion forte dans le sens du biais confirme que la manipulation est finie.</li>
+<li>L'entrée : sur le retour dans le FVG laissé par le déplacement, en zone favorable (décote pour un achat).</li>
+<li>L'objectif : la liquidité opposée, par exemple les plus hauts précédents en biais haussier.</li>
+<li>La règle : si une étape manque, pas de trade. Le stop se place au-delà de l'extrême de la prise de liquidité.</li>
+</ol>
 <figcaption>Les six étapes du modèle de base : chacune filtre la suivante.</figcaption>
 </figure>
 

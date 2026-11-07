@@ -23,22 +23,32 @@
 <p>Pendant un range d'accumulation, beaucoup de participants ont placé des stops sous le bas du range, et d'autres attendent sa cassure pour vendre. Pour un grand acheteur, c'est une aubaine : en laissant (ou en poussant) le prix passer sous le range, il déclenche ces ordres de vente et peut acheter de grandes quantités sans faire monter le prix. Une fois cette offre absorbée, il n'y a plus de vendeurs : le prix remonte rapidement dans le range.</p>
 <p>C'est exactement la logique de la fausse cassure (voir <em>Cassures et fausses cassures</em>), dans un contexte précis : la fin d'une accumulation.</p>
 
-<figure class="doc-diagram">
+<figure class="doc-diagram doc-pas">
 <div class="doc-diagram__canvas">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 328.1" aria-hidden="true">
-  <line x1="30" y1="101" x2="600" y2="101" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
-  <line x1="30" y1="214.5" x2="600" y2="214.5" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
-  <rect x="30" y="217.1" width="290" height="20.2" fill="rgba(210,101,90,0.15)" />
-  <polyline points="40,113.6 80,208.2 120,119.9 160,201.9 200,126.2 240,189.3 280,258.7 300,201.9 340,151.4 380,195.6 420,138.8 460,94.7 490,126.2 540,63.1 600,37.9" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
-  <g fill="#E2CB91"><circle cx="280" cy="258.7" r="5" /><circle cx="380" cy="195.6" r="5" /><circle cx="490" cy="126.2" r="5" /></g>
+  <line class="pas-1" x1="30" y1="101" x2="600" y2="101" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
+  <line class="pas-1" x1="30" y1="214.5" x2="600" y2="214.5" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
+  <rect class="pas-1" x="30" y="217.1" width="290" height="20.2" fill="rgba(210,101,90,0.15)" />
+  <polyline class="pas-1" points="40,113.6 80,208.2 120,119.9 160,201.9 200,126.2 240,189.3" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+<polyline class="pas-2" points="240,189.3 280,258.7 300,201.9" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+<polyline class="pas-3" points="300,201.9 340,151.4 380,195.6" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+<polyline class="pas-4" points="380,195.6 420,138.8 460,94.7 490,126.2 540,63.1 600,37.9" fill="none" stroke="#D9D3C3" stroke-width="2.2" />
+  <g fill="#E2CB91"><circle class="pas-2" cx="280" cy="258.7" r="5" /><circle class="pas-3" cx="380" cy="195.6" r="5" /><circle class="pas-4" cx="490" cy="126.2" r="5" /></g>
   </svg>
-<span class="doc-label doc-label--strong is-accent" style="left:43.75%;top:85.24%">spring</span>
-<span class="doc-label doc-label--strong is-accent" style="left:59.38%;top:66.01%">test</span>
-<span class="doc-label doc-label--strong is-accent" style="left:76.56%;top:45.24%">LPS</span>
-<span class="doc-label is-positive" style="left:71.88%;top:23%">SOS</span>
-<span class="doc-label is-negative" style="left:27.34%;top:75.31%">stops sous le range</span>
-<span class="doc-label is-muted" style="left:50%;top:94.54%">Trois entrées possibles : au test, à la sortie du range, sur le LPS.</span>
+<span class="doc-label doc-label--strong is-accent pas-2" style="left:43.75%;top:85.24%">spring</span>
+<span class="doc-label doc-label--strong is-accent pas-3" style="left:59.38%;top:66.01%">test</span>
+<span class="doc-label doc-label--strong is-accent pas-4" style="left:76.56%;top:45.24%">LPS</span>
+<span class="doc-label is-positive pas-4" style="left:71.88%;top:23%">SOS</span>
+<span class="doc-label is-negative pas-1" style="left:27.34%;top:75.31%">stops sous le range</span>
+<span class="doc-label is-muted pas-5" style="left:50%;top:94.54%">Trois entrées possibles : au test, à la sortie du range, sur le LPS.</span>
 </div>
+<ol class="doc-pas-texte">
+<li>Le range : le prix oscille entre un support et une résistance. Sous le support s'accumulent les ordres stop des acheteurs et les ordres des vendeurs qui parient sur la cassure.</li>
+<li>Le spring : le prix casse brièvement le support, déclenche ces stops, puis réintègre aussitôt le range. Les grandes mains ont acheté la liquidité offerte par les ventes forcées.</li>
+<li>Le test : un nouveau repli, plus faible et sur un volume plus bas, confirme que l'offre est épuisée.</li>
+<li>Le signe de force (SOS) puis le dernier point d'appui (LPS) : le prix sort par le haut, revient tester l'ancienne résistance devenue support, et la tendance démarre.</li>
+<li>Trois entrées possibles : au test, à la sortie du range, ou sur le LPS. Plus on attend, plus la confirmation est forte et plus le prix d'entrée est élevé.</li>
+</ol>
 <figcaption>Un spring : cassure brève sous le range, retour rapide, test qui tient au-dessus du plus bas, puis sortie du range (illustration).</figcaption>
 </figure>
 

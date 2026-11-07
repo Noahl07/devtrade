@@ -156,3 +156,13 @@ if (heroArt && allow3D()) {
 if (document.querySelector('figure.doc-3d')) {
     import('./js/surface3d.js').then(({ initSurfaces }) => initSurfaces());
 }
+
+// ── Schémas pas à pas des articles ───────────────────────────────────────────
+if (document.querySelector('figure.doc-pas')) {
+    import('./js/diagram-steps.js').then(({ initSchemas }) => initSchemas());
+}
+
+// ── Simulateurs interactifs des articles ─────────────────────────────────────
+if (document.querySelector('.doc-sim')) {
+    import('./js/simulators.js').then(({ initSimulateurs }) => initSimulateurs());
+}

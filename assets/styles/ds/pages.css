@@ -1291,3 +1291,95 @@ select.input {
    le geste horizontal sert à la faire pivoter). */
 .prose .doc-3d.is-live .doc-diagram__canvas { min-width: 0; }
 .prose .doc-3d.is-live { overflow-x: visible; }
+
+/* Schémas pas à pas : sans JavaScript, tout est visible et la liste des étapes s'affiche. */
+.prose .doc-pas.is-live .doc-pas-texte { display: none; }
+.prose .doc-pas .is-hidden-step { opacity: 0; visibility: hidden; }
+.prose .doc-pas [class*="pas-"] { transition: opacity 0.35s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+    .prose .doc-pas [class*="pas-"] { transition: none; }
+}
+
+.prose .doc-pas__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+}
+
+.prose .doc-pas__count {
+    min-width: 7em;
+    text-align: center;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+}
+
+.prose .doc-pas__btn {
+    padding: 0.35em 0.9em;
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: inherit;
+    font: inherit;
+    font-size: var(--step--1);
+    cursor: pointer;
+}
+
+.prose .doc-pas__btn:hover:not(:disabled),
+.prose .doc-pas__btn:focus-visible { border-color: var(--brand); }
+.prose .doc-pas__btn:disabled { opacity: 0.45; cursor: default; }
+
+.prose .doc-pas__text {
+    min-height: 3em;
+    margin: var(--space-2) auto 0;
+    max-width: 60ch;
+    text-align: center;
+    color: var(--text-2);
+}
+
+/* Simulateurs : sans JavaScript, le bloc affiche son exemple chiffré statique. */
+.prose .doc-sim {
+    margin: var(--space-6) 0;
+    padding: var(--space-4);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-lg);
+    background: radial-gradient(80% 90% at 100% 0%, var(--brand-soft), transparent 70%), var(--surface);
+}
+
+.prose .doc-sim__title { margin: 0 0 var(--space-3); font-weight: 600; color: var(--text); }
+
+.prose .doc-sim__controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-3) var(--space-5);
+}
+
+.prose .doc-sim__control {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-1);
+    font-size: var(--step--1);
+}
+
+.prose .doc-sim__control label { color: var(--text-2); }
+.prose .doc-sim__control output { font-variant-numeric: tabular-nums; color: var(--text); font-weight: 600; }
+.prose .doc-sim__control input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: var(--brand); }
+
+.prose .doc-sim__results {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-1) var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-3);
+    border-top: var(--hairline) solid var(--border);
+    font-size: var(--step--1);
+}
+
+.prose .doc-sim__results dt { color: var(--text-2); }
+.prose .doc-sim__results dd { margin: 0; text-align: right; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+.prose .doc-sim__chart { display: block; width: 100%; margin-top: var(--space-4); }
+.prose .doc-sim__legend { margin: var(--space-2) 0 0; font-size: var(--step--1); color: var(--text-muted); }
+.prose .doc-sim .doc-pas__btn { margin-top: var(--space-3); }

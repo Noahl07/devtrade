@@ -31,25 +31,32 @@
 <p>Cette histoire est plausible, mais invérifiable de l'extérieur : on ne voit pas les ordres. Il faut donc juger les order blocks comme toute autre zone : sur leurs résultats mesurés.</p>
 
 <h2>Tracer un order block</h2>
-<figure class="doc-diagram">
+<figure class="doc-diagram doc-pas">
 <div class="doc-diagram__canvas">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 328" aria-hidden="true">
-  <rect x="150" y="177.1" width="380" height="52.5" fill="rgba(79,179,143,0.14)" stroke="rgba(79,179,143,0.6)" stroke-dasharray="4 3" />
-  <line x1="150" y1="203.4" x2="530" y2="203.4" stroke="rgba(79,179,143,0.6)" stroke-dasharray="2 3" />
-  <line x1="80" y1="131.2" x2="80" y2="183.7" stroke="#D2655A" stroke-width="2" /><rect x="68" y="141.7" width="24" height="32.8" rx="2" fill="#D2655A" />
-  <line x1="120" y1="154.8" x2="120" y2="216.5" stroke="#D2655A" stroke-width="2" /><rect x="108" y="164" width="24" height="39.4" rx="2" fill="#D2655A" />
-  <line x1="165" y1="167.9" x2="165" y2="242.7" stroke="#D2655A" stroke-width="2" /><rect x="153" y="177.1" width="24" height="52.5" rx="2" fill="#D2655A" />
-  <line x1="210" y1="78.7" x2="210" y2="233.5" stroke="#4FB38F" stroke-width="2" /><rect x="197" y="91.8" width="26" height="133.8" rx="2" fill="#4FB38F" />
-  <line x1="255" y1="39.4" x2="255" y2="111.5" stroke="#4FB38F" stroke-width="2" /><rect x="243" y="49.9" width="24" height="52.5" rx="2" fill="#4FB38F" />
-  <line x1="30" y1="124.6" x2="300" y2="124.6" stroke="rgba(200,164,92,0.6)" stroke-dasharray="4 4" />
-  <polyline points="270,52.5 330,91.8 380,131.2 430,183.7 470,157.4 520,91.8 570,65.6" fill="none" stroke="#D9D3C3" stroke-width="2" />
-  <circle cx="430" cy="183.7" r="5" fill="#4FB38F" />
+  <rect class="pas-4" x="150" y="177.1" width="380" height="52.5" fill="rgba(79,179,143,0.14)" stroke="rgba(79,179,143,0.6)" stroke-dasharray="4 3" />
+  <line class="pas-4" x1="150" y1="203.4" x2="530" y2="203.4" stroke="rgba(79,179,143,0.6)" stroke-dasharray="2 3" />
+  <line class="pas-1" x1="80" y1="131.2" x2="80" y2="183.7" stroke="#D2655A" stroke-width="2" /><rect class="pas-1" x="68" y="141.7" width="24" height="32.8" rx="2" fill="#D2655A" />
+  <line class="pas-1" x1="120" y1="154.8" x2="120" y2="216.5" stroke="#D2655A" stroke-width="2" /><rect class="pas-1" x="108" y="164" width="24" height="39.4" rx="2" fill="#D2655A" />
+  <line class="pas-2" x1="165" y1="167.9" x2="165" y2="242.7" stroke="#D2655A" stroke-width="2" /><rect class="pas-2" x="153" y="177.1" width="24" height="52.5" rx="2" fill="#D2655A" />
+  <line class="pas-3" x1="210" y1="78.7" x2="210" y2="233.5" stroke="#4FB38F" stroke-width="2" /><rect class="pas-3" x="197" y="91.8" width="26" height="133.8" rx="2" fill="#4FB38F" />
+  <line class="pas-3" x1="255" y1="39.4" x2="255" y2="111.5" stroke="#4FB38F" stroke-width="2" /><rect class="pas-3" x="243" y="49.9" width="24" height="52.5" rx="2" fill="#4FB38F" />
+  <line class="pas-1" x1="30" y1="124.6" x2="300" y2="124.6" stroke="rgba(200,164,92,0.6)" stroke-dasharray="4 4" />
+  <polyline class="pas-5" points="270,52.5 330,91.8 380,131.2 430,183.7 470,157.4 520,91.8 570,65.6" fill="none" stroke="#D9D3C3" stroke-width="2" />
+  <circle class="pas-5" cx="430" cy="183.7" r="5" fill="#4FB38F" />
   </svg>
-<span class="doc-label doc-label--strong is-positive" style="left:25.78%;top:80.25%">order block</span>
-<span class="doc-label doc-label--start is-accent" style="left:5.31%;top:33.5%">sommet cassé</span>
-<span class="doc-label doc-label--start is-positive" style="left:84.38%;top:62.32%">seuil moyen</span>
-<span class="doc-label" style="left:67.19%;top:78.32%">retour sur l'order block</span>
+<span class="doc-label doc-label--strong is-positive pas-2" style="left:25.78%;top:80.25%">order block</span>
+<span class="doc-label doc-label--start is-accent pas-1" style="left:5.31%;top:33.5%">sommet cassé</span>
+<span class="doc-label doc-label--start is-positive pas-4" style="left:84.38%;top:62.32%">seuil moyen</span>
+<span class="doc-label pas-5" style="left:67.19%;top:78.32%">retour sur l'order block</span>
 </div>
+<ol class="doc-pas-texte">
+<li>Le prix baisse et laisse un sommet (ligne pointillée), où se trouvent des ordres d'achat stop.</li>
+<li>La dernière bougie baissière avant la hausse : c'est l'order block candidat.</li>
+<li>Le déplacement : des bougies haussières puissantes cassent le sommet. C'est ce mouvement qui valide l'order block.</li>
+<li>On trace la zone de l'order block et son seuil moyen, le milieu de la bougie.</li>
+<li>Le prix revient dans la zone, réagit et repart dans le sens du déplacement : c'est l'entrée recherchée.</li>
+</ol>
 <figcaption>Un order block haussier : la dernière bougie baissière avant le déplacement qui casse le sommet. Le prix y revient plus tard (illustration).</figcaption>
 </figure>
 <table>
