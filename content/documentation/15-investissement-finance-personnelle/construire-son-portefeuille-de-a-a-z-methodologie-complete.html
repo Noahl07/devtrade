@@ -1,119 +1,114 @@
 <!--meta
 {
     "slug": "construire-son-portefeuille-de-a-a-z-methodologie-complete",
-    "title": "Construire son portefeuille de A à Z — méthodologie complète",
-    "excerpt": "De la feuille blanche au portefeuille opérationnel — choisir son allocation, sélectionner ses supports, mettre en place ses investissements programmés et planifier ses rééquilibrages.",
-    "readingTime": 21,
+    "title": "Construire son portefeuille de A à Z — méthode complète",
+    "excerpt": "Passer de la théorie à un portefeuille concret : allocation entre actions, obligations et monétaire, structure cœur-satellite, exemples de portefeuilles simples, investissement en une fois ou progressif (simulation), rééquilibrage et dérive de l'allocation, choix des enveloppes et routine de suivi annuelle.",
+    "readingTime": 5,
     "accessLevel": "free",
     "position": 10,
     "module": "investissement-finance-personnelle"
 }
 -->
-<h2>Du théorique au concret — passer à l'action</h2>
-<p>Vous avez maintenant les bases : classes d'actifs, enveloppes fiscales, ETF, actions, immobilier, crypto. Il est temps de tout assembler. Ce chapitre est entièrement pratique — nous allons construire un portefeuille de A à Z, étape par étape.</p>
- 
-<h2>Étape 1 — Établir sa situation financière réelle</h2>
-<p>Avant d'investir le moindre euro, faites le bilan :</p>
- 
-<p><strong>Passif à éliminer en priorité :</strong></p>
+<div class="doc-keypoints">
+<strong class="doc-callout__title">L'essentiel</strong>
 <ul>
-<li>Dettes à taux élevé (crédit conso, découvert bancaire) : rembourser avant d'investir — aucun investissement ne batte un coût de crédit à 15-20%</li>
-<li>Crédit auto/moto à taux élevé : idem</li>
+<li>La décision la plus importante est l'<strong>allocation</strong> : la répartition entre actions, obligations et monétaire explique l'essentiel du comportement d'un portefeuille diversifié.</li>
+<li>Un portefeuille simple fonctionne : un <strong>cœur</strong> d'ETF largement diversifiés (70 à 100 %), et éventuellement une poche <strong>satellite</strong> pour des convictions.</li>
+<li>Investir une somme en une fois a battu l'investissement étalé sur 12 mois dans environ 6 cas sur 10 dans nos simulations, mais étaler réduit le regret et le risque de mauvais timing.</li>
+<li>Sans <strong>rééquilibrage</strong>, un portefeuille 60/40 dérive vers plus de risque : dans la simulation, sa part d'actions médiane atteint 73 % après 20 ans.</li>
 </ul>
- 
-<p><strong>Épargne de précaution — non investissable :</strong></p>
+</div>
+
+<h2>Étape 1 : l'allocation</h2>
+<p>À partir de votre horizon et de votre tolérance au risque (voir <em>Définir ses objectifs</em>), fixez une part d'actions. Le reste va en obligations ou en fonds euros, qui amortissent les baisses. Exemples, à titre d'illustration et non de conseil personnalisé :</p>
+<table>
+<thead><tr><th>Profil</th><th>Actions</th><th>Obligations ou fonds euros</th><th>Baisse possible dans une crise sévère</th></tr></thead>
+<tbody>
+<tr><td>Prudent</td><td>30 %</td><td>70 %</td><td>10 à 20 %</td></tr>
+<tr><td>Équilibré</td><td>60 %</td><td>40 %</td><td>20 à 35 %</td></tr>
+<tr><td>Dynamique</td><td>80 %</td><td>20 %</td><td>30 à 45 %</td></tr>
+<tr><td>Offensif</td><td>100 %</td><td>0 %</td><td>40 à 55 %</td></tr>
+</tbody>
+</table>
+
+<h2>Étape 2 : la structure cœur-satellite</h2>
 <ul>
-<li>3 à 6 mois de dépenses courantes sur Livret A (3%) ou LDDS (3%)</li>
-<li>C'est votre filet de sécurité — ne jamais toucher pour investir</li>
+<li><strong>Cœur (70 à 100 %)</strong> : un ou deux ETF d'actions mondiales (pays développés, éventuellement émergents), plus la partie obligataire ou fonds euros. Peu de lignes, frais bas, aucune décision à prendre au quotidien.</li>
+<li><strong>Satellite (0 à 30 %)</strong> : actions individuelles, thématiques, immobilier coté, une petite part d'or ou de cryptomonnaies. C'est là que vont les convictions, en quantité limitée pour qu'une erreur reste supportable.</li>
 </ul>
- 
-<p><strong>Capital investissable :</strong> Ce qui reste après épargne de précaution, sans mettre en danger vos projets à court terme (apport immobilier, voiture, mariage...).</p>
- 
-<h2>Étape 2 — Choisir son allocation cible</h2>
- 
-<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;margin:2rem auto;display:block;background:#0d1117;border-radius:12px;padding:16px">
-  <text x="350" y="18" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">Trois allocations types selon le profil</text>
-  <!-- Profil Défensif -->
-  <text x="105" y="40" fill="#5b9bd5" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">Profil Défensif</text>
-  <text x="105" y="55" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Horizon 5-10 ans</text>
-  <!-- Barres défensif -->
-  <rect x="35" y="65" width="140" height="18" rx="2" fill="rgba(107,114,128,0.5)"/>
-  <text x="115" y="78" fill="white" font-size="9" font-family="sans-serif" text-anchor="end">Livrets/Fonds€  40%</text>
-  <rect x="35" y="88" width="105" height="18" rx="2" fill="rgba(91,155,213,0.5)"/>
-  <text x="145" y="101" fill="#5b9bd5" font-size="9" font-family="sans-serif">Obligations  30%</text>
-  <rect x="35" y="111" width="70" height="18" rx="2" fill="rgba(62,180,137,0.5)"/>
-  <text x="110" y="124" fill="#3EB489" font-size="9" font-family="sans-serif">ETF World  20%</text>
-  <rect x="35" y="134" width="35" height="18" rx="2" fill="rgba(212,169,75,0.5)"/>
-  <text x="75" y="147" fill="#D4A94B" font-size="9" font-family="sans-serif">Immo/SCPI  10%</text>
-  <!-- Profil Équilibré -->
-  <text x="350" y="40" fill="#3EB489" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">Profil Équilibré</text>
-  <text x="350" y="55" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Horizon 10-20 ans</text>
-  <rect x="280" y="65" width="140" height="18" rx="2" fill="rgba(62,180,137,0.5)"/>
-  <text x="425" y="78" fill="#3EB489" font-size="9" font-family="sans-serif">ETF World  50%</text>
-  <rect x="280" y="88" width="56" height="18" rx="2" fill="rgba(91,155,213,0.4)"/>
-  <text x="340" y="101" fill="#5b9bd5" font-size="9" font-family="sans-serif">Oblig.  20%</text>
-  <rect x="280" y="111" width="56" height="18" rx="2" fill="rgba(212,169,75,0.4)"/>
-  <text x="340" y="124" fill="#D4A94B" font-size="9" font-family="sans-serif">Immo  20%</text>
-  <rect x="280" y="134" width="28" height="18" rx="2" fill="rgba(224,85,85,0.4)"/>
-  <text x="312" y="147" fill="#e05555" font-size="9" font-family="sans-serif">Crypto 5%  Autre 5%</text>
-  <!-- Profil Offensif -->
-  <text x="595" y="40" fill="#D4A94B" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">Profil Offensif</text>
-  <text x="595" y="55" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Horizon 20+ ans</text>
-  <rect x="525" y="65" width="140" height="18" rx="2" fill="rgba(62,180,137,0.5)"/>
-  <text x="670" y="78" fill="#3EB489" font-size="9" font-family="sans-serif">ETF World  60%</text>
-  <rect x="525" y="88" width="70" height="18" rx="2" fill="rgba(62,180,137,0.4)"/>
-  <text x="600" y="101" fill="#3EB489" font-size="9" font-family="sans-serif">ETF sectoriels 25%</text>
-  <rect x="525" y="111" width="42" height="18" rx="2" fill="rgba(224,85,85,0.4)"/>
-  <text x="572" y="124" fill="#e05555" font-size="9" font-family="sans-serif">Crypto 15%</text>
-  <text x="595" y="158" fill="#6b7280" font-size="9" font-family="sans-serif" text-anchor="middle">Actions indiv. en parallèle</text>
-  <!-- Note -->
-  <text x="350" y="200" fill="#4b5563" font-size="9" font-family="sans-serif" text-anchor="middle">Ces allocations sont illustratives — adapter selon votre situation personnelle</text>
-</svg>
- 
-<h2>Étape 3 — Choisir ses supports concrets</h2>
-<p>Sur la base d'un profil équilibré, voici un portefeuille simple et efficace en 3 ETF pour un investisseur français :</p>
- 
-<p><strong>Portefeuille "3 ETF" — simple, efficace, scalable :</strong></p>
+<p>Exemple pour un profil dynamique de 30 ans : 70 % ETF monde dans un PEA, 10 % ETF pays émergents, 20 % fonds euros et obligations dans une assurance-vie. Trois lignes, et l'essentiel est fait.</p>
+
+<h2>Étape 3 : investir en une fois ou progressivement ?</h2>
+<p>Vous disposez de 50 000 €. Faut-il tout investir maintenant ou en 12 versements mensuels ? Nous avons simulé 20 000 années de marché d'actions (rendement moyen 7 %, volatilité 16 %) :</p>
+<table>
+<thead><tr><th>Stratégie</th><th>Résultat</th></tr></thead>
+<tbody>
+<tr><td>Tout investir immédiatement</td><td>Meilleur dans 62 % des cas, et meilleur en moyenne d'environ 3,5 points sur l'année</td></tr>
+<tr><td>Étaler sur 12 mois</td><td>Meilleur dans 38 % des cas, notamment quand le marché baisse pendant l'étalement</td></tr>
+</tbody>
+</table>
+<p>La logique : le marché monte plus souvent qu'il ne baisse, donc l'argent qui attend en liquidités rate en moyenne une partie de la hausse. Une étude de Vanguard (2012) sur données historiques aboutissait à une proportion proche, autour de deux fois sur trois. Mais l'étalement a une vraie valeur psychologique : il limite le regret d'avoir tout investi juste avant une baisse. Si ce regret risque de vous faire abandonner votre plan, étalez sur quelques mois. Pour l'épargne mensuelle courante, la question ne se pose pas : investissez-la dès qu'elle est disponible.</p>
+
+<h2>Étape 4 : le rééquilibrage</h2>
+<figure class="doc-diagram">
+<div class="doc-diagram__canvas">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 328" aria-hidden="true">
+<line x1="70" y1="272.0" x2="610" y2="272.0" stroke="rgba(168,179,174,0.18)" />
+<line x1="70" y1="201.3" x2="610" y2="201.3" stroke="rgba(168,179,174,0.18)" />
+<line x1="70" y1="130.7" x2="610" y2="130.7" stroke="rgba(168,179,174,0.18)" />
+<line x1="70" y1="60.0" x2="610" y2="60.0" stroke="rgba(168,179,174,0.18)" />
+<line x1="70" y1="272" x2="610" y2="272" stroke="#A8B3AE" />
+<polyline fill="none" stroke="#C86A5C" stroke-width="2" points="70.0,201.3 97.0,179.7 124.0,187.9 151.0,198.6 178.0,189.7 205.0,205.8 232.0,186.8 259.0,197.0 286.0,199.5 313.0,159.8 340.0,141.2 367.0,151.4 394.0,133.8 421.0,136.7 448.0,149.8 475.0,122.2 502.0,139.4 529.0,145.6 556.0,145.2 583.0,141.5 610.0,128.7" />
+<polyline fill="none" stroke="#4F9D7E" stroke-width="2" stroke-dasharray="5 4" points="70.0,201.3 610.0,201.3" />
+<g font-family="sans-serif" font-size="12" /></svg>
+<span class="doc-label is-muted" style="left:10.94%;top:87.13%">0</span>
+<span class="doc-label is-muted" style="left:32.03%;top:87.13%">5 ans</span>
+<span class="doc-label is-muted" style="left:53.12%;top:87.13%">10 ans</span>
+<span class="doc-label is-muted" style="left:74.22%;top:87.13%">15 ans</span>
+<span class="doc-label is-muted" style="left:95.31%;top:87.13%">20 ans</span>
+<span class="doc-label doc-label--end is-muted" style="left:9.69%;top:82.87%">40 %</span>
+<span class="doc-label doc-label--end is-muted" style="left:9.69%;top:61.22%">60 %</span>
+<span class="doc-label doc-label--end is-muted" style="left:9.69%;top:39.88%">80 %</span>
+<span class="doc-label doc-label--end is-muted" style="left:9.69%;top:18.23%">100 %</span>
+<span class="doc-label doc-label--start" style="left:9.69%;top:12.13%">part des actions</span>
+<span class="doc-label is-muted" style="left:50%;top:4.21%">part des actions dans un portefeuille 60/40 (une trajectoire simulée)</span>
+<span class="doc-label doc-label--end is-positive" style="left:93.12%;top:65.49%">rééquilibré chaque année : 60 %</span>
+<span class="doc-label doc-label--start is-negative" style="left:15.16%;top:25.55%">sans rééquilibrage : la part dérive</span>
+</div>
+<figcaption>Un portefeuille 60 % actions, 40 % obligations, jamais rééquilibré : comme les actions rapportent plus en moyenne, leur part dérive, ici jusqu'à 81 % après 20 ans. Sur 5 000 simulations, la part médiane atteint 73 %, et dépasse 88 % dans un cas sur dix.</figcaption>
+</figure>
+<p>Sans rééquilibrage, le portefeuille devient plus risqué que prévu, précisément au moment où il est le plus gros. Rééquilibrer consiste à revenir à l'allocation cible :</p>
 <ul>
-<li><strong>70% iShares MSCI World Swap PEA (WPEA)</strong> — Dans votre PEA. Exposition aux 1300+ plus grandes entreprises mondiales. Frais 0.25%/an.</li>
-<li><strong>20% Amundi PEA MSCI Emerging Markets (PAEEM)</strong> — Dans votre PEA. Diversification vers les économies en croissance. Frais 0.30%/an.</li>
-<li><strong>10% iShares Core Euro Corporate Bond (IEAC)</strong> — Dans votre assurance-vie. Obligations d'entreprises européennes. Stabilité du portefeuille.</li>
+<li><strong>Par calendrier</strong> : une fois par an, à date fixe.</li>
+<li><strong>Par seuil</strong> : quand une classe s'écarte de plus de 5 points de sa cible.</li>
+<li><strong>Par les versements</strong> : diriger les nouveaux apports vers la classe en retard, ce qui évite de vendre (et d'être imposé dans un compte-titres).</li>
 </ul>
- 
-<p>Si vous voulez ajouter de la crypto (profil dynamique) : 5% Bitcoin via un ETP (ex: 21Shares Bitcoin ETP) dans votre CTO, et réduire la part World à 65%.</p>
- 
-<h2>Étape 4 — Mettre en place ses investissements programmés</h2>
-<p>La mise en place pratique :</p>
-<ol>
-<li><strong>Ouvrir votre PEA</strong> chez Boursobank, Fortuneo ou Bourse Direct (frais compétitifs). Faire un premier virement même symbolique pour faire démarrer le délai de 5 ans.</li>
-<li><strong>Ouvrir votre assurance-vie</strong> chez Linxea Spirit 2 ou Boursorama Vie (0.5-0.6% de frais UC, sans frais d'entrée).</li>
-<li><strong>Mettre en place un virement automatique</strong> vers votre PEA et/ou AV le 1er de chaque mois (virement programmé depuis votre banque).</li>
-<li><strong>Passer un ordre d'achat DCA programmé</strong> sur votre ETF principal au 1er de chaque mois. Certains courtiers (Trade Republic, Scalable Capital) automatisent cette étape.</li>
+<p>Le rééquilibrage oblige mécaniquement à vendre ce qui a monté et acheter ce qui a baissé : un comportement contraire à l'instinct, mais qui maintient le risque choisi.</p>
+
+<h2>Étape 5 : la routine de suivi</h2>
+<ol class="doc-steps">
+<li><strong>Chaque mois</strong> : versement automatique programmé, sans regarder les marchés.</li>
+<li><strong>Chaque année</strong> : vérifier l'allocation, rééquilibrer si nécessaire, comparer les frais, mettre à jour objectifs et horizon.</li>
+<li><strong>À chaque changement de vie</strong> (naissance, achat immobilier, changement d'emploi) : revoir l'épargne de précaution et l'allocation.</li>
+<li><strong>À l'approche d'un objectif</strong> : sécuriser progressivement la somme concernée.</li>
 </ol>
- 
-<h2>Étape 5 — Le rééquilibrage annuel</h2>
-<p>Le rééquilibrage consiste à ramener votre allocation à sa cible initiale quand les marchés l'ont dévié. Si votre cible est 70% World / 30% obligations et que la bourse a monté, vous vous retrouvez peut-être à 80% World / 20% obligations. Vous vendez une partie du World pour racheter des obligations.</p>
- 
-<p><strong>Quand rééquilibrer :</strong></p>
-<ul>
-<li>Rééquilibrage calendaire : 1 fois par an, le même mois (ex: janvier)</li>
-<li>Rééquilibrage seuil : quand une classe dévie de plus de 5% de sa cible</li>
-</ul>
- 
-<p><strong>Comment rééquilibrer sans friction fiscale :</strong></p>
-<ul>
-<li>Dans un PEA ou assurance-vie : rééquilibrer librement sans déclencher de fiscalité (les gains ne sont pas réalisés fiscalement)</li>
-<li>Dans un CTO : vendre déclenche la flat tax — préférer rééquilibrer en orientant les nouveaux versements vers les classes sous-pondérées</li>
-</ul>
- 
-<h2>Les erreurs classiques à éviter absolument</h2>
-<ul>
-<li><strong>Vendre dans la panique :</strong> La plus coûteuse de toutes. Quand les marchés baissent de 30%, c'est le moment d'acheter, pas de vendre.</li>
-<li><strong>Checker son portefeuille tous les jours :</strong> Génère de l'anxiété et des décisions émotionnelles. 1 fois par mois est largement suffisant.</li>
-<li><strong>Market timing :</strong> "J'attends la baisse pour acheter" — personne ne sait prévoir les marchés. Le coût d'opportunité d'attendre dépasse généralement le bénéfice d'une entrée "parfaite".</li>
-<li><strong>Trop diversifier :</strong> 15 ETF différents avec des redondances coûtent plus cher en frais et ne diversifient pas mieux que 2-3 ETF bien choisis.</li>
-<li><strong>Négliger la fiscalité :</strong> Investir en CTO ce qui devrait être en PEA peut coûter 10-13% de performance sur la durée.</li>
-<li><strong>Suivre les conseils des réseaux sociaux :</strong> TikTok, Twitter, Telegram — ces sources sont soit mal informées, soit ont des intérêts opposés aux vôtres (pump and dump).</li>
-</ul>
- 
-<blockquote>Le secret d'un bon investisseur : être ennuyeux. Investir régulièrement dans des ETF diversifiés, ne jamais paniquer, rééquilibrer une fois par an. Ce n'est pas sexy — mais c'est ce qui crée la richesse à long terme.</blockquote>
+<p>Un portefeuille bien construit demande peu d'attention. La plupart des erreurs viennent d'un excès d'activité : vendre en crise, courir après la dernière thématique à la mode, multiplier les lignes.</p>
+
+<aside class="doc-callout doc-callout--key">
+<strong class="doc-callout__title">À retenir</strong>
+<p>Fixez une allocation adaptée à votre horizon et à votre tolérance, construisez un cœur simple d'ETF diversifiés, limitez les paris à une poche satellite. Investissez dès que possible, ou étalez sur quelques mois si cela vous aide à tenir. Rééquilibrez chaque année et laissez travailler le temps.</p>
+</aside>
+
+<h2>Testez-vous</h2>
+<details>
+<summary>Votre allocation cible est 70/30. Après une forte hausse, vous êtes à 80/20. Que faire ?</summary>
+<p>Revenir à 70/30 : vendre une partie des actions pour racheter des obligations, ou diriger les prochains versements vers les obligations jusqu'au retour à la cible.</p>
+</details>
+<details>
+<summary>Pourquoi l'investissement en une fois bat-il le plus souvent l'investissement étalé ?</summary>
+<p>Parce que les marchés d'actions montent plus souvent qu'ils ne baissent : l'argent qui attend en liquidités rate en moyenne une partie de la hausse.</p>
+</details>
+<details>
+<summary>Que contient typiquement la poche satellite, et pourquoi la limiter ?</summary>
+<p>Des convictions (actions individuelles, thématiques, actifs plus risqués). On la limite pour qu'une erreur de jugement ne compromette pas l'ensemble du portefeuille.</p>
+</details>
