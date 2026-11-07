@@ -98,4 +98,25 @@ final class SanitizeHtmlExtensionTest extends TestCase
         self::assertStringContainsString('<span class="autre">C</span>', $out);
         self::assertStringNotContainsString('url(', $out);
     }
+
+    public function testKeepsInteractiveSurfaceData(): void
+    {
+        // Les surfaces 3D interactives lisent ces tableaux côté navigateur : leur structure doit survivre.
+        $out = $this->sanitizer->sanitize(
+            '<figure class="doc-diagram doc-3d"><div class="doc-diagram__canvas"><svg viewBox="0 0 640 400"></svg></div>'
+            . '<div class="doc-3d-data"><table><caption>Surface</caption>'
+            . '<thead><tr><th scope="col">y / x</th><th scope="col">80</th></tr></thead>'
+            . '<tbody><tr><th scope="row">1</th><td>39.0</td></tr></tbody></table>'
+            . '<table class="doc-3d-meta" onclick="alert(1)"><tbody><tr><th>zmin</th><td>10</td></tr></tbody></table></div>'
+            . '<figcaption>Légende</figcaption></figure>'
+        );
+
+        self::assertStringContainsString('<figure class="doc-diagram doc-3d">', $out);
+        self::assertStringContainsString('<div class="doc-3d-data">', $out);
+        self::assertStringContainsString('<caption>Surface</caption>', $out);
+        self::assertStringContainsString('<th scope="col">80</th>', $out);
+        self::assertStringContainsString('<th scope="row">1</th><td>39.0</td>', $out);
+        self::assertStringContainsString('<table class="doc-3d-meta">', $out);
+        self::assertStringNotContainsString('onclick', $out);
+    }
 }

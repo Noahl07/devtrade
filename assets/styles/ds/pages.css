@@ -1220,3 +1220,74 @@ select.input {
 .prose td.ta-center,
 .prose th.ta-center,
 .prose td.ta-right { white-space: nowrap; }
+
+/* Surfaces 3D interactives : les données sont dans des tableaux masqués visuellement (lisibles par
+   les lecteurs d'écran) ; une fois le module chargé, le canvas remplace le schéma statique. */
+.prose .doc-3d-data {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.prose .doc-3d.is-live .doc-diagram__canvas > svg,
+.prose .doc-3d.is-live .doc-diagram__canvas > .doc-label {
+    display: none;
+}
+
+.prose .doc-3d__canvas {
+    display: block;
+    width: 100%;
+    cursor: grab;
+    touch-action: pan-y;
+}
+
+.prose .doc-3d__canvas:active { cursor: grabbing; }
+
+.prose .doc-3d__canvas:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: -2px;
+}
+
+.prose .doc-3d__labels {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.prose .doc-3d__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+}
+
+.prose .doc-3d__reset {
+    padding: 0.3em 0.8em;
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md, 6px);
+    background: var(--surface);
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.prose .doc-3d__reset:hover,
+.prose .doc-3d__reset:focus-visible { border-color: var(--brand); }
+
+.prose .doc-3d__labels .doc-3d__title {
+    width: 92%;
+    white-space: normal;
+    text-align: center;
+}
+
+/* Une surface interactive s'adapte à la largeur de l'écran (pas de défilement horizontal :
+   le geste horizontal sert à la faire pivoter). */
+.prose .doc-3d.is-live .doc-diagram__canvas { min-width: 0; }
+.prose .doc-3d.is-live { overflow-x: visible; }

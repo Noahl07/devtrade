@@ -151,3 +151,8 @@ if (heroArt && allow3D()) {
         return { mount: mountHeroScene };
     });
 }
+
+// ── Surfaces 3D des articles : module chargé seulement si la page en contient ──
+if (document.querySelector('figure.doc-3d')) {
+    import('./js/surface3d.js').then(({ initSurfaces }) => initSurfaces());
+}
