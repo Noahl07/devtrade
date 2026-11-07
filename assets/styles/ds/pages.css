@@ -1383,3 +1383,26 @@ select.input {
 .prose .doc-sim__chart { display: block; width: 100%; margin-top: var(--space-4); }
 .prose .doc-sim__legend { margin: var(--space-2) 0 0; font-size: var(--step--1); color: var(--text-muted); }
 .prose .doc-sim .doc-pas__btn { margin-top: var(--space-3); }
+
+.prose .doc-sim__choice { grid-template-columns: 1fr; }
+.prose .doc-sim__choice-label { color: var(--text-2); }
+.prose .doc-sim__choice-options { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+
+.prose .doc-sim__choice-options button {
+    padding: 0.25em 0.7em;
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-2);
+    font: inherit;
+    font-size: var(--step--1);
+    cursor: pointer;
+}
+
+.prose .doc-sim__choice-options button.is-active {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+    color: var(--text);
+}
+.prose .doc-sim__choice { align-content: start; }
+.prose .doc-sim__choice-options { align-items: flex-start; align-content: flex-start; }

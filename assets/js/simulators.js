@@ -5,6 +5,14 @@
 const nf = (v, d = 0) => v.toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
 const euros = (v) => `${nf(v)} €`;
 const pct = (v, d = 1) => `${nf(v * 100, d)} %`;
+const signe = (v, d) => `${v >= 0 ? '+' : ''}${nf(v, d)}`;
+
+/** Fonction d'erreur (approximation d'Abramowitz et Stegun, erreur < 1,5e-7). */
+function erf(x) {
+    const t = 1 / (1 + 0.3275911 * Math.abs(x));
+    const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+    return x >= 0 ? y : -y;
+}
 
 /** Générateur pseudo-aléatoire reproductible (mulberry32) et tirage gaussien. */
 function aleatoire(graine) {
@@ -83,15 +91,23 @@ const SIMULATEURS = {
             ['risque', 'Risque par trade', 0.0025, 0.03, 0.0025, 0.01, (v) => pct(v, 2)],
             ['stop', 'Distance du stop (en points)', 5, 200, 1, 40, (v) => `${nf(v)} points`],
             ['valeur', 'Valeur d\'un point pour 1 unité', 0.1, 50, 0.1, 1, (v) => `${nf(v, 1)} €`],
+            ['glissement', 'Glissement possible au stop', 0, 50, 1, 2, (v) => `${nf(v)} points`],
+            ['positions', 'Positions ouvertes en même temps', 1, 5, 1, 1, (v) => nf(v)],
+            ['lot', 'Arrondi de la quantité', 'choix', [[0.01, '0,01'], [0.1, '0,1'], [1, '1']], 0.01],
         ],
-        calcule: ({ capital, risque, stop, valeur }) => {
+        calcule: ({ capital, risque, stop, valeur, glissement, positions, lot }) => {
             const montant = capital * risque;
-            const quantite = montant / (stop * valeur);
-            return [
-                ['Montant risqué si le stop est touché', euros(montant)],
-                ['Quantité à prendre', `${nf(quantite, 2)} unités`],
+            const brute = montant / (stop * valeur);
+            const quantite = Math.floor(brute / lot) * lot;
+            const perteReelle = quantite * (stop + glissement) * valeur;
+            const lignes = [
+                ['Montant visé si le stop est touché', euros(montant)],
+                ['Quantité à prendre (arrondie vers le bas)', quantite > 0 ? `${nf(quantite, lot < 1 ? (lot < 0.1 ? 2 : 1) : 0)} unités` : 'trop petite : réduisez le stop ou changez d\'instrument'],
+                ['Perte réelle avec le glissement', `${euros(perteReelle)} (${pct(perteReelle / capital, 2)})`],
+                ['Risque total si toutes les positions perdent', `${euros(perteReelle * positions)} (${pct((perteReelle * positions) / capital, 1)})`],
                 ['Pertes consécutives pour perdre 20 % du compte', nf(Math.ceil(Math.log(0.8) / Math.log(1 - risque)))],
             ];
+            return lignes;
         },
     },
     'seuil-rentabilite': {
@@ -100,74 +116,103 @@ const SIMULATEURS = {
             ['ratio', 'Gain moyen / perte moyenne (R)', 0.5, 5, 0.1, 2, (v) => `${nf(v, 1)} R`],
             ['reussite', 'Taux de réussite', 0.1, 0.8, 0.01, 0.4, (v) => pct(v, 0)],
             ['couts', 'Coûts par trade (en R)', 0, 0.3, 0.01, 0.05, (v) => `${nf(v, 2)} R`],
+            ['trades', 'Nombre de trades', 10, 500, 10, 100, (v) => nf(v)],
         ],
-        calcule: ({ ratio, reussite, couts }) => {
+        calcule: ({ ratio, reussite, couts, trades }) => {
             const esperance = reussite * ratio - (1 - reussite) - couts;
             const seuil = (1 + couts) / (1 + ratio);
+            const ecart = Math.sqrt(reussite * (ratio + 1) ** 2 * (1 - reussite));
+            const z = (esperance * trades) / (ecart * Math.sqrt(trades));
+            const enPerte = 0.5 * (1 + erf(-z / Math.SQRT2));
             return [
                 ['Taux de réussite minimal pour être rentable', pct(seuil)],
-                ['Espérance par trade', `${esperance >= 0 ? '+' : ''}${nf(esperance, 2)} R`],
-                ['Sur 100 trades', `${esperance >= 0 ? '+' : ''}${nf(esperance * 100, 0)} R en moyenne`],
+                ['Espérance par trade', `${signe(esperance, 2)} R`],
+                [`Résultat moyen sur ${nf(trades)} trades`, `${signe(esperance * trades, 0)} R`],
+                [`Probabilité d'être en perte après ${nf(trades)} trades`, pct(enPerte, 0)],
             ];
         },
+        legende: 'Probabilité calculée avec l\'approximation normale : indicative pour de petits nombres de trades.',
     },
     ruine: {
-        graphique: true,
         titre: 'Simulateur de drawdown (500 comptes simulés)',
         relance: true,
+        graphique: true,
         curseurs: [
             ['reussite', 'Taux de réussite', 0.2, 0.7, 0.01, 0.4, (v) => pct(v, 0)],
             ['ratio', 'Gain moyen (R)', 0.5, 4, 0.1, 2, (v) => `${nf(v, 1)} R`],
             ['risque', 'Risque par trade', 0.0025, 0.1, 0.0025, 0.01, (v) => pct(v, 2)],
             ['trades', 'Nombre de trades', 50, 500, 10, 200, (v) => nf(v)],
+            ['seuil', 'Baisse jugée critique', 0.1, 0.6, 0.05, 0.3, (v) => pct(v, 0)],
+            ['couts', 'Coûts par trade (en R)', 0, 0.3, 0.01, 0, (v) => `${nf(v, 2)} R`],
+            ['mode', 'Taille du risque', 'choix', [['pct', '% du capital actuel'], ['fixe', 'montant fixe']], 'pct'],
+            ['arret', 'Arrêt après la baisse critique', 'choix', [['non', 'non'], ['oui', 'oui']], 'non'],
         ],
-        calcule: ({ reussite, ratio, risque, trades }, { graine, canvas }) => {
+        calcule: ({ reussite, ratio, risque, trades, seuil, couts, mode, arret }, { graine, canvas }) => {
             const r = aleatoire(graine);
             const N = 500;
-            let touche30 = 0;
+            let touche = 0;
+            let arretes = 0;
             const finaux = [];
             const exemples = [];
             for (let k = 0; k < N; k++) {
                 let c = 1;
                 let pic = 1;
                 let pire = 0;
+                let stoppe = false;
                 const pts = [[0, 100]];
                 for (let t = 1; t <= trades; t++) {
-                    c *= r.u() < reussite ? 1 + risque * ratio : 1 - risque;
-                    pic = Math.max(pic, c);
-                    pire = Math.min(pire, c / pic - 1);
+                    if (!stoppe) {
+                        const mise = mode === 'pct' ? c * risque : risque;
+                        c += r.u() < reussite ? mise * (ratio - couts) : -mise * (1 + couts);
+                        c = Math.max(c, 0);
+                        pic = Math.max(pic, c);
+                        pire = Math.min(pire, c / pic - 1);
+                        if (arret === 'oui' && pire <= -seuil) {
+                            stoppe = true;
+                        }
+                    }
                     if (k < 12) {
                         pts.push([t, c * 100]);
                     }
                 }
-                touche30 += pire <= -0.3;
+                touche += pire <= -seuil;
+                arretes += stoppe;
                 finaux.push(c);
                 if (k < 12) {
                     exemples.push(pts);
                 }
             }
             finaux.sort((a, b) => a - b);
-            trace(canvas, exemples.map((p) => ({ points: p, couleur: 'rgba(185,198,230,0.55)' })), { ligneZero: 100, etiquette: (v) => nf(v) });
-            return [
-                ['Comptes passés par une baisse de 30 % ou plus', pct(touche30 / N, 0)],
+            trace(canvas, exemples.map((p) => ({ points: p, couleur: 'rgba(185,198,230,0.55)' })), { ligneZero: 100 });
+            const lignes = [
+                [`Comptes passés par une baisse de ${pct(seuil, 0)} ou plus`, pct(touche / N, 0)],
                 ['Capital final médian (départ 100)', nf(finaux[N / 2] * 100)],
+                ['Capital final : 10 % des comptes font moins de', nf(finaux[Math.floor(N * 0.1)] * 100)],
                 ['Comptes finissant en perte', pct(finaux.filter((v) => v < 1).length / N, 0)],
             ];
+            if (arret === 'oui') {
+                lignes.push(['Comptes arrêtés par la règle', pct(arretes / N, 0)]);
+            }
+            return lignes;
         },
+        legende: 'En montant fixe, chaque trade risque le même montant qu\'au départ, quel que soit le capital restant.',
     },
     'interets-composes': {
-        graphique: true,
         titre: 'Simulateur d\'intérêts composés',
+        graphique: true,
         curseurs: [
+            ['initial', 'Capital de départ', 0, 100000, 1000, 0, euros],
             ['versement', 'Versement mensuel', 0, 2000, 25, 200, euros],
             ['rendement', 'Rendement annuel brut', 0, 0.1, 0.0025, 0.06, (v) => pct(v)],
             ['frais', 'Frais annuels', 0, 0.025, 0.001, 0.002, (v) => pct(v)],
+            ['inflation', 'Inflation annuelle', 0, 0.06, 0.0025, 0.02, (v) => pct(v)],
             ['annees', 'Durée', 1, 45, 1, 25, (v) => `${nf(v)} ans`],
+            ['fiscalite', 'Imposition des gains à la sortie', 'choix', [[0, 'aucune'], [0.186, '18,6 % (PEA)'], [0.314, '31,4 % (compte-titres)']], 0.186],
         ],
-        calcule: ({ versement, rendement, frais, annees }, { canvas }) => {
+        calcule: ({ initial, versement, rendement, frais, inflation, annees, fiscalite }, { canvas }) => {
             const courbe = (taux) => {
-                const pts = [[0, 0]];
-                let c = 0;
+                const pts = [[0, initial]];
+                let c = initial;
                 for (let m = 1; m <= annees * 12; m++) {
                     c = c * (1 + taux) ** (1 / 12) + versement;
                     if (m % 12 === 0) {
@@ -177,7 +222,7 @@ const SIMULATEURS = {
                 return pts;
             };
             const net = courbe(rendement - frais);
-            const verse = net.map(([x]) => [x, versement * 12 * x]);
+            const verse = net.map(([x]) => [x, initial + versement * 12 * x]);
             const sansFrais = courbe(rendement);
             trace(canvas, [
                 { points: verse, couleur: '#A8B3AE' },
@@ -185,101 +230,149 @@ const SIMULATEURS = {
                 { points: net, couleur: '#E2CB91', epaisseur: 2.2 },
             ], { ymin: 0, etiquette: (v) => `${nf(v / 1000)} k€` });
             const fin = net[net.length - 1][1];
-            const total = versement * 12 * annees;
+            const total = initial + versement * 12 * annees;
+            const impot = Math.max(fin - total, 0) * fiscalite;
+            const apresImpot = fin - impot;
             return [
                 ['Total versé', euros(total)],
                 ['Capital final (après frais)', euros(fin)],
                 ['Coût des frais sur la période', euros(sansFrais[sansFrais.length - 1][1] - fin)],
+                ['Impôt sur les gains à la sortie', euros(impot)],
+                ['Net après impôt', euros(apresImpot)],
+                ['Pouvoir d\'achat en euros d\'aujourd\'hui', euros(apresImpot / (1 + inflation) ** annees)],
             ];
         },
-        legende: 'Gris : versements cumulés. Vert : sans frais. Or : après frais.',
+        legende: 'Gris : versements cumulés. Vert : sans frais. Or : après frais. Fiscalité simplifiée, prélevée en une fois à la sortie.',
     },
     kelly: {
-        graphique: true,
         titre: 'Croissance selon la fraction risquée (critère de Kelly)',
+        graphique: true,
         curseurs: [
             ['reussite', 'Taux de réussite', 0.2, 0.8, 0.01, 0.4, (v) => pct(v, 0)],
             ['ratio', 'Gain moyen (R)', 0.5, 5, 0.1, 2, (v) => `${nf(v, 1)} R`],
+            ['choisie', 'Fraction que vous risquez', 0.0025, 0.4, 0.0025, 0.02, (v) => pct(v, 2)],
+            ['erreur', 'Surestimation de votre taux de réussite', 0, 0.15, 0.01, 0, (v) => `${nf(v * 100, 0)} points`],
         ],
-        calcule: ({ reussite, ratio }, { canvas }) => {
-            const g = (f) => reussite * Math.log(1 + ratio * f) + (1 - reussite) * Math.log(1 - f);
-            const fs = (reussite * (ratio + 1) - 1) / ratio;
+        calcule: ({ reussite, ratio, choisie, erreur }, { canvas }) => {
+            // Le taux affiché est celui que vous croyez avoir ; le vrai est inférieur de « erreur ».
+            const vrai = Math.max(reussite - erreur, 0.01);
+            const g = (p, f) => p * Math.log(1 + ratio * f) + (1 - p) * Math.log(1 - f);
+            const kellyCru = (reussite * (ratio + 1) - 1) / ratio;
+            const kellyVrai = (vrai * (ratio + 1) - 1) / ratio;
             const pts = [];
+            const ptsVrai = [];
             for (let f = 0; f <= 0.6; f += 0.005) {
-                pts.push([f * 100, Math.max(g(f) * 100, -5)]);
+                pts.push([f * 100, Math.max(g(reussite, f) * 100, -5)]);
+                ptsVrai.push([f * 100, Math.max(g(vrai, f) * 100, -5)]);
             }
-            trace(canvas, [{ points: pts, couleur: '#E2CB91', epaisseur: 2.2 }], { ligneZero: 0, etiquette: (v) => `${nf(v, 1)} %` });
+            const series = [{ points: pts, couleur: '#E2CB91', epaisseur: 2.2 }];
+            if (erreur > 0) {
+                series.push({ points: ptsVrai, couleur: '#E89A90', epaisseur: 2 });
+            }
+            const haut = Math.max(...pts.map((q) => q[1]));
+            series.push({ points: [[choisie * 100, -5], [choisie * 100, haut]], couleur: 'rgba(185,198,230,0.8)' });
+            trace(canvas, series, { ligneZero: 0, etiquette: (v) => `${nf(v, 1)} %` });
             return [
-                ['Fraction de Kelly', fs > 0 ? pct(fs) : 'aucune (espérance négative)'],
-                ['Demi-Kelly, plus prudent', fs > 0 ? pct(fs / 2) : '—'],
-                ['Croissance par trade à Kelly', fs > 0 ? pct(g(fs), 2) : '—'],
+                ['Fraction de Kelly selon votre estimation', kellyCru > 0 ? pct(kellyCru) : 'aucune (espérance négative)'],
+                ['Fraction de Kelly réelle', kellyVrai > 0 ? pct(kellyVrai) : 'aucune (espérance négative)'],
+                ['Croissance réelle par trade à votre fraction', pct(g(vrai, choisie), 3)],
+                ['Votre fraction en multiple du Kelly réel', kellyVrai > 0 ? `${nf(choisie / kellyVrai, 2)} ×` : '—'],
             ];
         },
-        legende: 'Axe horizontal : fraction du capital risquée par trade (0 à 60 %). Sous la ligne rouge, le capital décroît.',
+        legende: 'Or : croissance si votre estimation est juste. Rouge : croissance réelle avec la surestimation choisie. Trait bleu : votre fraction.',
     },
     'marche-aleatoire': {
-        graphique: true,
-        titre: 'Dix trajectoires de pur hasard',
+        titre: 'Trajectoires de pur hasard',
         relance: true,
+        graphique: true,
         curseurs: [
+            ['nombre', 'Nombre de trajectoires', 1, 30, 1, 10, (v) => nf(v)],
             ['vol', 'Volatilité annuelle', 0.05, 0.6, 0.01, 0.2, (v) => pct(v, 0)],
             ['tendance', 'Rendement moyen annuel', -0.1, 0.15, 0.01, 0.07, (v) => pct(v, 0)],
             ['annees', 'Durée', 1, 10, 1, 3, (v) => `${nf(v)} ans`],
+            ['loi', 'Variations quotidiennes', 'choix', [['normale', 'loi normale'], ['epaisse', 'queues épaisses']], 'normale'],
         ],
-        calcule: ({ vol, tendance, annees }, { graine, canvas }) => {
+        calcule: ({ nombre, vol, tendance, annees, loi }, { graine, canvas }) => {
             const r = aleatoire(graine);
+            // Student à 3 degrés de liberté, ramenée à une variance de 1.
+            const choc = () => {
+                if (loi === 'normale') {
+                    return r.gauss();
+                }
+                const z = r.gauss();
+                const c = (r.gauss() ** 2 + r.gauss() ** 2 + r.gauss() ** 2) / 3;
+                return z / Math.sqrt(c) / Math.sqrt(3);
+            };
             const jours = annees * 252;
             const series = [];
-            let finissentPlusBas = 0;
-            for (let k = 0; k < 10; k++) {
+            let plusBas = 0;
+            let pireJour = 0;
+            for (let k = 0; k < nombre; k++) {
                 let p = 100;
                 const pts = [[0, p]];
                 for (let t = 1; t <= jours; t++) {
-                    p *= Math.exp((tendance - vol * vol / 2) / 252 + (vol / Math.sqrt(252)) * r.gauss());
+                    const x = choc();
+                    pireJour = Math.min(pireJour, x);
+                    p *= Math.exp((tendance - vol * vol / 2) / 252 + (vol / Math.sqrt(252)) * x);
                     pts.push([t / 252, p]);
                 }
-                finissentPlusBas += p < 100;
-                series.push({ points: pts, couleur: `hsla(${30 + k * 26}, 45%, 70%, 0.75)` });
+                plusBas += p < 100;
+                series.push({ points: pts, couleur: `hsla(${30 + k * 37}, 45%, 70%, 0.75)` });
             }
             trace(canvas, series, { ligneZero: 100 });
             return [
-                ['Trajectoires finissant sous leur point de départ', `${finissentPlusBas} sur 10`],
+                ['Trajectoires finissant sous leur point de départ', `${plusBas} sur ${nombre}`],
+                ['Pire journée du tirage', `${nf(pireJour, 1)} écarts-types`],
                 ['À retenir', 'tendances, sommets et « supports » apparaissent ici sans aucune cause'],
             ];
         },
     },
     'series-pertes': {
-        graphique: true,
         titre: 'Séries de pertes d\'une stratégie gagnante',
         relance: true,
+        graphique: true,
         curseurs: [
             ['reussite', 'Taux de réussite', 0.25, 0.75, 0.01, 0.4, (v) => pct(v, 0)],
             ['ratio', 'Gain moyen (R)', 0.5, 4, 0.1, 2, (v) => `${nf(v, 1)} R`],
             ['trades', 'Nombre de trades', 50, 500, 10, 200, (v) => nf(v)],
+            ['couts', 'Coûts par trade (en R)', 0, 0.3, 0.01, 0, (v) => `${nf(v, 2)} R`],
         ],
-        calcule: ({ reussite, ratio, trades }, { graine, canvas }) => {
+        calcule: ({ reussite, ratio, trades, couts }, { graine, canvas }) => {
             const r = aleatoire(graine);
-            let cumul = 0;
-            let serie = 0;
-            let pire = 0;
-            const pts = [[0, 0]];
-            for (let t = 1; t <= trades; t++) {
-                if (r.u() < reussite) {
-                    cumul += ratio;
-                    serie = 0;
-                } else {
-                    cumul -= 1;
-                    serie += 1;
-                    pire = Math.max(pire, serie);
+            const tirage = (garder) => {
+                let cumul = 0;
+                let serie = 0;
+                let pire = 0;
+                const pts = [[0, 0]];
+                for (let t = 1; t <= trades; t++) {
+                    if (r.u() < reussite) {
+                        cumul += ratio - couts;
+                        serie = 0;
+                    } else {
+                        cumul -= 1 + couts;
+                        serie += 1;
+                        pire = Math.max(pire, serie);
+                    }
+                    if (garder) {
+                        pts.push([t, cumul]);
+                    }
                 }
-                pts.push([t, cumul]);
+                return { cumul, pire, pts };
+            };
+            const affiche = tirage(true);
+            const series = [];
+            for (let k = 0; k < 1000; k++) {
+                series.push(tirage(false).pire);
             }
-            trace(canvas, [{ points: pts, couleur: '#E2CB91', epaisseur: 2 }], { ligneZero: 0, etiquette: (v) => `${nf(v)} R` });
-            const esperance = reussite * ratio - (1 - reussite);
+            series.sort((a, b) => a - b);
+            trace(canvas, [{ points: affiche.pts, couleur: '#E2CB91', epaisseur: 2 }], { ligneZero: 0, etiquette: (v) => `${nf(v)} R` });
+            const esperance = reussite * ratio - (1 - reussite) - couts;
             return [
-                ['Plus longue série de pertes de ce tirage', `${pire} d'affilée`],
-                ['Résultat de ce tirage', `${cumul >= 0 ? '+' : ''}${nf(cumul, 1)} R`],
-                ['Résultat attendu en moyenne', `${esperance >= 0 ? '+' : ''}${nf(esperance * trades, 0)} R`],
+                ['Plus longue série de pertes de ce tirage', `${affiche.pire} d'affilée`],
+                ['Sur 1 000 tirages : série médiane', `${series[500]} d'affilée`],
+                ['Sur 1 000 tirages : atteinte une fois sur dix', `${series[900]} ou plus`],
+                ['Résultat de ce tirage', `${signe(affiche.cumul, 1)} R`],
+                ['Résultat attendu en moyenne', `${signe(esperance * trades, 0)} R`],
             ];
         },
     },
@@ -298,7 +391,12 @@ class Simulateur {
         titre.textContent = def.titre;
         const grille = document.createElement('div');
         grille.className = 'doc-sim__controls';
-        def.curseurs.forEach(([cle, libelle, min, max, pas, defaut, format]) => {
+        def.curseurs.forEach((ctrl) => {
+            if (ctrl[2] === 'choix') {
+                grille.append(this.choix(ctrl));
+                return;
+            }
+            const [cle, libelle, min, max, pas, defaut, format] = ctrl;
             const id = `sim-${type}-${cle}-${Math.random().toString(36).slice(2, 7)}`;
             const ligne = document.createElement('div');
             ligne.className = 'doc-sim__control';
@@ -352,6 +450,41 @@ class Simulateur {
             bloc.append(b);
         }
         this.demande();
+    }
+
+    /** Groupe de boutons à choix unique : [clé, libellé, 'choix', [[valeur, texte], …], défaut]. */
+    choix([cle, libelle, , options, defaut]) {
+        const groupe = document.createElement('div');
+        groupe.className = 'doc-sim__control doc-sim__choice';
+        groupe.setAttribute('role', 'radiogroup');
+        const titre = document.createElement('span');
+        titre.className = 'doc-sim__choice-label';
+        titre.textContent = libelle;
+        groupe.setAttribute('aria-label', libelle);
+        const boutons = document.createElement('div');
+        boutons.className = 'doc-sim__choice-options';
+        this.valeurs[cle] = defaut;
+        const majBoutons = () => boutons.querySelectorAll('button').forEach((b) => {
+            const actif = b.dataset.valeur === String(this.valeurs[cle]);
+            b.setAttribute('aria-checked', String(actif));
+            b.classList.toggle('is-active', actif);
+        });
+        options.forEach(([valeur, texte]) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.setAttribute('role', 'radio');
+            b.dataset.valeur = String(valeur);
+            b.textContent = texte;
+            b.addEventListener('click', () => {
+                this.valeurs[cle] = valeur;
+                majBoutons();
+                this.demande();
+            });
+            boutons.append(b);
+        });
+        majBoutons();
+        groupe.append(titre, boutons);
+        return groupe;
     }
 
     demande() {
