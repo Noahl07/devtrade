@@ -16,6 +16,11 @@ const PALETTE = [
 const DEG = Math.PI / 180;
 const EL_MIN = 5;
 const EL_MAX = 80;
+const ZOOM_DEFAUT = 1.15;
+const ZOOM_MIN = 0.6;
+const ZOOM_MAX = 2.6;
+const VITESSE = 6; // degrés par seconde pour la rotation automatique
+const mouvementReduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function couleur(t, lum) {
     const u = Math.min(Math.max(t, 0), 1) * (PALETTE.length - 1);
@@ -85,6 +90,9 @@ class Surface3D {
         this.d = d;
         this.az = d.az;
         this.el = d.el;
+        this.zoom = ZOOM_DEFAUT;
+        this.auto = !mouvementReduit();
+        this.visible = false;
         this.zone = figure.querySelector('.doc-diagram__canvas');
         const svg = this.zone.querySelector('svg');
         const vb = svg?.viewBox?.baseVal;
@@ -102,13 +110,28 @@ class Surface3D {
         this.barre = document.createElement('div');
         this.barre.className = 'doc-3d__bar';
         const aide = document.createElement('span');
-        aide.textContent = 'Faites glisser pour faire pivoter la surface';
-        this.bouton = document.createElement('button');
-        this.bouton.type = 'button';
-        this.bouton.className = 'doc-3d__reset';
-        this.bouton.textContent = 'Vue initiale';
-        this.barre.append(aide, this.bouton);
+        aide.textContent = 'Faites glisser pour faire pivoter ; pincez ou utilisez la molette pour zoomer';
+        const outils = document.createElement('span');
+        outils.className = 'doc-3d__tools';
+        const bouton = (texte, titre) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'doc-3d__reset';
+            b.textContent = texte;
+            if (titre) {
+                b.setAttribute('aria-label', titre);
+                b.title = titre;
+            }
+            outils.append(b);
+            return b;
+        };
+        this.boutonPause = bouton('', '');
+        this.boutonMoins = bouton('−', 'Dézoomer');
+        this.boutonPlus = bouton('+', 'Zoomer');
+        this.bouton = bouton('Vue initiale');
+        this.barre.append(aide, outils);
         this.zone.after(this.barre);
+        this.majPause();
 
         this.libelles = new Map();
         this.prepare();
@@ -150,13 +173,74 @@ class Surface3D {
         return n[2] < 0 ? n.map((c) => -c) : n;
     }
 
+    majPause() {
+        const texte = this.auto ? 'Arrêter la rotation' : 'Lancer la rotation';
+        this.boutonPause.textContent = this.auto ? '❚❚' : '▶';
+        this.boutonPause.setAttribute('aria-label', texte);
+        this.boutonPause.title = texte;
+    }
+
+    /** Toute action de l'utilisateur coupe la rotation automatique. */
+    stoppe() {
+        if (this.auto) {
+            this.auto = false;
+            this.majPause();
+        }
+        this.actif = true;
+    }
+
+    zoome(facteur) {
+        this.zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, this.zoom * facteur));
+        this.demande();
+    }
+
+    /** Rotation automatique : environ 30 images par seconde, seulement quand la figure est visible. */
+    anime() {
+        let precedent = null;
+        const pas = (t) => {
+            if (this.auto && this.visible) {
+                if (precedent === null) {
+                    precedent = t;
+                } else if (t - precedent >= 33) {
+                    this.az -= ((t - precedent) / 1000) * VITESSE;
+                    this.dessine();
+                    precedent = t;
+                }
+            } else {
+                precedent = null;
+            }
+            requestAnimationFrame(pas);
+        };
+        requestAnimationFrame(pas);
+    }
+
     ecoute() {
         let depart = null;
+        const doigts = new Map();
+        let pincement = null;
         this.canvas.addEventListener('pointerdown', (e) => {
-            depart = { x: e.clientX, y: e.clientY, az: this.az, el: this.el, type: e.pointerType };
+            this.stoppe();
+            doigts.set(e.pointerId, [e.clientX, e.clientY]);
             this.canvas.setPointerCapture(e.pointerId);
+            if (doigts.size === 2) {
+                const [a, b] = [...doigts.values()];
+                pincement = { dist: Math.hypot(a[0] - b[0], a[1] - b[1]), zoom: this.zoom };
+                depart = null;
+                return;
+            }
+            depart = { x: e.clientX, y: e.clientY, az: this.az, el: this.el, type: e.pointerType };
         });
         this.canvas.addEventListener('pointermove', (e) => {
+            if (doigts.has(e.pointerId)) {
+                doigts.set(e.pointerId, [e.clientX, e.clientY]);
+            }
+            if (pincement && doigts.size === 2) {
+                const [a, b] = [...doigts.values()];
+                const dist = Math.hypot(a[0] - b[0], a[1] - b[1]);
+                this.zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, pincement.zoom * (dist / (pincement.dist || 1))));
+                this.demande();
+                return;
+            }
             if (!depart) {
                 return;
             }
@@ -167,14 +251,29 @@ class Surface3D {
             }
             this.demande();
         });
-        const fin = () => {
+        const fin = (e) => {
+            doigts.delete(e.pointerId);
+            if (doigts.size < 2) {
+                pincement = null;
+            }
             depart = null;
         };
         this.canvas.addEventListener('pointerup', fin);
         this.canvas.addEventListener('pointercancel', fin);
+        // Molette : seulement après un clic dans la figure (ou avec Ctrl), pour ne pas gêner le défilement.
+        this.canvas.addEventListener('wheel', (e) => {
+            if (!this.actif && !e.ctrlKey) {
+                return;
+            }
+            e.preventDefault();
+            this.stoppe();
+            this.zoome(e.deltaY < 0 ? 1.1 : 1 / 1.1);
+        }, { passive: false });
         this.canvas.addEventListener('keydown', (e) => {
             const pas = e.shiftKey ? 15 : 5;
             const actions = {
+                '+': () => { this.zoom = Math.min(ZOOM_MAX, this.zoom * 1.1); },
+                '-': () => { this.zoom = Math.max(ZOOM_MIN, this.zoom / 1.1); },
                 ArrowLeft: () => { this.az += pas; },
                 ArrowRight: () => { this.az -= pas; },
                 ArrowUp: () => { this.el = Math.min(EL_MAX, this.el + pas); },
@@ -182,6 +281,7 @@ class Surface3D {
             };
             if (actions[e.key]) {
                 e.preventDefault();
+                this.stoppe();
                 actions[e.key]();
                 this.demande();
             }
@@ -189,9 +289,35 @@ class Surface3D {
         this.bouton.addEventListener('click', () => {
             this.az = this.d.az;
             this.el = this.d.el;
+            this.zoom = ZOOM_DEFAUT;
+            this.actif = false;
+            this.auto = !mouvementReduit();
+            this.majPause();
             this.demande();
         });
+        this.boutonPause.addEventListener('click', () => {
+            this.auto = !this.auto;
+            this.majPause();
+        });
+        this.boutonPlus.addEventListener('click', () => {
+            this.stoppe();
+            this.zoome(1.15);
+        });
+        this.boutonMoins.addEventListener('click', () => {
+            this.stoppe();
+            this.zoome(1 / 1.15);
+        });
+        // Un clic ailleurs sur la page rend la molette au défilement normal.
+        document.addEventListener('pointerdown', (e) => {
+            if (!this.figure.contains(e.target)) {
+                this.actif = false;
+            }
+        });
         new ResizeObserver(() => this.redimensionne()).observe(this.zone);
+        new IntersectionObserver(([entree]) => {
+            this.visible = entree.isIntersecting;
+        }).observe(this.canvas);
+        this.anime();
     }
 
     redimensionne() {
@@ -232,7 +358,7 @@ class Surface3D {
         const marge = 0.09;
         const largeurUtile = this.W * (1 - 2 * marge);
         const hauteurUtile = this.H * (1 - 2 * marge - 0.06);
-        const s = Math.min(largeurUtile / Math.SQRT2, hauteurUtile / (0.9 * ce + Math.SQRT2 * se));
+        const s = Math.min(largeurUtile / Math.SQRT2, hauteurUtile / (0.9 * ce + Math.SQRT2 * se)) * this.zoom;
         // Centre vertical : le milieu de la hauteur de la surface tombe un peu sous le milieu du cadre.
         const cy = this.H * 0.53 + s * 0.45 * ce;
         return ([u, v, w]) => {
@@ -396,8 +522,9 @@ class Surface3D {
             let r = span.getBoundingClientRect();
             // Ramène dans le cadre un libellé qui déborderait à gauche ou à droite.
             const dx = r.left < cadre.left + 4 ? cadre.left + 4 - r.left : r.right > cadre.right - 4 ? cadre.right - 4 - r.right : 0;
-            if (dx) {
-                span.style.translate = `${dx}px 0`;
+            const dy = r.top < cadre.top + 2 ? cadre.top + 2 - r.top : r.bottom > cadre.bottom - 2 ? cadre.bottom - 2 - r.bottom : 0;
+            if (dx || dy) {
+                span.style.translate = `${dx}px ${dy}px`;
                 r = span.getBoundingClientRect();
             }
             const touche = gardes.some((g) => r.left < g.right + 2 && r.right > g.left - 2 && r.top < g.bottom && r.bottom > g.top);

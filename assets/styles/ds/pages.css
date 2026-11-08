@@ -1406,3 +1406,6 @@ select.input {
 }
 .prose .doc-sim__choice { align-content: start; }
 .prose .doc-sim__choice-options { align-items: flex-start; align-content: flex-start; }
+
+.prose .doc-3d__tools { display: inline-flex; flex-wrap: wrap; gap: var(--space-1); }
+.prose .doc-3d__tools .doc-3d__reset { min-width: 2.4em; }
