@@ -166,3 +166,8 @@ if (document.querySelector('figure.doc-pas')) {
 if (document.querySelector('.doc-sim')) {
     import('./js/simulators.js').then(({ initSimulateurs }) => initSimulateurs());
 }
+
+// ── Animations d'orderflow (heatmap, footprint, gamma) ────────────────────────
+if (document.querySelector('.doc-anim')) {
+    import('./js/orderflow-anim.js').then(({ initAnimations }) => initAnimations());
+}

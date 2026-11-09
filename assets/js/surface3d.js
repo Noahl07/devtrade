@@ -20,6 +20,7 @@ const ZOOM_DEFAUT = 1.15;
 const ZOOM_MIN = 0.6;
 const ZOOM_MAX = 2.6;
 const VITESSE = 6; // degrés par seconde pour la rotation automatique
+const REPRISE = 2500; // la rotation reprend 2,5 s après la dernière interaction
 const mouvementReduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function couleur(t, lum) {
@@ -180,12 +181,10 @@ class Surface3D {
         this.boutonPause.title = texte;
     }
 
-    /** Toute action de l'utilisateur coupe la rotation automatique. */
+    /** Une action de l'utilisateur suspend la rotation, qui reprend après un court délai
+        (sauf si elle a été mise en pause avec le bouton). */
     stoppe() {
-        if (this.auto) {
-            this.auto = false;
-            this.majPause();
-        }
+        this.derniere = performance.now();
         this.actif = true;
     }
 
@@ -198,7 +197,8 @@ class Surface3D {
     anime() {
         let precedent = null;
         const pas = (t) => {
-            if (this.auto && this.visible) {
+            const libre = !this.glisse && t - (this.derniere || 0) > REPRISE;
+            if (this.auto && this.visible && libre) {
                 if (precedent === null) {
                     precedent = t;
                 } else if (t - precedent >= 33) {
@@ -229,6 +229,7 @@ class Surface3D {
                 return;
             }
             depart = { x: e.clientX, y: e.clientY, az: this.az, el: this.el, type: e.pointerType };
+            this.glisse = true;
         });
         this.canvas.addEventListener('pointermove', (e) => {
             if (doigts.has(e.pointerId)) {
@@ -257,6 +258,10 @@ class Surface3D {
                 pincement = null;
             }
             depart = null;
+            if (doigts.size === 0) {
+                this.glisse = false;
+                this.derniere = performance.now();
+            }
         };
         this.canvas.addEventListener('pointerup', fin);
         this.canvas.addEventListener('pointercancel', fin);
@@ -291,6 +296,7 @@ class Surface3D {
             this.el = this.d.el;
             this.zoom = ZOOM_DEFAUT;
             this.actif = false;
+            this.derniere = 0;
             this.auto = !mouvementReduit();
             this.majPause();
             this.demande();
