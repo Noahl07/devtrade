@@ -50,35 +50,46 @@
 <p>Wyckoff découpe le cycle en quatre temps : <strong>accumulation</strong> (range après une baisse), <strong>hausse</strong> (<em>markup</em>), <strong>distribution</strong> (range après une hausse), <strong>baisse</strong> (<em>markdown</em>). Pendant une tendance, des ranges intermédiaires peuvent servir de <strong>réaccumulation</strong> (pause avant de continuer à monter) ou de <strong>redistribution</strong> (pause avant de continuer à baisser). Toute la difficulté est de savoir, pendant un range, de quel type il s'agit.</p>
 
 <h2>Le schéma d'accumulation, phase par phase</h2>
-<figure class="doc-diagram">
+<figure class="doc-diagram doc-pas">
 <div class="doc-diagram__canvas">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 290" aria-hidden="true">
-  <rect x="80" y="95" width="420" height="105" fill="rgba(120,140,190,0.07)" />
-  <line x1="80" y1="95" x2="500" y2="95" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
-  <line x1="80" y1="200" x2="500" y2="200" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
-  <polyline points="20,40 50,90 70,120 95,205 125,100 160,190 190,130 220,175 255,120 290,165 330,110 370,225 395,170 420,185 455,95 480,125 520,70 570,45 620,25" fill="none" stroke="#D9D3C3" stroke-width="2" />
+  <rect class="pas-1" x="80" y="95" width="420" height="105" fill="rgba(120,140,190,0.07)" />
+  <line class="pas-1" x1="80" y1="95" x2="500" y2="95" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
+  <line class="pas-1" x1="80" y1="200" x2="500" y2="200" stroke="rgba(150,170,220,0.5)" stroke-dasharray="4 4" />
+  <polyline class="pas-1" points="20,40 50,90 70,120 95,205 125,100 160,190" fill="none" stroke="#D9D3C3" stroke-width="2" />
+<polyline class="pas-2" points="160,190 190,130 220,175 255,120 290,165 330,110" fill="none" stroke="#D9D3C3" stroke-width="2" />
+<polyline class="pas-3" points="330,110 370,225 395,170 420,185" fill="none" stroke="#D9D3C3" stroke-width="2" />
+<polyline class="pas-4" points="420,185 455,95 480,125" fill="none" stroke="#D9D3C3" stroke-width="2" />
+<polyline class="pas-5" points="480,125 520,70 570,45 620,25" fill="none" stroke="#D9D3C3" stroke-width="2" />
   <g fill="#E2CB91" font-family="sans-serif" font-size="12" text-anchor="middle" font-weight="bold">
     </g>
   <g fill="#A8B3AE" font-family="sans-serif" font-size="12" text-anchor="middle">
     </g>
   <g stroke="rgba(245,241,230,0.15)">
-    <line x1="175" y1="230" x2="175" y2="262" /><line x1="340" y1="230" x2="340" y2="262" /><line x1="435" y1="230" x2="435" y2="262" /><line x1="505" y1="230" x2="505" y2="262" />
+    <line class="pas-2" x1="175" y1="230" x2="175" y2="262" /><line class="pas-2" x1="340" y1="230" x2="340" y2="262" /><line class="pas-3" x1="435" y1="230" x2="435" y2="262" /><line class="pas-4" x1="505" y1="230" x2="505" y2="262" />
   </g>
 </svg>
-<span class="doc-label doc-label--start doc-label--strong is-accent" style="left:14%;top:31%">PS</span>
-<span class="doc-label doc-label--strong is-accent" style="left:14.84%;top:75.1%">SC</span>
-<span class="doc-label doc-label--strong is-accent" style="left:19.53%;top:28.9%">AR</span>
-<span class="doc-label doc-label--strong is-accent" style="left:25%;top:70.28%">ST</span>
-<span class="doc-label doc-label--strong is-accent" style="left:57.81%;top:82.69%">Spring</span>
-<span class="doc-label doc-label--strong is-accent" style="left:65.62%;top:75%">Test</span>
-<span class="doc-label doc-label--strong is-accent" style="left:71.09%;top:27.52%">SOS</span>
-<span class="doc-label doc-label--strong is-accent" style="left:75%;top:47.52%">LPS</span>
-<span class="doc-label is-muted" style="left:17.19%;top:93.72%">phase A</span>
-<span class="doc-label is-muted" style="left:39.84%;top:93.72%">phase B</span>
-<span class="doc-label is-muted" style="left:60.94%;top:93.72%">phase C</span>
-<span class="doc-label is-muted" style="left:73.44%;top:93.72%">phase D</span>
-<span class="doc-label is-muted" style="left:90.62%;top:93.72%">phase E</span>
+<span class="doc-label doc-label--start doc-label--strong is-accent pas-1" style="left:14%;top:31%">PS</span>
+<span class="doc-label doc-label--strong is-accent pas-1" style="left:14.84%;top:75.1%">SC</span>
+<span class="doc-label doc-label--strong is-accent pas-1" style="left:19.53%;top:28.9%">AR</span>
+<span class="doc-label doc-label--strong is-accent pas-1" style="left:25%;top:70.28%">ST</span>
+<span class="doc-label doc-label--strong is-accent pas-3" style="left:57.81%;top:82.69%">Spring</span>
+<span class="doc-label doc-label--strong is-accent pas-3" style="left:65.62%;top:75%">Test</span>
+<span class="doc-label doc-label--strong is-accent pas-4" style="left:71.09%;top:27.52%">SOS</span>
+<span class="doc-label doc-label--strong is-accent pas-4" style="left:75%;top:47.52%">LPS</span>
+<span class="doc-label is-muted pas-1" style="left:17.19%;top:93.72%">phase A</span>
+<span class="doc-label is-muted pas-2" style="left:39.84%;top:93.72%">phase B</span>
+<span class="doc-label is-muted pas-3" style="left:60.94%;top:93.72%">phase C</span>
+<span class="doc-label is-muted pas-4" style="left:73.44%;top:93.72%">phase D</span>
+<span class="doc-label is-muted pas-5" style="left:90.62%;top:93.72%">phase E</span>
 </div>
+<ol class="doc-pas-texte">
+<li>Phase A, l'arrêt de la baisse : soutien préliminaire (PS), climax de vente (SC), rebond automatique (AR) puis test secondaire (ST). Le SC et l'AR délimitent le range.</li>
+<li>Phase B, la construction de la cause : le prix oscille dans le range pendant que les grandes mains accumulent. C'est souvent la phase la plus longue.</li>
+<li>Phase C, le test : le spring passe sous le bas du range et déclenche les derniers stops, puis un test sur faible volume confirme que l'offre est épuisée.</li>
+<li>Phase D, la sortie : un signe de force (SOS) franchit le haut du range, puis le dernier point d'appui (LPS) vient tester l'ancienne résistance.</li>
+<li>Phase E, la tendance : le prix quitte la zone d'accumulation et la hausse se développe.</li>
+</ol>
 <figcaption>Schéma type d'accumulation : arrêt de la baisse (A), construction de la cause (B), test final (C), sortie du range (D), hausse (E). Les marchés réels sont rarement aussi nets.</figcaption>
 </figure>
 <table>

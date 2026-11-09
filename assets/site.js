@@ -171,3 +171,8 @@ if (document.querySelector('.doc-sim')) {
 if (document.querySelector('.doc-anim')) {
     import('./js/orderflow-anim.js').then(({ initAnimations }) => initAnimations());
 }
+
+// ── Quiz interactifs ──────────────────────────────────────────────────────────
+if (document.querySelector('.doc-quiz')) {
+    import('./js/quiz.js').then(({ initQuiz }) => initQuiz());
+}

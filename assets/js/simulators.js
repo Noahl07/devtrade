@@ -376,6 +376,65 @@ const SIMULATEURS = {
             ];
         },
     },
+    comparateur: {
+        titre: 'Comparateur de deux stratégies (500 simulations chacune)',
+        relance: true,
+        graphique: true,
+        curseurs: [
+            ['reussiteA', 'Stratégie A : taux de réussite', 0.2, 0.8, 0.01, 0.6, (v) => pct(v, 0)],
+            ['ratioA', 'Stratégie A : gain moyen (R)', 0.3, 4, 0.1, 0.8, (v) => `${nf(v, 1)} R`],
+            ['reussiteB', 'Stratégie B : taux de réussite', 0.2, 0.8, 0.01, 0.35, (v) => pct(v, 0)],
+            ['ratioB', 'Stratégie B : gain moyen (R)', 0.3, 4, 0.1, 2.5, (v) => `${nf(v, 1)} R`],
+            ['risque', 'Risque par trade (les deux)', 0.0025, 0.05, 0.0025, 0.01, (v) => pct(v, 2)],
+            ['trades', 'Nombre de trades', 50, 500, 10, 200, (v) => nf(v)],
+        ],
+        calcule: ({ reussiteA, ratioA, reussiteB, ratioB, risque, trades }, { graine, canvas }) => {
+            const r = aleatoire(graine);
+            const N = 500;
+            const simule = (p, R, garder) => {
+                let c = 1;
+                let pic = 1;
+                let pire = 0;
+                const pts = [[0, 100]];
+                for (let t = 1; t <= trades; t++) {
+                    c *= r.u() < p ? 1 + risque * R : 1 - risque;
+                    pic = Math.max(pic, c);
+                    pire = Math.min(pire, c / pic - 1);
+                    if (garder) {
+                        pts.push([t, c * 100]);
+                    }
+                }
+                return { c, pire, pts };
+            };
+            const A = [];
+            const B = [];
+            let aDevant = 0;
+            for (let k = 0; k < N; k++) {
+                const a = simule(reussiteA, ratioA, k === 0);
+                const b = simule(reussiteB, ratioB, k === 0);
+                A.push(a);
+                B.push(b);
+                aDevant += a.c > b.c;
+            }
+            const mediane = (liste, f) => {
+                const v = liste.map(f).sort((x, y) => x - y);
+                return v[Math.floor(v.length / 2)];
+            };
+            trace(canvas, [
+                { points: A[0].pts, couleur: '#B9C6E6', epaisseur: 2 },
+                { points: B[0].pts, couleur: '#E2CB91', epaisseur: 2 },
+            ], { ligneZero: 100 });
+            const espA = reussiteA * ratioA - (1 - reussiteA);
+            const espB = reussiteB * ratioB - (1 - reussiteB);
+            return [
+                ['Espérance par trade : A / B', `${signe(espA, 2)} R / ${signe(espB, 2)} R`],
+                ['Capital final médian : A / B (départ 100)', `${nf(mediane(A, (x) => x.c * 100))} / ${nf(mediane(B, (x) => x.c * 100))}`],
+                ['Pire baisse médiane : A / B', `${pct(-mediane(A, (x) => x.pire), 0)} / ${pct(-mediane(B, (x) => x.pire), 0)}`],
+                ['Simulations où A finit devant B', pct(aDevant / N, 0)],
+            ];
+        },
+        legende: 'Bleu : un tirage de la stratégie A. Or : un tirage de la stratégie B. Les résultats chiffrés portent sur 500 tirages de chacune. Par défaut, A gagne souvent mais peu, B rarement mais beaucoup.',
+    },
 };
 
 class Simulateur {

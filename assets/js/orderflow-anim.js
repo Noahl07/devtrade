@@ -1,5 +1,5 @@
 // Animations pédagogiques d'orderflow : <div class="doc-anim doc-anim--TYPE [doc-anim-scenario--NOM]">.
-// Types : heatmap (carnet d'ordres), footprint, gex. Le contenu d'origine du bloc (texte explicatif)
+// Types : heatmap (carnet d'ordres), footprint, gex, replay (rejeu de bougies). Le contenu d'origine du bloc (texte explicatif)
 // sert de repli sans JavaScript. Les scénarios sont des illustrations construites, pas des données
 // de marché réelles : chacun montre un mécanisme, avec un commentaire qui change à chaque phase.
 
@@ -575,6 +575,172 @@ class Gex {
     }
 }
 
+// ── Rejeu de bougies : deviner la suite ──────────────────────────────────────
+// Chaque scénario : trajectoire (images clés), niveau marqué, bougie où l'on s'arrête pour poser la
+// question, bonne réponse et explication.
+const REPLAY = {
+    cassure: {
+        nom: 'Cassure',
+        prix: [[0, 100], [0.15, 104], [0.25, 101], [0.38, 104.2], [0.48, 101.4], [0.58, 104.6], [0.62, 105.6], [0.8, 110], [1, 112]],
+        niveau: 104.6,
+        arret: 0.62,
+        reponse: 'hausse',
+        explication: 'Le prix avait testé trois fois la résistance, avec des creux de plus en plus hauts : les vendeurs cédaient du terrain. La clôture nette au-dessus, avec une grande bougie, a déclenché les ordres d\'achat stop placés au-dessus du niveau. La cassure a tenu.',
+    },
+    fausse: {
+        nom: 'Fausse cassure',
+        prix: [[0, 101], [0.15, 104], [0.25, 101.2], [0.38, 104], [0.5, 101.5], [0.58, 103.8], [0.62, 105.3], [0.68, 102.8], [0.85, 100.2], [1, 98]],
+        niveau: 104.1,
+        arret: 0.62,
+        reponse: 'baisse',
+        explication: 'Le prix a dépassé la résistance… puis est retombé dans le range dès la bougie suivante. Ceux qui avaient acheté la cassure et ceux dont les stops ont été déclenchés au-dessus des sommets sont piégés : leurs ventes poussent le prix vers le bas du range. Une cassure sans suite rapide est souvent un balayage de liquidité.',
+    },
+    retest: {
+        nom: 'Retour sur le niveau',
+        prix: [[0, 96], [0.2, 100], [0.3, 98], [0.42, 100.1], [0.5, 102.5], [0.58, 103.2], [0.66, 100.4], [0.8, 104.5], [1, 107]],
+        niveau: 100.1,
+        arret: 0.66,
+        reponse: 'hausse',
+        explication: 'Après la cassure, le prix est revenu tester l\'ancienne résistance, qui a servi de support : les acheteurs qui avaient manqué la cassure en profitent, et ceux qui avaient vendu la résistance soldent leur position. Le retour sur le niveau offrait une entrée avec un stop proche.',
+    },
+};
+
+class Replay {
+    constructor(bloc, scenario) {
+        this.bloc = bloc;
+        this.scenario = REPLAY[scenario] ? scenario : 'cassure';
+        this.vitesse = 1;
+        Heatmap.prototype.construit.call(this, Object.entries(REPLAY).map(([k, v]) => [k, v.nom]));
+        this.bloc.querySelector('.doc-anim__title').textContent = 'Rejeu : que va faire le prix ?';
+        this.bloc.querySelector('.doc-sim__legend').textContent = 'Les bougies défilent une à une et s\'arrêtent au moment de décider. Choisissez, puis découvrez la suite. Scénarios construits à titre d\'illustration : dans la réalité, aucune figure ne réussit à tous les coups.';
+        this.question = document.createElement('div');
+        this.question.className = 'doc-anim__controls doc-anim__question';
+        this.commentaire.after(this.question);
+        this.charge();
+    }
+
+    charge() {
+        const s = REPLAY[this.scenario];
+        this.onglets.querySelectorAll('button').forEach((b) => {
+            const actif = b.dataset.cle === this.scenario;
+            b.classList.toggle('is-active', actif);
+            b.setAttribute('aria-selected', String(actif));
+        });
+        this.canvas.setAttribute('aria-label', `Rejeu de bougies : scénario ${s.nom}`);
+        const r = aleatoire(this.scenario.length * 131 + 7);
+        const n = 48;
+        this.bougies = [];
+        let precedent = cle(s.prix, 0);
+        for (let k = 0; k < n; k++) {
+            const t = (k + 1) / n;
+            const cible = cle(s.prix, t);
+            const o = precedent;
+            const c = cible + r.gauss() * 0.25;
+            const h = Math.max(o, c) + Math.abs(r.gauss()) * 0.45;
+            const l = Math.min(o, c) - Math.abs(r.gauss()) * 0.45;
+            this.bougies.push({ o, h, l, c });
+            precedent = c;
+        }
+        this.arret = Math.round(s.arret * n);
+        this.pas = n;
+        this.i = 0;
+        this.repondu = false;
+        this.question.replaceChildren();
+        this.lecture = true;
+        this.majLecture?.();
+        if (mouvementReduit()) {
+            this.i = this.arret - 1;
+        }
+        Heatmap.prototype.demarre.call(this);
+    }
+
+    pose() {
+        this.lecture = false;
+        this.majLecture();
+        this.commentaire.textContent = 'À vous : à partir d\'ici, que va faire le prix dans les prochaines bougies ?';
+        this.question.replaceChildren();
+        [['hausse', 'Monter'], ['baisse', 'Baisser'], ['range', 'Rester dans la zone']].forEach(([cleRep, texte]) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'doc-pas__btn';
+            b.textContent = texte;
+            b.addEventListener('click', () => {
+                const s = REPLAY[this.scenario];
+                this.repondu = true;
+                this.question.replaceChildren();
+                this.verdict = `${cleRep === s.reponse ? 'Bien vu.' : 'Pas cette fois.'} ${s.explication}`;
+                this.lecture = true;
+                this.majLecture();
+            });
+            this.question.append(b);
+        });
+    }
+
+    dessine() {
+        if (!this.repondu && this.i >= this.arret - 1 && this.lecture) {
+            this.i = this.arret - 1;
+            this.pose();
+        }
+        const W = this.canvas.clientWidth;
+        if (!W) {
+            return;
+        }
+        const H = Math.round(W * 0.5);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        if (this.canvas.width !== Math.round(W * dpr)) {
+            this.canvas.width = Math.round(W * dpr);
+            this.canvas.height = Math.round(H * dpr);
+            this.canvas.style.height = `${H}px`;
+        }
+        const s = REPLAY[this.scenario];
+        const ctx = this.canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.fillStyle = COULEURS.fond;
+        ctx.fillRect(0, 0, W, H);
+        const yMin = Math.min(...this.bougies.map((b) => b.l)) - 0.5;
+        const yMax = Math.max(...this.bougies.map((b) => b.h)) + 0.5;
+        const Y = (v) => 10 + ((yMax - v) / (yMax - yMin)) * (H - 20);
+        const largeur = (W - 20) / this.pas;
+        ctx.strokeStyle = 'rgba(226,203,145,0.55)';
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(10, Y(s.niveau));
+        ctx.lineTo(W - 10, Y(s.niveau));
+        ctx.stroke();
+        ctx.setLineDash([]);
+        for (let k = 0; k <= this.i; k++) {
+            const b = this.bougies[k];
+            const x = 10 + (k + 0.5) * largeur;
+            const couleur = b.c >= b.o ? COULEURS.achat : COULEURS.vente;
+            ctx.strokeStyle = couleur;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, Y(b.h));
+            ctx.lineTo(x, Y(b.l));
+            ctx.stroke();
+            ctx.fillStyle = couleur;
+            const haut = Y(Math.max(b.o, b.c));
+            ctx.fillRect(x - largeur * 0.32, haut, largeur * 0.64, Math.max(1.5, Y(Math.min(b.o, b.c)) - haut));
+        }
+        if (this.repondu) {
+            ctx.strokeStyle = 'rgba(185,198,230,0.45)';
+            ctx.beginPath();
+            const x = 10 + this.arret * largeur;
+            ctx.moveTo(x, 6);
+            ctx.lineTo(x, H - 6);
+            ctx.stroke();
+            if (this.commentaire.textContent !== this.verdict) {
+                this.commentaire.textContent = this.verdict;
+            }
+        } else if (this.i < this.arret - 1 && this.lecture) {
+            const texte = 'Observez le comportement du prix autour du niveau en pointillés…';
+            if (this.commentaire.textContent !== texte) {
+                this.commentaire.textContent = texte;
+            }
+        }
+    }
+}
+
 /** Boutons lecture/pause, recommencer et vitesse, communs aux trois animations. */
 function controles(anim) {
     const zone = document.createElement('div');
@@ -597,6 +763,10 @@ function controles(anim) {
     debut.className = 'doc-pas__btn';
     debut.textContent = 'Recommencer';
     debut.addEventListener('click', () => {
+        if (anim.charge && anim instanceof Replay) {
+            anim.charge();
+            return;
+        }
         anim.i = 0;
         anim.lecture = true;
         anim.majLecture();
@@ -627,6 +797,8 @@ export function initAnimations(racine = document) {
             new Footprint(bloc, scenario);
         } else if (type === 'gex') {
             new Gex(bloc);
+        } else if (type === 'replay') {
+            new Replay(bloc, scenario);
         }
     });
 }

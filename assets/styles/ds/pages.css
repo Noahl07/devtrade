@@ -1425,3 +1425,39 @@ select.input {
 .prose .doc-anim__controls { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
 .prose .doc-anim__controls .doc-pas__btn { margin: 0; }
 .prose .doc-anim__text { min-height: 4.5em; margin: var(--space-3) 0 0; color: var(--text-2); }
+
+/* Quiz : sans JavaScript, la liste des questions et des explications reste lisible. */
+.prose .doc-quiz {
+    margin: var(--space-6) 0;
+    padding: var(--space-4);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+}
+
+.prose .doc-quiz__title { margin: 0 0 var(--space-3); font-weight: 600; color: var(--text); }
+.prose .doc-quiz__question { margin: 0 0 var(--space-4); padding: 0; border: 0; }
+.prose .doc-quiz__question legend { margin-bottom: var(--space-2); font-weight: 600; color: var(--text); }
+.prose .doc-quiz__options { display: grid; gap: var(--space-2); }
+
+.prose .doc-quiz__option {
+    padding: 0.55em 0.9em;
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-2);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.prose .doc-quiz__option:hover:not(:disabled),
+.prose .doc-quiz__option:focus-visible { border-color: var(--brand); color: var(--text); }
+.prose .doc-quiz__option:disabled { cursor: default; }
+.prose .doc-quiz__option.is-right { border-color: #4FB38F; background: rgba(79,179,143,0.14); color: var(--text); }
+.prose .doc-quiz__option.is-wrong { border-color: #D2655A; background: rgba(210,101,90,0.14); color: var(--text); }
+.prose .doc-quiz__feedback { margin: var(--space-2) 0 0; font-size: var(--step--1); color: #E89A90; }
+.prose .doc-quiz__feedback.is-right { color: #7FD1B9; }
+.prose .doc-quiz__feedback:empty { display: none; }
+.prose .doc-quiz__result p { font-weight: 600; color: var(--text); }
+.prose .doc-quiz:not(.is-live) .is-correct { font-weight: 600; }
