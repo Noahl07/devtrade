@@ -145,6 +145,13 @@ app_admin_user_toggle_premium:
     requirements:
         id: '\d+'
 
+app_admin_user_delete:
+    path: /admin/utilisateurs/{id}/supprimer
+    controller: App\Controller\AdminController::userDelete
+    methods: [POST]
+    requirements:
+        id: '\d+'
+
 # ── Ajouter ces lignes à la fin de config/routes.yaml ──
  
 app_forgot_password:

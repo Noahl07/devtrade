@@ -173,6 +173,72 @@ final class AdminTest extends WebTestCase
         self::assertNull($this->em->find(WaitlistEntry::class, $entry->getId()));
     }
 
+    // ── Suppression de comptes ──────────────────────────────────────────────
+
+    public function testAdminCanDeleteAMemberWhoseArticlesAreKeptWithoutAuthor(): void
+    {
+        $this->loginAdmin();
+        $member = $this->user([]);
+        $document = $this->document($this->category(), 'ecrit-par-membre');
+        $document->setAuthor($member);
+        $this->em->flush();
+        $memberId = $member->getId();
+        $documentId = $document->getId();
+
+        $crawler = $this->client->request('GET', '/admin/utilisateurs');
+        $form = $crawler->filter(sprintf('form[action="/admin/utilisateurs/%d/supprimer"]', $memberId))->form();
+        $this->client->submit($form);
+        self::assertResponseRedirects('/admin/utilisateurs');
+
+        $this->em->clear();
+        self::assertNull($this->em->find(User::class, $memberId));
+        $kept = $this->em->find(Document::class, $documentId);
+        self::assertNotNull($kept);
+        self::assertNull($kept->getAuthor());
+    }
+
+    public function testAdminAccountsAndOneselfCannotBeDeleted(): void
+    {
+        $admin = $this->user(['ROLE_ADMIN']);
+        $otherAdmin = $this->user(['ROLE_ADMIN']);
+        $this->client->loginUser($admin);
+
+        $crawler = $this->client->request('GET', '/admin/utilisateurs');
+        self::assertCount(0, $crawler->filter(sprintf('form[action="/admin/utilisateurs/%d/supprimer"]', $otherAdmin->getId())));
+        self::assertCount(0, $crawler->filter(sprintf('form[action="/admin/utilisateurs/%d/supprimer"]', $admin->getId())));
+
+        // Côté serveur : un formulaire valide affiché pour un membre devient refusé si ce membre
+        // est promu administrateur entre-temps.
+        $member = $this->user([]);
+        $form = $this->client->request('GET', '/admin/utilisateurs')
+            ->filter(sprintf('form[action="/admin/utilisateurs/%d/supprimer"]', $member->getId()))->form();
+        // Le client redémarre le noyau entre deux requêtes : on recharge le compte depuis le conteneur courant.
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->find(User::class, $member->getId())->setRoles(['ROLE_ADMIN']);
+        $em->flush();
+        $this->client->submit($form);
+        self::assertResponseRedirects('/admin/utilisateurs');
+        $this->client->followRedirect();
+        self::assertSelectorTextContains('body', 'Un compte administrateur ne peut pas être supprimé');
+        $this->em->clear();
+        self::assertNotNull($this->em->find(User::class, $member->getId()));
+
+        // Et la règle refuse aussi la suppression de son propre compte.
+        $remover = static::getContainer()->get(\App\Service\Admin\UserRemover::class);
+        $self = $this->em->find(User::class, $admin->getId());
+        self::assertSame('Vous ne pouvez pas supprimer votre propre compte.', $remover->refusal($self, $self));
+    }
+
+    public function testDeletingAUserRequiresAValidCsrfToken(): void
+    {
+        $this->loginAdmin();
+        $member = $this->user([]);
+        $this->client->request('POST', sprintf('/admin/utilisateurs/%d/supprimer', $member->getId()), ['_token' => 'faux']);
+        self::assertResponseStatusCodeSame(403);
+        $this->em->clear();
+        self::assertNotNull($this->em->find(User::class, $member->getId()));
+    }
+
     // ── Import du lot de documentation ──────────────────────────────────────
 
     public function testImportShowsThePlanThenAppliesItWithoutDeletingAnything(): void

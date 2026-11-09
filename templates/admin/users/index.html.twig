@@ -2,7 +2,7 @@
 {% import 'components/ui/_ui.html.twig' as ui %}
 
 {% block admin_title %}Utilisateurs{% endblock %}
-{% block admin_lead %}<p class="admin__lead">{{ users|length }} compte{{ users|length > 1 ? 's' }}. L'accès Premium se donne ou se retire ici, après paiement ou à la demande.</p>{% endblock %}
+{% block admin_lead %}<p class="admin__lead">{{ users|length }} compte{{ users|length > 1 ? 's' }}. L'accès Premium se donne ou se retire ici, après paiement ou à la demande. La suppression d'un compte est définitive ; les comptes administrateurs et le vôtre ne peuvent pas être supprimés ici.</p>{% endblock %}
 
 {% block admin_content %}
 {% if users is empty %}
@@ -11,7 +11,7 @@
 <div class="table-wrap">
     <table class="data-table admin-table">
         <caption class="visually-hidden">Comptes, du plus récent au plus ancien</caption>
-        <thead><tr><th scope="col">Nom</th><th scope="col">E-mail</th><th scope="col">Inscription</th><th scope="col">Rôle</th><th scope="col">Accès</th></tr></thead>
+        <thead><tr><th scope="col">Nom</th><th scope="col">E-mail</th><th scope="col">Inscription</th><th scope="col">Rôle</th><th scope="col">Accès</th><th scope="col"><span class="visually-hidden">Supprimer</span></th></tr></thead>
         <tbody>
         {% for user in users %}
             <tr>
@@ -26,6 +26,15 @@
                         {{ user.isPremium ? ui.badge('Premium', 'demo') : ui.badge('Gratuit', 'backtest') }}
                         <button class="button button--ghost">{{ user.isPremium ? 'Retirer' : 'Passer Premium' }}</button>
                     </form>
+                </td>
+                <td>
+                    {% if 'ROLE_ADMIN' not in user.roles and user != app.user %}
+                    <form method="post" action="{{ path('app_admin_user_delete', {id: user.id}) }}"
+                          data-confirm="Supprimer définitivement le compte de {{ user.fullName }} ({{ user.email }}) ? Cette action est irréversible.">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete-user-' ~ user.id) }}">
+                        <button class="button button--ghost">Supprimer</button>
+                    </form>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

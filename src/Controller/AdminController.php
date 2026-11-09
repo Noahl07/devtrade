@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use App\Repository\WaitlistEntryRepository;
 use App\Service\Admin\ContentEditor;
 use App\Service\Admin\DocumentationImport;
+use App\Service\Admin\UserRemover;
 use App\Service\Admin\WaitlistCsv;
 use App\Service\Analytics\AnalyticsReport;
 use App\Service\DocumentationBundle;
@@ -314,6 +315,25 @@ final class AdminController extends AbstractController
         $user->setIsPremium(!$user->isPremium());
         $em->flush();
         $this->addFlash('success', sprintf('%s : accès %s.', $user->getFullName(), $user->isPremium() ? 'Premium' : 'gratuit'));
+
+        return $this->redirectToRoute('app_admin_users');
+    }
+
+    /** Suppression d'un compte (droit à l'effacement, comptes de test). */
+    public function userDelete(int $id, Request $request, UserRepository $users, UserRemover $remover): Response
+    {
+        $user = $users->find($id) ?? throw $this->createNotFoundException();
+        $this->requireCsrf('delete-user-' . $id, $request->request->get('_token'));
+        $current = $this->getUser();
+        $refusal = $remover->refusal($user, $current instanceof User ? $current : null);
+        if ($refusal !== null) {
+            $this->addFlash('danger', $refusal);
+
+            return $this->redirectToRoute('app_admin_users');
+        }
+        $name = $user->getFullName();
+        $remover->remove($user);
+        $this->addFlash('success', sprintf('Compte de %s supprimé.', $name));
 
         return $this->redirectToRoute('app_admin_users');
     }
