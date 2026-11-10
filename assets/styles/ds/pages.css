@@ -1657,3 +1657,47 @@ select.input {
 .prose .doc-quiz__recap { margin: 0 0 var(--space-3); padding-left: var(--space-4); font-size: 0.9rem; }
 .prose .doc-quiz__recap li { margin-bottom: var(--space-2); color: var(--text-2); }
 .prose .doc-quiz__recap strong { color: var(--text); font-weight: 600; }
+
+/* ── Glossaire en infobulles ────────────────────────────────── */
+.prose .glossaire {
+    position: relative;
+    border-bottom: 1px dotted color-mix(in srgb, var(--accent) 70%, transparent);
+    cursor: help;
+}
+
+.prose .glossaire:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+.prose .glossaire__bulle {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    z-index: 40;
+    width: max-content;
+    max-width: min(19rem, 86vw);
+    padding: var(--space-2) var(--space-3);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg-raised);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.45;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: normal;
+    white-space: normal;
+    transform: translateX(calc(-50% + var(--decalage, 0px)));
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.prose .glossaire:hover .glossaire__bulle,
+.prose .glossaire:focus .glossaire__bulle,
+.prose .glossaire.is-open .glossaire__bulle {
+    opacity: 1;
+    visibility: visible;
+}

@@ -235,3 +235,9 @@ if (document.querySelector('.doc-anim')) {
 if (document.querySelector('.doc-quiz')) {
     import('./js/quiz.js').then(({ initQuiz }) => initQuiz());
 }
+
+// ── Glossaire en infobulles (articles de la documentation) ──────────────────
+const corpsArticle = document.querySelector('[data-reading-body]');
+if (corpsArticle) {
+    import('./js/glossary.js').then(({ initGlossaire }) => initGlossaire(corpsArticle));
+}

@@ -198,6 +198,81 @@ const SIMULATEURS = {
         },
         legende: 'En montant fixe, chaque trade risque le même montant qu\'au départ, quel que soit le capital restant.',
     },
+    'prop-firm': {
+        titre: 'Simulateur de challenge de prop firm (2 000 tentatives simulées)',
+        relance: true,
+        graphique: true,
+        curseurs: [
+            ['objectif', 'Objectif de profit', 0.03, 0.2, 0.01, 0.08, (v) => pct(v, 0)],
+            ['ddJour', 'Perte maximale sur une journée', 0.01, 0.1, 0.005, 0.05, (v) => pct(v, 1)],
+            ['ddMax', 'Perte maximale totale', 0.02, 0.2, 0.01, 0.1, (v) => pct(v, 0)],
+            ['risque', 'Risque par trade (du capital initial)', 0.0025, 0.03, 0.0025, 0.01, (v) => pct(v, 2)],
+            ['parJour', 'Trades par jour', 1, 10, 1, 3, (v) => nf(v), 30],
+            ['reussite', 'Taux de réussite', 0.2, 0.75, 0.01, 0.45, (v) => pct(v, 0)],
+            ['ratio', 'Gain moyen (R)', 0.5, 4, 0.1, 1.5, (v) => `${nf(v, 1)} R`],
+            ['couts', 'Coûts par trade (en R)', 0, 0.3, 0.01, 0.05, (v) => `${nf(v, 2)} R`],
+            ['jours', 'Jours de trading accordés', 'choix', [[20, '20'], [30, '30'], [60, '60'], [0, 'sans limite']], 30],
+            ['calcul', 'Perte totale mesurée', 'choix', [['statique', 'depuis le capital initial'], ['suiveur', 'depuis le plus haut (suiveur)']], 'statique'],
+        ],
+        calcule: ({ objectif, ddJour, ddMax, risque, parJour, reussite, ratio, couts, jours, calcul }, { graine, canvas }) => {
+            const r = aleatoire(graine);
+            const N = 2000;
+            const limiteJours = jours || 365;
+            const issues = { reussi: 0, jour: 0, total: 0, temps: 0 };
+            const durees = [];
+            const exemples = [];
+            for (let k = 0; k < N; k++) {
+                let c = 1;
+                let plusHaut = 1;
+                let issue = 'temps';
+                let jour = 0;
+                const pts = [[0, 100]];
+                while (jour < limiteJours && issue === 'temps') {
+                    jour += 1;
+                    const debutJour = c;
+                    for (let t = 0; t < parJour; t++) {
+                        c += r.u() < reussite ? risque * (ratio - couts) : -risque * (1 + couts);
+                        plusHaut = Math.max(plusHaut, c);
+                        const plancher = calcul === 'suiveur' ? Math.min(plusHaut - ddMax, 1) : 1 - ddMax;
+                        if (c <= plancher) {
+                            issue = 'total';
+                        } else if (c <= debutJour - ddJour) {
+                            issue = 'jour';
+                        } else if (c >= 1 + objectif) {
+                            issue = 'reussi';
+                        }
+                        if (issue !== 'temps') {
+                            break;
+                        }
+                    }
+                    if (k < 14) {
+                        pts.push([jour, c * 100]);
+                    }
+                }
+                issues[issue] += 1;
+                if (issue === 'reussi') {
+                    durees.push(jour);
+                }
+                if (k < 14) {
+                    exemples.push({ points: pts, couleur: issue === 'reussi' ? 'rgba(79,179,143,0.7)' : issue === 'temps' ? 'rgba(185,198,230,0.55)' : 'rgba(210,101,90,0.6)' });
+                }
+            }
+            durees.sort((a, b) => a - b);
+            const xMax = Math.max(...exemples.map((e) => e.points[e.points.length - 1][0]), 2);
+            const ligne = (y, couleur) => ({ points: [[0, y], [xMax, y]], couleur, epaisseur: 1 });
+            trace(canvas, [ligne((1 + objectif) * 100, 'rgba(226,203,145,0.9)'), ligne((1 - ddMax) * 100, 'rgba(210,101,90,0.9)'), ...exemples]);
+            const esperance = reussite * ratio - (1 - reussite) - couts;
+            return [
+                ['Challenges réussis', pct(issues.reussi / N, 0)],
+                ['Échecs : perte journalière dépassée', pct(issues.jour / N, 0)],
+                ['Échecs : perte totale dépassée', pct(issues.total / N, 0)],
+                [jours ? 'Délai écoulé sans atteindre l\'objectif' : 'Ni réussite ni échec après un an', pct(issues.temps / N, 0)],
+                ['Durée médiane d\'une réussite', durees.length ? `${nf(durees[Math.floor(durees.length / 2)])} jours` : '—'],
+                ['Espérance par trade', `${signe(esperance, 2)} R`],
+            ];
+        },
+        legende: 'Courbes : 14 tentatives (vert : réussie, rouge : éliminée, bleu : délai écoulé). Ligne or : objectif ; ligne rouge : perte totale maximale (statique). Modèle simplifié : trades indépendants, risque fixe, pas de règle de cohérence ni de jours minimum. Chaque société a ses propres règles : lisez-les avant de payer un challenge.',
+    },
     'interets-composes': {
         titre: 'Simulateur d\'intérêts composés',
         graphique: true,
@@ -443,7 +518,10 @@ class Simulateur {
         this.def = def;
         this.valeurs = {};
         this.defauts = [];
+        this.reglages = {};
+        this.type = type;
         this.graine = 1;
+        this.bloc = bloc;
         bloc.replaceChildren();
         bloc.classList.add('is-live');
 
@@ -499,7 +577,9 @@ class Simulateur {
             });
             actions.prepend(b);
         }
+        actions.append(this.boutonPartage());
         bloc.append(actions);
+        this.appliqueLien();
         this.demande();
     }
 
@@ -525,6 +605,12 @@ class Simulateur {
         Object.assign(curseur, { type: 'range', id, min, max, step: pas, value: defaut });
         this.valeurs[cle] = defaut;
         this.defauts.push(() => fixe(defaut));
+        this.reglages[cle] = (texte) => {
+            const v = Number(texte);
+            if (Number.isFinite(v)) {
+                fixe(Math.min(saisieMax, Math.max(min, v)));
+            }
+        };
 
         const fixe = (v) => {
             this.valeurs[cle] = v;
@@ -569,6 +655,48 @@ class Simulateur {
         return ligne;
     }
 
+    /** Réglages lus dans l'adresse (#sim=type&cle=valeur…), pour retrouver une simulation partagée. */
+    appliqueLien() {
+        const params = new URLSearchParams(window.location.hash.slice(1));
+        if (params.get('sim') !== this.type || document.querySelector(`.doc-sim--${this.type}.is-shared`)) {
+            return;
+        }
+        this.bloc?.classList.add('is-shared');
+        params.forEach((valeur, cle) => this.reglages[cle]?.(valeur));
+        if (params.has('tirage')) {
+            this.graine = Math.max(1, Number(params.get('tirage')) || 1);
+        }
+    }
+
+    /** Bouton qui copie un lien vers cette page avec les réglages en cours. */
+    boutonPartage() {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'doc-pas__btn';
+        b.textContent = 'Copier le lien de ces réglages';
+        b.addEventListener('click', async () => {
+            const params = new URLSearchParams({ sim: this.type });
+            Object.entries(this.valeurs).forEach(([cle, v]) => params.set(cle, String(v)));
+            if (this.def.relance) {
+                params.set('tirage', String(this.graine));
+            }
+            const lien = `${window.location.origin}${window.location.pathname}#${params}`;
+            history.replaceState(null, '', `#${params}`);
+            let ok = false;
+            try {
+                await navigator.clipboard.writeText(lien);
+                ok = true;
+            } catch {
+                ok = false;
+            }
+            b.textContent = ok ? 'Lien copié' : 'Lien dans la barre d\'adresse';
+            setTimeout(() => {
+                b.textContent = 'Copier le lien de ces réglages';
+            }, 2500);
+        });
+        return b;
+    }
+
     /** Groupe de boutons à choix unique : [clé, libellé, 'choix', [[valeur, texte], …], défaut]. */
     choix([cle, libelle, , options, defaut]) {
         const groupe = document.createElement('div');
@@ -604,6 +732,13 @@ class Simulateur {
             this.valeurs[cle] = defaut;
             majBoutons();
         });
+        this.reglages[cle] = (texte) => {
+            const option = options.find(([valeur]) => String(valeur) === texte);
+            if (option) {
+                this.valeurs[cle] = option[0];
+                majBoutons();
+            }
+        };
         groupe.append(titre, boutons);
         return groupe;
     }

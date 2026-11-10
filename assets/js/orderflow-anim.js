@@ -1,5 +1,5 @@
 // Animations pédagogiques d'orderflow : <div class="doc-anim doc-anim--TYPE [doc-anim-scenario--NOM]">.
-// Types : heatmap (carnet d'ordres), footprint, gex, replay (rejeu de bougies). Le contenu d'origine du bloc (texte explicatif)
+// Types : heatmap (carnet d'ordres), footprint, gex, replay (rejeu de bougies), carnet (liquidité passive / agressive). Le contenu d'origine du bloc (texte explicatif)
 // sert de repli sans JavaScript. Les scénarios sont des illustrations construites, pas des données
 // de marché réelles : chacun montre un mécanisme, avec un commentaire qui change à chaque phase.
 
@@ -75,12 +75,30 @@ const HEATMAP = {
         nom: 'Iceberg',
         prix: [[0, 12], [0.3, 21.6], [0.7, 21.8], [1, 13]],
         murs: [{ niveau: 22, cote: 'vente', taille: [[0, 0.5], [1, 0.5]], recharge: true, iceberg: true }],
+        // Iceberg tracker : pastille qui compte les recharges du niveau.
+        marqueurs: [{ t: 0.34, niveau: 22, type: 'iceberg', compteur: [[0.34, 1], [0.7, 14], [1, 14]] }],
         agression: (t) => (t < 0.72 ? { sens: 'achat', force: t > 0.3 ? 1.5 : 1 } : { sens: 'vente', force: 1 }),
         phases: [
             [0, 'Le prix monte vers un niveau où le carnet n\'affiche qu\'une petite quantité à la vente.'],
             [0.3, 'Les acheteurs frappent ce niveau à répétition avec de gros volumes : bien plus que la quantité affichée…'],
             [0.45, '…et pourtant le niveau tient : la quantité visible se reconstitue après chaque achat. C\'est un ordre iceberg, dont seule la pointe est affichée.'],
+            [0.56, 'Un « iceberg tracker » (pastille I) repère ce motif : des exécutions répétées au même prix, au-delà de la quantité affichée. Il compte les recharges pour estimer la taille cachée.'],
             [0.72, 'Les acheteurs ont dépensé leurs munitions sans passer : le prix se retourne.'],
+        ],
+    },
+    stops: {
+        nom: 'Chasse aux stops',
+        prix: [[0, 15], [0.12, 22.6], [0.2, 17.5], [0.32, 22.8], [0.42, 17.8], [0.52, 22.7], [0.57, 23.6], [0.62, 30], [0.7, 31], [0.85, 27.5], [1, 28]],
+        murs: [{ niveau: 23, cote: 'vente', taille: [[0, 1.3], [0.56, 1.3], [0.59, 0], [1, 0]] }],
+        zones: [{ bas: 23.5, haut: 26.5, t0: 0, t1: 0.6, texte: 'Stops des vendeurs (au-dessus des sommets)' }],
+        // Stop tracker : rafale d'achats au marché juste après la cassure des sommets.
+        marqueurs: [{ t: 0.6, niveau: 27.5, type: 'stop', texte: 'Rafale de stops' }],
+        agression: (t) => (t >= 0.56 && t < 0.66 ? { sens: 'achat', force: 2.6 } : t < 0.56 ? { sens: t * 20 % 2 < 1 ? 'achat' : 'vente', force: 0.7 } : { sens: 'vente', force: 0.9 }),
+        phases: [
+            [0, 'Le prix bute trois fois sous le même plafond : des sommets presque égaux.'],
+            [0.3, 'Les vendeurs à découvert placent leurs stops (des ordres d\'achat) juste au-dessus de ces sommets : une réserve de liquidité invisible dans le carnet, mais connue de tous (zone en pointillés).'],
+            [0.57, 'Le plafond cède : les premiers stops déclenchés deviennent des achats au marché, qui en déclenchent d\'autres. Un « stop tracker » repère cette rafale d\'achats agressifs en quelques secondes.'],
+            [0.7, 'La rafale passée, il n\'y a plus de stops à déclencher : le prix ralentit et revient en partie. La suite dépend de ce que font les acheteurs ensuite, pas de la cassure elle-même.'],
         ],
     },
     spoofing: {
@@ -93,6 +111,18 @@ const HEATMAP = {
             [0.1, 'Un énorme ordre de vente apparaît au-dessus du prix. Les autres participants le voient, prennent peur et vendent ou s\'écartent.'],
             [0.6, 'Le gros ordre disparaît d\'un coup, sans avoir été exécuté : il n\'était là que pour influencer.'],
             [0.64, 'Le chemin est libre : le prix monte. Le spoofing est une manipulation interdite par les régulateurs, mais il reste difficile à prouver en direct.'],
+        ],
+    },
+    'spoofing-achat': {
+        nom: 'Spoofing à l\'achat',
+        prix: [[0, 20], [0.55, 21.6], [0.62, 21], [0.75, 15], [1, 12]],
+        murs: [{ niveau: 17, cote: 'achat', taille: [[0, 0], [0.1, 3.5], [0.6, 3.5], [0.62, 0], [1, 0]] }],
+        agression: (t) => (t < 0.6 ? { sens: 'achat', force: 0.6 } : { sens: 'vente', force: 1.4 }),
+        phases: [
+            [0, 'Le prix évolue tranquillement.'],
+            [0.1, 'Un énorme ordre d\'achat apparaît sous le prix. Il rassure : les vendeurs hésitent, des acheteurs se placent juste au-dessus de lui.'],
+            [0.6, 'Le gros ordre disparaît d\'un coup sans avoir été exécuté. Celui qui l\'avait placé vendait peut-être pendant ce temps aux acheteurs rassurés.'],
+            [0.64, 'Plus de soutien : le prix chute. Le même mécanisme que le spoofing à la vente, à l\'envers.'],
         ],
     },
     cassure: {
@@ -306,6 +336,50 @@ class Heatmap {
         ctx.stroke();
         const s = HEATMAP[this.scenario];
         const t = this.i / (this.pas - 1);
+        // Zones repérées (stops) et pastilles des « trackers ».
+        ctx.font = '12px system-ui, sans-serif';
+        ctx.textBaseline = 'alphabetic';
+        (s.zones || []).forEach((z) => {
+            if (t < z.t0) {
+                return;
+            }
+            const x0 = z.t0 * (this.pas - 1) * largeurCol;
+            const x1 = Math.min(t, z.t1) * (this.pas - 1) * largeurCol;
+            const yHaut = H - (z.haut + 0.5) * hNiveau;
+            const yBas = H - (z.bas + 0.5) * hNiveau;
+            ctx.fillStyle = 'rgba(226,203,145,0.08)';
+            ctx.fillRect(x0, yHaut, x1 - x0, yBas - yHaut);
+            ctx.strokeStyle = 'rgba(226,203,145,0.7)';
+            ctx.setLineDash([4, 4]);
+            ctx.strokeRect(x0, yHaut, x1 - x0, yBas - yHaut);
+            ctx.setLineDash([]);
+            ctx.fillStyle = COULEURS.or;
+            ctx.textAlign = 'left';
+            ctx.fillText(z.texte, x0 + 6, yHaut - 5);
+        });
+        (s.marqueurs || []).forEach((m) => {
+            if (t < m.t) {
+                return;
+            }
+            const x = m.t * (this.pas - 1) * largeurCol;
+            const y = Y(m.niveau);
+            const couleur = m.type === 'iceberg' ? COULEURS.bleu : COULEURS.or;
+            ctx.beginPath();
+            ctx.arc(x, y, 9, 0, Math.PI * 2);
+            ctx.fillStyle = COULEURS.fond;
+            ctx.fill();
+            ctx.strokeStyle = couleur;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = couleur;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(m.type === 'iceberg' ? 'I' : 'S', x, y + 0.5);
+            ctx.textBaseline = 'alphabetic';
+            ctx.textAlign = x > W * 0.7 ? 'right' : 'left';
+            const texte = m.compteur ? `Iceberg : ${Math.round(cle(m.compteur, t))} recharge(s)` : m.texte;
+            ctx.fillText(texte, x + (x > W * 0.7 ? -14 : 14), y - 12);
+        });
         const phase = [...s.phases].reverse().find(([debut]) => t >= debut);
         if (phase && this.commentaire.textContent !== phase[1]) {
             this.commentaire.textContent = phase[1];
@@ -361,6 +435,39 @@ const FOOTPRINT = {
             [1, 'Deuxième bougie : sur plusieurs niveaux consécutifs, les achats à l\'ask dépassent de plus de 3 fois les ventes du niveau juste en dessous (cases surlignées). Ce sont des déséquilibres empilés : un acheteur pressé.'],
             [2, 'Le prix revient tester la zone des déséquilibres sans la casser : elle sert souvent de support pour la suite du mouvement.'],
             [3, 'La tendance reprend.'],
+        ],
+    },
+    divergence: {
+        nom: 'Delta divergent',
+        bougies: [
+            { o: 3, c: 6, niveaux: { 3: [10, 30], 4: [12, 38], 5: [14, 40], 6: [10, 28] } },
+            { o: 6, c: 8, niveaux: { 6: [18, 34], 7: [20, 36], 8: [16, 24] } },
+            { o: 8, c: 9, niveaux: { 8: [25, 30], 9: [22, 26], 10: [14, 15] } },
+            { o: 9, c: 10, niveaux: { 9: [30, 22], 10: [34, 20], 11: [26, 12] }, note: 11 },
+            { o: 10, c: 7, niveaux: { 10: [40, 10], 9: [44, 12], 8: [38, 9], 7: [30, 8] } },
+        ],
+        phases: [
+            [0, 'Une hausse avec un delta nettement positif : les acheteurs agressifs portent le mouvement.'],
+            [1, 'Le prix monte encore, mais le delta de chaque bougie diminue : +90, puis +40.'],
+            [2, 'Nouveau plus haut avec un delta presque nul (+10) : il faut de moins en moins d\'achats au marché pour monter… ou il y en a de moins en moins.'],
+            [3, 'Nouveau plus haut, et pourtant delta négatif (−36) : ce sont les vendeurs qui frappent le plus, et des vendeurs passifs absorbent les derniers acheteurs. Le prix et le delta divergent.'],
+            [4, 'Le retournement arrive. Une divergence n\'est pas un signal à elle seule : elle dit que la hausse perd son carburant.'],
+        ],
+    },
+    iceberg: {
+        nom: 'Iceberg en footprint',
+        bougies: [
+            { o: 9, c: 6, niveaux: { 9: [14, 10], 8: [28, 12], 7: [35, 14], 6: [40, 12] } },
+            { o: 6, c: 5, niveaux: { 6: [30, 14], 5: [180, 16] }, note: 5 },
+            { o: 5, c: 6, niveaux: { 6: [20, 22], 5: [195, 18], 4: [3, 1] }, note: 5 },
+            { o: 6, c: 5, niveaux: { 6: [22, 16], 5: [170, 14] }, note: 5 },
+            { o: 5, c: 8, niveaux: { 5: [10, 40], 6: [8, 45], 7: [7, 48], 8: [6, 30] } },
+        ],
+        phases: [
+            [0, 'Le marché baisse normalement : plus de ventes que d\'achats à chaque niveau.'],
+            [1, 'À ce prix, 180 lots sont vendus au marché… et le prix ne passe pas. Le carnet n\'affichait pourtant que quelques dizaines de lots à l\'achat.'],
+            [2, 'Le même niveau encaisse encore 195 lots, puis 170 : un acheteur passif recharge son ordre à mesure qu\'il est exécuté. C\'est la signature d\'un iceberg à l\'achat, que les « iceberg trackers » détectent automatiquement.'],
+            [4, 'Les vendeurs renoncent : le prix part du niveau défendu. Un iceberg montre où un gros participant veut acheter, pas jusqu\'où il le défendra.'],
         ],
     },
 };
@@ -624,6 +731,19 @@ const REPLAY = {
         reponse: 'hausse',
         explication: 'Après la cassure, le prix est revenu tester l\'ancienne résistance, qui a servi de support : les acheteurs qui avaient manqué la cassure en profitent, et ceux qui avaient vendu la résistance soldent leur position. Le retour sur le niveau offrait une entrée avec un stop proche.',
     },
+    ict: {
+        nom: 'Modèle ICT',
+        prix: [[0, 104], [0.12, 102], [0.2, 103.2], [0.3, 101.5], [0.38, 102.8], [0.44, 101.55], [0.47, 100.6], [0.5, 102], [0.56, 104.4], [0.6, 104.8], [0.68, 103.1], [0.85, 106.5], [1, 108]],
+        niveau: 101.5,
+        libelle: 'plus bas égaux : liquidité vendeuse',
+        zones: [
+            { bas: 102.7, haut: 103.5, debut: 0.56, texte: 'FVG' },
+            { bas: 103.2, haut: 103.2, debut: 0.58, texte: 'cassure de structure', ligne: true },
+        ],
+        arret: 0.68,
+        reponse: 'hausse',
+        explication: 'Les étapes du modèle : le prix passe sous les plus bas égaux et déclenche les stops des acheteurs (chasse de liquidité), repart violemment au-dessus du dernier sommet (cassure de structure), en laissant un déséquilibre (FVG). Le retour dans ce FVG est l\'entrée recherchée, stop sous le plus bas de la chasse. Le modèle échoue aussi souvent : si le prix clôture sous le FVG, l\'idée est invalidée.',
+    },
 };
 
 class Replay {
@@ -731,6 +851,34 @@ class Replay {
         ctx.lineTo(W - 10, Y(s.niveau));
         ctx.stroke();
         ctx.setLineDash([]);
+        ctx.font = '12px system-ui, sans-serif';
+        if (s.libelle) {
+            ctx.fillStyle = COULEURS.or;
+            ctx.textAlign = 'left';
+            ctx.fillText(s.libelle, 14, Y(s.niveau) + 14);
+        }
+        (s.zones || []).forEach((z) => {
+            const k0 = Math.round(z.debut * this.pas);
+            if (this.i < k0) {
+                return;
+            }
+            const x0 = 10 + k0 * largeur;
+            ctx.textAlign = 'left';
+            if (z.ligne) {
+                ctx.strokeStyle = 'rgba(185,198,230,0.7)';
+                ctx.beginPath();
+                ctx.moveTo(x0 - 8 * largeur, Y(z.haut));
+                ctx.lineTo(x0 + 2 * largeur, Y(z.haut));
+                ctx.stroke();
+                ctx.fillStyle = COULEURS.bleu;
+                ctx.fillText(z.texte, x0 - 8 * largeur, Y(z.haut) - 6);
+                return;
+            }
+            ctx.fillStyle = 'rgba(226,203,145,0.14)';
+            ctx.fillRect(x0, Y(z.haut), W - 10 - x0, Y(z.bas) - Y(z.haut));
+            ctx.fillStyle = COULEURS.or;
+            ctx.fillText(z.texte, W - 50, Y(z.haut) + 14);
+        });
         for (let k = 0; k <= this.i; k++) {
             const b = this.bougies[k];
             const x = 10 + (k + 0.5) * largeur;
@@ -764,7 +912,175 @@ class Replay {
     }
 }
 
-/** Boutons lecture/pause, recommencer et vitesse, communs aux trois animations. */
+// ── Carnet d'ordres pas à pas : liquidité passive et agressive ────────────────
+// Événements appliqués dans l'ordre : ordres limites (passifs), ordres au marché (agressifs), annulations.
+const PAS_PRIX = 0.25;
+const CARNET_DEPART = {
+    bid: { 99.75: 12, 99.5: 18, 99.25: 25, 99: 15, 98.75: 30, 98.5: 22 },
+    ask: { 100: 10, 100.25: 16, 100.5: 20, 100.75: 28, 101: 14, 101.25: 24 },
+};
+const CARNET_EVENEMENTS = [
+    { texte: 'Le carnet d\'ordres : à gauche, les acheteurs qui attendent (bid) ; à droite, les vendeurs qui attendent (ask). Ces ordres limites forment la liquidité passive : ils attendent qu\'on vienne les chercher.' },
+    { type: 'limite', cote: 'bid', prix: 99.75, taille: 20, texte: 'Un acheteur place 20 lots à 99,75 : ordre limite, passif. Rien ne s\'exécute, le carnet s\'épaissit et le prix ne bouge pas.' },
+    { type: 'marche', cote: 'achat', taille: 6, texte: 'Un acheteur pressé envoie 6 lots au marché : il prend ce qui est offert à l\'ask (100,00). Ordre agressif : exécution immédiate, il paie l\'écart. Il reste 4 lots à 100,00.' },
+    { type: 'marche', cote: 'achat', taille: 14, texte: '14 lots au marché : les 4 derniers à 100,00, puis 10 à 100,25. Le niveau 100,00 est vidé : le prix monte parce que l\'agressif a consommé plus que ce que le passif offrait.' },
+    { type: 'annule', cote: 'ask', prix: 100.5, taille: 20, texte: 'Le vendeur qui attendait 20 lots à 100,50 retire son ordre. La liquidité passive peut disparaître sans aucune transaction : le chemin vers le haut se dégage.' },
+    { type: 'limite', cote: 'ask', prix: 100.25, taille: 40, texte: 'Un gros vendeur passif place 40 lots à 100,25. Il ne fait pas baisser le prix : il le freine, en offrant beaucoup là où les acheteurs veulent acheter.' },
+    { type: 'marche', cote: 'achat', taille: 30, texte: '30 lots achetés au marché, tous absorbés à 100,25, qui ne cède pas. Beaucoup d\'agressivité, aucun mouvement : c\'est de l\'absorption.' },
+    { type: 'marche', cote: 'vente', taille: 50, texte: 'Un vendeur agressif envoie 50 lots au marché : il vide deux niveaux de bid d\'un coup (99,75 puis 99,50). Le prix chute de deux pas : c\'est un balayage.' },
+    { texte: 'À retenir : le passif décide où le prix peut s\'arrêter, l\'agressif décide quand il bouge. Le prix ne change que lorsque des ordres au marché vident un niveau, ou que la liquidité est retirée.' },
+];
+
+class Carnet {
+    constructor(bloc) {
+        this.bloc = bloc;
+        this.scenario = 'carnet';
+        this.vitesse = 1;
+        this.intervalle = 5200;
+        Heatmap.prototype.construit.call(this, [['carnet', 'Carnet']]);
+        this.bloc.querySelector('.doc-anim__title').textContent = 'Liquidité passive et agressive, ordre par ordre';
+        this.bloc.querySelector('.doc-sim__legend').textContent = 'Barres vertes : ordres d\'achat en attente ; rouges : ordres de vente en attente. À droite, le ruban des transactions (time & sales). Chiffres orange : quantité consommée ou retirée à l\'étape en cours. Exemple construit à titre d\'illustration.';
+        this.onglets.style.display = 'none';
+        const suivant = document.createElement('button');
+        suivant.type = 'button';
+        suivant.className = 'doc-pas__btn';
+        suivant.textContent = 'Étape suivante';
+        suivant.addEventListener('click', () => {
+            this.lecture = false;
+            this.majLecture();
+            this.i = Math.min(this.i + 1, this.pas - 1);
+            this.sale = true;
+        });
+        this.bloc.querySelector('.doc-anim__controls').prepend(suivant);
+        this.canvas.setAttribute('aria-label', 'Carnet d\'ordres animé : ordres limites, ordres au marché et annulations');
+        this.pas = CARNET_EVENEMENTS.length;
+        this.i = 0;
+        this.lecture = !mouvementReduit();
+        this.majLecture();
+        Heatmap.prototype.demarre.call(this);
+    }
+
+    /** État du carnet après les événements 0..i, avec ce que l'étape i a consommé. */
+    etat(i) {
+        const livre = { bid: { ...CARNET_DEPART.bid }, ask: { ...CARNET_DEPART.ask } };
+        const ruban = [];
+        let touches = {};
+        let dernier = null;
+        for (let k = 0; k <= i; k++) {
+            const e = CARNET_EVENEMENTS[k];
+            touches = {};
+            if (e.type === 'limite') {
+                livre[e.cote][e.prix] = (livre[e.cote][e.prix] || 0) + e.taille;
+                touches[`${e.cote}${e.prix}`] = `+${e.taille}`;
+            } else if (e.type === 'annule') {
+                livre[e.cote][e.prix] = Math.max(0, (livre[e.cote][e.prix] || 0) - e.taille);
+                touches[`${e.cote}${e.prix}`] = `−${e.taille}`;
+            } else if (e.type === 'marche') {
+                const cote = e.cote === 'achat' ? 'ask' : 'bid';
+                const prix = Object.keys(livre[cote]).map(Number).filter((p) => livre[cote][p] > 0)
+                    .sort((a, b) => (cote === 'ask' ? a - b : b - a));
+                let reste = e.taille;
+                for (const p of prix) {
+                    if (reste <= 0) {
+                        break;
+                    }
+                    const pris = Math.min(reste, livre[cote][p]);
+                    livre[cote][p] -= pris;
+                    reste -= pris;
+                    touches[`${cote}${p}`] = `−${pris}`;
+                    ruban.unshift({ sens: e.cote, prix: p, taille: pris, etape: k });
+                    dernier = p;
+                }
+            }
+        }
+        return { livre, ruban, touches, dernier };
+    }
+
+    dessine() {
+        const W = this.canvas.clientWidth;
+        if (!W) {
+            return;
+        }
+        const H = Math.round(Math.max(W * 0.52, 300));
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        if (this.canvas.width !== Math.round(W * dpr)) {
+            this.canvas.width = Math.round(W * dpr);
+            this.canvas.height = Math.round(H * dpr);
+            this.canvas.style.height = `${H}px`;
+        }
+        const ctx = this.canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.fillStyle = COULEURS.fond;
+        ctx.fillRect(0, 0, W, H);
+        const { livre, ruban, touches, dernier } = this.etat(this.i);
+        const niveaux = [];
+        for (let p = 101.25; p >= 98.5 - 1e-9; p -= PAS_PRIX) {
+            niveaux.push(Math.round(p * 100) / 100);
+        }
+        const largeurCarnet = W * (W < 560 ? 1 : 0.68);
+        const hLigne = (H - 30) / niveaux.length;
+        const centre = largeurCarnet / 2;
+        const lPrix = Math.min(70, largeurCarnet * 0.18);
+        const lBarre = centre - lPrix / 2 - 10;
+        const max = 50;
+        const police = Math.max(10, Math.min(13, hLigne * 0.55));
+        ctx.font = `${police}px system-ui, sans-serif`;
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = COULEURS.texte;
+        ctx.textAlign = 'center';
+        ctx.fillText('Achat (bid)', centre - lPrix / 2 - lBarre / 2, 12);
+        ctx.fillText('Vente (ask)', centre + lPrix / 2 + lBarre / 2, 12);
+        niveaux.forEach((p, k) => {
+            const y = 26 + k * hLigne;
+            const yc = y + hLigne / 2;
+            if (dernier !== null && Math.abs(p - dernier) < 1e-9) {
+                ctx.fillStyle = 'rgba(226,203,145,0.14)';
+                ctx.fillRect(4, y, largeurCarnet - 8, hLigne);
+            }
+            ctx.fillStyle = COULEURS.clair;
+            ctx.textAlign = 'center';
+            ctx.fillText(p.toFixed(2).replace('.', ','), centre, yc);
+            [['bid', -1, COULEURS.achat], ['ask', 1, COULEURS.vente]].forEach(([cote, sens, couleur]) => {
+                const q = livre[cote][p] || 0;
+                const touche = touches[`${cote}${p}`];
+                const x0 = centre + sens * (lPrix / 2 + 4);
+                const l = (Math.min(q, max) / max) * lBarre;
+                if (q > 0) {
+                    ctx.fillStyle = couleur;
+                    ctx.globalAlpha = 0.55;
+                    ctx.fillRect(sens < 0 ? x0 - l : x0, y + 2, l, hLigne - 4);
+                    ctx.globalAlpha = 1;
+                    ctx.fillStyle = COULEURS.clair;
+                    ctx.textAlign = sens < 0 ? 'right' : 'left';
+                    ctx.fillText(String(q), x0 + sens * (l + 6), yc);
+                }
+                if (touche) {
+                    ctx.fillStyle = COULEURS.or;
+                    ctx.textAlign = sens < 0 ? 'left' : 'right';
+                    ctx.fillText(touche, sens < 0 ? 8 : largeurCarnet - 8, yc);
+                }
+            });
+        });
+        if (W >= 560) {
+            const x = largeurCarnet + 16;
+            ctx.textAlign = 'left';
+            ctx.fillStyle = COULEURS.texte;
+            ctx.fillText('Transactions', x, 12);
+            ruban.slice(0, Math.floor((H - 30) / 22)).forEach((t, k) => {
+                ctx.fillStyle = t.sens === 'achat' ? COULEURS.achat : COULEURS.vente;
+                ctx.globalAlpha = t.etape === this.i ? 1 : 0.55;
+                ctx.fillText(`${t.sens === 'achat' ? 'Achat' : 'Vente'} ${t.taille} @ ${t.prix.toFixed(2).replace('.', ',')}`, x, 36 + k * 22);
+            });
+            ctx.globalAlpha = 1;
+        }
+        const texte = CARNET_EVENEMENTS[this.i].texte;
+        if (this.commentaire.textContent !== texte) {
+            this.commentaire.textContent = texte;
+        }
+    }
+}
+
+/** Boutons lecture/pause, recommencer et vitesse, communs aux animations. */
 function controles(anim) {
     const zone = document.createElement('div');
     zone.className = 'doc-anim__controls';
@@ -841,6 +1157,8 @@ export function initAnimations(racine = document) {
             new Gex(bloc);
         } else if (type === 'replay') {
             new Replay(bloc, scenario);
+        } else if (type === 'carnet') {
+            new Carnet(bloc);
         }
     });
 }
