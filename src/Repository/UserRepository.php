@@ -33,6 +33,23 @@ class UserRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    /**
+     * Comptes membres (administrateurs exclus), éventuellement limités aux accès Premium.
+     * Filtre fait en PHP : les rôles sont stockés en JSON.
+     */
+    public function countMembers(bool $premiumOnly = false): int
+    {
+        $qb = $this->createQueryBuilder('u')->select('u.roles');
+        if ($premiumOnly) {
+            $qb->where('u.isPremium = true');
+        }
+
+        return count(array_filter(
+            $qb->getQuery()->getArrayResult(),
+            static fn (array $r): bool => !in_array('ROLE_ADMIN', (array) $r['roles'], true),
+        ));
+    }
+
     /** Membres actifs depuis $since, administrateurs exclus. */
     public function countOnlineMembers(\DateTimeImmutable $since): int
     {

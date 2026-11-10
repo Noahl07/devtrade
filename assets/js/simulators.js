@@ -82,7 +82,8 @@ function trace(canvas, series, { ymin, ymax, ligneZero = null, etiquette = (v) =
 }
 
 // ── Définition des simulateurs ────────────────────────────────────────────────
-// curseurs : [clé, libellé, min, max, pas, défaut, format]
+// curseurs : [clé, libellé, min, max, pas, défaut, format, saisieMax?]
+// La valeur peut aussi être tapée (bouton sur la valeur affichée), entre min et saisieMax (par défaut max).
 const SIMULATEURS = {
     'taille-position': {
         titre: 'Calculateur de taille de position',
@@ -116,7 +117,7 @@ const SIMULATEURS = {
             ['ratio', 'Gain moyen / perte moyenne (R)', 0.5, 5, 0.1, 2, (v) => `${nf(v, 1)} R`],
             ['reussite', 'Taux de réussite', 0.1, 0.8, 0.01, 0.4, (v) => pct(v, 0)],
             ['couts', 'Coûts par trade (en R)', 0, 0.3, 0.01, 0.05, (v) => `${nf(v, 2)} R`],
-            ['trades', 'Nombre de trades', 10, 500, 10, 100, (v) => nf(v)],
+            ['trades', 'Nombre de trades', 10, 1000, 10, 100, (v) => nf(v), 5000],
         ],
         calcule: ({ ratio, reussite, couts, trades }) => {
             const esperance = reussite * ratio - (1 - reussite) - couts;
@@ -141,7 +142,7 @@ const SIMULATEURS = {
             ['reussite', 'Taux de réussite', 0.2, 0.7, 0.01, 0.4, (v) => pct(v, 0)],
             ['ratio', 'Gain moyen (R)', 0.5, 4, 0.1, 2, (v) => `${nf(v, 1)} R`],
             ['risque', 'Risque par trade', 0.0025, 0.1, 0.0025, 0.01, (v) => pct(v, 2)],
-            ['trades', 'Nombre de trades', 50, 500, 10, 200, (v) => nf(v)],
+            ['trades', 'Nombre de trades', 50, 1000, 10, 200, (v) => nf(v), 5000],
             ['seuil', 'Baisse jugée critique', 0.1, 0.6, 0.05, 0.3, (v) => pct(v, 0)],
             ['couts', 'Coûts par trade (en R)', 0, 0.3, 0.01, 0, (v) => `${nf(v, 2)} R`],
             ['mode', 'Taille du risque', 'choix', [['pct', '% du capital actuel'], ['fixe', 'montant fixe']], 'pct'],
@@ -334,7 +335,7 @@ const SIMULATEURS = {
         curseurs: [
             ['reussite', 'Taux de réussite', 0.25, 0.75, 0.01, 0.4, (v) => pct(v, 0)],
             ['ratio', 'Gain moyen (R)', 0.5, 4, 0.1, 2, (v) => `${nf(v, 1)} R`],
-            ['trades', 'Nombre de trades', 50, 500, 10, 200, (v) => nf(v)],
+            ['trades', 'Nombre de trades', 50, 1000, 10, 200, (v) => nf(v), 5000],
             ['couts', 'Coûts par trade (en R)', 0, 0.3, 0.01, 0, (v) => `${nf(v, 2)} R`],
         ],
         calcule: ({ reussite, ratio, trades, couts }, { graine, canvas }) => {
@@ -386,7 +387,7 @@ const SIMULATEURS = {
             ['reussiteB', 'Stratégie B : taux de réussite', 0.2, 0.8, 0.01, 0.35, (v) => pct(v, 0)],
             ['ratioB', 'Stratégie B : gain moyen (R)', 0.3, 4, 0.1, 2.5, (v) => `${nf(v, 1)} R`],
             ['risque', 'Risque par trade (les deux)', 0.0025, 0.05, 0.0025, 0.01, (v) => pct(v, 2)],
-            ['trades', 'Nombre de trades', 50, 500, 10, 200, (v) => nf(v)],
+            ['trades', 'Nombre de trades', 50, 1000, 10, 200, (v) => nf(v), 5000],
         ],
         calcule: ({ reussiteA, ratioA, reussiteB, ratioB, risque, trades }, { graine, canvas }) => {
             const r = aleatoire(graine);
@@ -441,6 +442,7 @@ class Simulateur {
     constructor(bloc, type, def) {
         this.def = def;
         this.valeurs = {};
+        this.defauts = [];
         this.graine = 1;
         bloc.replaceChildren();
         bloc.classList.add('is-live');
@@ -455,29 +457,7 @@ class Simulateur {
                 grille.append(this.choix(ctrl));
                 return;
             }
-            const [cle, libelle, min, max, pas, defaut, format] = ctrl;
-            const id = `sim-${type}-${cle}-${Math.random().toString(36).slice(2, 7)}`;
-            const ligne = document.createElement('div');
-            ligne.className = 'doc-sim__control';
-            const label = document.createElement('label');
-            label.htmlFor = id;
-            label.textContent = libelle;
-            const sortie = document.createElement('output');
-            sortie.htmlFor = id;
-            const curseur = document.createElement('input');
-            Object.assign(curseur, { type: 'range', id, min, max, step: pas, value: defaut });
-            this.valeurs[cle] = defaut;
-            const maj = () => {
-                this.valeurs[cle] = Number(curseur.value);
-                sortie.textContent = format(this.valeurs[cle]);
-            };
-            curseur.addEventListener('input', () => {
-                maj();
-                this.demande();
-            });
-            maj();
-            ligne.append(label, sortie, curseur);
-            grille.append(ligne);
+            grille.append(this.curseur(type, ctrl));
         });
         this.resultats = document.createElement('dl');
         this.resultats.className = 'doc-sim__results';
@@ -497,6 +477,17 @@ class Simulateur {
             l.textContent = def.legende;
             bloc.append(l);
         }
+        const actions = document.createElement('div');
+        actions.className = 'doc-sim__actions';
+        const raz = document.createElement('button');
+        raz.type = 'button';
+        raz.className = 'doc-pas__btn';
+        raz.textContent = 'Valeurs par défaut';
+        raz.addEventListener('click', () => {
+            this.defauts.forEach((f) => f());
+            this.demande();
+        });
+        actions.append(raz);
         if (def.relance) {
             const b = document.createElement('button');
             b.type = 'button';
@@ -506,9 +497,76 @@ class Simulateur {
                 this.graine += 1;
                 this.demande();
             });
-            bloc.append(b);
+            actions.prepend(b);
         }
+        bloc.append(actions);
         this.demande();
+    }
+
+    /**
+     * Curseur + valeur affichée. La valeur est un bouton : un clic ouvre un champ pour taper
+     * une valeur précise (y compris au-delà du curseur, jusqu'à saisieMax).
+     */
+    curseur(type, [cle, libelle, min, max, pas, defaut, format, saisieMax = max]) {
+        const id = `sim-${type}-${cle}-${Math.random().toString(36).slice(2, 7)}`;
+        const ligne = document.createElement('div');
+        ligne.className = 'doc-sim__control';
+        const label = document.createElement('label');
+        label.htmlFor = id;
+        label.textContent = libelle;
+        const sortie = document.createElement('button');
+        sortie.type = 'button';
+        sortie.className = 'doc-sim__value';
+        sortie.title = 'Saisir une valeur précise';
+        const champ = document.createElement('input');
+        Object.assign(champ, { type: 'number', min, max: saisieMax, step: 'any', className: 'doc-sim__input', hidden: true });
+        champ.setAttribute('aria-label', `${libelle} : valeur précise (de ${format(min)} à ${format(saisieMax)})`);
+        const curseur = document.createElement('input');
+        Object.assign(curseur, { type: 'range', id, min, max, step: pas, value: defaut });
+        this.valeurs[cle] = defaut;
+        this.defauts.push(() => fixe(defaut));
+
+        const fixe = (v) => {
+            this.valeurs[cle] = v;
+            curseur.value = String(Math.min(v, max));
+            sortie.textContent = format(v);
+            sortie.setAttribute('aria-label', `${libelle} : ${format(v)}. Modifier la valeur`);
+            this.demande();
+        };
+        const ouvre = () => {
+            champ.value = String(this.valeurs[cle]);
+            sortie.hidden = true;
+            champ.hidden = false;
+            champ.focus();
+            champ.select();
+        };
+        const ferme = (valider) => {
+            if (champ.hidden) {
+                return;
+            }
+            const v = Number(champ.value.replace(',', '.'));
+            if (valider && champ.value !== '' && Number.isFinite(v)) {
+                fixe(Math.min(saisieMax, Math.max(min, v)));
+            }
+            champ.hidden = true;
+            sortie.hidden = false;
+            sortie.focus();
+        };
+        sortie.addEventListener('click', ouvre);
+        champ.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                ferme(true);
+            } else if (e.key === 'Escape') {
+                ferme(false);
+            }
+        });
+        champ.addEventListener('blur', () => ferme(true));
+        curseur.addEventListener('input', () => fixe(Number(curseur.value)));
+        sortie.textContent = format(defaut);
+        sortie.setAttribute('aria-label', `${libelle} : ${format(defaut)}. Modifier la valeur`);
+        ligne.append(label, sortie, champ, curseur);
+        return ligne;
     }
 
     /** Groupe de boutons à choix unique : [clé, libellé, 'choix', [[valeur, texte], …], défaut]. */
@@ -542,6 +600,10 @@ class Simulateur {
             boutons.append(b);
         });
         majBoutons();
+        this.defauts.push(() => {
+            this.valeurs[cle] = defaut;
+            majBoutons();
+        });
         groupe.append(titre, boutons);
         return groupe;
     }

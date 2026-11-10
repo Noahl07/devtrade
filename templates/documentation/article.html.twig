@@ -35,6 +35,8 @@
                 </ol>
             </nav>
         {% endif %}
+
+        {% include 'documentation/_modules_nav.html.twig' with { modules: modules, current: document.category } only %}
     </aside>
 
     <article>

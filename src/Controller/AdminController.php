@@ -48,8 +48,9 @@ final class AdminController extends AbstractController
     {
         return $this->render('admin/index.html.twig', [
             'stats' => [
-                'users' => $users->count([]),
-                'premium' => $users->count(['isPremium' => true]),
+                // Administrateurs exclus des compteurs (ils restent visibles dans le tableau des comptes).
+                'users' => $users->countMembers(),
+                'premium' => $users->countMembers(premiumOnly: true),
                 'documents' => $documents->count(['isPublished' => true]),
                 'drafts' => $documents->count(['isPublished' => false]),
                 'waitlist' => $waitlist->count([]),

@@ -9,6 +9,7 @@ use App\Entity\DocumentCategory;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Entity\WaitlistEntry;
+use App\Repository\UserRepository;
 use App\Service\DocumentationBundle;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -270,6 +271,20 @@ final class AdminTest extends WebTestCase
     }
 
     // ── Import du lot de documentation ──────────────────────────────────────
+
+    public function testDashboardMemberCountExcludesAdmins(): void
+    {
+        $users = static::getContainer()->get(UserRepository::class);
+        $avant = $users->countMembers();
+        $this->user(['ROLE_ADMIN']);
+        self::assertSame($avant, $users->countMembers(), 'Un compte admin ne compte pas comme utilisateur.');
+        $this->user([]);
+        self::assertSame($avant + 1, $users->countMembers());
+
+        $this->loginAdmin();
+        $this->client->request('GET', '/admin');
+        self::assertSelectorTextContains('.admin-tile__value', (string) ($avant + 1));
+    }
 
     public function testImportShowsThePlanThenAppliesItWithoutDeletingAnything(): void
     {

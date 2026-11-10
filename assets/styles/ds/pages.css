@@ -293,6 +293,35 @@
     color: color-mix(in srgb, var(--text-2) 70%, transparent);
 }
 
+/* Volet des modules (page module et articles) */
+.modules-nav .toc a {
+    display: flex;
+    gap: var(--space-2);
+    align-items: baseline;
+}
+
+.modules-nav__index {
+    flex: none;
+    font: 500 0.7rem var(--font-mono);
+    color: var(--text-2);
+}
+
+.modules-nav__name {
+    flex: 1;
+    min-width: 0;
+}
+
+.modules-nav .icon {
+    flex: none;
+    width: 0.8em;
+    height: 0.8em;
+    opacity: 0.6;
+}
+
+.reading--module {
+    padding-top: var(--space-6);
+}
+
 .read-progress {
     position: fixed;
     top: 0;
@@ -321,6 +350,12 @@
         max-height: none;
         padding-top: var(--space-6);
         border-top: var(--hairline) solid var(--border);
+    }
+
+    /* Page module : la liste des modules se replie dans un cadre défilant pour ne pas pousser le contenu. */
+    .reading--module .reading__aside {
+        max-height: 18rem;
+        overflow-y: auto;
     }
 }
 
@@ -1366,6 +1401,33 @@ select.input {
 
 .prose .doc-sim__control label { color: var(--text-2); }
 .prose .doc-sim__control output { font-variant-numeric: tabular-nums; color: var(--text); font-weight: 600; }
+.prose .doc-sim__value {
+    justify-self: end;
+    padding: 0 var(--space-1);
+    border: 0;
+    border-bottom: 1px dashed color-mix(in srgb, var(--text-2) 60%, transparent);
+    background: none;
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--text);
+    cursor: text;
+}
+.prose .doc-sim__value:hover,
+.prose .doc-sim__value:focus-visible { border-bottom-color: var(--brand); color: var(--brand); }
+.prose .doc-sim__input {
+    justify-self: end;
+    width: 7.5rem;
+    padding: 2px var(--space-2);
+    border: 1px solid var(--brand);
+    border-radius: 6px;
+    background: var(--surface, transparent);
+    color: var(--text);
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+.prose .doc-sim__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
 .prose .doc-sim__control input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: var(--brand); }
 
 .prose .doc-sim__results {
@@ -1383,6 +1445,7 @@ select.input {
 .prose .doc-sim__chart { display: block; width: 100%; margin-top: var(--space-4); }
 .prose .doc-sim__legend { margin: var(--space-2) 0 0; font-size: var(--step--1); color: var(--text-muted); }
 .prose .doc-sim .doc-pas__btn { margin-top: var(--space-3); }
+.prose .doc-sim__actions .doc-pas__btn { margin-top: 0; }
 
 .prose .doc-sim__choice { grid-template-columns: 1fr; }
 .prose .doc-sim__choice-label { color: var(--text-2); }

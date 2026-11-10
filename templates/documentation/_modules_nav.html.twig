@@ -1,0 +1,18 @@
+{# Volet « Modules » : passer d'un module à l'autre sans repasser par l'index. #}
+{% import 'components/ui/_ui.html.twig' as ui %}
+<nav aria-label="Modules de la documentation" class="modules-nav">
+    <span class="reading__aside-title">Modules</span>
+    <ol class="toc">
+        {% for module in modules %}
+            {% set moduleLocked = module.accessLevel == 'premium' and (not app.user or not app.user.isPremium) %}
+            <li class="{{ moduleLocked ? 'is-locked' }}">
+                <a href="{{ path('app_documentation_category', { slug: module.slug }) }}"
+                   {% if current is defined and current and module.slug == current.slug %}aria-current="true"{% endif %}>
+                    <span class="modules-nav__index">{{ '%02d'|format(loop.index) }}</span>
+                    <span class="modules-nav__name">{{ module.name }}</span>
+                    {% if moduleLocked %}{{ ui.icon('lock', 'Module Premium') }}{% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

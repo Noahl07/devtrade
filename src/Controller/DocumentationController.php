@@ -66,6 +66,7 @@ class DocumentationController extends AbstractController
         return $this->render('documentation/category.html.twig', [
             'category'  => $category,
             'documents' => $documents,
+            'modules'   => $categoryRepo->findBy([], ['position' => 'ASC']),
         ]);
     }
 
@@ -76,7 +77,8 @@ class DocumentationController extends AbstractController
         string $accessLevel,
         string $slug,
         Request $request,
-        DocumentRepository $documentRepo
+        DocumentRepository $documentRepo,
+        DocumentCategoryRepository $categoryRepo
     ): Response {
 
         if ($accessLevel === 'premium') {
@@ -105,6 +107,7 @@ class DocumentationController extends AbstractController
 
         return $this->render('documentation/article.html.twig', [
             'document' => $document,
+            'modules'  => $categoryRepo->findBy([], ['position' => 'ASC']),
         ]);
     }
 }

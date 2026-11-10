@@ -25,8 +25,12 @@
     </div>
 </header>
 
-<section class="section">
-    <div class="container">
+<div class="container reading reading--module">
+    <aside class="reading__aside" aria-label="Navigation de la documentation">
+        {% include 'documentation/_modules_nav.html.twig' with { modules: modules, current: category } only %}
+    </aside>
+
+    <div>
         {% if isLocked %}
             <div class="locked-panel">
                 {{ ui.icon('lock') }}
@@ -69,6 +73,6 @@
 
         <p class="works__more">{{ ui.button('Tous les modules', path('app_documentation'), 'ghost', 'arrow-right') }}</p>
     </div>
-</section>
+</div>
 
 {% endblock %}
