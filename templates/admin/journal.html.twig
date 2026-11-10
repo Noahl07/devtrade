@@ -1,0 +1,29 @@
+{% extends 'admin/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block admin_title %}Journal{% endblock %}
+{% block admin_lead %}<p class="admin__lead">Les 200 dernières actions d'administration : qui, quoi, quand. Les paiements Stripe y apparaissent aussi.</p>{% endblock %}
+
+{% block admin_content %}
+{% if logs is empty %}
+    <p class="admin-empty">Aucune action enregistrée pour l'instant.</p>
+{% else %}
+<div class="table-wrap">
+    <table class="data-table admin-table">
+        <caption class="visually-hidden">Actions d'administration, de la plus récente à la plus ancienne</caption>
+        <thead><tr><th scope="col">Date</th><th scope="col">Action</th><th scope="col">Cible</th><th scope="col">Détails</th><th scope="col">Par</th></tr></thead>
+        <tbody>
+        {% for log in logs %}
+            <tr>
+                <td class="num">{{ log.createdAt|date('d/m/Y H:i') }}</td>
+                <th scope="row">{{ log.action }}</th>
+                <td>{{ log.target }}</td>
+                <td class="muted">{{ log.details ?: '—' }}</td>
+                <td class="admin-table__email">{{ log.actor }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

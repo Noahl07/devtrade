@@ -1,0 +1,33 @@
+{% extends 'admin/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block admin_title %}Lecture{% endblock %}
+{% block admin_lead %}<p class="admin__lead">Articles les plus ouverts par les membres connectés, part de lectures terminées (arrivée en fin d'article ou bouton « Marquer comme lu ») et score moyen au quiz (meilleur score de chaque membre).</p>{% endblock %}
+
+{% block admin_content %}
+{% if rows is empty %}
+    <p class="admin-empty">Pas encore de données : elles s'accumulent à mesure que les membres lisent.</p>
+{% else %}
+<div class="table-wrap">
+    <table class="data-table admin-table">
+        <caption class="visually-hidden">Lecture par article</caption>
+        <thead><tr><th scope="col">Article</th><th scope="col" class="num">Lecteurs</th><th scope="col" class="num">Terminé</th><th scope="col" class="num">Taux</th><th scope="col" class="num">Quiz moyen</th></tr></thead>
+        <tbody>
+        {% for r in rows %}
+            {% set taux = r.opened > 0 ? r.completed / r.opened : 0 %}
+            <tr>
+                <th scope="row">{{ r.title }}</th>
+                <td class="num">{{ r.opened }}</td>
+                <td class="num">{{ r.completed }}</td>
+                <td class="num">
+                    <span class="admin-rate{{ taux < 0.3 and r.opened >= 5 ? ' is-low' }}">{{ (taux * 100)|round }} %</span>
+                </td>
+                <td class="num">{{ r.quizAvg is not null ? (r.quizAvg * 100)|round ~ ' %' : '—' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="muted small">Un taux faible sur un article lu par au moins 5 membres est signalé : c'est souvent un article trop long ou mal découpé.</p>
+{% endif %}
+{% endblock %}

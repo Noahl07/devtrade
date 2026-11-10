@@ -15,11 +15,13 @@
 {% set sections = [
     {route: 'app_admin', match: 'app_admin', label: 'Tableau de bord', icon: 'home'},
     {route: 'app_admin_statistics', match: 'app_admin_statistics', label: 'Statistiques', icon: 'chart'},
+    {route: 'app_admin_reading', match: 'app_admin_reading', label: 'Lecture', icon: 'book'},
     {route: 'app_admin_categories', match: 'app_admin_categor', label: 'Modules', icon: 'layers'},
     {route: 'app_admin_documents', match: 'app_admin_document', label: 'Articles', icon: 'book'},
     {route: 'app_admin_projects', match: 'app_admin_project', label: 'Réalisations', icon: 'grid'},
     {route: 'app_admin_users', match: 'app_admin_user', label: 'Utilisateurs', icon: 'users'},
     {route: 'app_admin_waitlist', match: 'app_admin_waitlist', label: 'Liste d\'attente', icon: 'mail'},
+    {route: 'app_admin_journal', match: 'app_admin_journal', label: 'Journal', icon: 'clock'},
 ] %}
 <div class="admin" data-admin data-csrf="{{ csrf_token('admin_form') }}" data-preview-url="{{ path('app_admin_document_preview') }}">
     <nav class="admin__nav" aria-label="Administration">

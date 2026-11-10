@@ -245,6 +245,16 @@ app_admin_document_preview:
     controller: App\Controller\AdminController::documentPreview
     methods: [POST]
 
+app_admin_journal:
+    path: /admin/journal
+    controller: App\Controller\AdminController::journal
+    methods: [GET]
+
+app_admin_reading:
+    path: /admin/lecture
+    controller: App\Controller\AdminController::reading
+    methods: [GET]
+
 app_admin_documentation_import:
     path: /admin/documents/import
     controller: App\Controller\AdminController::documentationImport

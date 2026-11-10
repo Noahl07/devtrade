@@ -780,3 +780,6 @@ kbd {
 }
 .admin-table .badge { white-space: nowrap; }
 .admin-online .muted { flex-basis: 100%; font-size: var(--step--1); }
+
+/* Lecture : taux de lecture complète faible */
+.admin-rate.is-low { color: var(--negative); font-weight: 600; }

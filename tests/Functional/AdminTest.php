@@ -7,6 +7,7 @@ namespace App\Tests\Functional;
 use App\Entity\Document;
 use App\Entity\DocumentCategory;
 use App\Entity\Project;
+use App\Entity\ReadingProgress;
 use App\Entity\User;
 use App\Entity\WaitlistEntry;
 use App\Repository\UserRepository;
@@ -43,7 +44,7 @@ final class AdminTest extends WebTestCase
     public static function adminPages(): iterable
     {
         foreach (['/admin', '/admin/categories', '/admin/categories/nouvelle', '/admin/documents', '/admin/documents/nouveau', '/admin/documents/import',
-            '/admin/projets', '/admin/projets/nouveau', '/admin/utilisateurs', '/admin/waitlist', '/admin/statistiques', '/admin/statistiques?jours=7'] as $url) {
+            '/admin/projets', '/admin/projets/nouveau', '/admin/utilisateurs', '/admin/waitlist', '/admin/statistiques', '/admin/statistiques?jours=7', '/admin/journal', '/admin/lecture'] as $url) {
             yield $url => [$url];
         }
     }
@@ -196,6 +197,29 @@ final class AdminTest extends WebTestCase
         $kept = $this->em->find(Document::class, $documentId);
         self::assertNotNull($kept);
         self::assertNull($kept->getAuthor());
+
+        // L'action est inscrite au journal, lisible même après la suppression du compte.
+        $this->client->request('GET', '/admin/journal');
+        self::assertSelectorTextContains('.admin-table tbody', 'Compte supprimé');
+        self::assertSelectorTextContains('.admin-table tbody', 'admin-' . $this->suffix);
+    }
+
+    public function testReadingStatsShowCompletionAndQuizAverage(): void
+    {
+        $document = $this->document($this->category(), 'lu-par-deux-' . $this->suffix);
+        $a = (new ReadingProgress($this->user([]), $document))->setCompletedAt(new \DateTimeImmutable())->recordQuiz(4, 5);
+        $b = (new ReadingProgress($this->user([]), $document))->recordQuiz(2, 5);
+        $this->em->persist($a);
+        $this->em->persist($b);
+        $this->em->flush();
+
+        $this->loginAdmin();
+        $crawler = $this->client->request('GET', '/admin/lecture');
+        self::assertResponseIsSuccessful();
+        $ligne = $crawler->filter('.admin-table tbody tr')->reduce(fn ($tr) => str_contains($tr->text(), 'lu-par-deux-' . $this->suffix));
+        self::assertCount(1, $ligne);
+        self::assertStringContainsString('50 %', $ligne->text(), '1 lecture terminée sur 2.');
+        self::assertStringContainsString('60 %', $ligne->text(), 'Quiz moyen : (80 % + 40 %) / 2.');
     }
 
     public function testAdminAccountsAndOneselfCannotBeDeleted(): void

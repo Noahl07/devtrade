@@ -8,12 +8,15 @@ use App\Entity\Document;
 use App\Entity\DocumentCategory;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Repository\AdminLogRepository;
 use App\Repository\DocumentCategoryRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\PageViewRepository;
+use App\Repository\ReadingProgressRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use App\Repository\WaitlistEntryRepository;
+use App\Service\Admin\AdminLogger;
 use App\Service\Admin\ContentEditor;
 use App\Service\Admin\DocumentationImport;
 use App\Service\Admin\UserRemover;
@@ -38,8 +41,10 @@ final class AdminController extends AbstractController
 {
     private const PER_PAGE = 30;
 
-    public function __construct(private readonly ContentEditor $editor)
-    {
+    public function __construct(
+        private readonly ContentEditor $editor,
+        private readonly AdminLogger $journal,
+    ) {
     }
 
     // ── Tableau de bord ─────────────────────────────────────────────────────
@@ -126,9 +131,11 @@ final class AdminController extends AbstractController
     public function documentDelete(Document $document, Request $request, EntityManagerInterface $em): Response
     {
         $this->requireCsrf('delete-doc-' . $document->getId(), $request->request->get('_token'));
+        $titre = (string) $document->getTitle();
         $em->remove($document);
         $em->flush();
-        $this->addFlash('success', sprintf('Article « %s » supprimé.', $document->getTitle()));
+        $this->journal->log('Article supprimé', $titre);
+        $this->addFlash('success', sprintf('Article « %s » supprimé.', $titre));
 
         return $this->redirectToRoute('app_admin_documents');
     }
@@ -189,6 +196,8 @@ final class AdminController extends AbstractController
         }
         $import->forget($token);
         $request->getSession()->remove('doc_import_token');
+        $this->journal->log('Import de la documentation', 'Paquet de documentation', sprintf('%d créé(s), %d mis à jour, %d module(s) créé(s), %d déplacé(s)',
+            count($plan['articlesNew']), count($plan['articlesUpdated']), count($plan['modulesNew']), count($plan['modulesMoved'])));
         $this->addFlash('success', sprintf('Import terminé : %d article(s) créé(s), %d mis à jour, %d module(s) créé(s), %d déplacé(s). Rien n\'a été supprimé.',
             count($plan['articlesNew']), count($plan['articlesUpdated']), count($plan['modulesNew']), count($plan['modulesMoved'])));
 
@@ -227,6 +236,7 @@ final class AdminController extends AbstractController
         } else {
             $em->remove($category);
             $em->flush();
+            $this->journal->log('Module supprimé', (string) $category->getName());
             $this->addFlash('success', sprintf('Module « %s » supprimé.', $category->getName()));
         }
 
@@ -262,6 +272,7 @@ final class AdminController extends AbstractController
         $this->requireCsrf('delete-project-' . $project->getId(), $request->request->get('_token'));
         $em->remove($project);
         $em->flush();
+        $this->journal->log('Réalisation supprimée', (string) $project->getTitle());
         $this->addFlash('success', sprintf('Réalisation « %s » supprimée.', $project->getTitle()));
 
         return $this->redirectToRoute('app_admin_projects');
@@ -296,6 +307,7 @@ final class AdminController extends AbstractController
         $this->requireCsrf('delete-waitlist-' . $id, $request->request->get('_token'));
         $em->remove($entry);
         $em->flush();
+        $this->journal->log('Inscription liste d\'attente supprimée', '#' . $id);
         $this->addFlash('success', 'Inscription supprimée.');
 
         return $this->redirectToRoute('app_admin_waitlist');
@@ -320,6 +332,7 @@ final class AdminController extends AbstractController
         $this->requireCsrf('toggle-premium-' . $id, $request->request->get('_token'));
         $user->setIsPremium(!$user->isPremium());
         $em->flush();
+        $this->journal->log($user->isPremium() ? 'Accès Premium donné' : 'Accès Premium retiré', (string) $user->getEmail());
         $this->addFlash('success', sprintf('%s : accès %s.', $user->getFullName(), $user->isPremium() ? 'Premium' : 'gratuit'));
 
         return $this->redirectToRoute('app_admin_users');
@@ -338,10 +351,24 @@ final class AdminController extends AbstractController
             return $this->redirectToRoute('app_admin_users');
         }
         $name = $user->getFullName();
+        $email = (string) $user->getEmail();
         $remover->remove($user);
+        $this->journal->log('Compte supprimé', $email, $name);
         $this->addFlash('success', sprintf('Compte de %s supprimé.', $name));
 
         return $this->redirectToRoute('app_admin_users');
+    }
+
+    // ── Journal et lecture ──────────────────────────────────────────────────
+
+    public function journal(AdminLogRepository $logs): Response
+    {
+        return $this->render('admin/journal.html.twig', ['logs' => $logs->findLatest()]);
+    }
+
+    public function reading(ReadingProgressRepository $progress): Response
+    {
+        return $this->render('admin/reading.html.twig', ['rows' => $progress->statsByDocument(50)]);
     }
 
     // ── Formulaires communs ─────────────────────────────────────────────────
@@ -355,6 +382,7 @@ final class AdminController extends AbstractController
             $values = $request->request->all();
             $errors = $this->editor->saveDocument($document, $values);
             if ($errors === []) {
+                $this->journal->log('Article enregistré', (string) $document->getTitle());
                 $this->addFlash('success', sprintf('Article « %s » enregistré.', $document->getTitle()));
 
                 return $this->redirectToRoute($request->request->has('stay') ? 'app_admin_document_edit' : 'app_admin_documents', $request->request->has('stay') ? ['id' => $document->getId()] : []);
@@ -379,6 +407,7 @@ final class AdminController extends AbstractController
             $values = $request->request->all();
             $errors = $this->editor->saveCategory($category, $values);
             if ($errors === []) {
+                $this->journal->log('Module enregistré', (string) $category->getName());
                 $this->addFlash('success', sprintf('Module « %s » enregistré.', $category->getName()));
 
                 return $this->redirectToRoute('app_admin_categories');
@@ -402,6 +431,7 @@ final class AdminController extends AbstractController
             $values = $request->request->all();
             $errors = $this->editor->saveProject($project, $values);
             if ($errors === []) {
+                $this->journal->log('Réalisation enregistrée', (string) $project->getTitle());
                 $this->addFlash('success', sprintf('Réalisation « %s » enregistrée.', $project->getTitle()));
 
                 return $this->redirectToRoute('app_admin_projects');
