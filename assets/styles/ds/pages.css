@@ -1461,3 +1461,5 @@ select.input {
 .prose .doc-quiz__feedback:empty { display: none; }
 .prose .doc-quiz__result p { font-weight: 600; color: var(--text); }
 .prose .doc-quiz:not(.is-live) .is-correct { font-weight: 600; }
+
+.prose .doc-anim__speed { margin-left: auto; align-self: center; }

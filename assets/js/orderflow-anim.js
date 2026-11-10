@@ -114,6 +114,7 @@ class Heatmap {
         this.bloc = bloc;
         this.scenario = HEATMAP[scenario] ? scenario : 'absorption';
         this.vitesse = 1;
+        this.intervalle = 80;
         this.construit(Object.entries(HEATMAP).map(([k, v]) => [k, v.nom]));
         this.charge();
     }
@@ -150,7 +151,18 @@ class Heatmap {
         legende.className = 'doc-sim__legend';
         legende.textContent = 'Bandes lumineuses : ordres limites en attente (plus c\'est clair, plus il y a de volume). Ligne : dernier prix. Bulles : ordres au marché, vertes à l\'achat, rouges à la vente. Scénario construit à titre d\'illustration.';
         this.bloc.append(titre, this.onglets, this.canvas, commandes, this.commentaire, legende);
-        new ResizeObserver(() => this.dessine()).observe(this.canvas);
+        new ResizeObserver(() => {
+            this.sale = true;
+        }).observe(this.canvas);
+        // L'animation ne démarre que lorsque le lecteur arrive dessus.
+        this.visible = false;
+        if (typeof IntersectionObserver === 'function') {
+            new IntersectionObserver(([entree]) => {
+                this.visible = entree.isIntersecting;
+            }, { threshold: 0.35 }).observe(this.canvas);
+        } else {
+            this.visible = true;
+        }
     }
 
     charge() {
@@ -211,19 +223,26 @@ class Heatmap {
 
     demarre() {
         cancelAnimationFrame(this.boucle);
+        this.sale = true;
         let precedent = null;
+        let dernier = -1;
         const tic = (t) => {
-            if (this.lecture && precedent !== null && t - precedent > 55 / this.vitesse) {
+            const enMarche = this.lecture && this.visible !== false;
+            if (enMarche && precedent !== null && t - precedent > (this.intervalle || 70) / this.vitesse) {
                 this.i = Math.min(this.i + 1, this.pas - 1);
                 precedent = t;
                 if (this.i === this.pas - 1) {
                     this.lecture = false;
                     this.majLecture();
                 }
-            } else if (precedent === null) {
+            } else if (!enMarche || precedent === null) {
                 precedent = t;
             }
-            this.dessine();
+            if (this.i !== dernier || this.sale) {
+                dernier = this.i;
+                this.sale = false;
+                this.dessine();
+            }
             this.boucle = requestAnimationFrame(tic);
         };
         this.boucle = requestAnimationFrame(tic);
@@ -351,6 +370,7 @@ class Footprint {
         this.bloc = bloc;
         this.scenario = FOOTPRINT[scenario] ? scenario : 'absorption';
         this.vitesse = 1;
+        this.intervalle = 450;
         Heatmap.prototype.construit.call(this, Object.entries(FOOTPRINT).map(([k, v]) => [k, v.nom]));
         this.bloc.querySelector('.doc-anim__title').textContent = 'Footprint animé';
         this.bloc.querySelector('.doc-sim__legend').textContent = 'Chaque case : volume vendu au bid × volume acheté à l\'ask à ce prix. Cases surlignées : déséquilibre (un côté plus de 3 fois l\'autre, en diagonale). Sous chaque bougie : le delta (achats − ventes). Scénario construit à titre d\'illustration.';
@@ -469,6 +489,7 @@ class Gex {
         this.bloc = bloc;
         this.scenario = 'comparaison';
         this.vitesse = 1;
+        this.intervalle = 60;
         this.graine = 3;
         Heatmap.prototype.construit.call(this, [['comparaison', 'Mêmes chocs, deux régimes']]);
         this.bloc.querySelector('.doc-anim__title').textContent = 'Gamma des teneurs de marché : freiner ou amplifier';
@@ -610,6 +631,7 @@ class Replay {
         this.bloc = bloc;
         this.scenario = REPLAY[scenario] ? scenario : 'cassure';
         this.vitesse = 1;
+        this.intervalle = 420;
         Heatmap.prototype.construit.call(this, Object.entries(REPLAY).map(([k, v]) => [k, v.nom]));
         this.bloc.querySelector('.doc-anim__title').textContent = 'Rejeu : que va faire le prix ?';
         this.bloc.querySelector('.doc-sim__legend').textContent = 'Les bougies défilent une à une et s\'arrêtent au moment de décider. Choisissez, puis découvrez la suite. Scénarios construits à titre d\'illustration : dans la réalité, aucune figure ne réussit à tous les coups.';
@@ -670,6 +692,7 @@ class Replay {
                 this.question.replaceChildren();
                 this.verdict = `${cleRep === s.reponse ? 'Bien vu.' : 'Pas cette fois.'} ${s.explication}`;
                 this.lecture = true;
+                this.sale = true;
                 this.majLecture();
             });
             this.question.append(b);
@@ -771,15 +794,34 @@ function controles(anim) {
         anim.lecture = true;
         anim.majLecture();
     });
-    const vitesse = document.createElement('button');
-    vitesse.type = 'button';
-    vitesse.className = 'doc-pas__btn';
-    vitesse.textContent = 'Vitesse ×1';
-    vitesse.addEventListener('click', () => {
-        anim.vitesse = anim.vitesse === 1 ? 2 : anim.vitesse === 2 ? 0.5 : 1;
-        vitesse.textContent = `Vitesse ×${String(anim.vitesse).replace('.', ',')}`;
+    // Vitesse : trois choix explicites plutôt qu'un bouton qui change de valeur à chaque clic.
+    const vitesses = document.createElement('div');
+    vitesses.className = 'doc-sim__choice-options doc-anim__speed';
+    vitesses.setAttribute('role', 'radiogroup');
+    vitesses.setAttribute('aria-label', 'Vitesse de l\'animation');
+    [[0.5, 'Lent'], [1, 'Normal'], [2, 'Rapide']].forEach(([valeur, texte]) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('role', 'radio');
+        b.textContent = texte;
+        const maj = () => {
+            vitesses.querySelectorAll('button').forEach((x) => {
+                x.classList.remove('is-active');
+                x.setAttribute('aria-checked', 'false');
+            });
+            b.classList.add('is-active');
+            b.setAttribute('aria-checked', 'true');
+        };
+        b.addEventListener('click', () => {
+            anim.vitesse = valeur;
+            maj();
+        });
+        if (valeur === 1) {
+            maj();
+        }
+        vitesses.append(b);
     });
-    zone.append(lecture, debut, vitesse);
+    zone.append(lecture, debut, vitesses);
     return zone;
 }
 
