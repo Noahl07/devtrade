@@ -1,8 +1,10 @@
 # config/services.yaml
 
 parameters:
-    # Adresse d'expédition : doit être un expéditeur validé chez Brevo.
-    app.mail_from: 'contact@devtrade.fr'
+    # Adresse d'expédition (variable MAILER_FROM). Avec l'API Gmail, ce doit être l'adresse du compte Gmail
+    # ou un alias validé dans Gmail ; sinon Gmail la remplace par celle du compte.
+    app.mail_from_default: 'contact@devtrade.fr'
+    app.mail_from: '%env(default:app.mail_from_default:MAILER_FROM)%'
     # Destinataire des messages du formulaire de contact : variable Railway CONTACT_RECIPIENT
     # (jamais d'adresse personnelle dans ce dépôt public). À défaut, l'adresse du domaine.
     app.contact_recipient_default: 'contact@devtrade.fr'
@@ -44,11 +46,19 @@ services:
         arguments:
             $priceLabel: '%app.premium_price_label%'
 
+    # Envoi par l'API Gmail (MAILER_DSN=gmail+api://default)
+    App\Mailer\GmailApiTransportFactory:
+        arguments:
+            $clientId: '%env(default::GMAIL_CLIENT_ID)%'
+            $clientSecret: '%env(default::GMAIL_CLIENT_SECRET)%'
+            $refreshToken: '%env(default::GMAIL_REFRESH_TOKEN)%'
+        tags: ['mailer.transport_factory']
+
     App\Service\ContactMessenger:
         arguments:
             $sender: '%app.mail_from%'
             $recipient: '%app.contact_recipient%'
-            $publicAddress: '%app.mail_from%'
+            $publicAddress: 'contact@devtrade.fr'
 
 # Tests : valeurs factices (aucun appel réel à Stripe, les tests signent eux-mêmes leurs webhooks).
 when@test:

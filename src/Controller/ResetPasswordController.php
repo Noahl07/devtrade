@@ -59,7 +59,7 @@ class ResetPasswordController extends AbstractController
 
                     try {
                         $mail = (new Email())
-                            ->from('contact@devtrade.fr')
+                            ->from((string) $this->getParameter('app.mail_from'))
                             ->to($user->getEmail())
                             ->subject('[dev.trade] Réinitialisation de votre mot de passe')
                             ->html(
