@@ -21,12 +21,20 @@
                 <li><strong>{{ moduleCount }}</strong><span>Modules</span></li>
                 <li><strong>{{ totalMinutes }}</strong><span>Minutes de lecture</span></li>
             </ul>
+            {% include 'documentation/_search_form.html.twig' with { id: 'hero' } only %}
         </div>
 
         <div class="member-card">
             {% if app.user %}
                 <span class="eyebrow">Votre accès</span>
                 <strong>{{ app.user.firstName }} {{ app.user.lastName }}</strong>
+                {% if resume %}
+                    <a class="resume-card" href="{{ path('app_documentation_article', { accessLevel: resume.accessLevel, slug: resume.slug }) }}">
+                        <span class="resume-card__label">Reprendre la lecture</span>
+                        <span class="resume-card__title">{{ resume.title }}</span>
+                        {% if resume.category %}<span class="resume-card__module">{{ resume.category.name }}</span>{% endif %}
+                    </a>
+                {% endif %}
                 {% if app.user.isPremium %}
                     <p>Accès Premium : tous les modules vous sont ouverts.</p>
                     {{ ui.badge('Premium', 'demo') }}
@@ -71,7 +79,17 @@
                             </h3>
                             {% if category.description %}<p class="module-list__desc">{{ category.description }}</p>{% endif %}
                         </div>
-                        <span class="module-list__meta">{{ count > 0 ? count ~ ' article' ~ (count > 1 ? 's') : 'Bientôt' }}</span>
+                        <span class="module-list__meta">
+                            {% set mp = progress[category.slug] ?? null %}
+                            {% if mp and mp.total > 0 and not isLocked %}
+                                <span class="module-progress module-progress--compact" title="{{ mp.done }} / {{ mp.total }} articles terminés">
+                                    <progress class="module-progress__bar" max="{{ mp.total }}" value="{{ mp.done }}"></progress>
+                                    <span class="num">{{ mp.done }}/{{ mp.total }}</span>
+                                </span>
+                            {% else %}
+                                {{ count > 0 ? count ~ ' article' ~ (count > 1 ? 's') : 'Bientôt' }}
+                            {% endif %}
+                        </span>
                         <span class="module-list__meta">
                             {% if isLocked %}{{ ui.icon('lock', 'Module Premium, accès verrouillé') }}{% endif %}
                             {{ ui.badge(isPremium ? 'Premium' : 'Gratuit', isPremium ? 'demo' : 'backtest') }}

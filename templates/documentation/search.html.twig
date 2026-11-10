@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block title %}{{ terms ? 'Recherche : ' ~ terms : 'Recherche' }} · Documentation{% endblock %}
+{% block meta_description %}Rechercher un sujet dans la documentation trading de dev.trade.{% endblock %}
+{% block meta_robots %}noindex, follow{% endblock %}
+
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<header class="page-hero">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="{{ path('app_documentation') }}">Documentation</a></li>
+            <li aria-current="page">Recherche</li>
+        </ol>
+        <span class="eyebrow">Recherche</span>
+        <h1>{{ terms ? '« ' ~ terms ~ ' »' : 'Rechercher un sujet' }}</h1>
+        {% include 'documentation/_search_form.html.twig' with { terms: terms, id: 'page' } only %}
+    </div>
+</header>
+
+<div class="container reading reading--module">
+    <aside class="reading__aside" aria-label="Navigation de la documentation">
+        {% include 'documentation/_modules_nav.html.twig' with { modules: modules } only %}
+    </aside>
+
+    <div>
+        {% if terms|length < 2 %}
+            <p class="muted">Tapez au moins deux caractères : un concept (order block, delta, VaR), un indicateur, un régime fiscal…</p>
+        {% elseif results is empty %}
+            <div class="works-empty"><p>Aucun article ne correspond à « {{ terms }} ». Essayez un terme plus court ou sans accent.</p></div>
+        {% else %}
+            <p class="muted">{{ results|length }} article{{ results|length > 1 ? 's' }}{{ results|length >= 40 ? ' (les 40 premiers)' }}</p>
+            <ol class="editorial-list module-list">
+                {% for document in results %}
+                    {% set docLocked = document.isPremium() and (not app.user or not app.user.isPremium) %}
+                    <li class="editorial-list__item{{ docLocked ? ' is-locked' }}">
+                        <span class="editorial-list__index">{{ '%02d'|format(loop.index) }}</span>
+                        <div>
+                            {% if document.category %}<span class="search-result__module">{{ document.category.name }}</span>{% endif %}
+                            <h3 class="editorial-list__title">
+                                <a href="{{ path('app_documentation_article', { accessLevel: document.accessLevel, slug: document.slug }) }}">{{ document.title }}</a>
+                            </h3>
+                            {% if document.excerpt %}<p class="module-list__desc">{{ document.excerpt }}</p>{% endif %}
+                        </div>
+                        <span class="module-list__meta">{% if document.readingTime %}{{ ui.icon('clock') }} {{ document.readingTime }} min{% endif %}</span>
+                        <span class="module-list__meta">
+                            {% if docLocked %}{{ ui.icon('lock', 'Article Premium, accès verrouillé') }}{% endif %}
+                            {{ ui.badge(document.isPremium() ? 'Premium' : 'Gratuit', document.isPremium() ? 'demo' : 'backtest') }}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ol>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

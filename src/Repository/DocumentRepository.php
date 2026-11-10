@@ -40,19 +40,6 @@ class DocumentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Recherche fulltext dans titre + extrait
-    public function search(string $query): array
-    {
-        return $this->createQueryBuilder('d')
-            ->where('d.isPublished = true')
-            ->andWhere('LOWER(d.title) LIKE :q OR LOWER(d.excerpt) LIKE :q')
-            ->setParameter('q', '%' . strtolower($query) . '%')
-            ->orderBy('d.title', 'ASC')
-            ->setMaxResults(20)
-            ->getQuery()
-            ->getResult();
-    }
-
     // Articles liés (même catégorie, sauf l'article courant)
     public function findRelated(Document $document, int $limit = 3): array
     {
@@ -85,6 +72,33 @@ class DocumentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->orderBy('d.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Recherche plein texte simple (titre, résumé, contenu), titres d'abord.
+     * Sans accès Premium, le contenu des articles Premium n'est pas fouillé : seuls leur titre et leur résumé,
+     * déjà publics dans les listes, peuvent correspondre.
+     *
+     * @return list<Document>
+     */
+    public function search(string $terms, bool $premium, int $limit = 40): array
+    {
+        $like = '%' . addcslashes(mb_strtolower($terms), '%_\\') . '%';
+
+        return $this->createQueryBuilder('d')
+            ->addSelect('CASE WHEN LOWER(d.title) LIKE :q THEN 0 WHEN LOWER(d.excerpt) LIKE :q THEN 1 ELSE 2 END AS HIDDEN pertinence')
+            ->leftJoin('d.category', 'c')
+            ->where('d.isPublished = true')
+            ->andWhere('LOWER(d.title) LIKE :q OR LOWER(d.excerpt) LIKE :q OR (LOWER(d.content) LIKE :q AND (d.accessLevel = :free OR :premium = true))')
+            ->setParameter('q', $like)
+            ->setParameter('free', 'free')
+            ->setParameter('premium', $premium)
+            ->orderBy('pertinence', 'ASC')
+            ->addOrderBy('c.position', 'ASC')
+            ->addOrderBy('d.position', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

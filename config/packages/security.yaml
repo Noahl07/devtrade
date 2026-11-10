@@ -55,6 +55,8 @@ security:
 
         - { path: ^/documentation$, roles: PUBLIC_ACCESS }
         - { path: ^/documentation/categorie, roles: PUBLIC_ACCESS }
+        - { path: ^/documentation/recherche, roles: PUBLIC_ACCESS }
+        - { path: ^/documentation/progression, roles: ROLE_USER }
 
         # Articles gratuits : inscription obligatoire
         - { path: ^/documentation/article/free, roles: ROLE_USER }

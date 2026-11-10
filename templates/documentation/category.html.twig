@@ -27,6 +27,7 @@
 
 <div class="container reading reading--module">
     <aside class="reading__aside" aria-label="Navigation de la documentation">
+        {% include 'documentation/_search_form.html.twig' with { id: 'aside' } only %}
         {% include 'documentation/_modules_nav.html.twig' with { modules: modules, current: category } only %}
     </aside>
 
@@ -50,11 +51,19 @@
         {% elseif documents is empty %}
             <div class="works-empty"><p>Les articles de ce module arrivent bientôt.</p></div>
         {% else %}
+            {% if app.user %}
+                {% set done = documents|filter(d => progress[d.id] is defined and progress[d.id].completed)|length %}
+                <div class="module-progress" role="group" aria-label="Votre avancement dans ce module">
+                    <progress class="module-progress__bar" max="{{ documents|length }}" value="{{ done }}"></progress>
+                    <p>{{ done }} / {{ documents|length }} article{{ documents|length > 1 ? 's' }} terminé{{ done > 1 ? 's' }}</p>
+                </div>
+            {% endif %}
             <ol class="editorial-list module-list">
                 {% for document in documents %}
                     {% set docLocked = document.isPremium() and (not app.user or not app.user.isPremium) %}
-                    <li class="editorial-list__item{{ docLocked ? ' is-locked' }}" data-reveal>
-                        <span class="editorial-list__index">{{ '%02d'|format(loop.index) }}</span>
+                    {% set docProgress = progress[document.id] ?? null %}
+                    <li class="editorial-list__item{{ docLocked ? ' is-locked' }}{{ docProgress and docProgress.completed ? ' is-done' }}" data-reveal>
+                        <span class="editorial-list__index">{% if docProgress and docProgress.completed %}{{ ui.icon('check', 'Article terminé') }}{% else %}{{ '%02d'|format(loop.index) }}{% endif %}</span>
                         <div>
                             <h3 class="editorial-list__title">
                                 <a href="{{ path('app_documentation_article', { accessLevel: document.accessLevel, slug: document.slug }) }}">{{ document.title }}</a>
@@ -63,6 +72,8 @@
                         </div>
                         <span class="module-list__meta">{% if document.readingTime %}{{ ui.icon('clock') }} {{ document.readingTime }} min{% endif %}</span>
                         <span class="module-list__meta">
+                            {% if docProgress and docProgress.quizTotal %}<span class="module-list__quiz" title="Meilleur score au quiz">Quiz {{ docProgress.quizScore }}/{{ docProgress.quizTotal }}</span>{% endif %}
+                            {% if docProgress and not docProgress.completed %}<span class="module-list__started">Commencé</span>{% endif %}
                             {% if docLocked %}{{ ui.icon('lock', 'Article Premium, accès verrouillé') }}{% endif %}
                             {% if document.isPremium() %}{{ ui.badge('Premium', 'demo') }}{% endif %}
                         </span>

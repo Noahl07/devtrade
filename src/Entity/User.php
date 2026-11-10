@@ -41,6 +41,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripeCustomerId = null;
 
+    /** Abonnement Stripe actif qui donne l'accès Premium (null si l'accès a été donné à la main). */
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $stripeSubscriptionId = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -109,6 +113,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getStripeCustomerId(): ?string { return $this->stripeCustomerId; }
     public function setStripeCustomerId(?string $v): static { $this->stripeCustomerId = $v; return $this; }
+    public function getStripeSubscriptionId(): ?string { return $this->stripeSubscriptionId; }
+    public function setStripeSubscriptionId(?string $v): static { $this->stripeSubscriptionId = $v; return $this; }
 
     public function getCreatedAt(): ?\DateTimeImmutable { return $this->createdAt; }
     public function setCreatedAt(\DateTimeImmutable $v): static { $this->createdAt = $v; return $this; }

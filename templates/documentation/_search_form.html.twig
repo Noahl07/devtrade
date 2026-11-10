@@ -1,0 +1,8 @@
+{# Champ de recherche de la documentation (GET, sans JavaScript). #}
+{% import 'components/ui/_ui.html.twig' as ui %}
+<form class="doc-search" role="search" action="{{ path('app_documentation_search') }}" method="get">
+    <label class="visually-hidden" for="doc-search-{{ id|default('main') }}">Rechercher dans la documentation</label>
+    <input id="doc-search-{{ id|default('main') }}" type="search" name="q" value="{{ terms|default('') }}"
+           placeholder="Rechercher : FVG, delta, Kelly…" minlength="2" maxlength="80" autocomplete="off">
+    <button type="submit" aria-label="Lancer la recherche">{{ ui.icon('search') }}</button>
+</form>

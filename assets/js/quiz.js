@@ -25,6 +25,7 @@ class Quiz {
         this.bloc.classList.add('is-live');
         this.score = 0;
         this.repondues = 0;
+        this.manquees = [];
         const titre = document.createElement('p');
         titre.className = 'doc-quiz__title';
         titre.textContent = `Quiz : ${this.questions.length} questions`;
@@ -63,6 +64,9 @@ class Quiz {
                     }
                     this.score += o.juste ? 1 : 0;
                     this.repondues += 1;
+                    if (!o.juste) {
+                        this.manquees.push({ numero: i + 1, q });
+                    }
                     retour.textContent = `${o.juste ? 'Exact.' : 'Non.'} ${q.explication}`;
                     retour.classList.toggle('is-right', o.juste);
                     this.bilan();
@@ -90,12 +94,34 @@ class Quiz {
                 : 'Relisez l\'article, puis réessayez.';
         const texte = document.createElement('p');
         texte.textContent = `Score : ${this.score} / ${n}. ${message}`;
+        const elements = [texte];
+        // Récapitulatif : les points à revoir, avec la bonne réponse et son explication.
+        if (this.manquees.length) {
+            const titre = document.createElement('p');
+            titre.className = 'doc-quiz__recap-title';
+            titre.textContent = 'À revoir';
+            const liste = document.createElement('ul');
+            liste.className = 'doc-quiz__recap';
+            this.manquees.forEach(({ numero, q }) => {
+                const li = document.createElement('li');
+                const enonce = document.createElement('strong');
+                enonce.textContent = `${numero}. ${q.enonce}`;
+                const reponse = document.createElement('span');
+                reponse.textContent = ` Réponse : ${q.options.find((o) => o.juste).texte}. ${q.explication}`;
+                li.append(enonce, reponse);
+                liste.append(li);
+            });
+            elements.push(titre, liste);
+        }
         const recommencer = document.createElement('button');
         recommencer.type = 'button';
         recommencer.className = 'doc-pas__btn';
         recommencer.textContent = 'Recommencer le quiz';
         recommencer.addEventListener('click', () => this.construit());
-        this.resultat.replaceChildren(texte, recommencer);
+        elements.push(recommencer);
+        this.resultat.replaceChildren(...elements);
+        // L'article enregistre le meilleur score (membres connectés).
+        this.bloc.dispatchEvent(new CustomEvent('doc-quiz:termine', { bubbles: true, detail: { score: this.score, total: n } }));
     }
 }
 

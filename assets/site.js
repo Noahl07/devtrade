@@ -104,19 +104,78 @@ if (readingBody) {
         headings.forEach((h) => spy.observe(h));
     }
 
-    const bar = document.querySelector('[data-read-progress]');
-    if (bar) {
-        let frame = 0;
-        const update = () => {
-            const rect = readingBody.getBoundingClientRect();
-            const total = rect.height - window.innerHeight * 0.6;
-            const progress = Math.min(1, Math.max(0, -rect.top / Math.max(total, 1)));
-            bar.style.transform = `scaleX(${progress})`;
-            frame = 0;
-        };
-        window.addEventListener('scroll', () => { frame ||= requestAnimationFrame(update); }, { passive: true });
-        update();
+    // Progression de lecture (membres connectés) : envoi au serveur sans recharger la page.
+    const progressUrl = readingBody.dataset.progressUrl;
+    const progressForm = document.querySelector('[data-progress-form]');
+    let done = readingBody.dataset.progressDone === '1';
+    const sendProgress = async (fields) => {
+        const body = new FormData();
+        body.append('_token', readingBody.dataset.progressToken);
+        Object.entries(fields).forEach(([k, v]) => body.append(k, String(v)));
+        try {
+            const r = await fetch(progressUrl, { method: 'POST', body, headers: { Accept: 'application/json' }, credentials: 'same-origin' });
+            return r.ok ? r.json() : null;
+        } catch {
+            return null;
+        }
+    };
+    const showDone = (state) => {
+        done = state.completed;
+        if (!progressForm) {
+            return;
+        }
+        progressForm.querySelector('[name="action"]').value = done ? 'non-lu' : 'lu';
+        progressForm.querySelector('[data-progress-toggle]').textContent = done ? 'Marquer comme non lu' : 'Marquer comme lu';
+        const etat = progressForm.querySelector('[data-progress-state]');
+        etat.textContent = done ? 'Article terminé.' : 'L\'article est marqué comme lu quand vous arrivez à la fin.';
+        if (state.quizTotal) {
+            const q = document.createElement('span');
+            q.className = 'article-done__quiz';
+            q.textContent = `Meilleur score au quiz : ${state.quizScore} / ${state.quizTotal}`;
+            etat.append(' ', q);
+        }
+        document.querySelector('.toc [aria-current="true"]')?.closest('li')?.classList.toggle('is-done', done);
+    };
+    if (progressUrl && progressForm) {
+        progressForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const state = await sendProgress({ action: progressForm.querySelector('[name="action"]').value });
+            if (state) {
+                showDone(state);
+            } else {
+                progressForm.submit();
+            }
+        });
+        document.addEventListener('doc-quiz:termine', async (event) => {
+            const state = await sendProgress({ action: 'quiz', score: event.detail.score, total: event.detail.total });
+            if (state) {
+                showDone(state);
+            }
+        });
     }
+    let autoSent = false;
+    const markIfFinished = (progress) => {
+        // Seulement après un vrai défilement : un article court ne doit pas être « lu » dès l'ouverture.
+        if (progressUrl && !done && !autoSent && progress >= 0.97 && window.scrollY > 300) {
+            autoSent = true;
+            sendProgress({ action: 'lu' }).then((state) => state && showDone(state));
+        }
+    };
+
+    const bar = document.querySelector('[data-read-progress]');
+    let frame = 0;
+    const update = () => {
+        const rect = readingBody.getBoundingClientRect();
+        const total = rect.height - window.innerHeight * 0.6;
+        const progress = Math.min(1, Math.max(0, -rect.top / Math.max(total, 1)));
+        if (bar) {
+            bar.style.transform = `scaleX(${progress})`;
+        }
+        markIfFinished(progress);
+        frame = 0;
+    };
+    window.addEventListener('scroll', () => { frame ||= requestAnimationFrame(update); }, { passive: true });
+    update();
 }
 
 // ── Révélations au défilement (discrètes, coupées si mouvement réduit) ─────

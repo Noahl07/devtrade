@@ -14,6 +14,7 @@
 
 <div class="container reading">
     <aside class="reading__aside" aria-label="Navigation de la documentation">
+        {% include 'documentation/_search_form.html.twig' with { id: 'aside' } only %}
         <nav data-toc-wrap hidden aria-label="Sur cette page">
             <span class="reading__aside-title">Sur cette page</span>
             <ol class="toc" data-toc></ol>
@@ -25,10 +26,11 @@
                 <ol class="toc">
                     {% for sibling in document.category.documents|filter(d => d.isPublished) %}
                         {% set siblingLocked = sibling.isPremium() and (not app.user or not app.user.isPremium) %}
-                        <li class="{{ siblingLocked ? 'is-locked' }}">
+                        {% set siblingDone = progress[sibling.id] is defined and progress[sibling.id].completed %}
+                        <li class="{{ siblingLocked ? 'is-locked' }}{{ siblingDone ? ' is-done' }}">
                             <a href="{{ path('app_documentation_article', { accessLevel: sibling.accessLevel, slug: sibling.slug }) }}"
                                {% if sibling.slug == document.slug %}aria-current="true"{% endif %}>
-                                {{ sibling.title }}{% if siblingLocked %} <span class="visually-hidden">(Premium)</span>{% endif %}
+                                {{ sibling.title }}{% if siblingLocked %} <span class="visually-hidden">(Premium)</span>{% endif %}{% if siblingDone %} <span class="visually-hidden">(lu)</span>{% endif %}
                             </a>
                         </li>
                     {% endfor %}
@@ -56,9 +58,25 @@
             {% if document.excerpt %}<p class="lead">{{ document.excerpt }}</p>{% endif %}
         </header>
 
-        <div class="prose" data-reading-body>
+        <div class="prose" data-reading-body
+             {% if current %}data-progress-url="{{ path('app_documentation_progress', { id: document.id }) }}"
+             data-progress-token="{{ csrf_token('progress') }}"
+             data-progress-done="{{ current.completed ? '1' : '0' }}"{% endif %}>
             {{ document.content|sanitize_html }}
         </div>
+
+        {% if current %}
+            <form class="article-done" method="post" action="{{ path('app_documentation_progress', { id: document.id }) }}" data-progress-form>
+                <input type="hidden" name="_token" value="{{ csrf_token('progress') }}">
+                <input type="hidden" name="action" value="{{ current.completed ? 'non-lu' : 'lu' }}">
+                <p class="article-done__state" data-progress-state>
+                    {% if current.completed %}{{ ui.icon('check') }} Article terminé le {{ current.completedAt|date('d/m/Y') }}.
+                    {% else %}L'article est marqué comme lu quand vous arrivez à la fin.{% endif %}
+                    {% if current.quizTotal %}<span class="article-done__quiz">Meilleur score au quiz : {{ current.quizScore }} / {{ current.quizTotal }}</span>{% endif %}
+                </p>
+                <button type="submit" class="button button--ghost" data-progress-toggle>{{ current.completed ? 'Marquer comme non lu' : 'Marquer comme lu' }}</button>
+            </form>
+        {% endif %}
 
         <footer class="article-foot">
             {% if document.category %}
