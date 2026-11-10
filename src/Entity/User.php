@@ -47,6 +47,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $confirmedAt = null;
 
+    /** Dernière activité (mise à jour au plus une fois par minute) : sert à afficher les membres en ligne. */
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastSeenAt = null;
+
     // ── Reset password ──
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $resetToken = null;
@@ -108,6 +112,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCreatedAt(): ?\DateTimeImmutable { return $this->createdAt; }
     public function setCreatedAt(\DateTimeImmutable $v): static { $this->createdAt = $v; return $this; }
+
+    public function getLastSeenAt(): ?\DateTimeImmutable { return $this->lastSeenAt; }
+    public function setLastSeenAt(?\DateTimeImmutable $v): static { $this->lastSeenAt = $v; return $this; }
+
+    /** En ligne : activité dans les cinq dernières minutes. */
+    public function isOnline(?\DateTimeImmutable $now = null): bool
+    {
+        return $this->lastSeenAt !== null && $this->lastSeenAt > ($now ?? new \DateTimeImmutable())->modify('-5 minutes');
+    }
 
     public function getConfirmedAt(): ?\DateTimeImmutable { return $this->confirmedAt; }
     public function setConfirmedAt(?\DateTimeImmutable $v): static { $this->confirmedAt = $v; return $this; }

@@ -5,19 +5,26 @@
 {% block admin_lead %}<p class="admin__lead">{{ users|length }} compte{{ users|length > 1 ? 's' }}. L'accès Premium se donne ou se retire ici, après paiement ou à la demande. La suppression d'un compte est définitive ; les comptes administrateurs et le vôtre ne peuvent pas être supprimés ici.</p>{% endblock %}
 
 {% block admin_content %}
+<p class="admin-online" aria-live="polite">
+    <span class="admin-online__dot{{ online_members + online_visitors > 0 ? ' is-active' }}" aria-hidden="true"></span>
+    {{ ui.badge(online_members ~ ' membre' ~ (online_members > 1 ? 's') ~ ' en ligne', online_members > 0 ? 'live' : 'backtest') }}
+    {{ ui.badge(online_visitors ~ ' visiteur' ~ (online_visitors > 1 ? 's') ~ ' actif' ~ (online_visitors > 1 ? 's'), 'backtest') }}
+    <span class="muted">sur les 5 dernières minutes, administrateurs exclus. Visiteurs : pages vues, connectés ou non, hors refus de suivi.</span>
+</p>
 {% if users is empty %}
     <p class="admin-empty">Aucun compte.</p>
 {% else %}
 <div class="table-wrap">
     <table class="data-table admin-table">
         <caption class="visually-hidden">Comptes, du plus récent au plus ancien</caption>
-        <thead><tr><th scope="col">Nom</th><th scope="col">E-mail</th><th scope="col">Inscription</th><th scope="col">Rôle</th><th scope="col">Accès</th><th scope="col"><span class="visually-hidden">Supprimer</span></th></tr></thead>
+        <thead><tr><th scope="col">Nom</th><th scope="col">E-mail</th><th scope="col">Inscription</th><th scope="col">Activité</th><th scope="col">Rôle</th><th scope="col">Accès</th><th scope="col"><span class="visually-hidden">Supprimer</span></th></tr></thead>
         <tbody>
         {% for user in users %}
             <tr>
                 <th scope="row">{{ user.fullName }}</th>
                 <td class="admin-table__email">{{ user.email }}</td>
                 <td class="num">{{ user.createdAt|date('d/m/Y') }}</td>
+                <td>{% if user.online %}{{ ui.badge('En ligne', 'live') }}{% elseif user.lastSeenAt %}<span class="muted">{{ user.lastSeenAt|date('d/m/Y H:i') }}</span>{% else %}<span class="muted">—</span>{% endif %}</td>
                 <td>{% if 'ROLE_ADMIN' in user.roles %}{{ ui.badge('Admin', 'demo') }}{% else %}<span class="muted">Membre</span>{% endif %}</td>
                 <td>
                     <form method="post" action="{{ path('app_admin_user_toggle_premium', {id: user.id}) }}" class="admin-switch-form"

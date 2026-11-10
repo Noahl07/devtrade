@@ -239,6 +239,36 @@ final class AdminTest extends WebTestCase
         self::assertNotNull($this->em->find(User::class, $member->getId()));
     }
 
+    // ── Présence ────────────────────────────────────────────────────────────
+
+    public function testMemberActivityIsRecordedAndOnlineCountExcludesAdmins(): void
+    {
+        $member = $this->user([]);
+        $memberId = $member->getId();
+        $this->client->loginUser($member);
+        $this->client->request('GET', '/compte');
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+        $seen = $em->find(User::class, $memberId)->getLastSeenAt();
+        self::assertNotNull($seen, 'la visite doit enregistrer la dernière activité');
+
+        $repository = static::getContainer()->get(\App\Repository\UserRepository::class);
+        $since = new \DateTimeImmutable('-5 minutes');
+        $before = $repository->countOnlineMembers($since);
+        $admin = $this->user(['ROLE_ADMIN']);
+        $em->find(User::class, $admin->getId())->setLastSeenAt(new \DateTimeImmutable());
+        $em->flush();
+        self::assertSame($before, $repository->countOnlineMembers($since), 'un administrateur actif ne compte pas');
+
+        $this->client->loginUser($em->find(User::class, $admin->getId()));
+        $crawler = $this->client->request('GET', '/admin/utilisateurs');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('.admin-online');
+        $row = $crawler->filter('tr')->reduce(fn ($tr) => str_contains($tr->text(), $member->getEmail()));
+        self::assertStringContainsString('En ligne', $row->text());
+    }
+
     // ── Import du lot de documentation ──────────────────────────────────────
 
     public function testImportShowsThePlanThenAppliesItWithoutDeletingAnything(): void

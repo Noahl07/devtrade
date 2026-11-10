@@ -748,3 +748,35 @@ kbd {
 .admin-bars__value { text-align: right; color: var(--text-2); }
 
 .admin-note { margin-top: var(--space-4); font-size: 0.8rem; color: var(--text-2); }
+
+/* Présence : membres et visiteurs actifs sur les cinq dernières minutes. */
+.admin-online {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-4);
+}
+
+.admin-online__dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--text-2);
+}
+
+.admin-online__dot.is-active {
+    background: var(--positive);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--positive) 60%, transparent);
+    animation: admin-pulse 2s ease-out infinite;
+}
+
+@keyframes admin-pulse {
+    to { box-shadow: 0 0 0 0.5rem transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-online__dot.is-active { animation: none; }
+}
+.admin-table .badge { white-space: nowrap; }
+.admin-online .muted { flex-basis: 100%; font-size: var(--step--1); }

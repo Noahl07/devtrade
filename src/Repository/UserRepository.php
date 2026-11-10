@@ -16,6 +16,35 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * Enregistre l'activité d'un compte, au plus une fois par minute (requête directe, sans flush global).
+     */
+    public function touchLastSeen(int $id, \DateTimeImmutable $now): void
+    {
+        $this->createQueryBuilder('u')
+            ->update()
+            ->set('u.lastSeenAt', ':now')
+            ->where('u.id = :id')
+            ->andWhere('u.lastSeenAt IS NULL OR u.lastSeenAt < :seuil')
+            ->setParameter('now', $now)
+            ->setParameter('id', $id)
+            ->setParameter('seuil', $now->modify('-1 minute'))
+            ->getQuery()
+            ->execute();
+    }
+
+    /** Membres actifs depuis $since, administrateurs exclus. */
+    public function countOnlineMembers(\DateTimeImmutable $since): int
+    {
+        $actifs = $this->createQueryBuilder('u')
+            ->where('u.lastSeenAt >= :since')
+            ->setParameter('since', $since)
+            ->getQuery()
+            ->getResult();
+
+        return count(array_filter($actifs, static fn (User $u): bool => !in_array('ROLE_ADMIN', $u->getRoles(), true)));
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

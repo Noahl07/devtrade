@@ -18,6 +18,17 @@ class PageViewRepository extends ServiceEntityRepository
         parent::__construct($registry, PageView::class);
     }
 
+    /** Visiteurs distincts (identifiant anonyme du jour) ayant vu une page depuis $since. */
+    public function countVisitorsSince(\DateTimeImmutable $since): int
+    {
+        return (int) $this->createQueryBuilder('v')
+            ->select('COUNT(DISTINCT v.visitor)')
+            ->where('v.viewedAt >= :since')
+            ->setParameter('since', $since)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     /** Supprime les vues plus anciennes que la date donnée ; renvoie le nombre de lignes supprimées. */
     public function purgeBefore(\DateTimeImmutable $limit): int
     {

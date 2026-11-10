@@ -10,6 +10,7 @@ use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\DocumentCategoryRepository;
 use App\Repository\DocumentRepository;
+use App\Repository\PageViewRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use App\Repository\WaitlistEntryRepository;
@@ -301,10 +302,14 @@ final class AdminController extends AbstractController
 
     // ── Utilisateurs ────────────────────────────────────────────────────────
 
-    public function users(UserRepository $users): Response
+    public function users(UserRepository $users, PageViewRepository $views): Response
     {
+        $depuis = new \DateTimeImmutable('-5 minutes');
+
         return $this->render('admin/users/index.html.twig', [
             'users' => $users->findBy([], ['createdAt' => 'DESC']),
+            'online_members' => $users->countOnlineMembers($depuis),
+            'online_visitors' => $views->countVisitorsSince($depuis),
         ]);
     }
 
