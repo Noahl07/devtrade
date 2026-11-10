@@ -4,6 +4,13 @@ framework:
     trusted_proxies: '127.0.0.1,REMOTE_ADDR'
     trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-port', 'x-forwarded-proto', 'x-forwarded-prefix']
 
+    # Délais courts pour les appels sortants (dont l'API Brevo) : un service lent ne doit pas
+    # bloquer un worker PHP pendant des minutes.
+    http_client:
+        default_options:
+            timeout: 8
+            max_duration: 15
+
     session:
         handler_id: null
         cookie_secure: auto

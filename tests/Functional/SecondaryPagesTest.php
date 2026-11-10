@@ -89,6 +89,9 @@ final class SecondaryPagesTest extends WebTestCase
         $email = self::getMailerMessage();
         self::assertNotNull($email);
         self::assertEmailAddressContains($email, 'Reply-To', 'jeanne@exemple.fr');
+        // L'expéditeur reste l'adresse du domaine (validée chez Brevo), le destinataire vient de la configuration.
+        self::assertEmailAddressContains($email, 'From', 'contact@devtrade.fr');
+        self::assertEmailAddressContains($email, 'To', (string) static::getContainer()->getParameter('app.contact_recipient'));
         self::assertSelectorTextContains('.contact__success', 'Message envoyé');
     }
 

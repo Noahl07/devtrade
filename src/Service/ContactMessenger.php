@@ -26,7 +26,9 @@ final class ContactMessenger
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $logger,
+        private readonly string $sender = 'contact@devtrade.fr',
         private readonly string $recipient = 'contact@devtrade.fr',
+        private readonly string $publicAddress = 'contact@devtrade.fr',
     ) {
     }
 
@@ -49,7 +51,7 @@ final class ContactMessenger
         }
 
         $mail = (new Email())
-            ->from($this->recipient)
+            ->from($this->sender)
             ->replyTo($email)
             ->to($this->recipient)
             ->subject('[dev.trade] ' . ($subject !== '' ? $subject : 'Nouveau message de ' . $name))
@@ -57,12 +59,12 @@ final class ContactMessenger
 
         try {
             $this->mailer->send($mail);
-        } catch (TransportExceptionInterface|HandlerFailedException $e) {
+        } catch (TransportExceptionInterface|HandlerFailedException|\RuntimeException $e) {
             // HandlerFailedException : envoi passé par Messenger (transport synchrone) qui a échoué.
             // Journalisé sans le contenu du message (données personnelles).
             $this->logger->error('Échec d\'envoi du formulaire de contact', ['exception' => $e::class]);
 
-            return "L'envoi a échoué. Réessayez dans un instant ou écrivez directement à {$this->recipient}.";
+            return "L'envoi a échoué. Réessayez dans un instant ou écrivez directement à {$this->publicAddress}.";
         }
 
         return null;

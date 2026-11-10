@@ -1,6 +1,11 @@
 # config/services.yaml
 
 parameters:
+    # Adresse d'expédition : doit être un expéditeur validé chez Brevo.
+    app.mail_from: 'contact@devtrade.fr'
+    # Destinataire des messages du formulaire de contact (surchargeable par la variable CONTACT_RECIPIENT).
+    app.contact_recipient_default: 'contact@devtrade.fr'
+    app.contact_recipient: '%env(default:app.contact_recipient_default:CONTACT_RECIPIENT)%'
 
 services:
     _defaults:
@@ -21,3 +26,9 @@ services:
             $defaultLocale: '%kernel.default_locale%'
         tags:
             - { name: kernel.event_subscriber }
+
+    App\Service\ContactMessenger:
+        arguments:
+            $sender: '%app.mail_from%'
+            $recipient: '%app.contact_recipient%'
+            $publicAddress: '%app.mail_from%'
