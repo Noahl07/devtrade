@@ -29,3 +29,9 @@ yarn-error.log
 ###> devtrade : articles Premium (dépôt public) ###
 /content/premium/
 ###< devtrade ###
+
+# Dumps et archives locales : jamais dans le dépôt (données personnelles)
+/DOC/*.sql
+/zip.zip
+/zip/
+*.sql
