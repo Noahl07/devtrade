@@ -1701,3 +1701,22 @@ select.input {
     opacity: 1;
     visibility: visible;
 }
+
+/* Animations « terminal » (Bookmap, carte du gamma) : fond sombre et tuiles de synthèse */
+.prose .doc-anim--sombre .doc-anim__canvas { box-shadow: 0 0 0 1px rgba(80, 110, 200, 0.25), 0 12px 40px rgba(10, 20, 60, 0.45); }
+.prose .doc-anim__tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+}
+.prose .doc-anim__tiles div {
+    padding: var(--space-2) var(--space-3);
+    border: var(--hairline) solid var(--border);
+    border-radius: var(--radius-md);
+    background: #0e1224;
+}
+.prose .doc-anim__tiles dt { margin: 0; font: 500 0.66rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-2); }
+.prose .doc-anim__tiles dd { margin: 2px 0 0; font: 600 1.05rem var(--font-mono); color: #f2c94c; font-variant-numeric: tabular-nums; }
+.prose .doc-anim__tiles dd.is-positive { color: #3ecf8e; }
+.prose .doc-anim__tiles dd.is-negative { color: #eb5757; }

@@ -1,5 +1,6 @@
 // Animations pédagogiques d'orderflow : <div class="doc-anim doc-anim--TYPE [doc-anim-scenario--NOM]">.
-// Types : heatmap (carnet d'ordres), footprint, gex, replay (rejeu de bougies), carnet (liquidité passive / agressive). Le contenu d'origine du bloc (texte explicatif)
+// Types : heatmap (carnet d'ordres), footprint, gex, replay (rejeu de bougies), carnet (liquidité passive / agressive),
+// bookmap (heatmap du carnet et points d'agression), gex-carte (gamma par strike et dans le temps). Le contenu d'origine du bloc (texte explicatif)
 // sert de repli sans JavaScript. Les scénarios sont des illustrations construites, pas des données
 // de marché réelles : chacun montre un mécanisme, avec un commentaire qui change à chaque phase.
 
@@ -1080,6 +1081,497 @@ class Carnet {
     }
 }
 
+// ── Heatmap façon Bookmap : liquidité passive (lignes) et agressive (points) ───
+// Chaque ordre limite est une ligne horizontale qui dure tant qu'il attend ; elle s'arrête quand le prix
+// le consomme. Les ordres au marché sont des points (vert achat, rouge vente) dont la taille suit le volume.
+const BM_NIVEAUX = 64;
+const BOOKMAP = {
+    passif: {
+        nom: 'Liquidité passive',
+        prix: [[0, 30], [0.22, 25], [0.32, 23.4], [0.62, 23.3], [0.72, 27], [1, 31]],
+        murs: [
+            { niveau: 22, cote: 'bid', taille: 1, debut: 0.08, fin: 1, tient: true },
+            { niveau: 36, cote: 'ask', taille: 0.75, debut: 0, fin: 1 },
+        ],
+        agression: (t) => (t < 0.2 ? { sens: 'mixte', force: 0.7 } : t < 0.62 ? { sens: 'vente', force: t > 0.3 ? 1.9 : 1.1 } : { sens: 'achat', force: 1.2 }),
+        phases: [
+            [0, 'Lecture type Bookmap : chaque ligne horizontale est un ordre limite qui attend (liquidité passive), plus claire quand le volume est gros. Les points sont les ordres au marché (liquidité agressive) : verts à l\'achat, rouges à la vente, plus gros quand le volume est gros.'],
+            [0.12, 'Un gros acheteur passif s\'installe sous le prix (ligne jaune). Il ne fait rien bouger : il attend qu\'on vienne lui vendre.'],
+            [0.3, 'Les vendeurs agressifs arrivent sur lui : gros points rouges, barres rouges en bas. Ils consomment… mais la ligne jaune ne disparaît pas. Le passif encaisse tout.'],
+            [0.62, 'Les vendeurs s\'arrêtent, les achats reprennent et le prix repart. C\'est le passif qui a décidé où le prix s\'arrêtait. Si la ligne avait disparu avant d\'être touchée, c\'était peut-être un leurre (spoofing).'],
+        ],
+    },
+    agressif: {
+        nom: 'Liquidité agressive',
+        prix: [[0, 22], [0.3, 23.6], [0.38, 24.2], [0.56, 35], [0.7, 37], [1, 36]],
+        murs: [
+            { niveau: 27, cote: 'ask', taille: 0.6, debut: 0, fin: 1 },
+            { niveau: 30, cote: 'ask', taille: 0.8, debut: 0.05, fin: 1 },
+            { niveau: 33, cote: 'ask', taille: 0.65, debut: 0.12, fin: 1 },
+            { niveau: 19, cote: 'bid', taille: 0.55, debut: 0, fin: 1 },
+        ],
+        agression: (t) => (t >= 0.37 && t < 0.58 ? { sens: 'achat', force: 2.6 } : { sens: 'mixte', force: 0.75 }),
+        phases: [
+            [0, 'Lecture type Bookmap : lignes = ordres limites qui attendent (liquidité passive) ; points = ordres au marché (liquidité agressive), verts à l\'achat, rouges à la vente.'],
+            [0.18, 'Au-dessus du prix, plusieurs couches de vendeurs passifs (lignes au-dessus de la courbe). Tant que personne ne les attaque, le prix reste en place.'],
+            [0.37, 'Des acheteurs agressifs frappent en rafale : gros points verts, barres vertes en bas. Chaque couche de vendeurs est consommée : sa ligne s\'arrête net à l\'instant où le prix la traverse.'],
+            [0.6, 'L\'agressif a déplacé le prix tant qu\'il consommait plus que ce que le passif offrait. Les rafales cessent : le prix se stabilise sous la couche suivante.'],
+        ],
+    },
+};
+
+/** Couleur d'intensité (bleu nuit → bleu → cyan → jaune), comme sur les heatmaps de carnet. */
+function teinteBookmap(v) {
+    const arrets = [[0, [12, 22, 48]], [0.35, [30, 90, 200]], [0.7, [70, 200, 230]], [1, [245, 232, 120]]];
+    for (let k = 1; k < arrets.length; k++) {
+        if (v <= arrets[k][0]) {
+            const [a0, c0] = arrets[k - 1];
+            const [a1, c1] = arrets[k];
+            const f = (v - a0) / (a1 - a0);
+            return c0.map((x, j) => Math.round(x + (c1[j] - x) * f));
+        }
+    }
+    return arrets[arrets.length - 1][1];
+}
+
+class Bookmap {
+    constructor(bloc, scenario) {
+        this.bloc = bloc;
+        this.scenario = BOOKMAP[scenario] ? scenario : 'passif';
+        this.vitesse = 1;
+        this.intervalle = 75;
+        Heatmap.prototype.construit.call(this, Object.entries(BOOKMAP).map(([k, v]) => [k, v.nom]));
+        this.bloc.classList.add('doc-anim--sombre');
+        this.bloc.querySelector('.doc-anim__title').textContent = 'Heatmap du carnet et ordres agressifs';
+        this.bloc.querySelector('.doc-sim__legend').textContent = 'Lignes : ordres limites en attente (bleu = peu, jaune = beaucoup). Courbe blanche : dernier prix. Points : ordres au marché (vert achat, rouge vente). À droite : profondeur du carnet à l\'instant présent (rouge : vendeurs, bleu : acheteurs). En bas : volume agressif par instant. Scénario construit à titre d\'illustration.';
+        this.charge();
+    }
+
+    charge() {
+        const s = BOOKMAP[this.scenario];
+        this.onglets.querySelectorAll('button').forEach((b) => {
+            const actif = b.dataset.cle === this.scenario;
+            b.classList.toggle('is-active', actif);
+            b.setAttribute('aria-selected', String(actif));
+        });
+        this.canvas.setAttribute('aria-label', `Heatmap du carnet façon Bookmap : ${s.nom}`);
+        const r = aleatoire(this.scenario.length * 211 + 5);
+        const pas = 240;
+        this.pas = pas;
+        this.prix = [];
+        let bruit = 0;
+        for (let i = 0; i < pas; i++) {
+            const t = i / (pas - 1);
+            bruit = bruit * 0.85 + r.gauss() * 0.22;
+            let p = cle(s.prix, t) + bruit;
+            s.murs.filter((m) => m.tient && t >= m.debut).forEach((m) => {
+                p = m.cote === 'bid' ? Math.max(p, m.niveau + 0.7) : Math.min(p, m.niveau - 0.7);
+            });
+            this.prix.push(p);
+        }
+        // Ordres limites : [niveau, côté, taille, début, fin].
+        const ordres = [];
+        for (let i = 0; i < pas; i += 2) {
+            for (let k = 0; k < 2; k++) {
+                const ecart = Math.round(2 + r.u() * 18);
+                const cote = r.u() < 0.5 ? 'ask' : 'bid';
+                const niveau = Math.round(this.prix[i]) + (cote === 'ask' ? ecart : -ecart);
+                if (niveau < 1 || niveau >= BM_NIVEAUX - 1) {
+                    continue;
+                }
+                const gros = r.u() < 0.03;
+                ordres.push({ niveau, cote, taille: gros ? 0.3 + r.u() * 0.15 : 0.04 + r.u() * 0.1, debut: i, fin: Math.min(pas, i + 20 + Math.floor(r.u() * (gros ? 200 : 110))) });
+            }
+        }
+        s.murs.forEach((m) => ordres.push({ niveau: m.niveau, cote: m.cote, taille: m.taille, debut: Math.round(m.debut * (pas - 1)), fin: Math.round(m.fin * pas), tient: m.tient }));
+        // Un ordre disparaît quand le prix le traverse (consommé), sauf un mur qui tient.
+        ordres.forEach((o) => {
+            if (o.tient) {
+                return;
+            }
+            for (let i = o.debut; i < o.fin; i++) {
+                if ((o.cote === 'ask' && this.prix[i] >= o.niveau) || (o.cote === 'bid' && this.prix[i] <= o.niveau)) {
+                    o.fin = i;
+                    break;
+                }
+            }
+        });
+        this.grille = Array.from({ length: pas }, () => new Float32Array(BM_NIVEAUX));
+        this.cote = Array.from({ length: pas }, () => new Int8Array(BM_NIVEAUX));
+        ordres.forEach((o) => {
+            for (let i = o.debut; i < o.fin; i++) {
+                this.grille[i][o.niveau] = Math.min(1, this.grille[i][o.niveau] + o.taille);
+                this.cote[i][o.niveau] = o.cote === 'ask' ? 1 : -1;
+            }
+        });
+        // Image de toute la séquence (une colonne par instant), dessinée ensuite par morceaux.
+        this.image = document.createElement('canvas');
+        this.image.width = pas;
+        this.image.height = BM_NIVEAUX;
+        const ctx = this.image.getContext('2d');
+        const px = ctx.createImageData(pas, BM_NIVEAUX);
+        for (let i = 0; i < pas; i++) {
+            for (let n = 0; n < BM_NIVEAUX; n++) {
+                const v = Math.min(1, this.grille[i][n] * 1.15);
+                const [R, G, B] = teinteBookmap(v);
+                const o = ((BM_NIVEAUX - 1 - n) * pas + i) * 4;
+                px.data[o] = R;
+                px.data[o + 1] = G;
+                px.data[o + 2] = B;
+                px.data[o + 3] = 255;
+            }
+        }
+        ctx.putImageData(px, 0, 0);
+        this.agressions = [];
+        for (let i = 0; i < pas; i++) {
+            const t = i / (pas - 1);
+            const a = s.agression(t);
+            const achat = a.sens === 'achat' ? r.u() < 0.85 : a.sens === 'vente' ? r.u() < 0.15 : r.u() < 0.5;
+            const volume = r.u() < 0.5 * Math.min(1.6, a.force) ? a.force * (0.3 + r.u() ** 2 * 1.2) : 0;
+            this.agressions.push({ achat, volume });
+        }
+        this.i = 0;
+        this.lecture = !mouvementReduit();
+        this.majLecture?.();
+        if (!this.lecture) {
+            this.i = pas - 1;
+        }
+        Heatmap.prototype.demarre.call(this);
+    }
+
+    dessine() {
+        const W = this.canvas.clientWidth;
+        if (!W) {
+            return;
+        }
+        const H = Math.round(W * 0.6);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        if (this.canvas.width !== Math.round(W * dpr)) {
+            this.canvas.width = Math.round(W * dpr);
+            this.canvas.height = Math.round(H * dpr);
+            this.canvas.style.height = `${H}px`;
+        }
+        const s = BOOKMAP[this.scenario];
+        const ctx = this.canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.fillStyle = '#0a1226';
+        ctx.fillRect(0, 0, W, H);
+        const lProfil = Math.max(46, W * 0.12);
+        const lCarte = W - lProfil - 6;
+        const hBas = Math.round(H * 0.18);
+        const hCarte = H - hBas - 8;
+        const lCol = lCarte / this.pas;
+        const hNiv = hCarte / BM_NIVEAUX;
+        const Y = (n) => hCarte - (n + 0.5) * hNiv;
+        // Heatmap jusqu'à l'instant présent (lissage : effet de lueur des lignes).
+        ctx.imageSmoothingEnabled = true;
+        const fin = this.i + 1;
+        ctx.drawImage(this.image, 0, 0, fin, BM_NIVEAUX, 0, 0, fin * lCol, hCarte);
+        // Courbe du prix.
+        ctx.strokeStyle = 'rgba(255,255,255,0.92)';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let c = 0; c <= this.i; c++) {
+            const x = (c + 0.5) * lCol;
+            if (c === 0) {
+                ctx.moveTo(x, Y(this.prix[c]));
+            } else {
+                ctx.lineTo(x, Y(this.prix[c]));
+            }
+        }
+        ctx.stroke();
+        // Points des ordres agressifs.
+        for (let c = 0; c <= this.i; c++) {
+            const a = this.agressions[c];
+            if (!a.volume) {
+                continue;
+            }
+            const rayon = 2 + a.volume * hNiv * 0.9;
+            ctx.beginPath();
+            ctx.arc((c + 0.5) * lCol, Y(this.prix[c]), rayon, 0, Math.PI * 2);
+            ctx.fillStyle = a.achat ? 'rgba(46,190,96,0.85)' : 'rgba(232,64,58,0.85)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+        // Profondeur du carnet à l'instant présent.
+        const x0 = lCarte + 6;
+        ctx.fillStyle = '#0d1630';
+        ctx.fillRect(x0, 0, lProfil, hCarte);
+        const col = this.grille[this.i];
+        const p = this.prix[this.i];
+        for (let n = 0; n < BM_NIVEAUX; n++) {
+            if (col[n] < 0.04) {
+                continue;
+            }
+            ctx.fillStyle = n > p ? '#d8433a' : '#2f6fe0';
+            ctx.fillRect(x0, Y(n) - hNiv * 0.42, Math.min(1, col[n]) * (lProfil - 4), hNiv * 0.84);
+        }
+        // Volume agressif par instant (barres vertes vers le haut, rouges vers le bas).
+        const yMilieu = hCarte + 8 + hBas / 2;
+        ctx.strokeStyle = 'rgba(168,179,174,0.25)';
+        ctx.beginPath();
+        ctx.moveTo(0, yMilieu);
+        ctx.lineTo(lCarte, yMilieu);
+        ctx.stroke();
+        for (let c = 0; c <= this.i; c++) {
+            const a = this.agressions[c];
+            if (!a.volume) {
+                continue;
+            }
+            const h = Math.min(hBas / 2 - 2, a.volume * hBas * 0.22);
+            ctx.fillStyle = a.achat ? '#2ebe60' : '#e8403a';
+            ctx.fillRect(c * lCol, a.achat ? yMilieu - h : yMilieu, Math.max(1, lCol * 0.8), h);
+        }
+        ctx.fillStyle = 'rgba(168,179,174,0.8)';
+        ctx.font = '11px system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('achats / ventes agressifs', 6, hCarte + 20);
+        const t = this.i / (this.pas - 1);
+        const phase = [...s.phases].reverse().find(([debut]) => t >= debut);
+        if (phase && this.commentaire.textContent !== phase[1]) {
+            this.commentaire.textContent = phase[1];
+        }
+    }
+}
+
+// ── Carte du gamma des teneurs de marché (strike × temps) ────────────────────
+// Profil calculé avec le gamma de Black-Scholes sur des positions ouvertes fictives : appels concentrés
+// en haut (mur des calls), puts en bas (mur des puts). Convention usuelle : gamma des calls compté
+// positif, celui des puts négatif pour les teneurs de marché.
+const GEX_STRIKES = Array.from({ length: 31 }, (_, k) => 5650 + k * 10);
+const GEX_SCENARIOS = {
+    aimant: {
+        nom: 'Gamma positif : le prix est tenu',
+        prix: [[0, 5795], [0.15, 5818], [0.3, 5786], [0.45, 5822], [0.6, 5792], [0.8, 5815], [1, 5805]],
+        phases: [
+            [0, 'Au-dessus du niveau de bascule (zero gamma), les teneurs de marché sont globalement en gamma positif : ils vendent quand le prix monte et achètent quand il baisse.'],
+            [0.3, 'Résultat : le prix oscille dans un couloir étroit. Les bandes lumineuses montrent où le gamma est concentré : le mur des calls au-dessus joue souvent le rôle de plafond.'],
+            [0.7, 'Les barres à droite donnent le gamma net par strike à l\'instant présent : bleu positif, rouge négatif. Plus elles sont longues, plus les couvertures pèsent sur le prix à ce niveau.'],
+        ],
+    },
+    bascule: {
+        nom: 'Passage sous zero gamma',
+        prix: [[0, 5800], [0.25, 5785], [0.4, 5768], [0.5, 5752], [0.62, 5728], [0.75, 5712], [0.85, 5722], [1, 5706]],
+        phases: [
+            [0, 'Le prix part au-dessus du niveau de bascule : régime calme, couvertures contre le mouvement.'],
+            [0.42, 'Il passe sous le zero gamma : les teneurs de marché sont maintenant en gamma négatif. Ils doivent vendre quand le prix baisse, ce qui accélère la baisse et élargit les oscillations.'],
+            [0.72, 'Le mouvement ralentit près du mur des puts, où le gamma est le plus concentré. Ces niveaux sont des zones de réaction probables, pas des murs infranchissables : ils bougent chaque jour avec les positions.'],
+        ],
+    },
+};
+
+function gammaBS(S, K, sigma, T) {
+    const d1 = (Math.log(S / K) + 0.5 * sigma * sigma * T) / (sigma * Math.sqrt(T));
+    return Math.exp(-0.5 * d1 * d1) / (Math.sqrt(2 * Math.PI) * S * sigma * Math.sqrt(T));
+}
+
+function profilGex(S) {
+    // Échéance très courte (type 0DTE) : le gamma est concentré près des strikes.
+    const sigma = 0.16;
+    const T = 1 / 365;
+    return GEX_STRIKES.map((K) => {
+        const calls = 18 * Math.exp(-(((K - 5850) / 28) ** 2)) + 6 * Math.exp(-(((K - 5800) / 50) ** 2));
+        const puts = 20 * Math.exp(-(((K - 5700) / 26) ** 2)) + 7 * Math.exp(-(((K - 5750) / 45) ** 2));
+        // Gamma en dollars pour 1 % de mouvement : OI × Γ × S² × 0,01.
+        return (calls - puts) * gammaBS(S, K, sigma, T) * S * S * 0.01;
+    });
+}
+
+class GexCarte {
+    constructor(bloc, scenario) {
+        this.bloc = bloc;
+        this.scenario = GEX_SCENARIOS[scenario] ? scenario : 'aimant';
+        this.vitesse = 1;
+        this.intervalle = 70;
+        Heatmap.prototype.construit.call(this, Object.entries(GEX_SCENARIOS).map(([k, v]) => [k, v.nom]));
+        this.bloc.classList.add('doc-anim--sombre');
+        this.bloc.querySelector('.doc-anim__title').textContent = 'Carte du gamma des teneurs de marché (strike × temps)';
+        this.bloc.querySelector('.doc-sim__legend').textContent = 'Fond : concentration du gamma par strike au fil de la séance (plus c\'est lumineux, plus il est fort). Courbe : prix. À droite : gamma net par strike (bleu positif, rouge négatif). Positions fictives, gamma calculé avec Black-Scholes ; illustration, pas des données de marché.';
+        // Niveau de bascule : prix où le gamma net total change de signe.
+        let zero = null;
+        let precedent = null;
+        for (let S = 5650; S <= 5950; S += 1) {
+            const total = profilGex(S).reduce((a, b) => a + b, 0);
+            if (precedent !== null && Math.sign(total) !== Math.sign(precedent)) {
+                zero = S;
+            }
+            precedent = total;
+        }
+        this.zero = zero ?? 5760;
+        const ref = profilGex(5800);
+        this.murCalls = GEX_STRIKES[ref.indexOf(Math.max(...ref))];
+        this.murPuts = GEX_STRIKES[ref.indexOf(Math.min(...ref))];
+        this.tuiles = document.createElement('dl');
+        this.tuiles.className = 'doc-anim__tiles';
+        this.canvas.after(this.tuiles);
+        this.charge();
+    }
+
+    charge() {
+        const s = GEX_SCENARIOS[this.scenario];
+        this.onglets.querySelectorAll('button').forEach((b) => {
+            const actif = b.dataset.cle === this.scenario;
+            b.classList.toggle('is-active', actif);
+            b.setAttribute('aria-selected', String(actif));
+        });
+        this.canvas.setAttribute('aria-label', `Carte du gamma des teneurs de marché : ${s.nom}`);
+        const r = aleatoire(this.scenario.length * 389 + 3);
+        const pas = 220;
+        this.pas = pas;
+        this.prix = [];
+        this.profils = [];
+        let ecart = 0;
+        for (let i = 0; i < pas; i++) {
+            const t = i / (pas - 1);
+            const base = cle(s.prix, t);
+            // Bruit plus fort sous le niveau de bascule (gamma négatif).
+            const amplitude = base + ecart < this.zero ? 4.2 : 1.6;
+            ecart = ecart * 0.8 + r.gauss() * amplitude;
+            const p = base + ecart;
+            this.prix.push(p);
+            this.profils.push(profilGex(p));
+        }
+        this.maxAbs = Math.max(...this.profils.flat().map(Math.abs));
+        this.i = 0;
+        this.lecture = !mouvementReduit();
+        this.majLecture?.();
+        if (!this.lecture) {
+            this.i = pas - 1;
+        }
+        Heatmap.prototype.demarre.call(this);
+    }
+
+    dessine() {
+        const W = this.canvas.clientWidth;
+        if (!W) {
+            return;
+        }
+        const H = Math.round(W * 0.55);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        if (this.canvas.width !== Math.round(W * dpr)) {
+            this.canvas.width = Math.round(W * dpr);
+            this.canvas.height = Math.round(H * dpr);
+            this.canvas.style.height = `${H}px`;
+        }
+        const s = GEX_SCENARIOS[this.scenario];
+        const ctx = this.canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.fillStyle = '#0a0d1a';
+        ctx.fillRect(0, 0, W, H);
+        const lBarres = Math.max(70, W * 0.2);
+        const lEtiquettes = W < 600 ? 0 : 92;
+        const lCarte = W - lBarres - lEtiquettes - 8;
+        const kMin = GEX_STRIKES[0] - 5;
+        const kMax = GEX_STRIKES[GEX_STRIKES.length - 1] + 5;
+        const Y = (v) => ((kMax - v) / (kMax - kMin)) * (H - 10) + 5;
+        const hK = (H - 10) / GEX_STRIKES.length;
+        const lCol = lCarte / this.pas;
+        // Fond : intensité du gamma par strike à chaque instant.
+        for (let c = 0; c <= this.i; c += 1) {
+            const profil = this.profils[c];
+            profil.forEach((g, k) => {
+                const v = (Math.abs(g) / this.maxAbs) ** 1.4;
+                if (v < 0.03) {
+                    return;
+                }
+                const l = 12 + v * 58;
+                ctx.fillStyle = `hsla(${26 + v * 22}, 95%, ${l}%, ${0.25 + v * 0.75})`;
+                ctx.fillRect(c * lCol, Y(GEX_STRIKES[k]) - hK / 2, lCol + 0.6, hK);
+            });
+        }
+        // Niveaux remarquables.
+        const niveaux = [[this.murCalls, `MUR CALLS ${this.murCalls}`, '#3ecf8e'], [this.zero, `ZERO Γ ${this.zero}`, '#f2c94c'], [this.murPuts, `MUR PUTS ${this.murPuts}`, '#eb5757']];
+        ctx.font = '600 11px system-ui, sans-serif';
+        niveaux.forEach(([niveau, texte, couleur]) => {
+            ctx.strokeStyle = couleur;
+            ctx.globalAlpha = 0.75;
+            ctx.setLineDash([5, 4]);
+            ctx.beginPath();
+            ctx.moveTo(0, Y(niveau));
+            ctx.lineTo(lCarte + 6, Y(niveau));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.globalAlpha = 1;
+            if (lEtiquettes) {
+                ctx.fillStyle = couleur;
+                ctx.fillRect(lCarte + 8, Y(niveau) - 9, lEtiquettes - 6, 18);
+                ctx.fillStyle = '#0a0d1a';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(texte, lCarte + 8 + (lEtiquettes - 6) / 2, Y(niveau) + 0.5);
+            }
+        });
+        ctx.textBaseline = 'alphabetic';
+        // Prix.
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let c = 0; c <= this.i; c++) {
+            const x = (c + 0.5) * lCol;
+            if (c === 0) {
+                ctx.moveTo(x, Y(this.prix[c]));
+            } else {
+                ctx.lineTo(x, Y(this.prix[c]));
+            }
+        }
+        ctx.stroke();
+        const xp = (this.i + 0.5) * lCol;
+        ctx.beginPath();
+        ctx.arc(xp, Y(this.prix[this.i]), 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        // Gamma net par strike à l'instant présent.
+        const x0 = W - lBarres;
+        const xm = x0 + lBarres / 2;
+        ctx.fillStyle = '#0e1224';
+        ctx.fillRect(x0, 0, lBarres, H);
+        this.profils[this.i].forEach((g, k) => {
+            const l = (g / this.maxAbs) * (lBarres / 2 - 4);
+            ctx.fillStyle = g >= 0 ? '#3b82f6' : '#ef4444';
+            ctx.fillRect(g >= 0 ? xm : xm + l, Y(GEX_STRIKES[k]) - hK * 0.4, Math.abs(l), hK * 0.8);
+        });
+        ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+        ctx.beginPath();
+        ctx.moveTo(xm, 0);
+        ctx.lineTo(xm, H);
+        ctx.stroke();
+        // Tuiles de synthèse.
+        const net = this.profils[this.i].reduce((a, b) => a + b, 0);
+        const p = this.prix[this.i];
+        const tuiles = [
+            ['Prix', p.toFixed(1).replace('.', ',')],
+            ['Gamma net', `${net >= 0 ? '+' : ''}${(net / this.maxAbs).toFixed(1).replace('.', ',')} u.`],
+            ['Zero gamma', String(this.zero)],
+            ['Mur des calls', String(this.murCalls)],
+            ['Mur des puts', String(this.murPuts)],
+            ['Régime', p >= this.zero ? 'gamma positif' : 'gamma négatif'],
+        ];
+        const cleTuiles = tuiles.map((x) => x.join(':')).join('|');
+        if (this.cleTuiles !== cleTuiles) {
+            this.cleTuiles = cleTuiles;
+            this.tuiles.replaceChildren(...tuiles.flatMap(([k, v]) => {
+                const div = document.createElement('div');
+                const dt = document.createElement('dt');
+                dt.textContent = k;
+                const dd = document.createElement('dd');
+                dd.textContent = v;
+                if (k === 'Régime') {
+                    dd.className = p >= this.zero ? 'is-positive' : 'is-negative';
+                }
+                div.append(dt, dd);
+                return [div];
+            }));
+        }
+        const t = this.i / (this.pas - 1);
+        const phase = [...s.phases].reverse().find(([debut]) => t >= debut);
+        if (phase && this.commentaire.textContent !== phase[1]) {
+            this.commentaire.textContent = phase[1];
+        }
+    }
+}
+
 /** Boutons lecture/pause, recommencer et vitesse, communs aux animations. */
 function controles(anim) {
     const zone = document.createElement('div');
@@ -1159,6 +1651,10 @@ export function initAnimations(racine = document) {
             new Replay(bloc, scenario);
         } else if (type === 'carnet') {
             new Carnet(bloc);
+        } else if (type === 'bookmap') {
+            new Bookmap(bloc, scenario);
+        } else if (type === 'gex-carte') {
+            new GexCarte(bloc, scenario);
         }
     });
 }
