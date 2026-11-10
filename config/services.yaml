@@ -9,6 +9,7 @@ parameters:
     # (jamais d'adresse personnelle dans ce dépôt public). À défaut, l'adresse du domaine.
     app.contact_recipient_default: 'contact@devtrade.fr'
     app.contact_recipient: '%env(default:app.contact_recipient_default:CONTACT_RECIPIENT)%'
+    app.trades_premoderation_default: '1'
     # Paiement Premium (Stripe). Vide = paiement en ligne désactivé, la page Premium renvoie vers le contact.
     app.stripe.secret_key: '%env(default::STRIPE_SECRET_KEY)%'
     app.stripe.price_id: '%env(default::STRIPE_PRICE_ID)%'
@@ -53,6 +54,11 @@ services:
             $clientSecret: '%env(default::GMAIL_CLIENT_SECRET)%'
             $refreshToken: '%env(default::GMAIL_REFRESH_TOKEN)%'
         tags: ['mailer.transport_factory']
+
+    # Salle des trades : validation avant publication (variable TRADES_PREMODERATION=0 pour publier directement)
+    App\Service\Community\TradeWall:
+        arguments:
+            $premoderation: '%env(bool:default:app.trades_premoderation_default:TRADES_PREMODERATION)%'
 
     App\Service\ContactMessenger:
         arguments:

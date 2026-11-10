@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block title %}Publier un trade{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<header class="page-hero">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="{{ path('app_community') }}">Salle des trades</a></li>
+            <li aria-current="page">Publier</li>
+        </ol>
+        <h1>Publier <em>un trade.</em></h1>
+        <p class="lead">Une à trois captures, le contexte, et surtout ce que vous en retenez.{% if premoderation %} Chaque publication est relue avant d'apparaître.{% endif %}</p>
+    </div>
+</header>
+
+<section class="section">
+    <div class="container trade-form-wrap">
+        {{ ui.notice('Avant d\'envoyer : masquez votre nom, votre numéro de compte, votre solde et tout identifiant de courtier. Les métadonnées des images (position, appareil) sont supprimées automatiquement, mais pas ce qui est visible sur la capture.', 'risk', 'Vos données.') }}
+
+        {{ form_start(form, { attr: { class: 'trade-form', novalidate: 'novalidate' } }) }}
+            <div class="field">
+                {{ form_label(form.images) }}
+                {{ form_widget(form.images, { attr: { class: 'input' } }) }}
+                <p class="field__help">{{ form.images.vars.help }}</p>
+                {{ form_errors(form.images) }}
+            </div>
+            <div class="trade-form__row">
+                <div class="field">
+                    {{ form_label(form.instrument) }}
+                    {{ form_widget(form.instrument, { attr: { class: 'input' } }) }}
+                    {{ form_errors(form.instrument) }}
+                </div>
+                <div class="field">
+                    {{ form_label(form.timeframe) }}
+                    {{ form_widget(form.timeframe, { attr: { class: 'input' } }) }}
+                </div>
+                <div class="field">
+                    {{ form_label(form.theme) }}
+                    {{ form_widget(form.theme, { attr: { class: 'input' } }) }}
+                </div>
+            </div>
+            <div class="trade-form__row">
+                <fieldset class="field">
+                    <legend>{{ form.direction.vars.label }}</legend>
+                    <div class="trade-form__radios">
+                        {% for choix in form.direction %}
+                            <label>{{ form_widget(choix) }} {{ choix.vars.label }}</label>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+                <div class="field">
+                    {{ form_label(form.resultR) }}
+                    {{ form_widget(form.resultR, { attr: { class: 'input', inputmode: 'decimal' } }) }}
+                    <p class="field__help">{{ form.resultR.vars.help }}</p>
+                    {{ form_errors(form.resultR) }}
+                </div>
+            </div>
+            <div class="field">
+                {{ form_label(form.lesson) }}
+                {{ form_widget(form.lesson, { attr: { class: 'input' } }) }}
+                {{ form_errors(form.lesson) }}
+            </div>
+            <div class="field field--check">
+                {{ form_widget(form.rules) }}
+                <label for="{{ form.rules.vars.id }}">{{ form.rules.vars.label }} (<a href="{{ path('app_community_rules') }}" target="_blank" rel="noopener">lire les règles</a>)</label>
+                {{ form_errors(form.rules) }}
+            </div>
+            {{ form_errors(form) }}
+            <button type="submit" class="button button--primary">Envoyer la publication</button>
+        {{ form_end(form) }}
+    </div>
+</section>
+{% endblock %}

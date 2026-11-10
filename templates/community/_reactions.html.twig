@@ -1,0 +1,19 @@
+{# Barre de réactions : un formulaire par émoji (fonctionne sans JavaScript, amélioré par assets/site.js). #}
+<div class="reactions" role="group" aria-label="Réactions">
+    {% for cle, e in emojis %}
+        {% set n = counts[post.id][cle] ?? 0 %}
+        {% set actif = mine[post.id][cle] is defined %}
+        {% if post.published %}
+            <form method="post" action="{{ path('app_community_react', { id: post.id }) }}" data-reaction>
+                <input type="hidden" name="_token" value="{{ csrf_token('reaction-' ~ post.id) }}">
+                <input type="hidden" name="emoji" value="{{ cle }}">
+                <button type="submit" class="reaction{{ actif ? ' is-active' }}" aria-pressed="{{ actif ? 'true' : 'false' }}" title="{{ e[1] }}">
+                    <span aria-hidden="true">{{ e[0] }}</span><span class="visually-hidden">{{ e[1] }}</span>
+                    <span class="reaction__n" data-reaction-count>{{ n > 0 ? n : '' }}</span>
+                </button>
+            </form>
+        {% elseif n > 0 %}
+            <span class="reaction"><span aria-hidden="true">{{ e[0] }}</span> {{ n }}</span>
+        {% endif %}
+    {% endfor %}
+</div>

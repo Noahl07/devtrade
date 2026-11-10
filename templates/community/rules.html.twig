@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block title %}Règles de la salle des trades{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<header class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Communauté</span>
+        <h1>Les règles, <em>en clair.</em></h1>
+        {% include 'community/_nav.html.twig' with { current: 'rules' } only %}
+    </div>
+</header>
+
+<section class="section">
+    <div class="container prose">
+        <h2>L'esprit</h2>
+        <p>La salle des trades sert à apprendre des trades des autres. Une publication utile explique le contexte, le déclencheur, la place du stop et ce que vous en retenez. Les pertes sont aussi bienvenues que les gains : elles sont souvent plus instructives.</p>
+
+        <h2>Ce qui est demandé</h2>
+        <ul>
+            <li>Des captures de vos propres trades, réels ou en démo, que vous avez le droit de partager.</li>
+            <li>Un texte qui explique le raisonnement, pas seulement le résultat.</li>
+            <li>Un ton respectueux dans les réactions.</li>
+        </ul>
+
+        <h2>Ce qui est refusé</h2>
+        <ul>
+            <li>Les données personnelles visibles : nom, numéro de compte, solde, identifiant de courtier, adresse e-mail.</li>
+            <li>Les signaux à suivre, les promesses de gains, la publicité, les liens d'affiliation ou de parrainage, les offres payantes.</li>
+            <li>Les captures retouchées ou trompeuses, et les contenus sans rapport avec le trading.</li>
+            <li>Tout contenu illicite, injurieux ou discriminatoire.</li>
+        </ul>
+
+        <h2>Comment ça fonctionne</h2>
+        <ul>
+            <li>Chaque publication est relue avant d'apparaître ; une publication refusée reste visible pour vous seul, avec le motif.</li>
+            <li>Cinq publications par jour au plus, trois captures par publication, 4 Mo par capture.</li>
+            <li>Les images sont réencodées : leurs métadonnées (position, appareil) sont supprimées. Ce qui est visible sur la capture reste visible.</li>
+            <li>Une publication signalée par trois membres est masquée en attendant d'être relue.</li>
+            <li>Vous pouvez supprimer vos publications à tout moment ; elles sont aussi supprimées avec votre compte.</li>
+            <li>Les publications ne sont visibles que des membres connectés.</li>
+        </ul>
+
+        {{ ui.notice('Les publications des membres ne sont pas des conseils en investissement. Le site peut retirer à tout moment un contenu contraire à ces règles.', 'info', 'À savoir.') }}
+        <p>{{ ui.button('Publier un trade', path('app_community_new'), 'primary', 'arrow-right') }}</p>
+    </div>
+</section>
+{% endblock %}

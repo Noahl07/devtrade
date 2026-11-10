@@ -1,0 +1,6 @@
+<nav class="community-nav" aria-label="Salle des trades">
+    <a href="{{ path('app_community') }}"{% if current == 'index' %} aria-current="page"{% endif %}>Toutes les publications</a>
+    <a href="{{ path('app_community_mine') }}"{% if current == 'mine' %} aria-current="page"{% endif %}>Mes publications</a>
+    <a href="{{ path('app_community_rules') }}"{% if current == 'rules' %} aria-current="page"{% endif %}>Règles</a>
+    <a class="button button--primary" href="{{ path('app_community_new') }}">Publier un trade</a>
+</nav>

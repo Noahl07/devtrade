@@ -73,6 +73,9 @@ security:
         # Espace membre
         - { path: ^/compte, roles: ROLE_USER }
 
+        # Salle des trades : membres connectés uniquement
+        - { path: ^/communaute, roles: ROLE_USER }
+
 when@test:
     security:
         password_hashers:

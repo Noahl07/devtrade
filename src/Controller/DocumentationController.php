@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\DocumentCategoryRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\ReadingProgressRepository;
+use App\Repository\TradePostRepository;
 use App\Service\ReadingProgressTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -116,7 +117,8 @@ class DocumentationController extends AbstractController
         DocumentRepository $documentRepo,
         DocumentCategoryRepository $categoryRepo,
         ReadingProgressRepository $progressRepo,
-        ReadingProgressTracker $tracker
+        ReadingProgressTracker $tracker,
+        TradePostRepository $trades
     ): Response {
 
         if ($accessLevel === 'premium') {
@@ -156,6 +158,10 @@ class DocumentationController extends AbstractController
             'modules'  => $categoryRepo->findBy([], ['position' => 'ASC']),
             'progress' => $map,
             'current'  => $current,
+            // Derniers trades partagés par les membres sur le thème du module.
+            'member_trades' => $user instanceof User && $document->getCategory() !== null
+                ? $trades->findForCategory((string) $document->getCategory()->getSlug())
+                : [],
         ]);
     }
 

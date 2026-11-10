@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block title %}Mes publications · Salle des trades{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<header class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Communauté</span>
+        <h1>Mes <em>publications.</em></h1>
+        {% include 'community/_nav.html.twig' with { current: 'mine' } only %}
+    </div>
+</header>
+
+<section class="section">
+    <div class="container">
+        {% if posts is empty %}
+            <div class="works-empty"><p>Vous n'avez encore rien publié.</p>{{ ui.button('Publier un trade', path('app_community_new'), 'primary', 'arrow-right') }}</div>
+        {% else %}
+            <div class="trade-grid">
+                {% for post in posts %}
+                    <div class="trade-mine">
+                        <p class="trade-mine__status">
+                            {% if post.status == 'publie' %}{{ ui.badge('En ligne', 'live') }}
+                            {% elseif post.status == 'refuse' %}{{ ui.badge('Refusée', 'demo') }} <span class="muted small">Motif : {{ post.rejectReason }}</span>
+                            {% else %}{{ ui.badge('En attente de validation', 'backtest') }}{% endif %}
+                        </p>
+                        {% include 'community/_card.html.twig' %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

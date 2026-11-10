@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block title %}{{ post.instrument }} · Salle des trades{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<header class="page-hero">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="{{ path('app_community') }}">Salle des trades</a></li>
+            <li aria-current="page">{{ post.instrument }}</li>
+        </ol>
+        <h1>{{ post.instrument }} <em>· {{ post.timeframe }} · {{ post.direction == 'achat' ? 'achat' : 'vente' }}</em></h1>
+        <p class="page-hero__meta">
+            {% if post.resultR is not null %}
+                <span class="trade-card__r {{ post.resultR >= 0 ? 'is-positive' : 'is-negative' }}">{{ post.resultR >= 0 ? '+' }}{{ post.resultR|number_format(1, ',', ' ') }} R</span>
+            {% else %}<span class="trade-card__r">en cours</span>{% endif %}
+            {{ ui.badge(post.themeLabel, 'backtest') }}
+            {% if post.loss %}{{ ui.badge('Perte assumée', 'demo') }}{% endif %}
+            {% if not post.published %}{{ ui.badge(post.status == 'refuse' ? 'Refusée' : 'En attente de validation', 'demo') }}{% endif %}
+        </p>
+    </div>
+</header>
+
+<section class="section">
+    <div class="container trade-detail">
+        <div class="trade-detail__images">
+            {% for img in post.images %}
+                <a href="{{ path('app_community_image', { id: img.id }) }}" target="_blank" rel="noopener">
+                    <img src="{{ path('app_community_image', { id: img.id }) }}" alt="Capture {{ loop.index }} du trade sur {{ post.instrument }}" width="{{ img.width }}" height="{{ img.height }}">
+                </a>
+            {% endfor %}
+        </div>
+        <div class="trade-detail__text">
+            <h2>Ce que {{ post.author.firstName }} en retient</h2>
+            <p class="trade-detail__lesson">{{ post.lesson|nl2br }}</p>
+            <p class="muted small">Publié le {{ post.createdAt|date('d/m/Y à H:i') }}</p>
+            {% include 'community/_reactions.html.twig' %}
+
+            {% if post.author == app.user %}
+                <form method="post" action="{{ path('app_community_delete', { id: post.id }) }}" data-confirm="Supprimer définitivement cette publication ?">
+                    <input type="hidden" name="_token" value="{{ csrf_token('suppression-' ~ post.id) }}">
+                    {{ ui.button('Supprimer ma publication', null, 'ghost', null, 'submit') }}
+                </form>
+            {% elseif post.published %}
+                <details class="trade-report">
+                    <summary>Signaler cette publication</summary>
+                    <form method="post" action="{{ path('app_community_report', { id: post.id }) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('signalement-' ~ post.id) }}">
+                        <fieldset>
+                            <legend class="visually-hidden">Motif</legend>
+                            {% for cle, motif in motifs %}
+                                <label><input type="radio" name="motif" value="{{ cle }}"{% if loop.first %} checked{% endif %}> {{ motif }}</label>
+                            {% endfor %}
+                        </fieldset>
+                        {{ ui.button('Envoyer le signalement', null, 'ghost', null, 'submit') }}
+                    </form>
+                </details>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

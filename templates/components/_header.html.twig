@@ -4,8 +4,9 @@
     { label: 'Développement', route: 'app_portfolio', match: 'app_portfolio' },
     { label: product_name, route: 'app_trading', match: 'app_trading', tag: 'Démo' },
     { label: 'Documentation', route: 'app_documentation', match: 'app_documentation' },
+]|merge(app.user ? [{ label: 'Salle des trades', route: 'app_community', match: 'app_community' }] : [])|merge([
     { label: 'Contact', route: 'app_contact', match: 'app_contact' },
-] %}
+]) %}
 
 <header class="site-header" data-site-header>
     <div class="container site-header__inner">

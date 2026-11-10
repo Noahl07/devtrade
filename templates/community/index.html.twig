@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block title %}Salle des trades{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<header class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Communauté</span>
+        <h1>La salle <em>des trades.</em></h1>
+        <p class="lead">Les trades des membres, gagnants comme perdants, avec ce qu'ils en retiennent. On apprend autant d'un stop bien placé que d'un objectif atteint.</p>
+        {% include 'community/_nav.html.twig' with { current: 'index' } only %}
+    </div>
+</header>
+
+<section class="section">
+    <div class="container">
+        <form class="community-filters" method="get" action="{{ path('app_community') }}">
+            <label for="filtre-theme">Thème</label>
+            <select id="filtre-theme" name="theme" class="input">
+                <option value="">Tous les thèmes</option>
+                {% for cle, t in constant('App\\Entity\\TradePost::THEMES') %}
+                    <option value="{{ cle }}"{% if theme == cle %} selected{% endif %}>{{ t[0] }}</option>
+                {% endfor %}
+            </select>
+            <label for="filtre-tri">Tri</label>
+            <select id="filtre-tri" name="tri" class="input">
+                <option value="recents"{% if tri == 'recents' %} selected{% endif %}>Plus récents</option>
+                <option value="populaires"{% if tri == 'populaires' %} selected{% endif %}>Plus appréciés (30 jours)</option>
+            </select>
+            <button type="submit" class="button button--ghost">Filtrer</button>
+        </form>
+
+        {% if posts is empty %}
+            <div class="works-empty">
+                <p>Aucune publication {{ theme ? 'sur ce thème ' }}pour l'instant. Lancez-vous : partagez un trade et ce qu'il vous a appris.</p>
+                {{ ui.button('Publier un trade', path('app_community_new'), 'primary', 'arrow-right') }}
+            </div>
+        {% else %}
+            <p class="muted small">{{ total }} publication{{ total > 1 ? 's' }}</p>
+            <div class="trade-grid">
+                {% for post in posts %}
+                    {% include 'community/_card.html.twig' %}
+                {% endfor %}
+            </div>
+            {% if pages > 1 %}
+                <nav class="pagination" aria-label="Pages">
+                    {% for p in 1..pages %}
+                        <a href="{{ path('app_community', { theme: theme, tri: tri, page: p }) }}"{% if p == page %} aria-current="page"{% endif %}>{{ p }}</a>
+                    {% endfor %}
+                </nav>
+            {% endif %}
+        {% endif %}
+
+        {{ ui.notice('Les publications sont des retours d\'expérience de membres, pas des recommandations : aucune ne constitue un conseil en investissement. Un trade gagnant ne prouve pas qu\'une méthode fonctionne.', 'info', 'À savoir.') }}
+    </div>
+</section>
+{% endblock %}

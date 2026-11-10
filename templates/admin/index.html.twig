@@ -16,6 +16,7 @@
     {value: stats.drafts, label: 'Brouillons', href: path('app_admin_documents', {status: 'draft'}), icon: 'edit'},
     {value: stats.waitlist, label: 'Liste d\'attente', href: path('app_admin_waitlist'), icon: 'mail'},
     {value: stats.projects, label: 'Réalisations visibles', href: path('app_admin_projects'), icon: 'grid'},
+    {value: stats.trades_pending, label: 'Trades à valider', href: path('app_admin_community'), icon: 'chart'},
 ] %}
 <ul class="admin-tiles">
     {% for t in tiles %}

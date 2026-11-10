@@ -76,6 +76,79 @@ app_billing_webhook:
     controller: App\Controller\BillingController::webhook
     methods: [POST]
 
+app_community:
+    path: /communaute
+    controller: App\Controller\CommunityController::index
+    methods: [GET]
+
+app_community_new:
+    path: /communaute/publier
+    controller: App\Controller\CommunityController::new
+    methods: [GET, POST]
+
+app_community_mine:
+    path: /communaute/mes-publications
+    controller: App\Controller\CommunityController::mine
+    methods: [GET]
+
+app_community_rules:
+    path: /communaute/regles
+    controller: App\Controller\CommunityController::rules
+    methods: [GET]
+
+app_community_image:
+    path: /communaute/image/{id}
+    controller: App\Controller\CommunityController::image
+    methods: [GET]
+    requirements: { id: '\d+' }
+
+app_community_show:
+    path: /communaute/{id}
+    controller: App\Controller\CommunityController::show
+    methods: [GET]
+    requirements: { id: '\d+' }
+
+app_community_react:
+    path: /communaute/{id}/reaction
+    controller: App\Controller\CommunityController::react
+    methods: [POST]
+    requirements: { id: '\d+' }
+
+app_community_report:
+    path: /communaute/{id}/signaler
+    controller: App\Controller\CommunityController::report
+    methods: [POST]
+    requirements: { id: '\d+' }
+
+app_community_delete:
+    path: /communaute/{id}/supprimer
+    controller: App\Controller\CommunityController::delete
+    methods: [POST]
+    requirements: { id: '\d+' }
+
+app_admin_community:
+    path: /admin/communaute
+    controller: App\Controller\Admin\CommunityModerationController::index
+    methods: [GET]
+
+app_admin_community_approve:
+    path: /admin/communaute/{id}/valider
+    controller: App\Controller\Admin\CommunityModerationController::approve
+    methods: [POST]
+    requirements: { id: '\d+' }
+
+app_admin_community_reject:
+    path: /admin/communaute/{id}/refuser
+    controller: App\Controller\Admin\CommunityModerationController::reject
+    methods: [POST]
+    requirements: { id: '\d+' }
+
+app_admin_community_delete:
+    path: /admin/communaute/{id}/supprimer
+    controller: App\Controller\Admin\CommunityModerationController::delete
+    methods: [POST]
+    requirements: { id: '\d+' }
+
 app_login:
     path: /login
     controller: App\Controller\SecurityController::login

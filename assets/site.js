@@ -241,3 +241,38 @@ const corpsArticle = document.querySelector('[data-reading-body]');
 if (corpsArticle) {
     import('./js/glossary.js').then(({ initGlossaire }) => initGlossaire(corpsArticle));
 }
+
+// ── Confirmation avant une action définitive (suppression d'une publication…) ──
+// (L'administration a sa propre confirmation dans admin.js.)
+if (!document.body.classList.contains('is-admin')) {
+    document.querySelectorAll('form[data-confirm]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            if (!window.confirm(form.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
+    });
+}
+
+// ── Salle des trades : réactions sans recharger la page (repli : envoi classique) ──
+document.querySelectorAll('form[data-reaction]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const bouton = form.querySelector('button');
+        bouton.disabled = true;
+        try {
+            const r = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }, credentials: 'same-origin' });
+            if (!r.ok) {
+                throw new Error(String(r.status));
+            }
+            const { actif, compte } = await r.json();
+            bouton.classList.toggle('is-active', actif);
+            bouton.setAttribute('aria-pressed', String(actif));
+            form.querySelector('[data-reaction-count]').textContent = compte > 0 ? String(compte) : '';
+        } catch {
+            form.submit();
+        } finally {
+            bouton.disabled = false;
+        }
+    });
+});

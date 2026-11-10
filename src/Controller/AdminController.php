@@ -13,6 +13,7 @@ use App\Repository\DocumentCategoryRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\PageViewRepository;
 use App\Repository\ReadingProgressRepository;
+use App\Repository\TradePostRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use App\Repository\WaitlistEntryRepository;
@@ -49,7 +50,7 @@ final class AdminController extends AbstractController
 
     // ── Tableau de bord ─────────────────────────────────────────────────────
 
-    public function index(UserRepository $users, DocumentRepository $documents, WaitlistEntryRepository $waitlist, ProjectRepository $projects): Response
+    public function index(UserRepository $users, DocumentRepository $documents, WaitlistEntryRepository $waitlist, ProjectRepository $projects, TradePostRepository $trades): Response
     {
         return $this->render('admin/index.html.twig', [
             'stats' => [
@@ -60,6 +61,7 @@ final class AdminController extends AbstractController
                 'drafts' => $documents->count(['isPublished' => false]),
                 'waitlist' => $waitlist->count([]),
                 'projects' => $projects->count(['isVisible' => true]),
+                'trades_pending' => $trades->countPending(),
             ],
             'latest_users' => $users->findBy([], ['createdAt' => 'DESC'], 5),
             'latest_waitlist' => $waitlist->findBy([], ['createdAt' => 'DESC'], 5),

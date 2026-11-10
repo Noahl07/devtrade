@@ -47,6 +47,16 @@
         </article>
 
         <article class="account__card">
+            <span class="account__index">{{ ui.icon('users') }} Salle des trades</span>
+            <h2>Partagez vos trades, apprenez de ceux des autres.</h2>
+            <p>Une à trois captures, le contexte et ce que vous en retenez. Gains et pertes sont les bienvenus.</p>
+            <div class="account__actions">
+                {{ ui.button('Ouvrir la salle des trades', path('app_community'), 'secondary', 'arrow-right') }}
+                {{ ui.button('Mes publications', path('app_community_mine'), 'ghost') }}
+            </div>
+        </article>
+
+        <article class="account__card">
             <span class="account__index">{{ ui.icon('chart') }} {{ product_name }}</span>
             <h2>Le robot n'est pas encore disponible.</h2>
             <p>Il tourne en démonstration. La liste d'attente vous préviendra de sa sortie, sans engagement.</p>

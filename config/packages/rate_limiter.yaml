@@ -18,6 +18,12 @@ framework:
             limit: 5
             interval: '1 hour'
 
+        # Salle des trades : 5 publications par jour et par membre
+        trade_post:
+            policy: sliding_window
+            limit: 5
+            interval: '1 day'
+
         # Contact : 5 messages par heure par IP
         contact:
             policy: fixed_window
@@ -39,3 +45,4 @@ when@test:
             login: { policy: fixed_window, limit: 1000, interval: '15 minutes' }
             forgot: { policy: fixed_window, limit: 1000, interval: '1 hour' }
             contact: { policy: fixed_window, limit: 1000, interval: '1 hour' }
+            trade_post: { policy: sliding_window, limit: 1000, interval: '1 day' }

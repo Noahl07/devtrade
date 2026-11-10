@@ -78,6 +78,24 @@
             </form>
         {% endif %}
 
+        {% if member_trades is defined and member_trades is not empty %}
+            <section class="member-trades" aria-labelledby="member-trades-title">
+                <h2 id="member-trades-title">Trades de membres sur ce sujet</h2>
+                <ul>
+                    {% for t in member_trades %}
+                        <li>
+                            <a href="{{ path('app_community_show', { id: t.id }) }}">
+                                {% set img = t.images|first %}
+                                {% if img %}<img src="{{ path('app_community_image', { id: img.id }) }}" alt="" loading="lazy" width="{{ img.width }}" height="{{ img.height }}">{% endif %}
+                                <span><strong>{{ t.instrument }}</strong> · {{ t.timeframe }} · {{ t.resultR is not null ? (t.resultR >= 0 ? '+' : '') ~ t.resultR|number_format(1, ',', ' ') ~ ' R' : 'en cours' }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <p>{{ ui.button('Voir la salle des trades', path('app_community', { theme: member_trades|first.theme }), 'ghost', 'arrow-right') }}</p>
+            </section>
+        {% endif %}
+
         <footer class="article-foot">
             {% if document.category %}
                 {{ ui.button('Retour au module', path('app_documentation_category', { slug: document.category.slug }), 'ghost', 'arrow-right') }}

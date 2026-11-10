@@ -1,0 +1,31 @@
+{% extends 'admin/_layout.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block admin_title %}Salle des trades{% endblock %}
+{% block admin_lead %}<p class="admin__lead">{{ pending|length }} publication{{ pending|length > 1 ? 's' }} en attente de validation. Vérifiez surtout qu'aucune donnée personnelle n'est visible (nom, numéro de compte, solde) et qu'il n'y a ni signal ni publicité.</p>{% endblock %}
+
+{% block admin_content %}
+<h2 class="admin-section-title">À valider</h2>
+{% if pending is empty %}
+    <p class="admin-empty">Rien en attente.</p>
+{% else %}
+    <div class="moderation-list">
+        {% for post in pending %}
+            {% include 'admin/community/_item.html.twig' %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<h2 class="admin-section-title">Signalements</h2>
+{% if reported is empty %}
+    <p class="admin-empty">Aucun signalement.</p>
+{% else %}
+    <div class="moderation-list">
+        {% for r in reported %}
+            {% set post = r.post %}
+            <p class="muted small">{{ r.count }} signalement{{ r.count > 1 ? 's' }} : {{ r.reasons|join(' ; ') }}</p>
+            {% include 'admin/community/_item.html.twig' %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

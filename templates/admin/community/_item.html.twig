@@ -1,0 +1,31 @@
+{% import 'components/ui/_ui.html.twig' as ui %}
+<article class="moderation-item">
+    <div class="moderation-item__images">
+        {% for img in post.images %}
+            <a href="{{ path('app_community_image', { id: img.id }) }}" target="_blank" rel="noopener"><img src="{{ path('app_community_image', { id: img.id }) }}" alt="Capture {{ loop.index }}" loading="lazy"></a>
+        {% endfor %}
+    </div>
+    <div>
+        <p><strong>{{ post.instrument }}</strong> · {{ post.timeframe }} · {{ post.direction }} · {{ post.resultR is not null ? post.resultR ~ ' R' : 'en cours' }} · {{ post.themeLabel }}</p>
+        <p class="muted small">{{ post.author.fullName }} ({{ post.author.email }}) · {{ post.createdAt|date('d/m/Y H:i') }} · statut : {{ post.status }}</p>
+        <p class="moderation-item__lesson">{{ post.lesson|nl2br }}</p>
+        <div class="moderation-item__actions">
+            {% if not post.published %}
+                <form method="post" action="{{ path('app_admin_community_approve', { id: post.id }) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('moderation-' ~ post.id) }}">
+                    <button class="button button--primary">Valider</button>
+                </form>
+            {% endif %}
+            <form method="post" action="{{ path('app_admin_community_reject', { id: post.id }) }}" class="moderation-item__reject">
+                <input type="hidden" name="_token" value="{{ csrf_token('moderation-' ~ post.id) }}">
+                <label class="visually-hidden" for="raison-{{ post.id }}">Motif du refus</label>
+                <input class="input" id="raison-{{ post.id }}" name="raison" maxlength="255" placeholder="Motif (vu par l'auteur)">
+                <button class="button button--ghost">Refuser</button>
+            </form>
+            <form method="post" action="{{ path('app_admin_community_delete', { id: post.id }) }}" data-confirm="Supprimer définitivement cette publication ?">
+                <input type="hidden" name="_token" value="{{ csrf_token('moderation-' ~ post.id) }}">
+                <button class="button button--ghost">Supprimer</button>
+            </form>
+        </div>
+    </div>
+</article>

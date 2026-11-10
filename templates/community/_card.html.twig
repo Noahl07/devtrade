@@ -1,0 +1,22 @@
+{% import 'components/ui/_ui.html.twig' as ui %}
+<article class="trade-card">
+    <a class="trade-card__media" href="{{ path('app_community_show', { id: post.id }) }}">
+        {% set img = post.images|first %}
+        {% if img %}<img src="{{ path('app_community_image', { id: img.id }) }}" alt="Capture du trade sur {{ post.instrument }}" loading="lazy" width="{{ img.width }}" height="{{ img.height }}">{% endif %}
+        {% if post.images|length > 1 %}<span class="trade-card__count">{{ post.images|length }} captures</span>{% endif %}
+    </a>
+    <div class="trade-card__body">
+        <p class="trade-card__meta">
+            <strong>{{ post.instrument }}</strong> · {{ post.timeframe }} · {{ post.direction == 'achat' ? 'Achat' : 'Vente' }}
+            {% if post.resultR is not null %}
+                <span class="trade-card__r {{ post.resultR >= 0 ? 'is-positive' : 'is-negative' }}">{{ post.resultR >= 0 ? '+' }}{{ post.resultR|number_format(1, ',', ' ') }} R</span>
+            {% else %}
+                <span class="trade-card__r">en cours</span>
+            {% endif %}
+        </p>
+        <p class="trade-card__theme">{{ post.themeLabel }}{% if post.loss %} · {{ ui.badge('Perte assumée', 'demo') }}{% endif %}</p>
+        <p class="trade-card__lesson">{{ post.lesson|length > 180 ? post.lesson|slice(0, 180) ~ '…' : post.lesson }}</p>
+        <p class="trade-card__author">{{ post.author.firstName }} · {{ post.createdAt|date('d/m/Y') }}</p>
+        {% include 'community/_reactions.html.twig' %}
+    </div>
+</article>
