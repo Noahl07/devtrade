@@ -3,7 +3,8 @@
 parameters:
     # Adresse d'expédition : doit être un expéditeur validé chez Brevo.
     app.mail_from: 'contact@devtrade.fr'
-    # Destinataire des messages du formulaire de contact (surchargeable par la variable CONTACT_RECIPIENT).
+    # Destinataire des messages du formulaire de contact : variable Railway CONTACT_RECIPIENT
+    # (jamais d'adresse personnelle dans ce dépôt public). À défaut, l'adresse du domaine.
     app.contact_recipient_default: 'contact@devtrade.fr'
     app.contact_recipient: '%env(default:app.contact_recipient_default:CONTACT_RECIPIENT)%'
     # Paiement Premium (Stripe). Vide = paiement en ligne désactivé, la page Premium renvoie vers le contact.
