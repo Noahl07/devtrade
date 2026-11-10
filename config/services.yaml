@@ -6,6 +6,12 @@ parameters:
     # Destinataire des messages du formulaire de contact (surchargeable par la variable CONTACT_RECIPIENT).
     app.contact_recipient_default: 'contact@devtrade.fr'
     app.contact_recipient: '%env(default:app.contact_recipient_default:CONTACT_RECIPIENT)%'
+    # Paiement Premium (Stripe). Vide = paiement en ligne désactivé, la page Premium renvoie vers le contact.
+    app.stripe.secret_key: '%env(default::STRIPE_SECRET_KEY)%'
+    app.stripe.price_id: '%env(default::STRIPE_PRICE_ID)%'
+    app.stripe.webhook_secret: '%env(default::STRIPE_WEBHOOK_SECRET)%'
+    # Tarif affiché sur la page Premium (ex. « 19 € / mois »). Vide = « Tarif à venir ».
+    app.premium_price_label: '%env(default::PREMIUM_PRICE_LABEL)%'
 
 services:
     _defaults:
@@ -27,8 +33,25 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    App\Service\Billing\StripeBilling:
+        arguments:
+            $secretKey: '%app.stripe.secret_key%'
+            $priceId: '%app.stripe.price_id%'
+            $webhookSecret: '%app.stripe.webhook_secret%'
+
+    App\Controller\PricingController:
+        arguments:
+            $priceLabel: '%app.premium_price_label%'
+
     App\Service\ContactMessenger:
         arguments:
             $sender: '%app.mail_from%'
             $recipient: '%app.contact_recipient%'
             $publicAddress: '%app.mail_from%'
+
+# Tests : valeurs factices (aucun appel réel à Stripe, les tests signent eux-mêmes leurs webhooks).
+when@test:
+    parameters:
+        app.stripe.secret_key: 'sk_test_factice'
+        app.stripe.price_id: 'price_factice'
+        app.stripe.webhook_secret: 'whsec_factice'

@@ -18,6 +18,16 @@
     Ces données servent à gérer votre compte et votre accès à la documentation.
     Base légale : exécution des <a href="{{ path('app_cgu') }}">conditions d'utilisation</a>.</p>
 
+<h3>Progression dans la documentation</h3>
+<p>Articles ouverts, articles terminés et meilleur score obtenu aux quiz, pour vous proposer de reprendre votre lecture et suivre votre avancement par module.
+    Les administrateurs voient ces données sous forme agrégée par article. Elles sont supprimées avec votre compte.
+    Base légale : exécution des <a href="{{ path('app_cgu') }}">conditions d'utilisation</a>.</p>
+
+<h3>Abonnement Premium</h3>
+<p>Si vous vous abonnez en ligne, le paiement est traité par Stripe : vos coordonnées bancaires sont saisies sur la page de Stripe et ne transitent pas par ce site.
+    Le site conserve seulement les identifiants client et d'abonnement attribués par Stripe, pour activer ou retirer l'accès Premium.
+    Base légale : exécution du contrat d'abonnement ; conservation des factures selon les obligations comptables.</p>
+
 <h3>Liste d'attente {{ product_name }}</h3>
 <p>Adresse e-mail, prénom (facultatif), date d'inscription et date de votre consentement.
     Ces données servent uniquement à vous prévenir, une fois, de la sortie du robot.
@@ -44,6 +54,7 @@
 <ul>
     <li><strong>Hébergement :</strong> {{ l.field(legal.host_name, "hébergeur") }}.</li>
     <li><strong>Envoi des e-mails :</strong> {{ l.field(legal.email_provider, "prestataire d'envoi des e-mails") }}.</li>
+    <li><strong>Paiement (abonnement Premium) :</strong> Stripe Payments Europe, Ltd. (Irlande).</li>
 </ul>
 <p>Si l'un de ces prestataires traite des données hors de l'Union européenne, ce transfert est encadré par les garanties prévues
     par le RGPD ({{ l.field(null, "préciser les garanties applicables") }}).</p>

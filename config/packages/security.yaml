@@ -50,6 +50,9 @@ security:
         - { path: ^/portfolio, roles: PUBLIC_ACCESS }
         - { path: ^/trading, roles: PUBLIC_ACCESS }
         - { path: ^/contact, roles: PUBLIC_ACCESS }
+        # Stripe : appel serveur à serveur, authentifié par sa signature
+        - { path: ^/stripe/webhook, roles: PUBLIC_ACCESS }
+        - { path: ^/premium/(paiement|merci), roles: ROLE_USER }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
 

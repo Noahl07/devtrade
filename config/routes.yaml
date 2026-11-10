@@ -56,6 +56,26 @@ app_documentation_progress:
     requirements:
         id: '\d+'
 
+app_billing_checkout:
+    path: /premium/paiement
+    controller: App\Controller\BillingController::checkout
+    methods: [POST]
+
+app_billing_success:
+    path: /premium/merci
+    controller: App\Controller\BillingController::success
+    methods: [GET]
+
+app_billing_portal:
+    path: /compte/abonnement
+    controller: App\Controller\BillingController::portal
+    methods: [POST]
+
+app_billing_webhook:
+    path: /stripe/webhook
+    controller: App\Controller\BillingController::webhook
+    methods: [POST]
+
 app_login:
     path: /login
     controller: App\Controller\SecurityController::login

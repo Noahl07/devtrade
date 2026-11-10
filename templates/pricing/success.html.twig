@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% import 'components/ui/_ui.html.twig' as ui %}
+
+{% block title %}Merci{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block legacy_assets %}{% endblock %}
+{% block legacy_scripts %}{% endblock %}
+
+{% block body %}
+<header class="page-hero">
+    <div class="container">
+        <span class="eyebrow">Abonnement</span>
+        <h1>Merci, <em>c'est noté.</em></h1>
+        {% if app.user and app.user.isPremium %}
+            <p class="lead">Votre accès Premium est actif : tous les modules vous sont ouverts.</p>
+            <div class="member-card__actions">{{ ui.button('Ouvrir la documentation', path('app_documentation'), 'primary', 'arrow-right') }}</div>
+        {% else %}
+            <p class="lead">Le paiement est en cours de confirmation par Stripe. L'accès Premium s'active automatiquement dans quelques secondes : rechargez cette page si besoin.</p>
+            <div class="member-card__actions">
+                {{ ui.button('Recharger', path('app_billing_success'), 'primary') }}
+                {{ ui.button('Mon compte', path('app_compte'), 'ghost', 'arrow-right') }}
+            </div>
+            <p class="muted small">Si l'accès n'est pas actif après quelques minutes, écrivez-nous depuis la page contact : nous vérifierons le paiement.</p>
+        {% endif %}
+    </div>
+</header>
+{% endblock %}

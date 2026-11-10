@@ -29,6 +29,9 @@ final class UserRemover
         if (in_array('ROLE_ADMIN', $target->getRoles(), true)) {
             return 'Un compte administrateur ne peut pas être supprimé depuis cette page.';
         }
+        if ($target->getStripeSubscriptionId() !== null) {
+            return 'Ce compte a un abonnement Stripe en cours : résiliez-le d\'abord dans Stripe, sinon il continuerait d\'être facturé.';
+        }
 
         return null;
     }

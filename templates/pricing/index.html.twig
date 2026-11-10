@@ -40,7 +40,7 @@
 
             <article class="door door--dev">
                 <span class="door__index">Premium</span>
-                <h2 class="door__title">Tarif à venir</h2>
+                <h2 class="door__title">{{ price_label ?? 'Tarif à venir' }}</h2>
                 <p class="door__text">Pour aller plus loin : les modules avancés, au fur et à mesure de leur publication.</p>
                 <ul class="door__list">
                     <li>{{ ui.icon('check') }} Tout le contenu gratuit</li>
@@ -51,13 +51,22 @@
                 <div class="door__cta">
                     {% if app.user and app.user.isPremium %}
                         {{ ui.badge('Votre accès est déjà Premium', 'live') }}
+                    {% elseif online_payment and app.user %}
+                        <form method="post" action="{{ path('app_billing_checkout') }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('checkout') }}">
+                            {{ ui.button('S\'abonner', null, 'primary', 'arrow-right', 'submit') }}
+                        </form>
+                    {% elseif online_payment %}
+                        {{ ui.button('Créer un compte pour s\'abonner', path('app_register'), 'primary', 'arrow-right') }}
                     {% else %}
                         {{ ui.button('Nous écrire', path('app_contact'), 'primary', 'arrow-right') }}
                     {% endif %}
                 </div>
             </article>
         </div>
-        <p class="works__more muted small">Le paiement en ligne n'est pas encore disponible : l'accès Premium se demande par le formulaire de contact.
+        <p class="works__more muted small">
+            {% if online_payment %}Paiement sécurisé par Stripe : vos données bancaires ne passent pas par dev.trade. Abonnement sans engagement, résiliable à tout moment depuis votre compte.
+            {% else %}Le paiement en ligne n'est pas encore disponible : l'accès Premium se demande par le formulaire de contact.{% endif %}
             L'accès Premium ne comprend pas le robot {{ product_name }}, qui fera l'objet d'une offre distincte.</p>
     </div>
 </section>
@@ -72,7 +81,7 @@
             <details><summary>Puis-je essayer avant de payer ? {{ ui.icon('plus') }}</summary>
                 <div class="accordion__body"><p>Oui. Le compte gratuit donne accès à tous les modules gratuits, sans limite de durée et sans carte bancaire.</p></div></details>
             <details><summary>Comment passer Premium ? {{ ui.icon('plus') }}</summary>
-                <div class="accordion__body"><p>Pour l'instant, par le formulaire de contact. Le paiement en ligne sera proposé plus tard.</p></div></details>
+                <div class="accordion__body"><p>{% if online_payment %}Avec le bouton « S'abonner » ci-dessus, une fois connecté. Le paiement se fait sur la page sécurisée de Stripe ; l'accès s'active automatiquement dès la confirmation.{% else %}Pour l'instant, par le formulaire de contact. Le paiement en ligne sera proposé plus tard.{% endif %}</p></div></details>
             <details><summary>Le contenu est-il un conseil en investissement ? {{ ui.icon('plus') }}</summary>
                 <div class="accordion__body"><p>Non. La documentation est éducative : elle ne tient pas compte de votre situation et ne constitue pas une recommandation personnalisée.</p></div></details>
         </div>

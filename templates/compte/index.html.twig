@@ -36,7 +36,14 @@
             <div class="account__actions">
                 {{ ui.button('Ouvrir la documentation', path('app_documentation'), 'primary', 'arrow-right') }}
                 {% if not user.isPremium %}{{ ui.button('Voir l\'accès Premium', path('app_pricing'), 'ghost', 'arrow-right') }}{% endif %}
+                {% if user.stripeCustomerId %}
+                    <form method="post" action="{{ path('app_billing_portal') }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('billing-portal') }}">
+                        {{ ui.button('Gérer mon abonnement', null, 'ghost', 'arrow-up-right', 'submit') }}
+                    </form>
+                {% endif %}
             </div>
+            {% if user.stripeCustomerId %}<p class="muted small">Factures, carte bancaire et résiliation se gèrent sur l'espace sécurisé de Stripe.</p>{% endif %}
         </article>
 
         <article class="account__card">
